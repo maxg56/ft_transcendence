@@ -1,0 +1,81 @@
+
+services:
+  caddy:
+    container_name: caddy
+    build:
+      context: caddy/
+      dockerfile: Dockerfile
+    volumes:
+      - caddy_data:/data  # Stockage des certificats SSL
+      - caddy_config:/config # Stockage des configurations de Caddy
+    environment:
+      - ACME_AGREE=true
+    depends_on:
+      - elasticsearch
+    ports:
+      - "8000:80"  # HTTP
+      - "8443:443" # HTTPS
+    networks:
+      - transcendence
+    restart: unless-stopped
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    container_name: elasticsearch
+    env_file: .env
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - transcendence
+    restart: unless-stopped
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.6.2
+    container_name: logstash
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - logstash_data:/usr/share/logstash/data
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    networks:
+      - transcendence
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.2
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - transcendence
+    depends_on:
+      - elasticsearch
+    env_file: .env
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    restart: unless-stopped
+
+volumes:
+  esdata:
+    driver: local
+
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+  logstash_data:
+    driver: local
+
+networks:
+  transcendence:
+    driver: bridge

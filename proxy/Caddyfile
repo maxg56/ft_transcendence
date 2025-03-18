@@ -1,0 +1,11 @@
+{
+  auto_https off
+}
+
+http://localhost {
+  reverse_proxy /auth/* auth-service:3000
+  reverse_proxy /user/* user-service:3000
+  reverse_proxy /game/* game-service:3000
+  reverse_proxy /stats/* stats-service:3000
+}
+

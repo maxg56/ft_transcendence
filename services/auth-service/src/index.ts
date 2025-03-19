@@ -7,16 +7,20 @@ const fastify = Fastify({ logger: true });
 
 const PORT = process.env.PORT_AUTH || 3000;
 
-// Routes de base
-fastify.post('/login', async (request, reply) => {
+// Définition des routes
+fastify.post('/auth/login', async (request, reply) => {
   return { message: 'Authentification réussie' };
 });
 
-fastify.post('/register', async (request, reply) => {
+fastify.post('/auth/register', async (request, reply) => {
   return { message: 'Utilisateur enregistré' };
 });
 
-fastify.get('/profile', async (request, reply) => {
+fastify.get('/auth/profile', async (request, reply) => {
+  return { message: 'Informations du profil' };
+});
+
+fastify.get('/', async (request, reply) => {
   return { message: 'Informations du profil' };
 });
 

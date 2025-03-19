@@ -18,7 +18,8 @@ services:
       context: ./services/auth-service
       dockerfile: Dockerfile
     volumes:
-      - ./services/auth-service:/app
+      -  services_auth:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
       - SERVICES=auth-service
@@ -36,6 +37,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./services/user-service:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
       - SERVICES=user-service
@@ -53,6 +55,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./services/game-service:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
       - SERVICES=game-service
@@ -70,6 +73,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./services/stats-service:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
       - SERVICES=stats-service
@@ -103,6 +107,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
     networks:
@@ -155,6 +160,11 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/DB/data/
+  services_auth:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/services/auth-service/
 
 
 networks:

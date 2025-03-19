@@ -9,7 +9,7 @@ RUN npm ci
 FROM node:23.10-alpine AS final
 
 WORKDIR /app
-
+RUN npm install -g ts-node-dev
 COPY --from=base /app/node_modules ./node_modules
 COPY . .
 

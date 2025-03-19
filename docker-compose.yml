@@ -9,13 +9,13 @@ services:
       - ft_transcendence
     env_file: .env
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/mysql
     restart: always
   
   auth-service:
     container_name: ft_t_auth
     build: 
-      context: ./services
+      context: ./services/auth-service
       dockerfile: Dockerfile
     volumes:
       - ./services/auth-service:/app
@@ -32,7 +32,7 @@ services:
   user-service:
     container_name: ft_t_user
     build: 
-      context: ./services
+      context: ./services/user-service
       dockerfile: Dockerfile
     volumes:
       - ./services/user-service:/app
@@ -49,7 +49,7 @@ services:
   game-service:
     container_name: ft_t_game
     build: 
-      context: ./services
+      context: ./services/game-service
       dockerfile: Dockerfile
     volumes:
       - ./services/game-service:/app
@@ -66,7 +66,7 @@ services:
   stats-service:
     container_name: ft_t_stats
     build: 
-      context: ./services
+      context: ./services/stats-service
       dockerfile: Dockerfile
     volumes:
       - ./services/stats-service:/app
@@ -93,6 +93,18 @@ services:
       - user-service
       - game-service
       - stats-service
+    networks:
+      - ft_transcendence
+    restart: always
+  frontend:
+    container_name: ft_t_frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    environment:
+      - NODE_ENV=development
     networks:
       - ft_transcendence
     restart: always

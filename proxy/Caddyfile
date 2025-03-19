@@ -3,9 +3,22 @@
 }
 
 http://localhost {
-  reverse_proxy /auth/* auth-service:3000
-  reverse_proxy /user/* user-service:3000
-  reverse_proxy /game/* game-service:3000
-  reverse_proxy /stats/* stats-service:3000
+  handle_path /auth/* {
+    reverse_proxy auth-service:3001
+  }
+
+  handle_path /game/* {
+    reverse_proxy game-service:3002
+  }
+
+  handle_path /stats/* {
+    reverse_proxy stats-service:3003
+  }
+
+  handle_path /user/* {
+    reverse_proxy user-service:3004
+  }
+
+  reverse_proxy frontend:5173
 }
 

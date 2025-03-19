@@ -1,23 +1,28 @@
-{
-  auto_https off
-}
 
-http://localhost {
-  handle_path /auth/* {
+localhost:443, {$HOSTNAME}:443 {
+  tls internal
+
+  #Frontend routes
+  handle {
+    # Frontend main route
+    handle /* {
+      reverse_proxy frontend:5173
+    }
+  }
+  handle /auth/* {
     reverse_proxy auth-service:3001
   }
 
-  handle_path /game/* {
+  handle /game/* {
     reverse_proxy game-service:3002
   }
 
-  handle_path /stats/* {
+  handle /stats/* {
     reverse_proxy stats-service:3003
   }
 
-  handle_path /user/* {
+  handle /user/* {
     reverse_proxy user-service:3004
   }
 
-  reverse_proxy frontend:5173
 }

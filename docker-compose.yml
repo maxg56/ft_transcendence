@@ -90,8 +90,8 @@ services:
     volumes:
       - ./proxy/Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - "80:80"
-      - "443:443"
+      - "8000:80"
+      - "8443:443"
     depends_on:
       - auth-service
       - user-service

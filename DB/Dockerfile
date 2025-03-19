@@ -1,22 +1,16 @@
-# sqlite/Dockerfile
-FROM alpine:latest
+FROM alpine:3.21.2
 
-# Installer SQLite
-RUN apk add --no-cache sqlite
+RUN apk update --no-cache \
+&& apk add --no-cache mariadb mariadb-client gettext-envsubst \
+&& mkdir -p /var/lib/mysql /run/mysqld \
+&& chown -R mysql:mysql /var/lib/mysql /run/mysqld \
+&& mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 
-# Définir le répertoire de travail
-WORKDIR /data
+COPY conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
+COPY tools/init.sql /tools/init.sql
+COPY tools/script.sh /tools/script.sh
+RUN chmod +x /tools/script.sh
 
-# Copier le script SQL d'initialisation
-COPY init.sql /init.sql
+USER mysql
 
-# Copier le script shell d'initialisation
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-# Déclarer le volume pour persistance des données
-VOLUME [ "/data" ]
-
-# Définir la commande de démarrage
-CMD ["/entrypoint.sh"]
-
+CMD ["/tools/script.sh"]

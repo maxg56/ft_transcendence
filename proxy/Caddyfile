@@ -21,4 +21,3 @@ http://localhost {
 
   reverse_proxy frontend:5173
 }
-

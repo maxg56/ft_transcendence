@@ -16,13 +16,9 @@ services:
     container_name: ft_t_auth
     build: 
       context: ./services/
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prode
       args:
         - APP_DIR=auth-service
-    volumes:
-      -  ./services/auth-service:/app
-      - /app/node_modules
-   
     env_file: .env
     depends_on:
       - db
@@ -34,13 +30,9 @@ services:
     container_name: ft_t_user
     build: 
       context: ./services/
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prode
       args:
         - APP_DIR=user-service
-    volumes:
-      - ./services/user-service:/app
-      - /app/node_modules
-   
     env_file: .env 
     depends_on:
       - db
@@ -52,13 +44,9 @@ services:
     container_name: ft_t_game
     build: 
       context: ./services/
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prode
       args:
         - APP_DIR=game-service
-    volumes:
-      - ./services/game-service:/app
-      - /app/node_modules
-   
     env_file: .env
     depends_on:
       - db
@@ -70,13 +58,9 @@ services:
     container_name: ft_t_stats
     build: 
       context: ./services/
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prode
       args: 
         - APP_DIR=stats-service
-    volumes:
-      - ./services/stats-service:/app
-      - /app/node_modules
-    
     env_file: .env
     depends_on:
       - db
@@ -105,9 +89,6 @@ services:
     build: 
       context: ./frontend
       dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=development
     networks:
@@ -119,25 +100,18 @@ services:
   #   image: elasticsearch:8.4.3
   #   environment:
   #     - discovery.type=single-node
-  #     - ELASTIC_PASSWORD=elasticpassword
-  #   volumes:
-  #     - ./logging/esdata:/usr/share/elasticsearch/data
-  #   networks:
-  #     - ft_transcendence
+  #   ports:
+  #     - "9200:9200"
 
   # logstash:
   #   container_name: ft_t_logstash
   #   image: logstash:8.4.3
-  #   environment:
-  #     - LS_JAVA_OPTS="-Xmx256m -Xms256m"
   #   volumes:
   #     - ./logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
   #   depends_on:
   #     - elasticsearch
   #   ports:
   #     - "5044:5044"
-  #   networks:
-  #     - ft_transcendence
 
   # kibana:
   #   container_name: ft_t_kibana
@@ -146,8 +120,6 @@ services:
   #     - elasticsearch
   #   ports:
   #     - "5601:5601"
-  #   networks:
-  #     - ft_transcendence
 
   # prometheus:
   #   container_name: ft_t_prometheus
@@ -169,11 +141,7 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/DB/data/
-  esdata:
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/log/data/
+
 
 
 

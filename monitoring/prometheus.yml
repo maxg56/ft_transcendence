@@ -1,0 +1,14 @@
+global:
+  scrape_interval: 15s  # Fréquence de récupération des données
+
+scrape_configs:
+  - job_name: 'docker-containers'
+    docker_sd_configs:
+      - host: 'unix:///var/run/docker.sock'  # Socket Docker pour accéder aux conteneurs
+        filters:
+          - label: 'prometheus'  # Vous pouvez utiliser un label pour filtrer les conteneurs à surveiller
+    relabel_configs:
+      - source_labels: [__meta_docker_container_name]
+        target_label: 'container_name'
+      - source_labels: [__meta_docker_container_label_com_docker_swarm_service_name]
+        target_label: 'service_name'

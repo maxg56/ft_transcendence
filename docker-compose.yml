@@ -1,0 +1,182 @@
+
+services:
+  db:
+    container_name: ft_t_db
+    build:
+      context: ./DB
+      dockerfile: Dockerfile
+    networks:
+      - ft_transcendence
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+  
+  auth-service:
+    container_name: ft_t_auth
+    build: 
+      context: ./services/
+      dockerfile: Dockerfile.dev
+      args:
+        - APP_DIR=auth-service
+    volumes:
+      -  ./services/auth-service:/app
+      - /app/node_modules
+   
+    env_file: .env
+    depends_on:
+      - db
+    networks:
+      - ft_transcendence
+    restart: always
+
+  user-service:
+    container_name: ft_t_user
+    build: 
+      context: ./services/
+      dockerfile: Dockerfile.dev
+      args:
+        - APP_DIR=user-service
+    volumes:
+      - ./services/user-service:/app
+      - /app/node_modules
+   
+    env_file: .env 
+    depends_on:
+      - db
+    networks:
+      - ft_transcendence
+    restart: always
+
+  game-service:
+    container_name: ft_t_game
+    build: 
+      context: ./services/
+      dockerfile: Dockerfile.dev
+      args:
+        - APP_DIR=game-service
+    volumes:
+      - ./services/game-service:/app
+      - /app/node_modules
+   
+    env_file: .env
+    depends_on:
+      - db
+    networks:
+      - ft_transcendence
+    restart: always
+
+  stats-service:
+    container_name: ft_t_stats
+    build: 
+      context: ./services/
+      dockerfile: Dockerfile.dev
+      args: 
+        - APP_DIR=stats-service
+    volumes:
+      - ./services/stats-service:/app
+      - /app/node_modules
+    
+    env_file: .env
+    depends_on:
+      - db
+    networks:
+      - ft_transcendence
+    restart: always
+  
+  caddy:
+    container_name: ft_t_caddy
+    image: caddy:latest
+    volumes:
+      - ./proxy/Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "8000:80"
+      - "8443:443"
+    depends_on:
+      - auth-service
+      - user-service
+      - game-service
+      - stats-service
+    networks:
+      - ft_transcendence
+    restart: always
+  frontend:
+    container_name: ft_t_frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - ft_transcendence
+    restart: always
+
+  # elasticsearch:
+  #   container_name: ft_t_elasticsearch
+  #   image: elasticsearch:8.4.3
+  #   environment:
+  #     - discovery.type=single-node
+  #     - ELASTIC_PASSWORD=elasticpassword
+  #   volumes:
+  #     - ./logging/esdata:/usr/share/elasticsearch/data
+  #   networks:
+  #     - ft_transcendence
+
+  # logstash:
+  #   container_name: ft_t_logstash
+  #   image: logstash:8.4.3
+  #   environment:
+  #     - LS_JAVA_OPTS="-Xmx256m -Xms256m"
+  #   volumes:
+  #     - ./logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  #   depends_on:
+  #     - elasticsearch
+  #   ports:
+  #     - "5044:5044"
+  #   networks:
+  #     - ft_transcendence
+
+  # kibana:
+  #   container_name: ft_t_kibana
+  #   image: kibana:8.4.3
+  #   depends_on:
+  #     - elasticsearch
+  #   ports:
+  #     - "5601:5601"
+  #   networks:
+  #     - ft_transcendence
+
+  # prometheus:
+  #   container_name: ft_t_prometheus
+  #   image: prom/prometheus
+  #   volumes:
+  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   ports:
+  #     - "9090:9090"
+
+  # grafana:
+  #   container_name: ft_t_grafana
+  #   image: grafana/grafana
+  #   ports:
+  #     - "3000:3000"
+
+volumes:
+  db_data:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/DB/data/
+  esdata:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/log/data/
+
+
+
+networks:
+  ft_transcendence:
+    driver: bridge

@@ -1,16 +1,18 @@
 import Fastify from 'fastify';
 import dotenv from 'dotenv';
+import './JWT.ts';
+
 
 dotenv.config();
-
 const fastify = Fastify({ logger: true });
+
 
 const PORT = process.env.PORT_AUTH || 3000;
 
-// Définition des routes
-fastify.post('/auth/login', async (request, reply) => {
-  return { message: 'Authentification réussie' };
-});
+// fastify.post('/auth/login', async (request, reply) => {
+//   return { message: 'Authentification ' };
+// });
+
 
 fastify.post('/auth/register', async (request, reply) => {
   return { message: 'Utilisateur enregistré' };
@@ -23,6 +25,8 @@ fastify.get('/auth/profile', async (request, reply) => {
 fastify.get('/', async (request, reply) => {
   return { message: 'Informations du profil' };
 });
+
+
 
 // Démarrage du serveur
 const start = async () => {

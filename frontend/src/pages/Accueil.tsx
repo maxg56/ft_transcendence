@@ -1,17 +1,32 @@
-import React, { useState, useTransition } from "react";
-import { X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, Settings } from "lucide-react";
+import { useTranslation } from "../context/TranslationContext";
 
 const Accueil: React.FC = () => {
    
     const [isSignInOpen, setIsSignInOpen] = useState(false);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     const [isParamOpen, setParamOpen] = useState(false);
+    const [showLangOptions, setShowLangOptions] = useState(false);
 
+    useEffect(() => {
+        if (isParamOpen) {
+            setShowLangOptions(false);
+        }
+    }, [isParamOpen]);
+    
+    const { t, changeLanguage } = useTranslation();
     return (
         <div>
-            {/* Header */}
-            <header className="bg-orange-500 p-4 text-white flex justify-center items-center">
+            {/* Header Titre avec Param bouton*/}
+            <header className="bg-orange-300 p-4 text-white flex justify-center items-center relative">
                 FT_TRANSCENDENCE
+                <button
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white hover:text-gray-200"
+                    onClick={() => setParamOpen(true)}
+                >
+                    <Settings size={32} />
+                </button>
             </header>
 
             {/* Body avec les boutons */}
@@ -19,24 +34,17 @@ const Accueil: React.FC = () => {
                 {/* Bouton Sign In */}
                 <button
                     className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                    onClick={() => setIsSignInOpen(true)}
-                >
-                    Se connecter
+                    onClick={() => setIsSignInOpen(true)} >
+                    {t ('Se connecter')}
                 </button>
 
                 {/* Bouton Sign Up */}
                 <button
                     className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                    onClick={() => setIsSignUpOpen(true)}
-                >
-                    Inscription
+                    onClick={() => setIsSignUpOpen(true)} >
+                    {t ('Inscription')}
                 </button>
 
-                {/* Bouton Paramètres */}
-                <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                    onClick={() => setParamOpen(true)}>
-                    Paramètres
-                </button>
             </div>
 
             {/* Modale Sign In */}
@@ -67,7 +75,7 @@ const Accueil: React.FC = () => {
                             className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200 w-full"
                             onClick={() => setIsSignInOpen(false)}
                         >
-                            Se connecter
+                            {t ('Se connecter')}
                         </button>
                     </div>
                 </div>
@@ -86,7 +94,7 @@ const Accueil: React.FC = () => {
                         </button>
 
                         {/* Formulaire */}
-                        <h2 className="text-lg font-bold mb-4">Inscription</h2>
+                        <h2 className="text-lg font-bold mb-4">{t('Inscription')}</h2>
                         <input
                             type="text"
                             placeholder="Nom d'utilisateur"
@@ -111,7 +119,7 @@ const Accueil: React.FC = () => {
                             className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200 w-full"
                             onClick={() => setIsSignUpOpen(false)}
                         >
-                            S'inscrire
+                            {t ('Inscription')}
                         </button>
                     </div>
                 </div>
@@ -126,17 +134,24 @@ const Accueil: React.FC = () => {
                         className="absolute top-2 right-2 text-gray-600 hover:text-red-500">
                             <X size={24} />
                         </button>
-                        <h2 className="text-lg font-bold mb-4">Choisir langue</h2>
+                        <h2 className="text-lg font-bold mb-4">{t('Parametres')} </h2>
+                        {!showLangOptions ? (
+                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200" 
+                            onClick={() => setShowLangOptions(true) }>
+                            Choisir langue</button>
+
+                        ): (
                         <div className="flex flex-col gap-2">
                             <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                                onClick={() => setParamOpen(false) }>
+                                onClick={() => changeLanguage("en") }>
                                     English
                             </button>
                             <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                                onClick={() => setParamOpen(false)}>
+                                onClick={() => changeLanguage("fr")}>
                                     Français
                             </button>
                         </div>
+                )}
                     </div>
                 </div>
             )}

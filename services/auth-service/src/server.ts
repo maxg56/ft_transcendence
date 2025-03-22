@@ -2,12 +2,14 @@ import Fastify from 'fastify';
 import dotenv from 'dotenv';
 import routes from './routes/index';
 import database from './plugins/database';
+import auth from './plugins/auth';
 
 const fastify = Fastify({ logger: true });
 
 const PORT = process.env.PORT_AUTH || 3000;
 // Plugins
 fastify.register(database);
+fastify.register(auth);
 
 // Routes
 fastify.register(routes);

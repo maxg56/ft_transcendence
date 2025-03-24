@@ -114,40 +114,40 @@ services:
       - ft_transcendence
     restart: always
 
-  # elasticsearch:
-  #   container_name: ft_t_elasticsearch
-  #   image: elasticsearch:8.4.3
-  #   environment:
-  #     - discovery.type=single-node
-  #     - ELASTIC_PASSWORD=elasticpassword
-  #   volumes:
-  #     - ./logging/esdata:/usr/share/elasticsearch/data
-  #   networks:
-  #     - ft_transcendence
+  elasticsearch:
+    container_name: ft_t_elasticsearch
+    image: elasticsearch:8.4.3
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=elasticpassword
+    volumes:
+      - ./logging/esdata:/usr/share/elasticsearch/data
+    networks:
+      - ft_transcendence
 
-  # logstash:
-  #   container_name: ft_t_logstash
-  #   image: logstash:8.4.3
-  #   environment:
-  #     - LS_JAVA_OPTS="-Xmx256m -Xms256m"
-  #   volumes:
-  #     - ./logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-  #   depends_on:
-  #     - elasticsearch
-  #   ports:
-  #     - "5044:5044"
-  #   networks:
-  #     - ft_transcendence
+  logstash:
+    container_name: ft_t_logstash
+    image: logstash:8.4.3
+    environment:
+      - LS_JAVA_OPTS="-Xmx256m -Xms256m"
+    volumes:
+      - ./logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5044:5044"
+    networks:
+      - ft_transcendence
 
-  # kibana:
-  #   container_name: ft_t_kibana
-  #   image: kibana:8.4.3
-  #   depends_on:
-  #     - elasticsearch
-  #   ports:
-  #     - "5601:5601"
-  #   networks:
-  #     - ft_transcendence
+  kibana:
+    container_name: ft_t_kibana
+    image: kibana:8.4.3
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    networks:
+      - ft_transcendence
 
   # prometheus:
   #   container_name: ft_t_prometheus

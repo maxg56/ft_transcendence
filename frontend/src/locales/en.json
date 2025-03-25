@@ -2,5 +2,9 @@
 	"Se connecter": "Sign In",
 	"Inscription": "Sign Up",
 	"Parametres": "Settings",
-	"Langue": "Language"
+	"Langue": "Language",
+	"Nom d'utilisateur": "Username",
+	"Mot de passe":"Password",
+	"Confirmer le mot de passe":"Password confirmation",
+	"Choisir langue":"Choose Language"
 }

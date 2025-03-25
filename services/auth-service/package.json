@@ -8,7 +8,10 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@fastify/formbody": "^8.0.2",
     "@fastify/jwt": "^9.1.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.0.0",
     "fastify": "^5.2.1",
     "mysql2": "^3.14.0",

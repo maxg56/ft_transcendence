@@ -15,7 +15,6 @@ const useNavigation = () => {
 
 	const navigate = (newPath: string) => {
 		if (newPath !== window.location.pathname) {
-			console.log(`🚀 Navigation vers : ${newPath}`);
 			window.history.pushState({}, "", newPath);
 			setPath(newPath);
 			window.dispatchEvent(new Event("navigation")); // 🔥 Force un événement global

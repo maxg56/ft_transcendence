@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useState, useEffect} from 'react';
+import './App.css';
+import Accueil from './pages/Accueil';
+import Hub from './pages/Hub'
+import Duel from './pages/Duel';
+import Profile from './pages/Profil'
+import useNavigation from "./hooks/useNavigation";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const { path } = useNavigation();
+  const [currentPath, setCurrentPath] = useState(path);
+
+  useEffect(() => {
+    setCurrentPath(path); // 🔥 Met à jour l'état quand path change
+  }, [path]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div key={currentPath}> {/* 🔥 Forcer un re-render */}
+      {currentPath === "/" && <Accueil />}
+      {currentPath === "/hub" && <Hub />}
+      {currentPath === "/profile" && <Profile />}
+      {currentPath === "/duel" && <Duel />}
+    </div>
+  );
+};
 
-export default App
+export default App;

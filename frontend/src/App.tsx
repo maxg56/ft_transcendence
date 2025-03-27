@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Accueil from './pages/Accueil';
 import Hub from './pages/Hub'
+import Profile from './pages/Profil'
 import useNavigation from "./hooks/useNavigation";
 
 const App: React.FC = () => {
@@ -9,7 +10,6 @@ const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState(path);
 
   useEffect(() => {
-    console.log("🔄 Mise à jour de currentPath :", path);
     setCurrentPath(path); // 🔥 Met à jour l'état quand path change
   }, [path]);
 
@@ -17,6 +17,7 @@ const App: React.FC = () => {
     <div key={currentPath}> {/* 🔥 Forcer un re-render */}
       {currentPath === "/" && <Accueil />}
       {currentPath === "/hub" && <Hub />}
+      {currentPath === "/profile" && <Profile />}
     </div>
   );
 };

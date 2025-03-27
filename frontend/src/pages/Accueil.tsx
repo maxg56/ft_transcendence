@@ -3,7 +3,6 @@ import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import  useNavigation  from "../hooks/useNavigation";
 
-
 const Accueil: React.FC = () => {
    
     const [isSignInOpen, setIsSignInOpen] = useState(false);

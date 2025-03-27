@@ -35,12 +35,3 @@ export const App: React.FC = () => {
     </Canvas>
   );
 };
-
-// export const root = document.getElementById("root");
-// if (root) {
-//   ReactDOM.createRoot(root).render(
-//     <React.StrictMode>
-//       <App />
-//     </React.StrictMode>
-//   );
-// }

@@ -116,8 +116,11 @@ const Hub: React.FC = () => {
                 )}
                     </div>
                 </div>
+        
             )}
-
+            <div className="flex justify-center items-center mt-8">
+        <App />
+      </div>
     </div>
   );
 };

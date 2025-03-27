@@ -146,28 +146,28 @@ const Accueil: React.FC = () => {
                         <h2 className="text-lg font-bold mb-4">{t('Inscription')}</h2>
                         <input
                             type="text"
-                            placeholder="Nom d'utilisateur"
+                            placeholder={t("Nom d'utilisateur")}
                             className="w-full px-3 py-2 border rounded mb-4"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
                         <input
                             type="email"
-                            placeholder="Email"
+                            placeholder={t("Email")}
                             className="w-full px-3 py-2 border rounded mb-4"
                             value={mail}
                             onChange={(e) => setMail(e.target.value)}
                         />
                         <input
                             type="password"
-                            placeholder="Mot de passe"
+                            placeholder={t("Mot de passe")}
                             className="w-full px-3 py-2 border rounded mb-4"
                             value={passwordSignUp}
                             onChange={(e) => setPasswordSignUp(e.target.value)}
                         />
                         <input
                             type="password"
-                            placeholder="Confirmer le mot de passe"
+                            placeholder={t('Confirmer le mot de passe')}
                             className="w-full px-3 py-2 border rounded mb-4"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPass(e.target.value)}

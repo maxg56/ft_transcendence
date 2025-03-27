@@ -4,7 +4,7 @@ import { useTranslation } from "../context/TranslationContext";
 import { useProfileContext } from "../context/ProfilContext";
 import SettingsModal from "../components/SettingsModal";
 
-const Hub: React.FC = () => {
+const Duel: React.FC = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
   const { profileImage } = useProfileContext();
@@ -13,7 +13,7 @@ const Hub: React.FC = () => {
     <div>
       <header className="bg-orange-300 p-8 text-white flex justify-between items-center relative">
         {/* Texte centré */}
-        <h1 className="text-center flex-1">Bienvenue sur Hub</h1>
+        <h1 className="text-center flex-1">Bienvenue sur Duel</h1>
           <SettingsModal />
         <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
           <img
@@ -24,13 +24,8 @@ const Hub: React.FC = () => {
           />
         </div>
       </header>
-      <button className=""
-        onClick={() => navigate("/duel")}>
-        {t('Duel')}
-      </button>
-    </div>
-  );
-};
+	  
+	  </div>
+  )};
 
-export default Hub;
-
+export default Duel;

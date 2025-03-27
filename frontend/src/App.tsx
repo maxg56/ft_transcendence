@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Accueil from './pages/Accueil';
 import Hub from './pages/Hub'
+import Duel from './pages/Duel';
 import Profile from './pages/Profil'
 import useNavigation from "./hooks/useNavigation";
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
       {currentPath === "/" && <Accueil />}
       {currentPath === "/hub" && <Hub />}
       {currentPath === "/profile" && <Profile />}
+      {currentPath === "/duel" && <Duel />}
     </div>
   );
 };

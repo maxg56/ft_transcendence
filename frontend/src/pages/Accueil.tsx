@@ -210,6 +210,14 @@ const Accueil: React.FC = () => {
                                 onClick={() => changeLanguage("fr")}>
                                     Français
                             </button>
+                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                                onClick={() => changeLanguage("pt")}>
+                                    Portugais
+                            </button>
+                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                                onClick={() => changeLanguage("kgt")}>
+                                    Klingon
+                            </button>
                         </div>
                 )}
                     </div>

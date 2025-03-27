@@ -3,6 +3,7 @@ import useNavigation from "../hooks/useNavigation";
 import { X, LogOut, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import { useProfileContext } from "../context/ProfilContext";
+import { App } from "../animation/index";
 
 const Hub: React.FC = () => {
   const { navigate } = useNavigation();
@@ -76,7 +77,9 @@ const Hub: React.FC = () => {
 
 
 
-
+       {/* <div className="flex justify-center items-center mt-8">
+        <App />
+      </div> */}
       {isParamOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
@@ -100,6 +103,14 @@ const Hub: React.FC = () => {
                             <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
                                 onClick={() => changeLanguage("fr")}>
                                     Français
+                            </button>
+                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                                onClick={() => changeLanguage("pt")}>
+                                    Portugais
+                            </button>
+                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                                onClick={() => changeLanguage("kgt")}>
+                                    Klingon
                             </button>
                         </div>
                 )}

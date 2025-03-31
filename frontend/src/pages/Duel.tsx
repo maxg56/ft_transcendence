@@ -3,6 +3,7 @@ import useNavigation from "../hooks/useNavigation";
 import { useTranslation } from "../context/TranslationContext";
 import { useProfileContext } from "../context/ProfilContext";
 import SettingsModal from "../components/SettingsModal";
+import DuelComponent from "../components/DuelComponent";
 
 const Duel: React.FC = () => {
   const { navigate } = useNavigation();
@@ -11,7 +12,7 @@ const Duel: React.FC = () => {
 
   return (
     <div>
-      <header className="bg-orange-300 p-8 text-white flex justify-between items-center relative">
+      <header className="bg-orange-300 p-6 text-white flex justify-between items-center relative">
         {/* Texte centré */}
         <h1 className="text-center flex-1">Bienvenue sur Duel</h1>
           <SettingsModal />
@@ -24,7 +25,10 @@ const Duel: React.FC = () => {
           />
         </div>
       </header>
-	  
+      <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
+        <DuelComponent />
+      </div>
+
 	  </div>
   )};
 

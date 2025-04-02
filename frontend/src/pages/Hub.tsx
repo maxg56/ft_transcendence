@@ -1,31 +1,22 @@
 import React from "react";
 import useNavigation from "../hooks/useNavigation";
 import { useTranslation } from "../context/TranslationContext";
-import { useProfileContext } from "../context/ProfilContext";
+import Header from "../components/HeaderComponent";
 
 const Hub: React.FC = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
-  const { profileImage } = useProfileContext();
 
   return (
     <div>
-      <header className="bg-orange-300 p-8 text-white flex justify-between items-center relative">
-        {/* Texte centré */}
-        <h1 className="text-center flex-1">Bienvenue sur Hub</h1>
-        <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-          <img
-            src={profileImage || "/default-profile.png"}
-            alt="Profile"
-            className="w-12 h-12 rounded-full cursor-pointer border border-gray-300"
-            onClick={() => navigate("/profile")}
-          />
-        </div>
-      </header>
-      <button className=""
+      <Header/>
+      <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
         onClick={() =>
          navigate("/duel")}>
         {t('Duel')}
+      </button>
+      <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200">
+        {t("Multijoueur")}
       </button>
     </div>
   );

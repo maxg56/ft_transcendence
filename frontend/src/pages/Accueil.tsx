@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import  useNavigation  from "../hooks/useNavigation";
+// import { Canvas, useLoader } from "@react-three/fiber";
+// import { GLTFLoader } from "three/examples/jsm/Addons.js";
+// import { useGLTF } from "@react-three/drei";
+
 
 const Accueil: React.FC = () => {
    

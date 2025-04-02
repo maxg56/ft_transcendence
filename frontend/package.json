@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-three/fiber": "^9.1.0",
+    "@react-three/drei": "^10.0.5",
+    "@react-three/fiber": "^9.1.1",
     "@tailwindcss/vite": "^4.0.14",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",

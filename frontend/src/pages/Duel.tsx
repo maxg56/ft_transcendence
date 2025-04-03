@@ -9,7 +9,8 @@ const Duel: React.FC = () => {
   return (
     <div>
       <Header/>
-      <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
+      <div
+      className="flex justify-center items-center w-full h-[839px] overflow-hidden bg-blue-200 ">
         <DuelComponent />
       </div>
 

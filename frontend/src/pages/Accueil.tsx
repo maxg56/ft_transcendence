@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import  useNavigation  from "../hooks/useNavigation";
-// import { Canvas, useLoader } from "@react-three/fiber";
-// import { GLTFLoader } from "three/examples/jsm/Addons.js";
-// import { useGLTF } from "@react-three/drei";
+
 
 
 const Accueil: React.FC = () => {
@@ -104,7 +102,7 @@ const Accueil: React.FC = () => {
                         </button>
 
                         {/* Formulaire */}
-                        <h2 className="text-lg font-bold mb-4">Connexion</h2>
+                        <h2 className="text-lg font-bold mb-4">{t('Connexion')}</h2>
                         <input
                             type="text"
                             placeholder={t("Nom d'utilisateur")}
@@ -122,8 +120,8 @@ const Accueil: React.FC = () => {
                         <button
                             className={`px-4 py-2 rounded w-full ${login && passwordSignIn ? "bg-orange-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                             onClick={() => {
-                                closeModal("signIn") // 🔥 Fermer la modale
-                                setTimeout(() => navigate("/hub"), 50)}} // 🔥 Petit delai pour laisser le temps à React de re-render
+                                closeModal("signIn") // Fermer la modale
+                                setTimeout(() => navigate("/hub"), 50)}} // Petit delai pour laisser le temps à React de re-render
                                 disabled={!login || !passwordSignIn}
                         >
                             {t ('Se connecter')}

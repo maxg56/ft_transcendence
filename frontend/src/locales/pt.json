@@ -3,8 +3,13 @@
 	"Inscription": "Registro",
 	"Parametres": "Parâmetros",
 	"Langue": "Idiomas",
+	"Connexion": "Conexão",
 	"Nom d'utilisateur": "Nome",
 	"Mot de passe":"Senha",
 	"Confirmer le mot de passe":"Confirmar senha",
-	"Choisir langue":"Escolha o idioma"
+	"Choisir langue":"Escolha o idioma",
+	"Se déconnecter":"Sair",
+	"Multijoueur": "Multijogador",
+	"DUEL": "DUELO",
+	"OTHER": "OUTRA"
 }

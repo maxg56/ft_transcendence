@@ -5,10 +5,12 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Environment } from '@react-three/drei';
-
+import  useNavigation from "../hooks/useNavigation";
+import { useTranslation } from "../context/TranslationContext";
 
 export function RotatingCube() {
   const meshRef = useRef<THREE.Mesh>(null);
+  const { t } = useTranslation();
 
   useFrame(() => {
     if (meshRef.current) {
@@ -31,7 +33,7 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
       >
-        SOLO
+        {t('SOLO')}
       </Text>
       
       {/* Back face */}
@@ -43,7 +45,7 @@ export function RotatingCube() {
         anchorY="middle"
         rotation={[0, Math.PI, 0]}
       >
-        DUEL
+        {t('DUEL')}
       </Text>
       
       {/* Right face */}
@@ -55,7 +57,7 @@ export function RotatingCube() {
         anchorY="middle"
         rotation={[0, Math.PI / 2, 0]}
       >
-        MULTI
+        {t('MULTI')}
       </Text>
       
       {/* Left face */}
@@ -67,7 +69,7 @@ export function RotatingCube() {
         anchorY="middle"
         rotation={[0, -Math.PI / 2, 0]}
       >
-        OTHER
+        {t('OTHER')}
       </Text>
     </mesh>
   );
@@ -77,6 +79,8 @@ function Scene() {
   const handleClick = (mode: string) => {
     console.log(`Selected mode: ${mode}`);
   };
+  const { navigate } = useNavigation();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -88,22 +92,22 @@ function Scene() {
       
       <group position={[0, -2, 0]}>
         <Button3D 
-          text="SOLO" 
+          text={t('SOLO')} 
           position={[-3, 0, 0]} 
-          onClick={() => handleClick('solo')} 
+          onClick={() => handleClick('multi')} 
         />
         <Button3D 
-          text="DUEL" 
+          text={t('DUEL')} 
           position={[-1, 0, 0]} 
-          onClick={() => handleClick('duel')} 
+          onClick={() => navigate("/duel")} 
         />
         <Button3D 
-          text="MULTI" 
+          text={t('MULTI')} 
           position={[1, 0, 0]} 
           onClick={() => handleClick('multi')} 
         />
         <Button3D 
-          text="OTHER" 
+          text={t('OTHER')} 
           position={[3, 0, 0]} 
           onClick={() => handleClick('other')} 
         />
@@ -120,9 +124,9 @@ function Scene() {
 
 export function App() {
   return (
-    <div className="w-full h-screen">
+    // <div className="w-full h-screen">
       <Canvas camera={{ position: [0, 0, 8] }}>
-            <color attach="background" args={['#050505']} />  {/* Dark Gray */}
+            <color attach="background" args={['#141929']} /> 
              <fog attach="fog" args={['#050505', 5, 15]} /> 
       
              <Environment preset="night" />
@@ -131,7 +135,7 @@ export function App() {
             <directionalLight position={[2, 2, 5]} intensity={1} />
         <Scene />
       </Canvas>
-    </div>
+    ///* </div> */}
   );
 }
 

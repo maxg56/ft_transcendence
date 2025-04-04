@@ -6,5 +6,7 @@
 	"Nom d'utilisateur": "Username",
 	"Mot de passe":"Password",
 	"Confirmer le mot de passe":"Password confirmation",
-	"Choisir langue":"Choose Language"
+	"Choisir langue":"Choose Language",
+	"Se déconnecter":"Log Out",
+	"Multijoueur": "Multiplayer"
 }

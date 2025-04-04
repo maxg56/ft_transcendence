@@ -58,7 +58,7 @@ async function joinPrivateGame(
   if (game.nb === game.maxPlayers) {
     const gameId = uuidv4();
     logformat("Game is full, starting game", gameId);
-    privateGames.delete(data.gameId);
+    privateGames.delete(data.gameCode);
     activeGames.set(gameId, game.guest);
 
     for (const guest of game.guest) {

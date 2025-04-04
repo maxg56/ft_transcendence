@@ -28,8 +28,8 @@ async function joinPrivateGame(
       const isFriend = await Friendship.findOne({
         where: {
           [Op.or]: [
-            { userId1: player.id, userId2: host.id },
-            { userId1: host.id, userId2: player.id },
+            { user1: player.id, user2: host.id },
+            { user1: host.id, user2: player.id },
           ],
         },
       });

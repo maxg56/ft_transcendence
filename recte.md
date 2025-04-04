@@ -39,7 +39,7 @@
 
 
 
-## 
+## game_result
 ``` json
 {
   "event": "game_result",

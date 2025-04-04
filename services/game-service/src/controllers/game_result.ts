@@ -3,33 +3,37 @@ import Match from "../models/Match";
 import MatchPlayer from "../models/MatchPlayer";
 import User from "../models/User";
 import { Player } from "../models/Player";
-import activeGames from "../services";
+import { logformat, logError } from "./log";
 
-const game = activeGames.get(data.gameId);
-      if (game) {
-    
-        const updatedPlayers =calculateElo(game, data.winner);
-        
-        if (data.winner === player1.id) {
-          player1.elo = newEloWinner;
-          player2.elo = newEloLoser;
-        } else {
-          player2.elo = newEloWinner;
-          player1.elo = newEloLoser;
-        }
-        activeGames.delete(data.gameId);
-      }
-      break;
+
 
 async function handleGameResult( activeGames: Map<string, Player[]> , data: any, player: Player) {
   const game = activeGames.get(data.gameId);
   if (game) {
-    const winner = game.find((p) => p.id === data.winner);
-    const loser = game.find((p) => p.id !== data.winner);
-    const updatedPlayers = calculateElo(game, data.winner);
-    const match = await Match.create({ winnerId: winner.id, loserId: loser.id });
-    await MatchPlayer.bulkCreate(updatedPlayers.map((p) => ({ matchId: match.id, userId: p.id, elo: p.rating })));
+    const updatedPlayers =calculateElo(game, data.winner);
+    logformat("game result",data.gameId,"winner:" ,data.winner,)
+    for (const player of updatedPlayers) {
+      await User.update({ elo: player.elo }, { where: { id: player.id } });
+    }
+    const match = await Match.create({
+      is_pong_game: data.isPongGame,
+      playedAt: new Date(),
+      durationSeconds: data.durationSeconds,
+    });
+    for (const player of game) {
+      await MatchPlayer.create({
+        matchId: match.id,
+        playerId: player.id,
+        score: player.id === data.winner ? data.winnerScore : data.loserScore,
+      });
+      player.ws.send(JSON.stringify({ event: 'game_result', data: { winner: data.winner, score: player.id === data.winner ? data.winnerScore : data.loserScore } }));
+    }
     activeGames.delete(data.gameId);
+  }
+  else
+  {
+    logError("Game not found", data.gameCode);
+    player.ws.send(JSON.stringify({ event: "error", message: "Game not found" }));
   }
 }
 

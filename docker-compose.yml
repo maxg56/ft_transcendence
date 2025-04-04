@@ -9,7 +9,7 @@ services:
       - ft_transcendence
     env_file: .env
     volumes:
-      - db_data:/var/lib/mysql
+      - ./data:/var/lib/mysql
     restart: always
   
   auth-service:
@@ -164,11 +164,6 @@ services:
   #     - "3000:3000"
 
 volumes:
-  db_data:
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/DB/data/
   esdata:
     driver_opts:
       type: none

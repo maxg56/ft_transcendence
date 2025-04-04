@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS match_players (
 	score INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (match_id, player_id),
 	FOREIGN KEY (match_id) REFERENCES matches(id) ON DELETE CASCADE,
-	FOREIGN KEY (player_id) REFERENCES users(id) ON DELETE CASCADE
+	FOREIGN KEY (player_id) REFERENCES `user`(id) ON DELETE CASCADE
 );
 
 

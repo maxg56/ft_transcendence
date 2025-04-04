@@ -3,7 +3,7 @@ import sequelize from "../config/database";
 
 class Match extends Model {
   public id!: number;
-  public isPongGame!: boolean;
+  public is_pong_game!: boolean;
   public playedAt!: Date;
   public durationSeconds!: number;
 }
@@ -15,7 +15,7 @@ Match.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    isPongGame: {
+    is_pong_game: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

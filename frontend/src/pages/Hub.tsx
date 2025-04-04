@@ -15,7 +15,8 @@ const Hub: React.FC = () => {
          navigate("/duel")}>
         {t('Duel')}
       </button>
-      <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200">
+      <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+              onClick ={ () => navigate("/multiplayerselect")}>
         {t("Multijoueur")}
       </button>
     </div>

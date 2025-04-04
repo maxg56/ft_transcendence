@@ -5,6 +5,7 @@ import Hub from './pages/Hub'
 import Duel from './pages/Duel';
 import Profile from './pages/Profil'
 import useNavigation from "./hooks/useNavigation";
+import MultiplayerSelection from './pages/MultiplayerSelection';
 
 const App: React.FC = () => {
   const { path } = useNavigation();
@@ -20,6 +21,7 @@ const App: React.FC = () => {
       {currentPath === "/hub" && <Hub />}
       {currentPath === "/profile" && <Profile />}
       {currentPath === "/duel" && <Duel />}
+      {currentPath === "/multiplayerselect" && <MultiplayerSelection />}
     </div>
   );
 };

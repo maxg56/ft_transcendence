@@ -4,9 +4,11 @@ import User from '../models/User'
 
 
 async function userRoutes(fastify: any) {
-  fastify.get('/user/{id}', async (request: any, reply: any) => {
+  fastify.get('/user/:id', async (request: any, reply: any) => {
     try {
+      console.log(request.params);
       const { id } = request.params;
+      console.log("🧩 Param ID:", id);
       const user = await User.findByPk(id);
 
       if (!user) {

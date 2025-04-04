@@ -14,7 +14,7 @@ const PORT = process.env.PORT_USER || 3000;
 fastify.register(database);
 fastify.register(userRoutes);
 
-
+ 
 
 // fastify.get('/user/:id', async (request, reply) => {
 // 	return { message: `Détails de l'utilisateur ${request.params.id}` };
@@ -24,7 +24,7 @@ fastify.register(userRoutes);
 // 	return { message: `Mise à jour du profil de l'utilisateur ${request.params.id}` };
 //   }); 
 
- 
+  
 
 fastify.ready().then(() => {
 	console.log("📌 Fastify is ready, initializing models...");

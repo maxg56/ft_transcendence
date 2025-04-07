@@ -14,7 +14,7 @@ code {
 }
 
 .rounded-container {
-  border-radius: 350px;
+  /* border-radius: 150px; */
   overflow: hidden;
   background-color: black;
 }

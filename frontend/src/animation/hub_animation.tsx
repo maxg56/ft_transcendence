@@ -19,7 +19,7 @@ export function RotatingCube() {
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 1, 0]}>
+    <mesh ref={meshRef} position={[0.6, 1, 0]}>
       <boxGeometry args={[2, 2, 2]} />
       <meshStandardMaterial color="#CC3333" />
       <ambientLight intensity={0.15} />
@@ -90,7 +90,7 @@ function Scene() {
       
       <RotatingCube />
       
-      <group position={[0, -2, 0]}>
+      <group position={[0.7, -2, 0]}>
         <Button3D 
           text={t('SOLO')} 
           position={[-3, 0, 0]} 
@@ -124,8 +124,7 @@ function Scene() {
 
 export function App() {
   return (
-    // <div className="w-full h-screen">
-      <Canvas camera={{ position: [0, 0, 8] }}>
+      <Canvas camera={{ position: [0, 5, 4] }}>
             <color attach="background" args={['#141929']} /> 
              <fog attach="fog" args={['#050505', 5, 15]} /> 
       
@@ -135,7 +134,6 @@ export function App() {
             <directionalLight position={[2, 2, 5]} intensity={1} />
         <Scene />
       </Canvas>
-    ///* </div> */}
   );
 }
 

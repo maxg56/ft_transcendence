@@ -2,6 +2,7 @@ import { X, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "../context/TranslationContext";
 import useNavigation from "../hooks/useNavigation";
+import { createPortal } from "react-dom";
 
 const SettingsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,11 +14,33 @@ const SettingsModal: React.FC = () => {
     if (isOpen) setShowLangOptions(false);
   }, [isOpen]);
 
+//   import { createPortal } from "react-dom";
+
+// const SettingsModal = () => {
+//   ...
+//   return (
+//     <>
+//       <button onClick={() => setIsOpen(true)}>
+//         <Settings size={32} />
+//       </button>
+
+//       {isOpen &&
+//         createPortal(
+//           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+//             <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
+//               ...
+//             </div>
+//           </div>,
+//           document.body
+//         )}
+//     </>
+//   );
+// };
   return (
     <>
       {/* Bouton Paramètres */}
       <button
-        className="absolute top-1/2 right-16 transform -translate-y-1/2 text-white hover:text-gray-200"
+       // className="absolute top-1/2 right-16 transform -translate-y-1/2 text-white hover:text-gray-200"
         onClick={() => setIsOpen(true)}
       >
         <Settings size={32} />
@@ -25,7 +48,7 @@ const SettingsModal: React.FC = () => {
 
       {/* Modale Paramètres */}
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
             <button onClick={() => setIsOpen(false)} className="absolute top-2 right-2 text-gray-600 hover:text-red-500">
               <X size={24} />
@@ -60,7 +83,7 @@ const SettingsModal: React.FC = () => {
               {t("Se déconnecter")}
             </button>
           </div>
-        </div>
+         </div>
       )}
     </>
   );

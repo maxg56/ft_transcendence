@@ -114,9 +114,9 @@ function Scene() {
       </group>
       
       <OrbitControls 
-        enableZoom={false}
-        minPolarAngle={Math.PI / 2.5}
-        maxPolarAngle={Math.PI / 2.5}
+        enableZoom={true}
+         minPolarAngle={Math.PI / 2.2}
+        // maxPolarAngle={Math.PI / 2.2}
       />
     </>
   );
@@ -124,9 +124,9 @@ function Scene() {
 
 export function App() {
   return (
-      <Canvas camera={{ position: [0, 5, 4] }}>
+      <Canvas camera={{ position: [0, 4, 4] }}>
             <color attach="background" args={['#141929']} /> 
-             <fog attach="fog" args={['#050505', 5, 15]} /> 
+             <fog attach="fog" args={['#050505', 15, 15]} /> 
       
              <Environment preset="night" />
       

@@ -25,11 +25,11 @@ const DuelComponent: React.FC = () => {
   // Dimensions et constantes
   const tableWidth = 400;
   const tableHeight = 200;
-  const paddleSpeed = 3;
+  const paddleSpeed = 6;
   const initialSpeed = 1.9;
-  const maxSpeed = 3;
-  const paddleLimit = tableHeight / 2 - 40;
-
+  const maxSpeed = 8;
+  const paddleLimit = tableHeight / 2 - 30;
+  const AccelarationSpeed = 1.3;
   // États pour les mouvements
   const keysPressed = useRef<{ [key: string]: boolean }>({});
   let ballSpeed = { x: initialSpeed, z: initialSpeed };
@@ -83,7 +83,7 @@ const DuelComponent: React.FC = () => {
     sceneRef.current.add(table);
 
     // Paddles
-    const paddleGeometry = new THREE.BoxGeometry(10, 10, 65);
+    const paddleGeometry = new THREE.BoxGeometry(10, 10, 59);
     const paddleMaterial = new THREE.MeshStandardMaterial({ color: 0xeeeeee });
 
     const leftPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
@@ -140,8 +140,6 @@ const DuelComponent: React.FC = () => {
     keysPressed.current[event.key] = false;
   };
 
-  // useEffect pour initialiser la scène et lancer l'animation,
-  // le tout en fonction de resetKey (pour le redémarrage)
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
@@ -173,55 +171,54 @@ const DuelComponent: React.FC = () => {
       }
 
       // Mouvement de la balle
-      if (ballRef.current) {
+      if (ballRef.current)
+      {
         ballRef.current.position.x += ballSpeed.x;
         ballRef.current.position.z += ballSpeed.z;
 
-        if (
-          ballRef.current.position.z > tableHeight / 2 - 5 ||
-          ballRef.current.position.z < -tableHeight / 2 + 5
-        )
+        if (ballRef.current.position.z > tableHeight / 2 - 5 || ballRef.current.position.z < -tableHeight / 2 + 5)
           ballSpeed.z *= -1;
 
-        if (leftPaddleRef.current && rightPaddleRef.current) {
+        if (leftPaddleRef.current && rightPaddleRef.current)
+        {
           const ball = ballRef.current;
-          if (
-            ball.position.x < -tableWidth / 2 + 15 &&
-            Math.abs(ball.position.z - leftPaddleRef.current.position.z) < 40
-          ) {
+          if (ball.position.x < -tableWidth / 2 + 15 && Math.abs(ball.position.z - leftPaddleRef.current.position.z) < 40)
+         {
             let angleApproche = Math.atan2(ballSpeed.z, ballSpeed.x);
             let impact = ball.position.z - leftPaddleRef.current.position.z;
             let spin = impact * 0.05;
-            ballSpeed.x = Math.abs(ballSpeed.x) * 1.2;
+            ballSpeed.x = Math.abs(ballSpeed.x) * AccelarationSpeed;
             ballSpeed.z = Math.sin(angleApproche) * Math.abs(ballSpeed.x) + spin;
             ballSpeed.x = Math.min(ballSpeed.x, maxSpeed);
             ballSpeed.z = Math.min(Math.abs(ballSpeed.z), maxSpeed) * Math.sign(ballSpeed.z);
           }
-          if (
-            ball.position.x > tableWidth / 2 - 15 &&
-            Math.abs(ball.position.z - rightPaddleRef.current.position.z) < 40
-          ) {
+          if (ball.position.x > tableWidth / 2 - 15 && Math.abs(ball.position.z - rightPaddleRef.current.position.z) < 40)
+          {
             let angleApproche = Math.atan2(ballSpeed.z, ballSpeed.x);
             let impact = ball.position.z - rightPaddleRef.current.position.z;
             let spin = impact * 0.05;
-            ballSpeed.x = -Math.abs(ballSpeed.x) * 1.2;
+            ballSpeed.x = -Math.abs(ballSpeed.x) * AccelarationSpeed;
             ballSpeed.z = Math.sin(angleApproche) * Math.abs(ballSpeed.x) + spin;
             ballSpeed.x = Math.max(ballSpeed.x, -maxSpeed);
             ballSpeed.z = Math.min(Math.abs(ballSpeed.z), maxSpeed) * Math.sign(ballSpeed.z);
           }
         }
 
-        if (ballRef.current.position.x > tableWidth / 2) {
+        if (ballRef.current.position.x > tableWidth / 2)
+        {
           setScore((prev) => {
             const newScore = { ...prev, left: prev.left + 1 };
-            if (newScore.left >= 3) {
+            if (newScore.left >= 3)
+            {
               setWinner("Joueur 1");
               gameRunning = false;
             }
             return newScore;
           });
           resetBall();
-        } else if (ballRef.current.position.x < -tableWidth / 2) {
+        }
+        else if (ballRef.current.position.x < -tableWidth / 2)
+        {
           setScore((prev) => {
             const newScore = { ...prev, right: prev.right + 1 };
             if (newScore.right >= 3) {
@@ -256,7 +253,7 @@ const DuelComponent: React.FC = () => {
 
   return (
     <>
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 text-black text-2xl">
+      <div className="absolute top-[15%] left-1/2 transform -translate-x-1/2 text-black text-2xl">
         {winner ? (
           <div className="flex flex-col items-center">
             <h2>{winner} a gagné !</h2>
@@ -278,11 +275,11 @@ const DuelComponent: React.FC = () => {
         ) : (
           <div>
             <span>Joueur 1 : {score.left}</span> |{" "}
-            <span>Joueur 2 : {score.right}</span>
+            <span>{score.right} : Joueur 2 </span>
           </div>
         )}
       </div>
-      {/* Affichage du compte à rebours au centre tant que countdown n'est pas null */}
+      {/* compte a rebours */}
       {countdown !== null && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-4xl ">
           <h2>Lancement dans {countdown}...</h2>

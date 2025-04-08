@@ -17,13 +17,9 @@ const MultiplayerSelection: React.FC = () => {
 			</button>
 			<div className="flex flex-col items-center justify-center h-[670px]">
 				<div className="flex space-x-8 mb-8">
-					<button className="px-[50px] py-3 bg-orange-300 text-black text-lg text-3xl rounded hover:bg-gray-200"
-						onClick={() => navigate("/")}>
-						{t("4 Joueurs")}
-					</button>
 					<button className="px-[50px] py-3 bg-orange-300 text-black text-3xl rounded hover:bg-gray-200"
-						onClick={() => navigate("/")}>
-						{t("3 Joueurs")}
+						onClick={() => navigate("/playersgame4")}>
+						{t("4 Joueurs")}
 					</button>
 				</div>
 				<button className="px-[50px] py-3 bg-orange-300 text-black text-3xl rounded hover:bg-gray-200"

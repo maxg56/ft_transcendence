@@ -29,6 +29,7 @@ fastify.register(userRoutes);
 fastify.ready().then(() => {
 	console.log("📌 Fastify is ready, initializing models...");
 	console.log("✅ User model loaded:", !!User);
+	// fastify.printRoutes();
 });
 
 // Démarrage du serveur

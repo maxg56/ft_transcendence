@@ -58,8 +58,30 @@ const Accueil: React.FC = () => {
 
     return (
         <div>
+
+        <div className="w-3/5 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
+            <div className="flex items-center justify-between neonText">
+        {/* Title */}
+        {/* <h1 > */}
+
+        <h1 className="text-4xl font-extrabold text-center flex-1 text-blue-800 neonText">
+          ft_transcendence
+          <button
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white hover:text-gray-200"
+                    onClick={() => setParamOpen(true)}
+                >
+                    <Settings size={32} />
+                </button>
+        </h1>
+        {/* Settings */}
+            {/* <div className="flex-shrink-0 neonText">
+            <SettingsModal />
+            </div> */}
+            </div>
+            </div>
+        {/* </div> */}
             {/* Header Titre avec Param bouton*/}
-            <header className="bg-orange-300 p-4 text-white flex justify-center items-center relative">
+            {/* <header className="bg-orange-300 p-4 text-white flex justify-center items-center relative">
                 FT_TRANSCENDENCE
                 <button
                     className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white hover:text-gray-200"
@@ -67,20 +89,20 @@ const Accueil: React.FC = () => {
                 >
                     <Settings size={32} />
                 </button>
-            </header>
+            </header> */}
 
             {/* Body avec les boutons */}
             <div className="flex flex-col items-center gap-4 mt-4">
                 {/* Bouton Sign In */}
                 <button
-                    className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                    className="px-10 py-3 bg-orange-300 text-black rounded hover:bg-gray-200"
                     onClick={() => setIsSignInOpen(true)} >
                     {t ('Se connecter')}
                 </button>
 
                 {/* Bouton Sign Up */}
                 <button
-                    className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                    className="px-10 py-3 bg-orange-300 text-black rounded hover:bg-gray-200"
                     onClick={() => setIsSignUpOpen(true)} >
                     {t ('Inscription')}
                 </button>
@@ -226,6 +248,7 @@ const Accueil: React.FC = () => {
                 </div>
             )}
         </div>
+    
     );
 };
 

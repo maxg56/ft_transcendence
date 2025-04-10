@@ -36,6 +36,22 @@ const SettingsModal: React.FC = () => {
 //     </>
 //   );
 // };
+
+// {isOpen &&
+//   createPortal(
+//     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1000">
+//       <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
+//         <button onClick={() => setIsOpen(false)} className="absolute top-2 right-2 text-gray-600 hover:text-red-500">
+//           <X size={24} />
+//         </button>
+//         <h2 className="text-lg text-black font-bold mb-4">{t("Paramètres")}</h2>
+//         {/* Votre contenu */}
+//       </div>
+//     </div>,
+//     document.body
+//   )
+// }
+
   return (
     <>
       {/* Bouton Paramètres */}
@@ -70,6 +86,14 @@ const SettingsModal: React.FC = () => {
                 <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200 w-full"
                         onClick={() => changeLanguage("fr")}>
                   Français
+                </button>
+                <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200 w-full"
+                        onClick={() => changeLanguage("pt")}>
+                  Portugais
+                </button>
+                <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200 w-full"
+                        onClick={() => changeLanguage("kgt")}>
+                  Klingon
                 </button>
               </div>
             )}

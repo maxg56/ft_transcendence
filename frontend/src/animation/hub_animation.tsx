@@ -7,6 +7,8 @@ import * as THREE from 'three';
 import { Environment } from '@react-three/drei';
 import  useNavigation from "../hooks/useNavigation";
 import { useTranslation } from "../context/TranslationContext";
+import myFont from '../fonts/JustMyType-KePl.ttf';
+
 
 export function RotatingCube() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -21,17 +23,18 @@ export function RotatingCube() {
   return (
     <mesh ref={meshRef} position={[0.6, 1, 0]}>
       <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial color="#CC3333" />
+      <meshStandardMaterial color="#3836C9" />
       <ambientLight intensity={0.15} />
       <pointLight position={[5, 5, 5]} intensity={50} />
       
       {/* Front face */}
       <Text
         position={[0, 0, 1.01]}
-        fontSize={0.4}
-        color="black"
+        fontSize={0.6}
+        color="#C4C4EA"
         anchorX="center"
         anchorY="middle"
+        font={myFont}
       >
         {t('SOLO')}
       </Text>
@@ -39,11 +42,12 @@ export function RotatingCube() {
       {/* Back face */}
       <Text
         position={[0, 0, -1.01]}
-        fontSize={0.4}
-        color="black"
+        fontSize={0.6}
+        color="#C4C4EA"
         anchorX="center"
         anchorY="middle"
         rotation={[0, Math.PI, 0]}
+        font={myFont}
       >
         {t('DUEL')}
       </Text>
@@ -51,11 +55,12 @@ export function RotatingCube() {
       {/* Right face */}
       <Text
         position={[1.01, 0, 0]}
-        fontSize={0.4}
-        color="black"
+        fontSize={0.6}
+        color="#C4C4EA"
         anchorX="center"
         anchorY="middle"
         rotation={[0, Math.PI / 2, 0]}
+        font={myFont}
       >
         {t('MULTI')}
       </Text>
@@ -63,11 +68,12 @@ export function RotatingCube() {
       {/* Left face */}
       <Text
         position={[-1.01, 0, 0]}
-        fontSize={0.4}
-        color="black"
+        fontSize={0.6}
+        color="#C4C4EA"
         anchorX="center"
         anchorY="middle"
         rotation={[0, -Math.PI / 2, 0]}
+        font={myFont}
       >
         {t('OTHER')}
       </Text>

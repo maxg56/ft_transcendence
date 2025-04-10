@@ -240,6 +240,7 @@ const DuelComponent: React.FC = () => {
   }, []); // Le tableau de dépendances vide pour exécuter cet effet une seule fois
 
   return (
+    
     <>
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 text-white">
         {winner ? (

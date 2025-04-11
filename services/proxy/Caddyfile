@@ -14,15 +14,17 @@ localhost:443, {$HOSTNAME}:443 {
   }
 
   handle /game/* {
-    reverse_proxy game-service:3002
+    reverse_proxy game-service:3003
   }
 
   handle /stats/* {
-    reverse_proxy stats-service:3003
+    reverse_proxy stats-service:3002
   }
 
   handle /user/* {
     reverse_proxy user-service:3004
   }
-
+  handle_path /ws/game {
+    reverse_proxy game-service:3003
+  }
 }

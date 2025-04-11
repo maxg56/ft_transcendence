@@ -9,7 +9,7 @@ services:
       - ft_transcendence
     env_file: .env
     volumes:
-      - db_data:/var/lib/mysql
+      - ./data:/var/lib/mysql
     restart: always
   
   auth-service:

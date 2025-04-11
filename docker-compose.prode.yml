@@ -140,7 +140,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: ${PWD}/DB/data/
+      device: ${PWD}/volumes/db_data
 
 
 

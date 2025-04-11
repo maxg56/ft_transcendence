@@ -15,7 +15,7 @@ services:
   auth-service:
     container_name: ft_t_auth
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.prode
       args:
         - APP_DIR=auth-service
@@ -29,7 +29,7 @@ services:
   user-service:
     container_name: ft_t_user
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.prode
       args:
         - APP_DIR=user-service
@@ -43,7 +43,7 @@ services:
   game-service:
     container_name: ft_t_game
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.prode
       args:
         - APP_DIR=game-service
@@ -57,7 +57,7 @@ services:
   stats-service:
     container_name: ft_t_stats
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.prode
       args: 
         - APP_DIR=stats-service

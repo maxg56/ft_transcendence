@@ -1,9 +1,9 @@
 
 services:
   db:
-    container_name: ft_t_db
+    container_name: db
     build:
-      context: ./DB
+      context: ./services/DB
       dockerfile: Dockerfile
     networks:
       - ft_transcendence
@@ -15,12 +15,12 @@ services:
   auth-service:
     container_name: ft_t_auth
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.dev
       args:
         - APP_DIR=auth-service
     volumes:
-      -  ./services/auth-service:/app
+      -  ./api/auth-service:/app
       - /app/node_modules
    
     env_file: .env
@@ -33,12 +33,12 @@ services:
   user-service:
     container_name: ft_t_user
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.dev
       args:
         - APP_DIR=user-service
     volumes:
-      - ./services/user-service:/app
+      - ./api/user-service:/app
       - /app/node_modules
    
     env_file: .env 
@@ -51,12 +51,12 @@ services:
   game-service:
     container_name: ft_t_game
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.dev
       args:
         - APP_DIR=game-service
     volumes:
-      - ./services/game-service:/app
+      - ./api/game-service:/app
       - /app/node_modules
    
     env_file: .env
@@ -69,12 +69,12 @@ services:
   stats-service:
     container_name: ft_t_stats
     build: 
-      context: ./services/
+      context: ./api/
       dockerfile: Dockerfile.dev
       args: 
         - APP_DIR=stats-service
     volumes:
-      - ./services/stats-service:/app
+      - ./api/stats-service:/app
       - /app/node_modules
     
     env_file: .env
@@ -88,7 +88,7 @@ services:
     container_name: ft_t_caddy
     image: caddy:latest
     volumes:
-      - ./proxy/Caddyfile:/etc/caddy/Caddyfile
+      - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
     ports:
       - "8000:80"
       - "8443:443"
@@ -168,7 +168,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: ${PWD}/DB/data/
+      device: ${PWD}/services/DB/data/
   esdata:
     driver_opts:
       type: none

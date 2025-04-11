@@ -43,18 +43,19 @@ const Header: React.FC = () => {
         <img
           src={profileImage || "/default-profile.png"}
           alt="Profile"
-          className="w-12 h-12 rounded-full cursor-pointer border border-gray-300"
+          className="w-25 h-12 rounded-full cursor-pointer border border-gray-300"
           onClick={() => navigate("/profile")}
         />
         {/* Title */}
         {/* <h1 > */}
         
-        <h1 className="text-5xl font-extrabold text-center flex-1 text-blue-800 neonText">
+        {/* <h1 className="text-5xl font-extrabold text-center flex-1 text-blue-800 neonText"> */}
+        <h1 className="neonText text-5xl text-blue-100">
           ft_transcendence
         </h1>
 
         {/* Settings */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 ">
           <SettingsModal />
         </div>
       </div>

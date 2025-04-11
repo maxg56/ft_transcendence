@@ -95,14 +95,14 @@ const Accueil: React.FC = () => {
             <div className="flex flex-col items-center gap-4 mt-4">
                 {/* Bouton Sign In */}
                 <button
-                    className="px-10 py-3 bg-orange-300 text-black rounded hover:bg-gray-200"
+                    className="px-10 py-3 bg-blue-300 text-black rounded hover:bg-gray-200"
                     onClick={() => setIsSignInOpen(true)} >
                     {t ('Se connecter')}
                 </button>
 
                 {/* Bouton Sign Up */}
                 <button
-                    className="px-10 py-3 bg-orange-300 text-black rounded hover:bg-gray-200"
+                    className="px-10 py-3 bg-blue-300 text-black rounded hover:bg-gray-200"
                     onClick={() => setIsSignUpOpen(true)} >
                     {t ('Inscription')}
                 </button>
@@ -140,7 +140,7 @@ const Accueil: React.FC = () => {
                             onChange={(e) => setPasswordSignIn(e.target.value)}
                         />
                         <button
-                            className={`px-4 py-2 rounded w-full ${login && passwordSignIn ? "bg-orange-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                            className={`px-4 py-2 rounded w-full ${login && passwordSignIn ? "bg-blue-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                             onClick={() => {
                                 closeModal("signIn") // Fermer la modale
                                 setTimeout(() => navigate("/hub"), 50)}} // Petit delai pour laisser le temps à React de re-render
@@ -197,7 +197,7 @@ const Accueil: React.FC = () => {
                             onChange={(e) => setConfirmPass(e.target.value)}
                         />
                         <button
-                            className={`px-4 py-2 rounded w-full ${username && mail && passwordSignUp && confirmPassword ? "bg-orange-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                            className={`px-4 py-2 rounded w-full ${username && mail && passwordSignUp && confirmPassword ? "bg-blue-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                             onClick={() => {
                                 closeModal("signUp")
                                 setTimeout(() => navigate("/hub"), 50)}}
@@ -220,25 +220,25 @@ const Accueil: React.FC = () => {
                         </button>
                         <h2 className="text-lg font-bold mb-4">{t('Parametres')} </h2>
                         {!showLangOptions ? (
-                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200" 
+                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200" 
                             onClick={() => setShowLangOptions(true) }>
                             {t('Choisir langue')}</button>
 
                         ): (
                         <div className="flex flex-col gap-2">
-                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
                                 onClick={() => changeLanguage("en") }>
                                     English
                             </button>
-                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
                                 onClick={() => changeLanguage("fr")}>
                                     Français
                             </button>
-                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
                                 onClick={() => changeLanguage("pt")}>
                                     Portugais
                             </button>
-                            <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
+                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
                                 onClick={() => changeLanguage("kgt")}>
                                     Klingon
                             </button>

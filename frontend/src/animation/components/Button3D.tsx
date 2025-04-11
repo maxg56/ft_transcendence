@@ -51,7 +51,7 @@ export function Button3D({ text, position, onClick }: Button3DProps) {
         anchorX="center"
         anchorY="middle"
         rotation={[0.1, 0, 0]}
-        //font="/fonts/JustMyType-KePl.ttf"
+        letterSpacing={0.1}
         font={myFont}
       >
         {text}

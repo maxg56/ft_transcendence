@@ -73,7 +73,9 @@ const DuelComponent: React.FC = () => {
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
 
       sceneRef.current = new THREE.Scene();
-      sceneRef.current.background = new THREE.Color(0x758695);
+
+      sceneRef.current.background = new THREE.Color(0x141929); // Fond sombre  adddd
+      //sceneRef.current.background = new THREE.Color(0x758695);
 
       cameraRef.current = new THREE.PerspectiveCamera(
         50,
@@ -81,6 +83,7 @@ const DuelComponent: React.FC = () => {
         0.1,
         1000
       );
+      
       cameraRef.current.position.set(0, 300, 150);
       cameraRef.current.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -90,6 +93,7 @@ const DuelComponent: React.FC = () => {
       directionalLight.position.set(0, 300, 100);
       directionalLight.castShadow = true;
       sceneRef.current.add(directionalLight);
+
 
       // Table
       const tableGeometry = new THREE.BoxGeometry(tableWidth, 10, tableHeight);

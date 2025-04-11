@@ -35,6 +35,7 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         font={myFont}
+        letterSpacing={0.1}
       >
         {t('SOLO')}
       </Text>
@@ -47,6 +48,7 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         rotation={[0, Math.PI, 0]}
+        letterSpacing={0.1}
         font={myFont}
       >
         {t('DUEL')}
@@ -60,6 +62,7 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         rotation={[0, Math.PI / 2, 0]}
+        letterSpacing={0.1}
         font={myFont}
       >
         {t('MULTI')}
@@ -73,6 +76,7 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         rotation={[0, -Math.PI / 2, 0]}
+        letterSpacing={0.1}
         font={myFont}
       >
         {t('OTHER')}

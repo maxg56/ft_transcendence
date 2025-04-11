@@ -7,7 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #02090e;
   font-family: 'JustMyType', sans-serif;
-  font-size: 0.10;
+  font-size: 30px;
+  letter-spacing: 3px;
+  font-weight: bold;
 }
 
 code {
@@ -20,19 +22,85 @@ code {
   overflow: hidden;
   background-color: black;
 }
-.neonText {
+/* .neonText {
   position: relative;
   color: #0400FF;
-  text-shadow: 0 0 15px #0400FF, 0 0 10px #0400FF;
-  animation: neonPulse 1.5s ease-in-out infinite alternate;
+  text-shadow:
+    /* 0 0 15px #0400FF,
+    0 0 10px #0400FF; */
+    /* 0 0 7px #0400FF,
+    0 0 10px #0400FF,
+    0 0 21px #0400FF,
+    0 0 42px #0400FF,
+    0 0 82px #0400FF,
+    0 0 92px #0400FF,
+    0 0 102px #0400FF,
+    0 0 151px #0400FF; */
+  /* animation: neonPulse 1.5s ease-in-out infinite alternate;
+} */
+@keyframes neonPulseMulti {
+  0% {
+    text-shadow:
+      0 0 5px #0400FF,
+      0 0 100px #0400FF,
+      0 0 105px #0400FF,
+      0 0 20px #0400FF,
+      0 0 25px #0400FF,
+      0 0 135px #0400FF;
+  }
+  100% {
+    text-shadow:
+      0 0 12px #0400FF,
+      0 0 14px #0400FF,
+      100 0 18px #0400FF,
+      0 100 12px #0400FF,
+      0 100 216px #0400FF,
+      100 0 220px #0400FF;
+  }
 }
+
+.neonText {
+  position: relative;
+  font-family: 'JustMyType';
+  /* text-transform: uppercase; */
+  letter-spacing: 4px;
+  font-weight: bold;
+  /* font-size: 40px; */
+
+  background: linear-gradient(90deg, #0400FF, #0400FF, #0400FF, #0400FF);
+  -webkit-background-clip: text;
+  /* -webkit-text-fill-color: transparent; */
+
+  animation: neonPulseMulti 1.8s ease-in-out infinite alternate;
+}
+
+
+/* .crt {
+  background: linear-gradient(to top, #000000, #000000, #333333, #333333);
+  background-size: cover;
+  background-size: 100% 1px;
+} */
+
+/* @keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.4;
+  }
+}
+
+.flicker {
+  animation: flicker 0.5s infinite;
+} */
+
 
 @font-face {
   font-family: 'JustMyType';
   src: url('fonts/JustMyType-KePl.ttf') format('truetype');
 }
 
-@keyframes neonPulse {
+/* @keyframes neonPulse {
   /* 0% {
     text-shadow: 0 0 5px #0400FF, 0 0 10px #0400FF, 0 0 15px #0400FF, 0 0 20px #0400FF, 0 0 25px #0400FF;
   } */
@@ -41,7 +109,9 @@ code {
   } */
   /* 100% {
     text-shadow: 0 0 15px #0400FF, 0 0 25px #0400FF, 0 0 35px #0400FF, 0 0 45px #0400FF, 0 0 55px #0400FF;
-  } */
+  }
 }
+*/
+
 
 

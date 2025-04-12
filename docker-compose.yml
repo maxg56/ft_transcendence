@@ -165,15 +165,18 @@ services:
 
 volumes:
   db_data:
+    driver: local
     driver_opts:
       type: none
       o: bind
-      device: ${PWD}/services/DB/data/
+      device: ${PWD}/volumes/data/
+
   esdata:
+    driver: local
     driver_opts:
       type: none
       o: bind
-      device: ${PWD}/log/data/
+      device: ${PWD}/volumes/logs/
 
 
 

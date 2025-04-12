@@ -9,7 +9,7 @@ services:
       - ft_transcendence
     env_file: .env
     volumes:
-      - ./data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     restart: always
   
   auth-service:
@@ -171,13 +171,12 @@ volumes:
       o: bind
       device: ${PWD}/volumes/data/
 
-  esdata:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/volumes/logs/
-
+  # esdata:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: ${PWD}/volumes/logs/
 
 
 networks:

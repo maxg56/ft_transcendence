@@ -6,7 +6,7 @@
 #    By: maxence <maxence@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 20:57:00 by maxence           #+#    #+#              #
-#    Updated: 2025/04/12 09:13:33 by maxence          ###   ########.fr        #
+#    Updated: 2025/04/13 14:10:46 by maxence          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ DOCKER_COMPOSE_PATH	=	docker-compose.yml
 all:
 	@if [ -f ".env" ]; then \
 		echo "Creating volumes..."; \
-		mkdir -p volumes/logs volumes/redis volumes/data; \
+		mkdir -p volumes/es01 volumes/redis volumes/data; \
 		echo "Launching containers..."; \
 		$(DOCKER_COMPOSE_CMD) --env-file .env -p $(NAME) -f $(DOCKER_COMPOSE_PATH) up --build -d; \
 	else \

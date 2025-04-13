@@ -114,19 +114,25 @@ services:
       - ft_transcendence
     restart: always
 
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
-  #   environment:
-  #     - discovery.type=single-node
-  #     - xpack.security.enabled=false
-  #     - ES_JAVA_OPTS=-Xms512m -Xmx512m
-  #   ports:
-  #     - "9200:9200"
-  #   volumes:
-  #     - esdata:/usr/share/elasticsearch/data
-  #   networks:
-  #     - ft_transcendence
-  #   restart: always
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.4
+    container_name: elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - ft_transcendence
+    restart: always
+
+  # Uncomment the following services if you want to use Redis for caching
+  # Uncomment the following services if you want to use ELK stack for logging and monitoring
 
   # logstash:
   #   image: docker.elastic.co/logstash/logstash:8.12.0

@@ -114,7 +114,7 @@ function Scene() {
         <Button3D 
           text={t('MULTI')} 
           position={[1, 0, 0]} 
-          onClick={() => handleClick('multi')} 
+          onClick={() => navigate('/multiplayerselect')} 
         />
         <Button3D 
           text={t('OTHER')} 

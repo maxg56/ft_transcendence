@@ -53,6 +53,7 @@ const SettingsModal: React.FC = () => {
                   Portugais
                 </button>
                 <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200 w-full"
+
                         onClick={() => changeLanguage("kgt")}>
                   Klingon
                 </button>

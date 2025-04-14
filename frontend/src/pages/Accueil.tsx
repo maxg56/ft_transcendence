@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import  useNavigation  from "../hooks/useNavigation";
-
+import SettingsModal from "../components/SettingsModal";
 
 
 const Accueil: React.FC = () => {
@@ -61,38 +61,19 @@ const Accueil: React.FC = () => {
 
         <div className="w-3/5 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
             <div className="flex items-center justify-between neonText">
-        {/* Title */}
-        {/* <h1 > */}
 
         <h1 className="text-4xl font-extrabold text-center flex-1 text-blue-800 neonText">
           ft_transcendence
-          <button
-                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white hover:text-gray-200"
-                    onClick={() => setParamOpen(true)}
-                >
-                    <Settings size={32} />
-                </button>
         </h1>
         {/* Settings */}
-            {/* <div className="flex-shrink-0 neonText">
+            <div className="flex-shrink-0 neonText">
             <SettingsModal />
-            </div> */}
             </div>
             </div>
-        {/* </div> */}
-            {/* Header Titre avec Param bouton*/}
-            {/* <header className="bg-orange-300 p-4 text-white flex justify-center items-center relative">
-                FT_TRANSCENDENCE
-                <button
-                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white hover:text-gray-200"
-                    onClick={() => setParamOpen(true)}
-                >
-                    <Settings size={32} />
-                </button>
-            </header> */}
+            </div>
 
             {/* Body avec les boutons */}
-            <div className="flex flex-col items-center gap-4 mt-4">
+            <div className="flex flex-col items-center gap-5 mt-4">
                 {/* Bouton Sign In */}
                 <button
                     className="px-10 py-3 bg-blue-300 text-black rounded hover:bg-gray-200"
@@ -205,45 +186,6 @@ const Accueil: React.FC = () => {
                                 >
                             {t ('Inscription')}
                         </button>
-                    </div>
-                </div>
-            )}
-
-            {/* Modale Parametres */}
-            {isParamOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
-                        <button
-                        onClick={() => setParamOpen(false)}
-                        className="absolute top-2 right-2 text-gray-600 hover:text-red-500">
-                            <X size={24} />
-                        </button>
-                        <h2 className="text-lg font-bold mb-4">{t('Parametres')} </h2>
-                        {!showLangOptions ? (
-                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200" 
-                            onClick={() => setShowLangOptions(true) }>
-                            {t('Choisir langue')}</button>
-
-                        ): (
-                        <div className="flex flex-col gap-2">
-                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
-                                onClick={() => changeLanguage("en") }>
-                                    English
-                            </button>
-                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
-                                onClick={() => changeLanguage("fr")}>
-                                    Français
-                            </button>
-                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
-                                onClick={() => changeLanguage("pt")}>
-                                    Portugais
-                            </button>
-                            <button className="px-4 py-2 bg-blue-300 text-black rounded hover:bg-gray-200"
-                                onClick={() => changeLanguage("kgt")}>
-                                    Klingon
-                            </button>
-                        </div>
-                )}
                     </div>
                 </div>
             )}

@@ -3,7 +3,7 @@ import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import useNavigation from "../hooks/useNavigation";
 import SettingsModal from "../components/SettingsModal";
-
+import StarsBackground from "../components/StarsBackground";
 
 
 const Accueil: React.FC = () => {
@@ -107,29 +107,43 @@ const Accueil: React.FC = () => {
     };
 
     return (
+        <div className="scale-95">
         <div>
-            {/* Header */}
-            <header className="bg-orange-300 p-4 text-white flex justify-center items-center relative">
-                FT_TRANSCENDENCE
-                <SettingsModal />
-            </header>
-
-            {/* Boutons */}
-            <div className="flex flex-col items-center gap-4 mt-4">
-                <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                    onClick={() => setIsSignInOpen(true)}>
-                    {t("Se connecter")}
+        <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
+        <div className="absolute top-20 right-20 z-50">
+            <SettingsModal />
+        </div>
+        <div className="w-3/5 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
+        <div className="relative text-center">
+         {/* Centered Title */}
+        <h1 className="neonText text-9xl text-blue-100">ft_transcendence</h1>
+        </div>
+        </div>
+        {/* CRT Scanline Sweep */}
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+         <div className="w-full h-full absolute top-[-100%] scanline-glow" />
+        </div>
+            <StarsBackground />
+            {/* Body avec les boutons */}
+            <div className=" flex flex-col items-center justify-center gap-11 min-h-screen relative z-10">
+                {/* Bouton Sign In */}
+                <button
+                    className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
+                    onClick={() => setIsSignInOpen(true)} >
+                    {t ('Se connecter')}
                 </button>
 
-                <button className="px-4 py-2 bg-orange-300 text-black rounded hover:bg-gray-200"
-                    onClick={() => setIsSignUpOpen(true)}>
-                    {t("Inscription")}
+                {/* Bouton Sign Up */}
+                <button
+                    className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
+                    onClick={() => setIsSignUpOpen(true)} >
+                    {t ('Inscription')}
                 </button>
             </div>
 
             {/* Modale Sign In */}
             {isSignInOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                     onClick={() => closeModal("signIn")}>
                     <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative"
                         onClick={(e) => e.stopPropagation()}>
@@ -142,17 +156,19 @@ const Accueil: React.FC = () => {
                             value={login} onChange={(e) => setLogin(e.target.value)} />
                         <input type="password" placeholder={t("Mot de passe")} className="w-full px-3 py-2 border rounded mb-4"
                             value={passwordSignIn} onChange={(e) => setPasswordSignIn(e.target.value)} />
-                        <button className={`px-4 py-2 rounded w-full ${login && passwordSignIn ? "bg-orange-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                        <button className={`px-4 py-2 rounded w-full ${login && passwordSignIn ? "bg-blue-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                             onClick={handleSignIn} disabled={!login || !passwordSignIn}>
                             {t("Se connecter")}
                         </button>
+                    
                     </div>
+                
                 </div>
             )}
 
             {/* Modale Sign Up */}
             {isSignUpOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                     onClick={() => closeModal("signUp")}>
                     <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative"
                         onClick={(e) => e.stopPropagation()}>
@@ -169,7 +185,7 @@ const Accueil: React.FC = () => {
                             value={passwordSignUp} onChange={(e) => setPasswordSignUp(e.target.value)} />
                         <input type="password" placeholder="Confirmer le mot de passe" className="w-full px-3 py-2 border rounded mb-4"
                             value={confirmPassword} onChange={(e) => setConfirmPass(e.target.value)} />
-                        <button className={`px-4 py-2 rounded w-full ${username && mail && passwordSignUp && confirmPassword ? "bg-orange-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                        <button className={`px-4 py-2 rounded w-full ${username && mail && passwordSignUp && confirmPassword ? "bg-blue-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                             onClick={handleSignUp} disabled={!username || !mail || !passwordSignUp || !confirmPassword}>
                             {t("Inscription")}
                         </button>
@@ -177,7 +193,8 @@ const Accueil: React.FC = () => {
                 </div>
             )}
         </div>
-    
+        </div>
+        </div>
     );
 };
 

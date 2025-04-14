@@ -114,44 +114,46 @@ services:
       - ft_transcendence
     restart: always
 
-  elasticsearch:
+  es01:
+    container_name: es01
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.4
-    container_name: elasticsearch
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    ports:
-      - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
     networks:
       - ft_transcendence
     restart: always
 
-  # Uncomment the following services if you want to use Redis for caching
-  # Uncomment the following services if you want to use ELK stack for logging and monitoring
+  logstash:
+    container_name: ft_logstash
+    build: 
+      context: ./services/logging/logstach
+      dockerfile: Dockerfile
+      args:
+        - ELQUI_VERSION=8.17.4
+    depends_on:
+      - es01
+    networks:
+      - ft_transcendence
+    restart: always
 
-  # logstash:
-  #   image: docker.elastic.co/logstash/logstash:8.12.0
-  #   volumes:
-  #     - ./service/logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-  #   depends_on:
-  #     - elasticsearch
-  #   networks:
-  #     - ft_transcendence
-  #   restart: always
-
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:8.12.0
-  #   environment:
-  #     - ELASTICSEARCH_HOSTS=https://localhost:9200
-  #   ports:
-  #     - "5601:5601"
-  #   depends_on:
-  #     - elasticsearch
+  kibana:
+    container_name: ft_t_kibana
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - es01
+    networks:
+      - ft_transcendence
+    restart: always
 
 
   # prometheus:

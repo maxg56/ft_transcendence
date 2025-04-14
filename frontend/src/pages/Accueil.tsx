@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import useNavigation from "../hooks/useNavigation";
 import SettingsModal from "../components/SettingsModal";
+
+
 
 const Accueil: React.FC = () => {
     const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -175,6 +177,7 @@ const Accueil: React.FC = () => {
                 </div>
             )}
         </div>
+    
     );
 };
 

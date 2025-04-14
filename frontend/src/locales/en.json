@@ -7,6 +7,9 @@
 	"Mot de passe":"Password",
 	"Confirmer le mot de passe":"Password confirmation",
 	"Choisir langue":"Choose Language",
-	"Se déconnecter":"Disconnect",
-	"Multijoueur": "Multiplayer"
+	"Se déconnecter":"Log Out",
+	"Multijoueur": "Multiplayer",
+	"Tournoi": "Tournament",
+	"3 Joueurs": "3 Players",
+	"4 Joueurs": "4 Players"
 }

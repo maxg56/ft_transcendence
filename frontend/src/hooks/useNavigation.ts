@@ -1,28 +1,36 @@
 import { useState, useEffect } from "react";
 
 const useNavigation = () => {
-	const [path, setPath] = useState(window.location.pathname);
+  const [path, setPath] = useState(window.location.pathname);
 
-	useEffect(() => {
-		const onPopState = () => setPath(window.location.pathname);
-		window.addEventListener("popstate", onPopState);
-		window.addEventListener("navigation", onPopState); // 🔥 Écoute l'événement personnalisé
-		return () => {
-			window.removeEventListener("popstate", onPopState);
-			window.removeEventListener("navigation", onPopState);
-		};
-	}, []);
-
-	const navigate = (newPath: string) => {
-		if (newPath !== window.location.pathname) {
-			window.history.pushState({}, "", newPath);
-			setPath(newPath);
-			window.dispatchEvent(new Event("navigation")); // 🔥 Force un événement global
+  useEffect(() => {
+	const onPopState = () => {
+	  setPath((prevPath) => {
+		if (prevPath !== window.location.pathname) {
+		  return window.location.pathname;
 		}
+		return prevPath;
+	  });
 	};
-	
-	
-	return{path, navigate};
-}
+  
+	window.addEventListener("popstate", onPopState);
+	window.addEventListener("navigation", onPopState);
+  
+	return () => {
+	  window.removeEventListener("popstate", onPopState);
+	  window.removeEventListener("navigation", onPopState);
+	};
+  }, []);
+  // 🔥 On ne met pas [path] pour éviter une boucle infinie
 
-export default useNavigation
+  const navigate = (newPath: string) => {
+    if (newPath === path) return; // 🔥 Bloque les navigations redondantes
+    window.history.pushState({}, "", newPath);
+    setPath(newPath);
+    window.dispatchEvent(new Event("navigation"));
+  };
+
+  return { path, navigate };
+};
+
+export default useNavigation;

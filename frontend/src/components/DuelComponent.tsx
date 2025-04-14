@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import useNavigation from "../hooks/useNavigation";
 import * as THREE from "three";
+import ControlsModal from "./ControlsOverlay";
 
 const DuelComponent: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -11,16 +12,25 @@ const DuelComponent: React.FC = () => {
   const rightPaddleRef = useRef<THREE.Mesh | null>(null);
   const ballRef = useRef<THREE.Mesh | null>(null);
 
-  const [score, setScore] = useState({ left: 0, right: 0 });
+  const [score, setScore] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
   const [winner, setWinner] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
-
-  // Le compte à rebours démarre à 3 secondes (null = pas de compte à rebours)
   const [countdown, setCountdown] = useState<number | null>(3);
-  // Permet de forcer la réinitialisation complète de la scène
   const [resetKey, setResetKey] = useState(0);
 
-  const {navigate} = useNavigation();
+  const { navigate } = useNavigation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsPaused(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsPaused(false);
+  };
 
   // Dimensions et constantes
   const tableWidth = 400;
@@ -29,16 +39,16 @@ const DuelComponent: React.FC = () => {
   const initialSpeed = 1.9;
   const maxSpeed = 8;
   const paddleLimit = tableHeight / 2 - 30;
-  const AccelarationSpeed = 1.3;
-  // États pour les mouvements
+  const accelerationSpeed = 1.3;
+  const winningScore = 3;
+  // État pour le suivi des touches
   const keysPressed = useRef<{ [key: string]: boolean }>({});
   let ballSpeed = { x: initialSpeed, z: initialSpeed };
 
-  // Gestion du compte à rebours
+  // Compte à rebours
   useEffect(() => {
     if (countdown === null) return;
     if (countdown === 0) {
-      // Fin du compte à rebours : démarrer le jeu
       setGameStarted(true);
       setCountdown(null);
       return;
@@ -49,7 +59,7 @@ const DuelComponent: React.FC = () => {
     return () => clearTimeout(timer);
   }, [countdown]);
 
-  // Fonction d'initialisation de la scène
+  // Initialisation de la scène
   const initializeScene = () => {
     rendererRef.current = new THREE.WebGLRenderer({ antialias: true });
     rendererRef.current.shadowMap.enabled = true;
@@ -115,7 +125,7 @@ const DuelComponent: React.FC = () => {
       mountRef.current.appendChild(rendererRef.current.domElement);
   };
 
-  // Fonction de nettoyage de la scène
+  // Nettoyage de la scène
   const cleanup = () => {
     if (rendererRef.current) {
       rendererRef.current.dispose();
@@ -140,22 +150,29 @@ const DuelComponent: React.FC = () => {
     keysPressed.current[event.key] = false;
   };
 
+  // Fonction de réinitialisation de la balle
+  const resetBall = () => {
+    if (ballRef.current) {
+      ballRef.current.position.set(0, 5, 0);
+      ballSpeed.x = initialSpeed * (Math.random() > 0.5 ? -1 : 1);
+      ballSpeed.z = initialSpeed * (Math.random() > 0.5 ? -1 : 1);
+    }
+  };
+
+  // Boucle d'animation avec gestion complète de la pause (freeze total)
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     initializeScene();
 
     let gameRunning = true;
-    const resetBall = () => {
-      if (ballRef.current) {
-        ballRef.current.position.set(0, 5, 0);
-        ballSpeed.x = initialSpeed * (Math.random() > 0.5 ? -1 : 1);
-        ballSpeed.z = initialSpeed * (Math.random() > 0.5 ? -1 : 1);
-      }
-    };
+    let lastPadTouched = ""; // Pour suivre le dernier paddle ayant touché la balle
 
     const animate = () => {
+      // Si le jeu est en pause, on ne fait rien et on ne relance pas la boucle
+      if (isPaused) return;
       if (!gameRunning || !gameStarted) return;
+      
       requestAnimationFrame(animate);
 
       // Mouvements des paddles
@@ -171,80 +188,92 @@ const DuelComponent: React.FC = () => {
       }
 
       // Mouvement de la balle
-      if (ballRef.current)
-      {
+      if (ballRef.current) {
         ballRef.current.position.x += ballSpeed.x;
         ballRef.current.position.z += ballSpeed.z;
 
-        if (ballRef.current.position.z > tableHeight / 2 - 5 || ballRef.current.position.z < -tableHeight / 2 + 5)
+        // Rebonds sur le bord haut/bas
+        if (ballRef.current.position.z > tableHeight / 2 - 5 ||
+            ballRef.current.position.z < -tableHeight / 2 + 5)
           ballSpeed.z *= -1;
 
-        if (leftPaddleRef.current && rightPaddleRef.current)
-        {
+        // Collisions avec les paddles et suivi du dernier paddle touché
+        if (ballRef.current && leftPaddleRef.current && rightPaddleRef.current) {
           const ball = ballRef.current;
-          if (ball.position.x < -tableWidth / 2 + 15 && Math.abs(ball.position.z - leftPaddleRef.current.position.z) < 40)
-         {
+          if (ball.position.x < -tableWidth / 2 + 15 && Math.abs(ball.position.z - leftPaddleRef.current.position.z) < 40) {
             let angleApproche = Math.atan2(ballSpeed.z, ballSpeed.x);
             let impact = ball.position.z - leftPaddleRef.current.position.z;
             let spin = impact * 0.05;
-            ballSpeed.x = Math.abs(ballSpeed.x) * AccelarationSpeed;
+            ballSpeed.x = Math.abs(ballSpeed.x) * accelerationSpeed;
             ballSpeed.z = Math.sin(angleApproche) * Math.abs(ballSpeed.x) + spin;
             ballSpeed.x = Math.min(ballSpeed.x, maxSpeed);
             ballSpeed.z = Math.min(Math.abs(ballSpeed.z), maxSpeed) * Math.sign(ballSpeed.z);
+            lastPadTouched = "left";
           }
-          if (ball.position.x > tableWidth / 2 - 15 && Math.abs(ball.position.z - rightPaddleRef.current.position.z) < 40)
-          {
+          if (ball.position.x > tableWidth / 2 - 15 && Math.abs(ball.position.z - rightPaddleRef.current.position.z) < 40) {
             let angleApproche = Math.atan2(ballSpeed.z, ballSpeed.x);
             let impact = ball.position.z - rightPaddleRef.current.position.z;
             let spin = impact * 0.05;
-            ballSpeed.x = -Math.abs(ballSpeed.x) * AccelarationSpeed;
+            ballSpeed.x = -Math.abs(ballSpeed.x) * accelerationSpeed;
             ballSpeed.z = Math.sin(angleApproche) * Math.abs(ballSpeed.x) + spin;
             ballSpeed.x = Math.max(ballSpeed.x, -maxSpeed);
             ballSpeed.z = Math.min(Math.abs(ballSpeed.z), maxSpeed) * Math.sign(ballSpeed.z);
+            lastPadTouched = "right";
           }
         }
 
-        if (ballRef.current.position.x > tableWidth / 2)
-        {
-          setScore((prev) => {
-            const newScore = { ...prev, left: prev.left + 1 };
-            if (newScore.left >= 3)
-            {
-              setWinner("Joueur 1");
-              gameRunning = false;
-            }
-            return newScore;
-          });
-          resetBall();
-        }
-        else if (ballRef.current.position.x < -tableWidth / 2)
-        {
-          setScore((prev) => {
-            const newScore = { ...prev, right: prev.right + 1 };
-            if (newScore.right >= 3) {
-              setWinner("Joueur 2");
-              gameRunning = false;
-            }
-            return newScore;
-          });
+        // Attribution du score si la balle sort complètement (par x ou z)
+        if (
+          ballRef.current.position.x < -tableWidth / 2 ||
+          ballRef.current.position.x > tableWidth / 2 ||
+          ballRef.current.position.z < -tableHeight / 2 ||
+          ballRef.current.position.z > tableHeight / 2
+        ) {
+          if (lastPadTouched) {
+            setScore((prev) => {
+              const newScore = { ...prev, [lastPadTouched]: prev[lastPadTouched] + 1 };
+              if (newScore[lastPadTouched] >= winningScore) {
+                let winnerName = "";
+                if (lastPadTouched === "left") winnerName = "Joueur 1";
+                else if (lastPadTouched === "right") winnerName = "Joueur 2";
+                else if (lastPadTouched === "top") winnerName = "Joueur 3";
+                else if (lastPadTouched === "bottom") winnerName = "Joueur 4";
+                setWinner(winnerName);
+                gameRunning = false;
+              }
+              return newScore;
+            });
+          }
           resetBall();
         }
       }
-
+      
       rendererRef.current?.render(sceneRef.current!, cameraRef.current!);
     };
+
     animate();
 
     return () => {
       gameRunning = false;
       cleanup();
     };
-  }, [resetKey, gameStarted]);
+  }, [resetKey, gameStarted, isPaused]);
 
-  // Fonction de réinitialisation qui réinitialise le score, le gagnant,
-  // remet le compte à rebours et force le redémarrage de la scène.
+  // Pour relancer la boucle d'animation quand isPaused passe à false
+  useEffect(() => {
+    if (!isPaused && gameStarted) {
+      // Relancez l'animation après la pause
+      // On utilise ici une fonction anonyme pour démarrer la boucle
+      requestAnimationFrame(() => {
+        // Il faut refaire appel à animate() via le useEffect initial,
+        // donc on modifie resetKey pour forcer la re-création de la boucle.
+        setResetKey((prev) => prev + 1);
+      });
+    }
+  }, [isPaused, gameStarted]);
+
   const resetGame = () => {
-    setScore({ left: 0, right: 0 });
+    setScore({ left: 0, right: 0, top: 0, bottom: 0 });
     setWinner(null);
     setGameStarted(false);
     setCountdown(3);
@@ -274,18 +303,29 @@ const DuelComponent: React.FC = () => {
           </div>
         ) : (
           <div>
-            <span>Joueur 1 : {score.left}</span> |{" "}
-            <span>{score.right} : Joueur 2 </span>
+            <span>Gauche : {score.left}</span> |{" "}
+            <span>Droite : {score.right}</span> |{" "}
+            <span>Haut : {score.top}</span> |{" "}
+            <span>Bas : {score.bottom}</span>
           </div>
         )}
       </div>
-      {/* compte a rebours */}
+
       {countdown !== null && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-4xl ">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-4xl">
           <h2>Lancement dans {countdown}...</h2>
         </div>
       )}
-      <div ref={mountRef} />
+
+      <button
+        className="absolute center-left[20%] right-4 z-50 bg-white/80 text-black font-semibold px-4 py-2 rounded-lg shadow"
+        onClick={openModal}
+      >
+        Contrôles
+      </button>
+
+      <ControlsModal isOpen={isModalOpen} onClose={closeModal} />
+      <div ref={mountRef} className="w-full h-full" />
     </>
   );
 };

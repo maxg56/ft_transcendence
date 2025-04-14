@@ -23,7 +23,6 @@ const Game4Players: React.FC = () => {
     bottom: 0,
   });
 
-  const lastPaddleTouched = useRef<string | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(3);

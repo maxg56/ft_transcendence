@@ -7,7 +7,9 @@ try {
 	const rank = await User.findByPk(id, {attributes: ['elo']});
 
 	if (!rank)
-		return reply.send(); //renvoyer valeur par default "elo": 1000
+		return reply.code(404).send({ message: 'rank not find' });
+
+	return reply.send(rank);
 
 } catch (error) {
 	request.log.error(error);

@@ -9,6 +9,7 @@ class User extends Model {
   public avatar!: string | null;
   public twoFA_enabled!: boolean;
   public twoFA_secret!: string | null;
+  public elo!: number;
   public created_at!: Date;
   public updated_at!: Date;
 }
@@ -48,6 +49,11 @@ User.init(
       type: DataTypes.STRING(32),
       allowNull: true,
       defaultValue: null,
+    },
+    elo: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1000,
     },
     created_at: {
       type: DataTypes.DATE,

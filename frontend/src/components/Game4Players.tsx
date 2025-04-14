@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import useNavigation from "../hooks/useNavigation";
 import * as THREE from "three";
 import ControlsModal from "./ControlsOverlay";
+import { useTranslation } from "../context/TranslationContext";
 
 const Game4Players: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -31,7 +32,7 @@ const Game4Players: React.FC = () => {
   const { navigate } = useNavigation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-
+  const {t} = useTranslation()
   const openModal = () => {
     setIsModalOpen(true);
     setIsPaused(true);
@@ -395,7 +396,7 @@ const Game4Players: React.FC = () => {
       <button
         className="absolute center-left[20%] right-4 z-50 bg-white/80 text-black font-semibold px-4 py-2 rounded-lg shadow"
         onClick={openModal} >
-        Contrôles
+        {t("Commandes")}
       </button>
 
       <ControlsModal isOpen={isModalOpen} onClose={closeModal} />

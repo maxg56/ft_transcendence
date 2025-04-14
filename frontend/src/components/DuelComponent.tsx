@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import useNavigation from "../hooks/useNavigation";
 import * as THREE from "three";
 import ControlsModal from "./ControlsOverlay";
+import { useTranslation } from "../context/TranslationContext";
 
 const DuelComponent: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -21,7 +22,7 @@ const DuelComponent: React.FC = () => {
   const { navigate } = useNavigation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-
+  const {t} =useTranslation();
   const openModal = () => {
     setIsModalOpen(true);
     setIsPaused(true);
@@ -236,8 +237,6 @@ const DuelComponent: React.FC = () => {
                 let winnerName = "";
                 if (lastPadTouched === "left") winnerName = "Joueur 1";
                 else if (lastPadTouched === "right") winnerName = "Joueur 2";
-                else if (lastPadTouched === "top") winnerName = "Joueur 3";
-                else if (lastPadTouched === "bottom") winnerName = "Joueur 4";
                 setWinner(winnerName);
                 gameRunning = false;
               }
@@ -262,11 +261,7 @@ const DuelComponent: React.FC = () => {
   // Pour relancer la boucle d'animation quand isPaused passe à false
   useEffect(() => {
     if (!isPaused && gameStarted) {
-      // Relancez l'animation après la pause
-      // On utilise ici une fonction anonyme pour démarrer la boucle
       requestAnimationFrame(() => {
-        // Il faut refaire appel à animate() via le useEffect initial,
-        // donc on modifie resetKey pour forcer la re-création de la boucle.
         setResetKey((prev) => prev + 1);
       });
     }
@@ -303,10 +298,8 @@ const DuelComponent: React.FC = () => {
           </div>
         ) : (
           <div>
-            <span>Gauche : {score.left}</span> |{" "}
-            <span>Droite : {score.right}</span> |{" "}
-            <span>Haut : {score.top}</span> |{" "}
-            <span>Bas : {score.bottom}</span>
+            <span>{t(" Joueur 1 : ")} {score.left}</span> | {""}
+            <span>{score.right} {t(": Joueur 2")} </span> 
           </div>
         )}
       </div>
@@ -321,7 +314,7 @@ const DuelComponent: React.FC = () => {
         className="absolute center-left[20%] right-4 z-50 bg-white/80 text-black font-semibold px-4 py-2 rounded-lg shadow"
         onClick={openModal}
       >
-        Contrôles
+        {t("Commandes")}
       </button>
 
       <ControlsModal isOpen={isModalOpen} onClose={closeModal} />

@@ -1,10 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import en from "../locales/en.json";
 import fr from "../locales/fr.json";
+import pt from "../locales/pt.json";
+import kgt from "../locales/kgt.json";
 
-type Language = "en" | "fr";
+type Language = "en" | "fr" | "pt" | "kgt";
 
-const translations = { en, fr };
+const translations = { en, fr, pt, kgt };
 
 const TranslationContext = createContext({
   language: "en",

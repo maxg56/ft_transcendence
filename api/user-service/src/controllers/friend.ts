@@ -44,28 +44,29 @@ export const seeFriendRequests = async (request: FastifyRequest, reply: FastifyR
 }
 
 
-// export const acceptFriend = async (request: FastifyRequest, reply: FastifyReply) => {
-// 	try {
-// 		const {user1, user2} = request.body as {user1: number, user2: number}
-// 		const friendship = await Friendship.findOne({
-// 			where: {
-// 				[Op.or]: [
-// 				{ user1: user1, user2: user2 },
-// 				{ user1: user2, user2: user1}],
-// 				status: 'pending'
-// 			}
-// 		})
+export const acceptFriend = async (request: FastifyRequest<{ Body: {user1: number, user2: number}}>, reply: FastifyReply) => {
+	try {
+		const {user1, user2} = request.body
+		console.log("🧩🧩🧩🧩🧩🧩 user ID:", user1)
+		const friendship = await Friendship.findOne({
+			where: {
+				[Op.or]: [
+				{ user1: user1, user2: user2 },
+				{ user1: user2, user2: user1}],
+				status: 'pending'
+			}
+		})
 
-// 		if (!friendship)
-// 			return reply.code(404).send({ message: 'Request not find' });
-// 		if (friendship.user2 !== user2)
-// 			return reply.code(403).send({ message: "Unauthorized: the sender can't accept the request"});
+		if (!friendship)
+			return reply.code(404).send({ message: 'Request not find' });
+		if (friendship.user2 !== user2)
+			return reply.code(403).send({ message: "Unauthorized: the sender can't accept the request"});
 
-// 		await friendship.update({ status: 'accepted' });
-// 		const otherSideFriendship = await Friendship.create({ user2, user1, status: "accepted"});
-// 		return reply.send({ message: 'Friend request accepted', friendship, otherSideFriendship });
-// 	} catch (error) {
-// 		request.log.error(error);
-// 		return reply.code(500).send({ message: 'server error' });
-// 	}
-// };
+		await friendship.update({ status: 'accepted' });
+		// const otherSideFriendship = await Friendship.create({ user2, user1, status: "accepted"});
+		return reply.send({ message: 'Friend request accepted', friendship });
+	} catch (error) {
+		request.log.error(error);
+		return reply.code(500).send({ message: 'server error' });
+	}
+};

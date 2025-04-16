@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import database from './plugins/database';
 import userRoutes from './routes/index';
 import User from './models/User';
+import auth from './plugins/auth';
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT_USER || 3000;
 
 // Plugins
 fastify.register(database);
+fastify.register(auth);
 fastify.register(userRoutes);
 
  

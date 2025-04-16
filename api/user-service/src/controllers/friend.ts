@@ -2,20 +2,27 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 
-export const addFriend = async (request: FastifyRequest, reply: FastifyReply) => {
+async function addFriend (request: FastifyRequest<{ Body: {user: number}}>, reply: FastifyReply) {
 	try {
-		const {user1, user2} = request.body as {user1: number, user2: number}
+		const id = request.user.id
+		console.log("id: ", id)
+		const { user } = request.body
+		console.log("user2 id:", user)
 		const isFriend = await Friendship.findOne({
 			where: {
 				[Op.or]: [
-				{ user1, user2 },
-				{ user2, user1 }],
+				{ user1: id, user2: user },
+				{ user1: user, user2: id }],
 			}
 		})
 
 		if (isFriend)
 			return reply.code(409).send({ message: 'Request already send'});
-		const friendship = await Friendship.create({ user1, user2, status: 'pending'})
+		console.log("isFriend:", isFriend)
+		const friendship = await Friendship.create({ 
+				user1: id,
+				user2: user,
+				status: 'pending'})
 		return reply.send({message: "Friend request send"});
 	} catch (error) {
 		request.log.error(error);
@@ -91,4 +98,4 @@ async function refuseFriend (request: FastifyRequest<{ Body: {user1: number}}>, 
 	}
 };
 
-export {seeFriendRequests, acceptFriend, refuseFriend}
+export {seeFriendRequests, acceptFriend, refuseFriend, addFriend}

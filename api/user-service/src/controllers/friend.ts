@@ -41,32 +41,31 @@ async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) 
 		request.log.error(error);
 		return reply.code(500).send({message: 'server error'});
 	}
-}
+};
 
 
-export const acceptFriend = async (request: FastifyRequest<{ Body: {user1: number, user2: number}}>, reply: FastifyReply) => {
+async function acceptFriend (request: FastifyRequest<{ Body: {user1: number}}>, reply: FastifyReply)  {
 	try {
-		const {user1, user2} = request.body
-		console.log("🧩🧩🧩🧩🧩🧩 user ID:", user1)
+		const userid = request.user.id
+		console.log("user id", userid)
+		const { user1 } = request.body
+		console.log("🧩🧩🧩🧩🧩🧩 sender request ID:", user1)
 		const friendship = await Friendship.findOne({
 			where: {
-				[Op.or]: [
-				{ user1: user1, user2: user2 },
-				{ user1: user2, user2: user1}],
+				user1: user1,
+				user2: userid,
 				status: 'pending'
 			}
 		})
 
 		if (!friendship)
-			return reply.code(404).send({ message: 'Request not find' });
-		if (friendship.user2 !== user2)
-			return reply.code(403).send({ message: "Unauthorized: the sender can't accept the request"});
-
+			return reply.code(404).send({ message: 'Friend request not find' });
 		await friendship.update({ status: 'accepted' });
-		// const otherSideFriendship = await Friendship.create({ user2, user1, status: "accepted"});
 		return reply.send({ message: 'Friend request accepted', friendship });
 	} catch (error) {
 		request.log.error(error);
 		return reply.code(500).send({ message: 'server error' });
 	}
 };
+
+export {seeFriendRequests, acceptFriend}

@@ -20,24 +20,9 @@ code {
 .rounded-container {
   /* border-radius: 150px; */
   overflow: hidden;
-  background-color: black;
+  background-color: #02090e;
 }
-/* .neonText {
-  position: relative;
-  color: #0400FF;
-  text-shadow:
-    /* 0 0 15px #0400FF,
-    0 0 10px #0400FF; */
-    /* 0 0 7px #0400FF,
-    0 0 10px #0400FF,
-    0 0 21px #0400FF,
-    0 0 42px #0400FF,
-    0 0 82px #0400FF,
-    0 0 92px #0400FF,
-    0 0 102px #0400FF,
-    0 0 151px #0400FF; */
-  /* animation: neonPulse 1.5s ease-in-out infinite alternate;
-} */
+
 @keyframes neonPulseMulti {
   0% {
     text-shadow:
@@ -62,56 +47,124 @@ code {
 .neonText {
   position: relative;
   font-family: 'JustMyType';
-  /* text-transform: uppercase; */
   letter-spacing: 4px;
   font-weight: bold;
-  /* font-size: 40px; */
-
   background: linear-gradient(90deg, #0400FF, #0400FF, #0400FF, #0400FF);
   -webkit-background-clip: text;
-  /* -webkit-text-fill-color: transparent; */
 
-  animation: neonPulseMulti 1.8s ease-in-out infinite alternate;
+  animation: neonPulseMulti 1.4s ease-in-out infinite alternate;
+}
+
+/* Flicker animation */
+@keyframes flicker {
+  0%, 100% { opacity: 0.98; }
+  50% { opacity: 1; }
+} 
+
+@keyframes scanline-glide {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.scanline-glow {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 45%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 55%,
+    transparent 100%
+  );
+  animation: scanline-glide 4s linear infinite;
+  mix-blend-mode: screen;
 }
 
 
-/* .crt {
-  background: linear-gradient(to top, #000000, #000000, #333333, #333333);
-  background-size: cover;
-  background-size: 100% 1px;
-} */
+/* Add this to your global CSS or in a Tailwind-compatible way */
+.crt {
+  position: relative;
+  background: #02090e;
+  color: #0400FF;
+  overflow: hidden;
+}
 
-/* @keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+.crt::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 50%
+  );
+  background-size: 100% 2px;
+  z-index: 2;
+  animation: flicker 0.10s infinite;
+}
+
+@keyframes flicker {
+  0%, 100% {
     opacity: 1;
   }
-  20%, 24%, 55% {
-    opacity: 0.4;
+  45% {
+    opacity: 0.72;
+  }
+  47% {
+    opacity: 0.88;
+  }
+  49% {
+    opacity: 0.94;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  52% {
+    opacity: 0.96;
+  }
+  70% {
+    opacity: 0.98;
   }
 }
+
+.neon-button {
+  background: #00f0ff;
+  color: #000;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 10px #0400FF,
+    0 0 20px #0400FF,
+    0 0 40px #0400FF;
+  /* animation: flicker 3s infinite; */
+  transition: all 0.2s ease-in-out;
+}
+
+.neon-button:hover {
+  background: #00f0ff;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 15px #0400FF,
+    0 0 30px #0400FF,
+    0 0 50px #0400FF;
+  transform: scale(1.05);
+}
+
 
 .flicker {
   animation: flicker 0.5s infinite;
-} */
+}
 
 
 @font-face {
   font-family: 'JustMyType';
   src: url('fonts/JustMyType-KePl.ttf') format('truetype');
 }
-
-/* @keyframes neonPulse {
-  /* 0% {
-    text-shadow: 0 0 5px #0400FF, 0 0 10px #0400FF, 0 0 15px #0400FF, 0 0 20px #0400FF, 0 0 25px #0400FF;
-  } */
-  /* 50% {
-    text-shadow: 0 0 10px #0400FF, 0 0 20px #0400FF, 0 0 30px #0400FF, 0 0 40px #0400FF, 0 0 50px #0400FF;
-  } */
-  /* 100% {
-    text-shadow: 0 0 15px #0400FF, 0 0 25px #0400FF, 0 0 35px #0400FF, 0 0 45px #0400FF, 0 0 55px #0400FF;
-  }
-}
-*/
 
 
 

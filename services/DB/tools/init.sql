@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS match_players (
 
 
 CREATE TABLE IF NOT EXISTS friends (
+	id INT AUTO_INCREMENT PRIMARY KEY,
 	user1 INT NOT NULL,
 	user2 INT NOT NULL,
 	status ENUM('pending', 'accepted', 'blocked') DEFAULT 'pending',
-	PRIMARY KEY (user1, user2),
 	FOREIGN KEY (user1) REFERENCES `user`(id) ON DELETE CASCADE,
 	FOREIGN KEY (user2) REFERENCES `user`(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

@@ -23,9 +23,9 @@ export const addFriend = async (request: FastifyRequest, reply: FastifyReply) =>
 	}
 };
 
-export const seeFriendRequests = async (request: FastifyRequest, reply: FastifyReply) => {
+async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const { id } = request.params as { id: string };
+		const id = request.user.id
 		console.log("🧩🧩🧩 user ID:", id)
 		const friendList = await Friendship.findAll({ where: { 
 				[Op.or]: [

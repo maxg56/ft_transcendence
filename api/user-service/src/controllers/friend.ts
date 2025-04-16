@@ -43,7 +43,6 @@ async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) 
 	}
 };
 
-
 async function acceptFriend (request: FastifyRequest<{ Body: {user1: number}}>, reply: FastifyReply)  {
 	try {
 		const userid = request.user.id
@@ -68,4 +67,28 @@ async function acceptFriend (request: FastifyRequest<{ Body: {user1: number}}>, 
 	}
 };
 
-export {seeFriendRequests, acceptFriend}
+async function refuseFriend (request: FastifyRequest<{ Body: {user1: number}}>, reply: FastifyReply)  {
+	try {
+		const userid = request.user.id
+		console.log("user id", userid)
+		const { user1 } = request.body
+		console.log("sender request ID:", user1)
+		const friendship = await Friendship.findOne({
+			where: {
+				user1: user1,
+				user2: userid,
+				status: 'pending'
+			}
+		})
+
+		if (!friendship)
+			return reply.code(404).send({ message: 'Friend request not find' });
+		await friendship.update({ status: 'blocked' });
+		return reply.send({ message: 'Friend request blocked', friendship });
+	} catch (error) {
+		request.log.error(error);
+		return reply.code(500).send({ message: 'server error' });
+	}
+};
+
+export {seeFriendRequests, acceptFriend, refuseFriend}

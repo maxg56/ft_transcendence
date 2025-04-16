@@ -15,4 +15,6 @@ async function userRoutes(fastify: any) {
   fastify.put('/user/friend/refuse', { preHandler: [fastify.authenticate] }, refuseFriend);
 }
 
+
+
 export default fp(userRoutes);

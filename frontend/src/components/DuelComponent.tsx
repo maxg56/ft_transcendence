@@ -317,7 +317,7 @@ const DuelComponent: React.FC = () => {
         {t("Commandes")}
       </button>
 
-      <ControlsModal isOpen={isModalOpen} onClose={closeModal} />
+      {<ControlsModal isOpen={isModalOpen} onClose={closeModal} />}
       <div ref={mountRef} className="w-full h-full" />
     </>
   );

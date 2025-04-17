@@ -4,12 +4,13 @@ import { X } from "lucide-react";
 import Header from "./HeaderComponent";
 import useNavigation from "../hooks/useNavigation";
 
+
 const Modeduel = () => {
   const { t } = useTranslation();
   const [isCreateGameOpen, setCreateGameOpen] = useState(false);
   const [isJoinGameOpen, setJoinGameOpen] = useState(false);
   const {navigate} = useNavigation();
-
+  
   const gameCode = "ABC123";
 
   return (

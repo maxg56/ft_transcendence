@@ -52,5 +52,15 @@ User.belongsToMany(User, {
   otherKey: "user2",
 });
 
+Friendship.belongsTo(User, {
+  as: "userOne",
+  foreignKey: "user1",
+});
+
+Friendship.belongsTo(User, {
+  as: "userTwo",
+  foreignKey: "user2",
+});
+
 
 export default Friendship;

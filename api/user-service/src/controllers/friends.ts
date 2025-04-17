@@ -30,32 +30,12 @@ async function addFriend (request: FastifyRequest<{ Body: {user: number}}>, repl
 	}
 };
 
-async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) {
-	try {
-		const id = request.user.id
-		console.log("🧩🧩🧩 user ID:", id)
-		const friendList = await Friendship.findAll({ where: { 
-				[Op.or]: [
-					{ user1: id },
-					{ user2: id }],
-				status: 'pending'
-			}});
-		
-		if (friendList.length === 0)
-			return reply.send({ message: "No friend request pending"})
-		return reply.send(friendList)
-	} catch (error) {
-		request.log.error(error);
-		return reply.code(500).send({message: 'server error'});
-	}
-};
-
 async function acceptFriend (request: FastifyRequest<{ Body: {user1: number}}>, reply: FastifyReply)  {
 	try {
 		const userid = request.user.id
 		console.log("user id", userid)
 		const { user1 } = request.body
-		console.log("🧩🧩🧩🧩🧩🧩 sender request ID:", user1)
+		console.log("🧩 sender request ID:", user1)
 		const friendship = await Friendship.findOne({
 			where: {
 				user1: user1,
@@ -98,4 +78,4 @@ async function refuseFriend (request: FastifyRequest<{ Body: {user1: number}}>, 
 	}
 };
 
-export {seeFriendRequests, acceptFriend, refuseFriend, addFriend}
+export {acceptFriend, refuseFriend, addFriend}

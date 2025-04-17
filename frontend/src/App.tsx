@@ -8,8 +8,11 @@ import Profile from './pages/Profil'
 import useNavigation from "./hooks/useNavigation";
 import MultiplayerSelection from './pages/MultiplayerSelection';
 import PlayersGame4 from './pages/Players4Game';
-import TournamentStage1 from './pages/TournamentT1';
+import TournamentT1 from './pages/TournamentT1';
+import TournamentT2 from './pages/TournamentT2';
 import Modeduel from './components/ChooseGame';
+import Results from './pages/Results';
+
 
 const App: React.FC = () => {
   const { path } = useNavigation();
@@ -28,9 +31,10 @@ const App: React.FC = () => {
       {currentPath === "/duel2" && <Duel2 />}
       {currentPath === "/multiplayerselect" && <MultiplayerSelection />}
       {currentPath === "/playersgame4" && <PlayersGame4 />}
-      {currentPath === "/tournamentStage1" && <TournamentStage1 />}
+      {currentPath === "/tournamentStage1" && <TournamentT1 />}
+      {currentPath === "/tournamentStage2" && <TournamentT2 />}
       {currentPath === "/modeduel" && <Modeduel />}
-
+      {currentPath === "/results" && <Results />}
     </div>
   );
 };

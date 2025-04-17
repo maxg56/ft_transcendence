@@ -10,6 +10,11 @@ class Friendship extends Model {
 
 Friendship.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     user1: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -46,5 +51,16 @@ User.belongsToMany(User, {
   foreignKey: "user1",
   otherKey: "user2",
 });
+
+Friendship.belongsTo(User, {
+  as: "userOne",
+  foreignKey: "user1",
+});
+
+Friendship.belongsTo(User, {
+  as: "userTwo",
+  foreignKey: "user2",
+});
+
 
 export default Friendship;

@@ -10,7 +10,7 @@ const Modeduel = () => {
   const [isCreateGameOpen, setCreateGameOpen] = useState(false);
   const [isJoinGameOpen, setJoinGameOpen] = useState(false);
   const {navigate} = useNavigation();
-  
+
   const gameCode = "ABC123";
 
   return (

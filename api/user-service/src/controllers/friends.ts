@@ -35,16 +35,19 @@ async function addFriend (request: FastifyRequest<{ Body: {username: string}}>, 
 	}
 };
 
-async function acceptFriend (request: FastifyRequest<{ Body: {user1: number}}>, reply: FastifyReply)  {
+async function acceptFriend (request: FastifyRequest<{ Body: {username: string}}>, reply: FastifyReply)  {
 	try {
-		const userid = request.user.id
-		console.log("user id", userid)
-		const { user1 } = request.body
-		console.log("🧩 sender request ID:", user1)
+		const id = request.user.id
+		// console.log("user id", id)
+		const { username } = request.body
+		// console.log("🧩 sender request username:", username)
+		const userId = await User.findOne({ where: { username: username}, attributes: ["id"]})
+		if (!userId)
+			return reply.code(404).send({ message: "user not find"})
 		const friendship = await Friendship.findOne({
 			where: {
-				user1: user1,
-				user2: userid,
+				user1: userId.id,
+				user2: id,
 				status: 'pending'
 			}
 		})
@@ -59,24 +62,27 @@ async function acceptFriend (request: FastifyRequest<{ Body: {user1: number}}>, 
 	}
 };
 
-async function refuseFriend (request: FastifyRequest<{ Body: {user1: number}}>, reply: FastifyReply)  {
+async function refuseFriend (request: FastifyRequest<{ Body: {username: string}}>, reply: FastifyReply)  {
 	try {
-		const userid = request.user.id
-		console.log("user id", userid)
-		const { user1 } = request.body
-		console.log("sender request ID:", user1)
+		const id = request.user.id
+		// console.log("user id", id)
+		const { username } = request.body
+		// console.log("sender request:", username)
+		const userId = await User.findOne({ where: { username: username}, attributes: ["id"]})
+		if (!userId)
+			return reply.code(404).send({ message: "user not find"})
 		const friendship = await Friendship.findOne({
 			where: {
-				user1: user1,
-				user2: userid,
+				user1: userId.id,
+				user2: id,
 				status: 'pending'
 			}
 		})
 
 		if (!friendship)
 			return reply.code(404).send({ message: 'Friend request not find' });
-		await friendship.update({ status: 'blocked' });
-		return reply.send({ message: 'Friend request blocked', friendship });
+		await friendship.destroy();
+		return reply.send({ message: 'Friend request refused' });
 	} catch (error) {
 		request.log.error(error);
 		return reply.code(500).send({ message: 'server error' });

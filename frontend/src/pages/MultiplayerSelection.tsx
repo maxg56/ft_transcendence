@@ -23,7 +23,7 @@ const MultiplayerSelection: React.FC = () => {
 					</button>
 				</div>
 				<button className="px-[50px] py-3 bg-orange-300 text-black text-3xl rounded hover:bg-gray-200"
-						onClick={() => navigate("/")}>
+						onClick={() => navigate("/tournamentStage1")}>
 						{t("Tournoi")}
 				</button>
 			</div>

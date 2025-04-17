@@ -109,7 +109,7 @@ function Scene() {
         <Button3D 
           text={t('DUEL')} 
           position={[-1, 0, 0]} 
-          onClick={() => navigate("/duel")} 
+          onClick={() => navigate("/modeduel")} 
         />
         <Button3D 
           text={t('MULTI')} 

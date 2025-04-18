@@ -4,15 +4,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
 import calculateElo from './controllers/calculateElo';
-import {verifyToken} from './controllers/JWT';
+import { verifyToken } from './controllers/JWT';
 import database from './plugins/database';
 import Match from "./models/Match";
 import MatchPlayer from "./models/MatchPlayer";
 import User from "./models/User";
-import {Player} from './models/Player';
+import { Player } from './models/Player';
 import handleGameResult from './controllers/game_result';
 import joinPrivateGame from './controllers/join_private_game';
 import { logformat, logError } from "./controllers/log";
+import { GameEngine } from './engine/GameEngine';
 
 dotenv.config();
 
@@ -21,22 +22,19 @@ const server = createServer(fastify.server);
 const wss = new WebSocket.Server({ server });
 const PORT = process.env.PORT_GAME || 3000;
 
-
-
 fastify.register(database);
 
 fastify.ready().then(() => {
-  logformat(" \n\n📌 Fastify is ready, initializing models...\n",
-    "✅ User model loaded:", !!User,"\n",
+  logformat("\n\n📌 Fastify is ready, initializing models...\n",
+    "✅ User model loaded:", !!User, "\n",
     "✅ Match model loaded:", !!Match, "\n",
     "✅ MatchPlayer model loaded:", !!MatchPlayer
   )
 });
 
 const queue: Player[] = [];
-const activeGames = new Map<string, Player[]>();
-const privateGames = new Map<string, { host: Player; nb: number; maxPlayers: number; isFriend: Boolean; guest: Player[]} >();
-
+const activeGames = new Map<string, { players: Player[], engine: GameEngine }>();
+const privateGames = new Map<string, { host: Player; nb: number; maxPlayers: number; isFriend: Boolean; guest: Player[] }>();
 
 async function addUser(id: string): Promise<User | null> {
   return await User.findOne({ where: { id } });
@@ -59,7 +57,7 @@ async function handleNewConnection(ws: WebSocket, token: string) {
     return;
   }
 
-  const player: Player = { id: playerId ,name : user.username, ws, elo: user.elo };
+  const player: Player = { id: playerId, name: user.username, ws, elo: user.elo };
 
   ws.on('message', (message: string) => {
     try {
@@ -90,8 +88,9 @@ function findMatch(nb_players: number = 2) {
   if (queue.length >= nb_players) {
     const players: Player[] = queue.splice(0, nb_players);
     const gameId = uuidv4();
-    activeGames.set(gameId, players);
-    logformat("Game is full, starting game", gameId);
+    const engine = new GameEngine();
+    activeGames.set(gameId, { players, engine });
+    startGameLoop(gameId);
 
     players.forEach((player) => {
       const opponent = players.find((p) => p.id !== player.id);
@@ -108,6 +107,24 @@ function findMatch(nb_players: number = 2) {
   }
 }
 
+function startGameLoop(gameId: string) {
+  const game = activeGames.get(gameId);
+  if (!game) return;
+
+  const interval = setInterval(() => {
+    game.engine.update();
+    const state = game.engine.getGameState();
+
+    game.players.forEach((p) => {
+      p.ws.send(JSON.stringify({ event: 'game_state', state }));
+    });
+
+    if (state.winner) {
+      clearInterval(interval);
+      // TODO: handle end of game
+    }
+  }, 1000 / 60); // 60 FPS
+}
 
 function handleMessage(data: any, player: Player) {
   try {
@@ -116,32 +133,32 @@ function handleMessage(data: any, player: Player) {
         queue.push(player);
         findMatch();
         break;
-      case 'create_private_game':
+      case 'create_private_game': {
         const gameCode = uuidv4().slice(0, 6);
-        privateGames.set(gameCode, { host: player, nb : 1  , maxPlayers : data.nb_players, isFriend: data.isFriend, guest: [player] });
+        privateGames.set(gameCode, { host: player, nb: 1, maxPlayers: data.nb_players, isFriend: data.isFriend, guest: [player] });
         player.ws.send(JSON.stringify({ event: 'private_game_created', gameCode }));
         break;
+      }
       case 'join_private_game':
         joinPrivateGame(player, data, privateGames, activeGames);
         break;
       case 'game_result':
         handleGameResult(activeGames, data, player);
         break;
-      case 'game_update':
-        const activeGame = activeGames.get(data.gameId);
-        if (activeGame) {
-          activeGame.forEach((p) => {
-            p.ws.send(JSON.stringify({ event: 'game_update', data: data.payload, sender: data.sender }));
-          });
+      case 'move_paddle': {
+        const game = activeGames.get(data.gameId);
+        if (game) {
+          game.engine.movePaddle(data.side, data.direction);
         }
         break;
+      }
     }
   } catch (error) {
     console.error("Error handling message:", error);
     player.ws.send(JSON.stringify({ event: 'error', message: 'An error occurred while processing your request.' }));
   }
 }
-   
+
 server.listen(Number(PORT), () => {
   console.log(`WebSocket Server running on port ${PORT}`);
 });

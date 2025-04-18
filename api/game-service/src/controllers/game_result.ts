@@ -4,13 +4,14 @@ import MatchPlayer from "../models/MatchPlayer";
 import User from "../models/User";
 import { Player } from "../models/Player";
 import { logformat, logError } from "./log";
+import { GameEngine } from './GameEngine';
 
 
 
-async function handleGameResult( activeGames: Map<string, Player[]> , data: any, player: Player) {
+async function handleGameResult( activeGames: Map<string, { players: Player[], engine: GameEngine }> , data: any, player: Player) {
   const game = activeGames.get(data.gameId);
   if (game) {
-    const updatedPlayers =calculateElo(game, data.winner);
+    const updatedPlayers =calculateElo(game.players, data.winner);
     logformat("game result",data.gameId,"winner:" ,data.winner,)
     for (const player of updatedPlayers) {
       await User.update({ elo: player.elo }, { where: { id: player.id } });
@@ -20,7 +21,7 @@ async function handleGameResult( activeGames: Map<string, Player[]> , data: any,
       playedAt: new Date(),
       durationSeconds: data.durationSeconds,
     });
-    for (const player of game) {
+    for (const player of game.players) {
       await MatchPlayer.create({
         matchId: match.id,
         playerId: player.id,

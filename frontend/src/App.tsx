@@ -12,6 +12,7 @@ import TournamentT1 from './pages/TournamentT1';
 import TournamentT2 from './pages/TournamentT2';
 import Modeduel from './components/ChooseGame';
 import Results from './pages/Results';
+import { WebSocketProvider } from './context/WebSocketContext';
 
 
 const App: React.FC = () => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
   }, [path]);
 
   return (
+    <WebSocketProvider>
     <div key={currentPath}> {/* 🔥 Forcer un re-render */}
       {currentPath === "/" && <Accueil />}
       {currentPath === "/hub" && <Hub />}
@@ -36,6 +38,7 @@ const App: React.FC = () => {
       {currentPath === "/modeduel" && <Modeduel />}
       {currentPath === "/results" && <Results />}
     </div>
+    </WebSocketProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import * as THREE from 'three';
 import { useKeyboard } from '../context/KeyboardContext';
 import { useConfKey } from './useConfKey';
+import { useWebSocket } from '../context/WebSocketContext';
 
 export const useInputControls = (
 	leftPaddleRef: React.MutableRefObject<THREE.Mesh | null>,
@@ -32,4 +33,34 @@ export const useInputControls = (
 
 		return () => clearInterval(interval);
 	}, [pressedKeys, confKey]);
+};
+
+
+export const usePlayerControls = (side: 'left' | 'right') => {
+	const socket = useWebSocket();
+	const { pressedKeys } = useKeyboard();
+	const { confKey } = useConfKey();
+	const id = side === 'left' ? 1 : 2;
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			let direction: 'up' | 'down' | null = null;
+
+			if (socket?.readyState === WebSocket.OPEN) {
+				if (pressedKeys.has(confKey[`${id}_up`])) direction = 'up';
+				else if (pressedKeys.has(confKey[`${id}_down`])) direction = 'down';
+
+				if (direction) {
+					socket.send(
+						JSON.stringify({
+							type: 'move',
+							payload: { side, direction },
+						})
+					);
+				}
+			}
+		}, 16); // ~60 FPS
+
+		return () => clearInterval(interval);
+	}, [socket, side, pressedKeys, confKey]);
 };

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import {GameCanvas} from "./game/GameCanvas";
+import GameCanvas from "./game/GameCanvas";
 import ControlsModal from "./ControlsOverlay";
 import { useCountdown } from "../hooks/useCountdown";
 import { useTranslation } from "../context/TranslationContext";
@@ -13,17 +13,14 @@ const DuelComponent: React.FC = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const { navigate } = useNavigation();
   const { t } = useTranslation();
 
   const openModal = () => {
     setIsModalOpen(true);
-    setIsPaused(true);
   };
   const closeModal = () => {
     setIsModalOpen(false);
-    setIsPaused(false);
   };
 
   const handleCountdownDone = useCallback(() => {
@@ -85,7 +82,6 @@ const resetGame = () => {
       <KeyboardProvider>
 			  <GameCanvas
           gameStarted={gameStarted}
-          isPaused={isPaused}
           setScore={setScore}
           setWinner={setWinner}
           setGameStarted={setGameStarted}

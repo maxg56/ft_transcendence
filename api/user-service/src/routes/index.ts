@@ -4,6 +4,7 @@ import { getRank } from '../controllers/getRank';
 import { addFriend, acceptFriend, refuseFriend } from '../controllers/friends';
 import { seeFriendRequests, seeFriends } from '../controllers/friendsLists';
 import { getAllUsernames } from '../controllers/getAllUsernames';
+import { deleteUser } from '../controllers/deleteUser';
 
 async function userRoutes(fastify: any) {
   fastify.put('/user/:id', putUser);
@@ -15,6 +16,7 @@ async function userRoutes(fastify: any) {
   fastify.put('/user/friend/refuse', { preHandler: [fastify.authenticate] }, refuseFriend);
   fastify.get('/user/friend/pendinglist', { preHandler: [fastify.authenticate] }, seeFriendRequests);
   fastify.get('/user/friend/list', { preHandler: [fastify.authenticate] }, seeFriends);
+  fastify.put('/user/delete', { preHandler: [fastify.authenticate] }, deleteUser)
 }
 
 export default fp(userRoutes);

@@ -1,10 +1,6 @@
 import {Player} from '../models/Player';
 
 
-
-
-
-
 function calculateElo(players: Player[], winnerid: string , baseK: number = 32): Player[] {
   const totalPlayers = players.length;
   const K = baseK / Math.log2(totalPlayers);

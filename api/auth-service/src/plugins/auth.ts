@@ -5,7 +5,7 @@ export default fp(async function (fastify) {
   fastify.register(FastifyJwt, {
     secret: process.env.JWT_SECRET || 'supersecretkey',
     sign: {
-      expiresIn: '1h',
+      // expiresIn: '1h',
     },
   });
 

@@ -15,7 +15,7 @@ import User from '../models/User';
 // -username → remplacés par Utilisateur supprimé ou valeur similaire
 // -supprimer les amities
 
-async function deleteFriends (id: any, reply: FastifyReply) {
+async function deleteFriends (id: any) {
 	const friends = await Friendship.findAll({
 		where: {
 			[Op.or]: [
@@ -23,7 +23,7 @@ async function deleteFriends (id: any, reply: FastifyReply) {
 				{ user2: id }],
 		}})
 	if (friends.length === 0)
-		sendError(reply, "no friends", 404)
+		return ({message: "no friends"})
 	await Friendship.destroy({
 		where: {
 			[Op.or]: [
@@ -33,24 +33,38 @@ async function deleteFriends (id: any, reply: FastifyReply) {
 	})
 }
 
+async function usernameAnonymise() {
+	let name: string
+	let isNametaken: any[]
+	do {
+		const randomNbr = Math.floor(Math.random() * 1000)
+		name = `deleted user ${randomNbr}`
+		isNametaken = await User.findAll({ where: { username: name}})
+	} while (isNametaken.length !== 0)
+	return name;
+}
+
+
 async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const id = request.user.id
-		deleteFriends(id, reply)
+		await deleteFriends(id)
 		const user = await User.findByPk(id)
 		if (!user)
-			sendError(reply, "user not find", 404)
-		await User.update({
-			username: "deleted user",
-			email: "deleteduser@mail.com"},
+			return sendError(reply, "user not find", 404)
+		const newName = await usernameAnonymise()
+		await User.update(
+			{username: newName,
+			email: newName},
 			{ where: {
 				id: id
-			}
-		})
+			}},
+		)
+		return sendSuccess(reply, "successfully deleted", 200)
 	} catch (error) {
-		request.log.error(error);
-		sendError(reply, "server error", 500);
+		request.log.error(error)
+		return sendError(reply, "server error", 500)
 	}
 }
 
-export { deleteUser }
+export { deleteUser, deleteFriends, usernameAnonymise }

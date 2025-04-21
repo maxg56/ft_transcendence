@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import database from './plugins/database';
 import userRoutes from './routes/index';
 import User from './models/User';
+import Friendship from './models/Friendship';
 import auth from './plugins/auth';
+import { cronPlugin } from './plugins/cron';
 
 dotenv.config();
 
@@ -14,6 +16,8 @@ const PORT = process.env.PORT_USER || 3000;
 // Plugins
 fastify.register(database);
 fastify.register(auth);
+fastify.register(cronPlugin);
+
 fastify.register(userRoutes);
 
  
@@ -31,7 +35,7 @@ fastify.register(userRoutes);
 fastify.ready().then(() => {
 	console.log("📌 Fastify is ready, initializing models...");
 	console.log("✅ User model loaded:", !!User);
-	// fastify.printRoutes();
+	console.log("✅ Friendship model loaded:", !!Friendship);
 });
 
 // Démarrage du serveur

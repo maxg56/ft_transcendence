@@ -10,6 +10,7 @@ class User extends Model {
   public twoFA_enabled!: boolean;
   public twoFA_secret!: string | null;
   public elo!: number;
+  public lastLogin_at!: Date;
   public created_at!: Date;
   public updated_at!: Date;
 }
@@ -54,6 +55,11 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1000,
+    },
+    lastLogin_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     created_at: {
       type: DataTypes.DATE,

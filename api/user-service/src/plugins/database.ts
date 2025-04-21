@@ -1,11 +1,13 @@
 import fp from 'fastify-plugin';
 import sequelize from '../config/database';
+import User from '../models/User';
 import Friendship from '../models/Friendship';
 
 async function databasePlugin(fastify: any) {
   try {
     await sequelize.authenticate();
     console.log('✅ Database connected successfully');
+    await User.sync({ alter: true});
     await Friendship.sync({ alter: true});
     console.log("✅ Friendship table synchronized")
   } catch (error) {

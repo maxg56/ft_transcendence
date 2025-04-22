@@ -3,27 +3,70 @@ import useNavigation from "../hooks/useNavigation";
 import { useProfileContext } from "../context/ProfilContext";
 import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
+import VsPopup from "./VsPopup";
+
+// function ButtonHead() {
+//   const { t } = useTranslation();
+
+//   return (
+//     <>
+//       <button
+//         className="button-header px-7 py-1 text-black rounded .button-header:hover"
+//         onClick={() => void(true)} >
+//         {t("VS")}
+//       </button>
+//       <button
+//         className="button-header px-7 py-1 text-black rounded .button-header:hover"
+//         onClick={() => void(true)}   >
+//         {t("Multijoueur")}
+//       </button>
+//       <button
+//         className="button-header px-7 py-1 text-black rounded .button-header:hover"
+//         onClick={() => void(true)} >
+//         {t("Tournois")}
+//       </button>
+//     </>
+//   );
+// }
+
 
 function ButtonHead() {
   const { t } = useTranslation();
+  const [showVsPopup, setShowVsPopup] = useState(false);
+
+  const handleVsSelect = (choice) => {
+    // Do something with the choice: "ia" or "human"
+    console.log("VS choice:", choice);
+    // For example, navigate or update state here
+  };
 
   return (
     <>
       <button
-        className="button-header px-7 py-1 text-black rounded .button-header:hover"
-        onClick={() => void(true)} >
+        className="button-header px-7 py-1 text-black rounded"
+        onClick={() => setShowVsPopup(true)}
+      >
         {t("VS")}
       </button>
       <button
-        className="button-header px-7 py-1 text-black rounded .button-header:hover"
-        onClick={() => void(true)}   >
+        className="button-header px-7 py-1 text-black rounded"
+        onClick={() => void(true)}
+      >
         {t("Multijoueur")}
       </button>
       <button
-        className="button-header px-7 py-1 text-black rounded .button-header:hover"
-        onClick={() => void(true)} >
+        className="button-header px-7 py-1 text-black rounded"
+        onClick={() => void(true)}
+      >
         {t("Tournois")}
       </button>
+
+      {showVsPopup && (
+        <VsPopup
+          onSelect={handleVsSelect}
+          onClose={() => setShowVsPopup(false)}
+        />
+      )}
     </>
   );
 }
@@ -58,3 +101,6 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
+//export default ButtonHead;
+

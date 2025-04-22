@@ -3,6 +3,7 @@ import User from '../models/User'
 
 export const getAllUsernames = async (request: FastifyRequest, reply:FastifyReply) => {
 	try {
+		const id = request.user.id
 		const users = await User.findAll({attributes: ['username']});
 
 		if (!users)

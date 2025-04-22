@@ -1,16 +1,16 @@
 import fp from 'fastify-plugin'
-import {putUser, getUser} from '../controllers/userControllers'
-import { getRank } from '../controllers/getRank';
+import {updateUser, getUser} from '../controllers/userControllers'
+import { getElo } from '../controllers/getRank';
 import { addFriend, acceptFriend, refuseFriend } from '../controllers/friends';
 import { seeFriendRequests, seeFriends } from '../controllers/friendsLists';
 import { getAllUsernames } from '../controllers/getAllUsernames';
 import { deleteUser } from '../controllers/deleteUser';
 
 async function userRoutes(fastify: any) {
-  fastify.put('/user/:id', putUser);
-  fastify.get('/user/:id', getUser);
-  fastify.get('/user/:id/rank', getRank);
-  fastify.get('/user/users', getAllUsernames);
+  fastify.put('/user/update', { preHandler: [fastify.authenticate] }, updateUser);
+  fastify.get('/user/info', { preHandler: [fastify.authenticate] }, getUser);
+  fastify.get('/user/elo', { preHandler: [fastify.authenticate] }, getElo);
+  fastify.get('/user/users', { preHandler: [fastify.authenticate] }, getAllUsernames);
   fastify.post('/user/friend/add', { preHandler: [fastify.authenticate] }, addFriend);
   fastify.put('/user/friend/accept', { preHandler: [fastify.authenticate] }, acceptFriend);
   fastify.put('/user/friend/refuse', { preHandler: [fastify.authenticate] }, refuseFriend);

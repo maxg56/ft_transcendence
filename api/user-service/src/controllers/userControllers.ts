@@ -5,9 +5,9 @@ import User from '../models/User'
 
 export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 try {
-	const { id } = request.params as { id: string };
+	const id = request.user.id
 	console.log("🧩 Param ID:", id);
-	const user = await User.findByPk(id, { attributes: ['id', 'username', 'avatar']});
+	const user = await User.findByPk(id, { attributes: ['username', 'avatar']});
 
 	if (!user) {
 		return reply.code(404).send({message: 'user not find'});
@@ -20,9 +20,9 @@ return reply.send(user);
 }
 };
 
-export const putUser = async (request: FastifyRequest, reply: FastifyReply) => {
+export const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
 try {
-	const { id } = request.params as { id: string };
+	const id = request.user.id
 	console.log("🧩🧪 Param ID for PUT:", id);
 	const { username, avatar } = request.body as { username?: string, avatar?: string};
 	const user = await User.findByPk(id, { attributes: ['id', 'username', 'avatar']});

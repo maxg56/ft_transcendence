@@ -1,14 +1,16 @@
-// VsButton.js
 import React, { useState } from "react";
 import VsPopup from "./VsPopup";
 import { useTranslation } from "../../context/TranslationContext";
+import { useMode } from "../../components/ModeContext";
 
 export default function VsButton() {
   const [showPopup, setShowPopup] = useState(false);
   const { t } = useTranslation();
+  const { setMode } = useMode();
 
   const handleSelect = (choice) => {
-    console.log("Selected VS mode:", choice);
+    setMode(choice); // Store "ia" or "humain"
+    setShowPopup(false);
   };
 
   return (

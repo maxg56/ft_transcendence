@@ -1,8 +1,10 @@
 import { Player } from "../models/Player";
 import { v4 as uuidv4 } from "uuid";
 import {logformat,logError} from "./log"
-import { GameEngine } from "./GameEngine";
 import { activeGames, privateGames } from "../config/data";
+import { GameEngineFactory } from "./GameEngineFactory";
+import {startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
+import { rome } from "../type";
 
 
 async function joinPrivateGame(
@@ -32,7 +34,19 @@ async function joinPrivateGame(
     const gameId = uuidv4();
     logformat("Game is full, starting game", gameId);
     privateGames.delete(data.gameCode);
-    activeGames.set(gameId, { players: game.guest, engine: new GameEngine() });
+    const rome : rome = {
+      players: game.guest,
+      engine: GameEngineFactory.createEngine("1v1"),
+      autoStartTimer: null,
+      mode: "1v1",
+      isPrivateGame: true,
+      isPongGame: true,
+      startTime: new Date(),
+    }
+
+    
+    activeGames.set(gameId, rome);
+    startAutoMatchGameTimer(gameId);
 
     for (const guest of game.guest) {
       guest.ws.send(JSON.stringify({ event: "match_found", gameId }));

@@ -1,9 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { GameEngine } from './GameEngine';
+import { GameEngineFactory } from './GameEngineFactory';
 import { Player } from '../models/Player';
 import { logformat, logError } from './log';
 import { WebSocket } from 'ws';
 import { activeGames ,matchmakingQueue } from '../config/data';
+import { GameMode, rome } from '../type';
+import {startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
 
 
 export interface MatchFormat {
@@ -11,8 +14,20 @@ export interface MatchFormat {
     teams: number;
 }
 
-function getQueueKey(format: MatchFormat): string {
-    return `${format.playersPerTeam}v${format.teams}`;
+function getQueueKey(format: MatchFormat): GameMode {
+  if (format.teams === 4) {
+    return 'ffa4';
+  }
+
+  if (format.playersPerTeam <= 0 || format.teams <= 0) {
+    throw new Error("Invalid match format: playersPerTeam and teams must be greater than 0.");
+  }
+
+  const key = `${format.playersPerTeam }v${format.playersPerTeam}` as GameMode;
+  if (key !== '1v1' && key !== '2v2') {
+    throw new Error(`Unsupported match format: ${key}`);
+  }
+  return key;
 }
 
 export function enqueuePlayer(player: Player, format: MatchFormat) {
@@ -44,7 +59,7 @@ function getAcceptableRange(seconds: number): number {
     return base + seconds * perSecond;
 }
   
-export function tryMatchmaking(format: MatchFormat) {
+export function tryMatchmaking(format: MatchFormat ,isPongGame: boolean = true) {
   const key = getQueueKey(format);
   const queue = matchmakingQueue.get(key) || [];
   const totalPlayers = format.playersPerTeam * format.teams;
@@ -64,18 +79,30 @@ export function tryMatchmaking(format: MatchFormat) {
     if (maxLot - minLot <= allowedDiff) {
       indices.sort((a, b) => b - a).forEach(i => queue.splice(i, 1));
       matchmakingQueue.set(key, queue);
-      findMatchWithPlayers(players, format);
+      findMatchWithPlayers(players, format,isPongGame);
       return;
     }
   }
 }
 
 
-export function findMatchWithPlayers(players: Player[], format: MatchFormat) {
+export function findMatchWithPlayers(players: Player[], format: MatchFormat,isPongGame: boolean) {
     const gameId = uuidv4();
-    const engine = new GameEngine();
-    activeGames.set(gameId, { players, engine });
-  
+    const mode: GameMode = getQueueKey(format);
+    const engine = GameEngineFactory.createEngine(mode);
+    const rome : rome = {
+      players: players,
+      mode: mode,
+      engine: engine,
+      isPongGame: isPongGame,
+      isPrivateGame: false,
+      autoStartTimer: null,
+      startTime: new Date(),
+    }
+    activeGames.set(gameId,rome);
+    startAutoMatchGameTimer(gameId);
+
+
     const teams: { id: number, players: Player[] }[] = [];
     const teamSize = format.playersPerTeam;
   

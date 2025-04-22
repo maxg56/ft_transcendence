@@ -4,14 +4,14 @@ import Match from "./Match";
 import User from "./User";
 
 class MatchPlayer extends Model {
-  public matchId!: number;
-  public playerId!: number;
+  public match_id!: number;
+  public player_id!: number;
   public score!: number;
 }
 
 MatchPlayer.init(
   {
-    matchId: {
+    match_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -19,7 +19,7 @@ MatchPlayer.init(
         key: "id",
       },
     },
-    playerId: {
+    player_id : {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -51,7 +51,7 @@ MatchPlayer.init(
 );
 
 // Définition des relations
-Match.belongsToMany(User, { through: MatchPlayer, foreignKey: "matchId" });
-User.belongsToMany(Match, { through: MatchPlayer, foreignKey: "playerId" });
+Match.belongsToMany(User, { through: MatchPlayer, foreignKey: "match_id" });
+User.belongsToMany(Match, { through: MatchPlayer, foreignKey: "player_id" });
 
 export default MatchPlayer;

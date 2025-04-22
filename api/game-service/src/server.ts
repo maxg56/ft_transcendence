@@ -9,7 +9,7 @@ import Match from "./models/Match";
 import MatchPlayer from "./models/MatchPlayer";
 import User from "./models/User";
 import { Player } from './models/Player';
-import handleGameResult,{GameResultData} from './controllers/game_result';
+
 import joinPrivateGame from './controllers/join_private_game';
 import { logformat, logError } from "./controllers/log";
 import {activeGames, privateGames , matchmakingQueue } from './config/data';
@@ -88,37 +88,6 @@ wss.on('connection', (ws: WebSocket, req) => {
 });
 
 
-
-async function startGameLoop(gameId: string) {
-  const game = activeGames.get(gameId);
-  if (!game) return;
-
-  const interval = setInterval(() => {
-    game.engine.update();
-    const state = game.engine.getGameState();
-
-    game.players.forEach((p) => {
-      p.ws.send(JSON.stringify({ event: 'game_state', state }));
-    });
-
-    if (state.winner) {
-      clearInterval(interval);
-      var scores = state.score.sort((a, b) => a - b);
-      const result: GameResultData = {
-        gameId,
-        winner: state.winner,
-        isPongGame: true,
-        durationSeconds: Math.floor((Date.now() - game.engine.time.getTime()) / 1000),
-        score: scores,
-      };
-       
-      handleGameResult(result);
-      
-    }
-  }, 1000 / 60); // 60 FPS
-}
-
-
 function handleMessage(data: any, player: Player) {
   try {
     switch (data.event) {
@@ -133,13 +102,6 @@ function handleMessage(data: any, player: Player) {
       }
       case 'join_private_game':
         joinPrivateGame(player, data);
-        break;
-      case 'start_game':
-        let game = activeGames.get(data.gameId);
-        if (game) {
-          game.engine.time = new Date();
-          startGameLoop(data.gameId);
-        }
         break;
       case 'move_paddle': {
         const game = activeGames.get(data.gameId);

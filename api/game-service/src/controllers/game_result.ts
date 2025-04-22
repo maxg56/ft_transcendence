@@ -4,9 +4,8 @@ import MatchPlayer from "../models/MatchPlayer";
 import User from "../models/User";
 import { Player } from "../models/Player";
 import { logformat, logError } from "./log";
-import { GameEngine } from './GameEngine';
 import { activeGames } from '../config/data';
-import { rome } from '../type';
+import { GameScore, TeamScore,GameScore1v1,GameScore2v2 } from '../type';
 
 
 export interface GameResultData {
@@ -15,7 +14,7 @@ export interface GameResultData {
   durationSeconds: number;
   isPongGame: boolean;
   isPrivateGame: boolean;
-  score: number[];
+  score:GameScore ;
 }
 
 
@@ -35,7 +34,6 @@ async function updateElo(players: Player[], winnerIds: string[]) {
   return { updatedPlayers, eloBefore, eloAfter };
 }
 
-
 async function saveMatchInDatabase(
   data: GameResultData,
   players: Player[],
@@ -46,24 +44,45 @@ async function saveMatchInDatabase(
   const match = await Match.create({
     is_pong_game: data.isPongGame,
     playedAt: new Date(),
-    durationSeconds: data.durationSeconds,
+    duration_seconds: data.durationSeconds,
   });
-  
-  for (const player of players) {
+
+  const isTeamScore = (score: GameScore): score is TeamScore =>
+    'left' in score && 'right' in score && !('left2' in score || 'right2' in score);
+
+  const isGameScore2v2 = (score: GameScore): score is GameScore2v2 =>
+    'left2' in score && 'right2' in score;
+
+  for (let i = 0; i < players.length; i++) {
+    const player = players[i];
     const isWinner = winnerIds.includes(player.id);
-    let elo_change = 0;
-    if (eloBefore && eloAfter) {
-      const before = eloBefore.get(player.id) || 0;
-      const after = eloAfter.get(player.id) || before;
-      elo_change = after - before;
+    const before = eloBefore?.get(player.id) ?? 0;
+    const after = eloAfter?.get(player.id) ?? before;
+    const elo_change = after - before;
+
+    let score = 0;
+
+    if (isTeamScore(data.score)) {
+      // Match par équipe : chaque équipe a un seul score
+      score = isWinner ? data.score.left : data.score.right;
+    } else if (isGameScore2v2(data.score)) {
+      // 2v2 individuel
+      const sides: (keyof GameScore2v2)[] = ['left', 'left2', 'right', 'right2'];
+      const side = sides[i] ?? 'left';
+      score = data.score[side];
+    } else {
+      // 1v1
+      const sides: (keyof GameScore1v1)[] = ['left', 'right'];
+      const side = sides[i] ?? 'left';
+      score = data.score[side];
     }
-    
+
     await MatchPlayer.create({
-      matchId: match.id,
-      playerId: player.id,
-      score: isWinner ? data.score[0]: data.score[1],
+      match_id: match.id,
+      player_id: player.id,
+      score,
       winner: isWinner,
-      elo_change: elo_change,
+      elo_change,
     });
   }
 
@@ -78,7 +97,7 @@ function notifyPlayers(players: Player[], winnerIds: string[], data: GameResultD
         event: 'game_result',
         data: {
           winner: winnerIds,
-          score: isWinner ? data.score[0] : data.score[1],
+          score: data.score,
         }
       }));
     }

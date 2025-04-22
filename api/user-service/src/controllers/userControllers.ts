@@ -1,7 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import User from '../models/User'
-
-// const UserHandlers = {
+import { sendSuccess, sendError } from '../utils/reply';
 
 export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 try {
@@ -10,13 +9,13 @@ try {
 	const user = await User.findByPk(id, { attributes: ['username', 'avatar']});
 
 	if (!user) {
-		return reply.code(404).send({message: 'user not find'});
-}
+		return sendError(reply, 'user not find', 404);
+	}
 
-return reply.send(user);
-} catch (error) {
+	return sendSuccess(reply, user, 200);
+	} catch (error) {
 	request.log.error(error);
-	return reply.code(500).send({message: 'server error'});
+	return sendError(reply, 'servor error', 500);
 }
 };
 
@@ -28,17 +27,17 @@ try {
 	const user = await User.findByPk(id, { attributes: ['id', 'username', 'avatar']});
 	
 	if (!user) {
-		return reply.code(404).send({message: 'user not find'});
+		return sendError(reply, 'user not find', 404);
 }
 
 await User.update({ 
 	username: username ?? user.username,
 	avatar: avatar ?? user.avatar },
 	{where: {id: id}});
-	return reply.send({ message: 'user changes done'});
+	return sendSuccess(reply, 'modifications done', 200);
 } catch (error) {
 	request.log.error(error);
-	return reply.code(500).send({message: 'server error'});
+	return sendError(reply, 'servor error', 500);
 }
 };
 

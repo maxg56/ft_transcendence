@@ -1,4 +1,3 @@
-// VsPopup.js
 import React from "react";
 
 export default function VsPopup({ onSelect, onClose }) {
@@ -8,8 +7,8 @@ export default function VsPopup({ onSelect, onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 min-w-[200px]"
-        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the popup
+        className="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 min-w-[400px]"
+          onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the popup
       >
         <button
           className="bg-blue-600 text-white rounded py-2 hover:bg-blue-700 transition"
@@ -19,9 +18,9 @@ export default function VsPopup({ onSelect, onClose }) {
         </button>
         <button
           className="bg-green-600 text-white rounded py-2 hover:bg-green-700 transition"
-          onClick={() => { onSelect("human"); onClose(); }}
+          onClick={() => { onSelect("humain"); onClose(); }}
         >
-          Human
+          HUMAIN
         </button>
       </div>
     </div>

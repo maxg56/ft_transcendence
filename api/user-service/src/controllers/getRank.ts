@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import User from '../models/User'
+import { sendSuccess, sendError } from '../utils/reply';
 
 export const getElo = async (request: FastifyRequest, reply: FastifyReply) => {
 try {
@@ -9,10 +10,10 @@ try {
 	if (!elo)
 		return reply.code(404).send({ message: 'elo not find' });
 
-	return reply.send(elo);
+	return sendSuccess(reply, elo, 200);
 
 } catch (error) {
 	request.log.error(error);
-	return reply.code(500).send({message: 'server error'});
+	return sendError(reply, 'server error', 500);
 }
 }

@@ -12,6 +12,7 @@ class User extends Model {
   public elo!: number;
   public created_at!: Date;
   public updated_at!: Date;
+  public lastLogin_at!: Date;
 }
 
 User.init(
@@ -65,6 +66,11 @@ User.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       onUpdate: 'CASCADE',
+    },
+    lastLogin_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {

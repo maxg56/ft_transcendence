@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import User from '../models/User'
+import { sendSuccess, sendError } from '../utils/reply';
 
 export const getAllUsernames = async (request: FastifyRequest, reply:FastifyReply) => {
 	try {
@@ -8,10 +9,10 @@ export const getAllUsernames = async (request: FastifyRequest, reply:FastifyRepl
 
 		if (!users)
 			return reply.code(404).send({ message: 'user not find'});
-		return reply.send(users);
+		return sendSuccess(reply, users, 200);
 
 	} catch (error) {
 		request.log.error(error);
-		return reply.code(500).send({message: 'server error'});
+		return sendError(reply, 'server error', 500);
 	}
 }

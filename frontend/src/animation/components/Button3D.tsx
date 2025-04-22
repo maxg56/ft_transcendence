@@ -2,7 +2,7 @@ import { Text } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useRef, useState } from 'react';
 import * as THREE from 'three';
-import myFont from '../../fonts/JustMyType-KePl.ttf';
+import myFont from '../../fonts/GamePlayed-vYL7.ttf';
 
 interface Button3DProps {
   text: string;

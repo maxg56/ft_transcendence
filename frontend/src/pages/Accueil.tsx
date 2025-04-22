@@ -116,7 +116,7 @@ const Accueil: React.FC = () => {
         <div className="w-3/5 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
         <div className="relative text-center">
          {/* Centered Title */}
-        <h1 className="neonText text-9xl text-blue-100">ft_transcendence</h1>
+        <h1 className="neonText text-7xl text-blue-100">ft_transcendence</h1>
         </div>
         </div>
         {/* CRT Scanline Sweep */}

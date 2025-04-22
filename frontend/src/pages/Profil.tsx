@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
 import { User } from "lucide-react";
+import FriendsPanel from "../components/FriendsComponent";
 
 type Options = "Amis" | "Settings" | "Stats Pong" | "Stats Shifumi"
 
@@ -35,17 +36,14 @@ const Profile: React.FC = () => {
   const username = "User";
   const rank = "Diamant";
   return (
-    <div className="p-8 flex flex-col space-y-8 min-h-screen text-white">
+    <div className="p-4 flex flex-col space-y-2 min-h-screen text-white">
   
-      {/* En-tête : ligne avec PP, username à gauche et rank à droite */}
       <div className="flex items-start justify-between mb-8">
   
-        {/* Partie gauche : PP + username + bouton supprimer */}
         <div className="flex items-start space-x-6">
-          {/* Photo de profil */}
           <div className="flex flex-col items-center">
             <div
-              className="w-32 h-32 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center overflow-hidden cursor-pointer"
+              className="w-24 h-24 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center overflow-hidden cursor-pointer"
               onClick={triggerFileSelect}
             >
               {profileImage ? (
@@ -84,8 +82,7 @@ const Profile: React.FC = () => {
       </div>
   
       <div className="flex flex-1 gap-4 w-full max-w-8xl">
-        {/* Menu gauche */}
-        <nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col space-y-14 text-black">
+        <nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col space-y-8 text-black">
           {(["Amis", "Settings", "Stats Pong", "Stats Shifumi"] as Options[]).map((opt) => (
             <button
               key={opt}
@@ -105,11 +102,10 @@ const Profile: React.FC = () => {
           </button>
         </nav>
   
-        {/* Contenu droit */}
         <div className="flex-1 bg-gray-100 p-6 rounded-md text-black">
           {selectOptions === "Amis" && (
             <div>
-              <h3 className="font-bold mb-2">Liste d’amis</h3>
+              <FriendsPanel/>
             </div>
           )}
           {selectOptions === "Settings" && (

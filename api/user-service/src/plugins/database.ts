@@ -7,7 +7,8 @@ async function databasePlugin(fastify: any) {
   try {
     await sequelize.authenticate();
     console.log('✅ Database connected successfully');
-    await User.sync({ alter: true});
+    // await User.sync({ alter: true});
+    // console.log("✅ User table synchronized")
     await Friendship.sync({ alter: true});
     console.log("✅ Friendship table synchronized")
   } catch (error) {

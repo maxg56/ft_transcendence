@@ -1,21 +1,16 @@
-import User from "../models/User";
-import Friendship from "../models/Friendship";
 import { Player } from "../models/Player";
 import { v4 as uuidv4 } from "uuid";
-import { Op } from 'sequelize';
 import {logformat,logError} from "./log"
 import { GameEngine } from "./GameEngine";
+import { activeGames, privateGames } from "../config/data";
 
 
 async function joinPrivateGame(
   player: Player,
-  data: any,
-  privateGames: Map<string, { host: Player; nb: number; maxPlayers: number; isFriend: Boolean; guest: Player[] }>,
-  activeGames: Map<string,  { players: Player[], engine: GameEngine }>
+  data: any
 ) {
   const game = privateGames.get(data.gameCode);
 
-  
   if (!game) {
     logError("Game not found", data.gameCode);
     player.ws.send(JSON.stringify({ event: "error", message: "Game not found" }));
@@ -23,29 +18,6 @@ async function joinPrivateGame(
   }
 
   const host = game.host;
-
-  if (game.isFriend) {
-    try {
-      const isFriend = await Friendship.findOne({
-        where: {
-          [Op.or]: [
-            { user1: player.id, user2: host.id },
-            { user1: host.id, user2: player.id },
-          ],
-        },
-      });
-
-      if (!isFriend) {
-        logError("Not friends with the host", player.id, host.id);
-        player.ws.send(JSON.stringify({ event: "error", message: "You are not friends with the host" }));
-        return;
-      }
-    } catch (error) {
-      logError("Database error while checking friendship:", error);
-      player.ws.send(JSON.stringify({ event: "error", message: "An error occurred. Try again later." }));
-      return;
-    }
-  }
 
   if (game.nb < game.maxPlayers) {
 

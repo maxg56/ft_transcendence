@@ -21,6 +21,7 @@ export function enqueuePlayer(player: Player, format: MatchFormat) {
     player.joinedAt = Date.now();
     queue.push(player);
     matchmakingQueue.set(key, queue);
+    player.ws.send(JSON.stringify({ event: 'join_queue', format }));
 }
   
 

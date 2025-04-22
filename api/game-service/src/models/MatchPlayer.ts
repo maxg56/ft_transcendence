@@ -32,6 +32,16 @@ MatchPlayer.init(
       allowNull: false,
       defaultValue: 0,
     },
+    elo_change: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    winner: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,

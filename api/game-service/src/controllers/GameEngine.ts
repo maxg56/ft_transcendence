@@ -1,6 +1,6 @@
-type Vector = { x: number; z: number };
-type Position = { x: number; z: number };
-type PlayerSide = 'left' | 'right';
+import { Data } from 'ws';
+import { PlayerSide , Position ,Vector } from '../type';
+
 
 const TABLE_WIDTH = 400;
 const TABLE_HEIGHT = 200;
@@ -14,12 +14,13 @@ export class GameEngine {
 	private ball: Position = { x: 0, z: 0 };
 	private direction: Vector = { x: 1, z: 1 };
 	private speed = 2;
-	private score: [number, number] = [0, 0];
+	time = new Date();
+	score: [number, number] = [0, 0];
 	private paddles = {
 		left: { z: 0 },
 		right: { z: 0 },
 	};
-	private winner: PlayerSide | null = null;
+	winner: PlayerSide | null = null;
 
 	constructor() {
 		this.resetBall(1);

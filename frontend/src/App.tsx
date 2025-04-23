@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Accueil from './pages/Accueil';
+import Solo from './pages/Solo'
 import Hub from './pages/Hub'
 import Duel from './pages/Duel';
 import Duel2 from './pages/Duel2';
@@ -25,6 +26,7 @@ const App: React.FC = () => {
   return (
     <div key={currentPath}> {/* 🔥 Forcer un re-render */}
       {currentPath === "/" && <Accueil />}
+      {currentPath === "/solo" && <Solo />}
       {currentPath === "/hub" && <Hub />}
       {currentPath === "/profile" && <Profile />}
       {currentPath === "/duel" && <Duel />}

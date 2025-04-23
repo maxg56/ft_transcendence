@@ -3,7 +3,7 @@ import { X, Settings } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import useNavigation from "../hooks/useNavigation";
 import SettingsModal from "../components/SettingsModal";
-import StarsBackground from "../components/StarsBackground";
+import StarsBackground from "../animation/StarsBackground";
 
 
 const Accueil: React.FC = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/HeaderComponent";
 import { App } from "../animation/hub_animation";
-import { useMode } from "../components/ModeContext";
+import { useMode } from "../../src/context/ModeContext";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();

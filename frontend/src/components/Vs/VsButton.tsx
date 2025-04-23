@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import VsPopup from "./VsPopup";
 import { useTranslation } from "../../context/TranslationContext";
-import { useMode } from "../../components/ModeContext";
+import { useMode } from "../../context/ModeContext";
 
 export default function VsButton() {
   const [showPopup, setShowPopup] = useState(false);

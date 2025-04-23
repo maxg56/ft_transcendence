@@ -13,6 +13,8 @@ class User extends Model {
   public created_at!: Date;
   public updated_at!: Date;
   public lastLogin_at!: Date;
+  public twoFactorSecret!: string | null;
+  public is2FAEnabled!: boolean;
 }
 
 User.init(
@@ -71,7 +73,15 @@ User.init(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-    }
+    },
+    twoFactorSecret: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    is2FAEnabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     sequelize,

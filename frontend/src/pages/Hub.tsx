@@ -2,9 +2,11 @@ import React from "react";
 import Header from "../components/HeaderComponent";
 import { App } from "../animation/hub_animation";
 import { useMode } from "../../src/context/ModeContext";
+import useNavigation from "../hooks/useNavigation";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
+  const { navigate } = useNavigation();
 
   const getStartText = () => {
     if (mode) {
@@ -15,6 +17,16 @@ const Hub: React.FC = () => {
       );
     }
     return "Start !";
+  };
+
+  const handleStart = () => {
+    if (mode === "ia") {
+      navigate("/solo");
+    } else if (mode === "humain") {
+      navigate("/duel");
+    } else {
+      navigate("/solo");
+    }
   };
 
   return (
@@ -30,7 +42,7 @@ const Hub: React.FC = () => {
             <App />
             <button
               className="absolute center neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
-              onClick={() => void(true)}
+              onClick={handleStart}
             >
               {getStartText()}
             </button>

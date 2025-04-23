@@ -9,7 +9,7 @@ export default function VsButton() {
   const { setMode } = useMode();
 
   const handleSelect = (choice) => {
-    setMode(choice); // Store "ia" or "humain"
+    setMode(choice);
     setShowPopup(false);
   };
 

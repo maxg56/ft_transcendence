@@ -17,4 +17,6 @@ async function userRoutes(fastify: any) {
   fastify.get('/user/friend/list', { preHandler: [fastify.authenticate] }, seeFriends);
 }
 
+
+
 export default fp(userRoutes);

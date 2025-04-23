@@ -2,6 +2,7 @@ import { useGameScene } from '../../hooks/useGameScene';
 import { useInputControls, usePlayerControls } from '../../hooks/useInputControls';
 import { useBallPhysics } from '../../hooks/useBallPhysics';
 import { useBallFromServer } from '../../hooks/useBallFromServer';
+import Cookies from "js-cookie";
 
 type GameCanvasProps = {
 	gameStarted?: boolean;
@@ -52,7 +53,10 @@ export const GameCanvasWs = ({
 		ballRef,
 	} = useGameScene();
 
-	usePlayerControls('left');
+	var gameId = Cookies.get("gameId");
+	if (gameId) {
+		usePlayerControls('left', gameId);	
+	}
 	useBallFromServer(
 		ballRef,
 		leftPaddleRef,

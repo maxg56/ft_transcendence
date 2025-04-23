@@ -2,9 +2,11 @@ import React from "react";
 import Header from "../components/HeaderComponent";
 import { App } from "../animation/hub_animation";
 
+
 const Hub: React.FC = () => {
 
   return (
+      
     <div className=" scale-95">
     <div>
      <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">

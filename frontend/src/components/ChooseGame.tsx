@@ -13,16 +13,19 @@ const Modeduel = () => {
   const [joinCode, setJoinCode] = useState("");
   const { navigate } = useNavigation();
   const send = useSendWSMessage();
-
+  
   const handleJoinQueue = () => {
-    send({ event: "join_queue" });
+
+    send({ event: "join_queue"
+        
+     });
+    navigate("/duel3");
   };
 
   const handleCreatePrivateGame = () => {
     send({
       event: "create_private_game",
       nb_players: 2,
-      isFriend: false,
     });
     setCreateGameOpen(false);
   };
@@ -36,6 +39,7 @@ const Modeduel = () => {
   };
 
   return (
+
     <div>
       <Header />
       <button
@@ -130,6 +134,7 @@ const Modeduel = () => {
         </div>
       )}
     </div>
+
   );
 };
 

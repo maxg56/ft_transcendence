@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { useWebSocket } from '../context/WebSocketContext'; // à adapter selon ton projet
+import { useWebSocket } from '../context/WebSocketContext';
 
 export const useBallFromServer = (
 	ballRef: React.MutableRefObject<THREE.Mesh | null>,
@@ -10,30 +10,30 @@ export const useBallFromServer = (
 	onGameEnd: (winner: string) => void,
 	setGameStarted: (started: boolean) => void
 ) => {
-	const socket  = useWebSocket();
+	const socket = useWebSocket();
+	
+	
+	
 
 	useEffect(() => {
 		const handleGameState = (data: any) => {
-			const { ball, paddles, score, winner } = data.payload;
+			const { ball, paddles, score, winner } = data.state;
 
-			// Position de la balle
 			if (ballRef.current) {
 				ballRef.current.position.x = ball.x;
 				ballRef.current.position.z = ball.z;
 			}
 
-			// Position des raquettes
 			if (leftPaddleRef.current) {
 				leftPaddleRef.current.position.z = paddles.left.z;
 			}
+
 			if (rightPaddleRef.current) {
 				rightPaddleRef.current.position.z = paddles.right.z;
 			}
 
-			// Mise à jour du score
 			onScoreUpdate(score);
 
-			// Fin de partie
 			if (winner) {
 				onGameEnd(winner);
 				setGameStarted(false);
@@ -43,14 +43,17 @@ export const useBallFromServer = (
 		const onMessage = (event: MessageEvent) => {
 			try {
 				const message = JSON.parse(event.data);
-				if (message.type === 'game-state') {
+				if (message.event === 'game_state' && message.state) {
 					handleGameState(message);
+				} else {
+					console.warn('Message WebSocket inattendu:', message);
 				}
 			} catch (err) {
 				console.error('Erreur de parsing WebSocket:', err);
 			}
 		};
 
+		console.log('WebSocket connected');
 		socket.addEventListener('message', onMessage);
 
 		return () => {

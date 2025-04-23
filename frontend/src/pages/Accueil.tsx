@@ -62,13 +62,20 @@ const Accueil: React.FC = () => {
         try {
             const response = await fetch("https://localhost:8443/auth/login", requestOptions);
             if (!response.ok) throw new Error(`Erreur ${response.status}: ${await response.text()}`);
-
-            console.log("Inscription réussie");
-            closeModal("signUp");
+        
+            const data = await response.json();
+            const token = data.token;
+            if (!token) throw new Error("Token non reçu");
+            // Stocker dans un cookie (expire dans 7 jours)
+            console.log("Token reçu:", token);
+            document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
+            console.log("Connexion réussie");
+            closeModal("signIn");
             navigate("/hub");
         } catch (error) {
-            console.error("Erreur lors de l'inscription:", error);
+            console.error("Erreur lors de la connexion:", error);
         }
+        
     };
 
     // Inscription

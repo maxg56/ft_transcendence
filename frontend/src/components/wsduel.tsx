@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import GameCanvas from "./game/GameCanvas";
+import {GameCanvasWs} from "./game/GameCanvas";
 import ControlsModal from "./ControlsOverlay";
 import { useCountdown } from "../hooks/useCountdown";
 import { useTranslation } from "../context/TranslationContext";
@@ -80,7 +80,7 @@ const resetGame = () => {
       <ControlsModal isOpen={isModalOpen} onClose={closeModal} />
 
       <KeyboardProvider>
-			  <GameCanvas
+			  <GameCanvasWs
           gameStarted={gameStarted}
           setScore={setScore}
           setWinner={setWinner}

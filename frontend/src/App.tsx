@@ -13,6 +13,7 @@ import TournamentT2 from './pages/TournamentT2';
 import Modeduel from './components/ChooseGame';
 import Results from './pages/Results';
 import { WebSocketProvider } from './context/WebSocketContext';
+import Duel3 from './pages/Duel3';
 
 
 const App: React.FC = () => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
       {currentPath === "/profile" && <Profile />}
       {currentPath === "/duel" && <Duel />}
       {currentPath === "/duel2" && <Duel2 />}
+      {currentPath === "/duel3" && <Duel3 />}
       {currentPath === "/multiplayerselect" && <MultiplayerSelection />}
       {currentPath === "/playersgame4" && <PlayersGame4 />}
       {currentPath === "/tournamentStage1" && <TournamentT1 />}

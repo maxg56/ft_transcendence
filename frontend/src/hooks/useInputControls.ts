@@ -36,7 +36,7 @@ export const useInputControls = (
 };
 
 
-export const usePlayerControls = (side: 'left' | 'right') => {
+export const usePlayerControls = (side: 'left' | 'right' , gameId: string) => {
 	const socket = useWebSocket();
 	const { pressedKeys } = useKeyboard();
 	const { confKey } = useConfKey();
@@ -44,23 +44,26 @@ export const usePlayerControls = (side: 'left' | 'right') => {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
+			if (socket?.readyState !== WebSocket.OPEN) return;
+
 			let direction: 'up' | 'down' | null = null;
+			if (pressedKeys.has(confKey[`p${id}_up`])) direction = 'up';
+			else if (pressedKeys.has(confKey[`${id}_down`])) direction = 'down';
 
-			if (socket?.readyState === WebSocket.OPEN) {
-				if (pressedKeys.has(confKey[`${id}_up`])) direction = 'up';
-				else if (pressedKeys.has(confKey[`${id}_down`])) direction = 'down';
-
-				if (direction) {
-					socket.send(
-						JSON.stringify({
-							type: 'move',
-							payload: { side, direction },
-						})
-					);
-				}
+			if (direction) {
+				console.log('Sending move paddle event:', side, direction);
+				socket.send(
+					JSON.stringify({
+						event: 'move_paddle',
+						gameId,
+						side,
+						direction,
+					})
+				);
 			}
 		}, 16); // ~60 FPS
 
 		return () => clearInterval(interval);
 	}, [socket, side, pressedKeys, confKey]);
 };
+

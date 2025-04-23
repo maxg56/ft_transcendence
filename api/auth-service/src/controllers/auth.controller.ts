@@ -12,7 +12,7 @@ async function login_controller(username: string, password: string, reply: Fasti
     if (!match) {
       return reply.code(401).send({ error: 'Invalid credentials' });
     }
-
+    await User.update( { lastLogin_at: new Date() }, { where: { id: user.id } });
     const token = await reply.jwtSign({ username: user.username, id: user.id });
     const refreshtoken = await reply.jwtSign({ username: user.username, id: user.id }, { expiresIn: '7d' });
     return reply.send({ token, refreshtoken});

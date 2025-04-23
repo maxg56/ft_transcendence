@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import useNavigation from "@/hooks/useNavigation";
 
 const API_URL = "https://localhost:8443/auth";
 
@@ -16,6 +17,7 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
   const [error, setError] = useState<string | null>(null);
   const [needs2FA, setNeeds2FA] = useState(true);
   const [preToken, setPreToken] = useState<string | null>(null);
+  const { navigate } = useNavigation();
 
   const signIn = useCallback(async (username: string, password: string) => {
     if (!username || !password) {
@@ -33,7 +35,7 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       const data = await res.json();
       if (!res.ok) throw new Error(`Erreur ${res.status}: ${data?.message || "Erreur inconnue"}`);
 
-      if (data.requires2FA ) {
+      if (data.requires2FA) {
         setNeeds2FA(true);
         setPreToken(data.preToken);
         toast.info("Code 2FA requis");
@@ -46,12 +48,13 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       setError(null);
       toast.success("Connexion réussie");
       onSuccess?.();
+      navigate("/hub");
     } catch (err) {
       setError("Erreur lors de la connexion");
       toast.error("Erreur lors de la connexion");
       console.error(err);
     }
-  }, [onSuccess]);
+  }, [onSuccess, navigate]);
 
   const verify2FA = useCallback(async (code: string) => {
     if (!preToken) {
@@ -75,11 +78,12 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       setPreToken(null);
       toast.success("Connexion réussie avec 2FA");
       onSuccess?.();
+      navigate("/hub");
     } catch (err) {
       toast.error("Code 2FA invalide");
       console.error("Erreur 2FA:", err);
     }
-  }, [onSuccess, preToken]);
+  }, [onSuccess, preToken, navigate]);
 
   const signUp = useCallback(async (username: string, email: string, password: string, confirmPassword: string) => {
     // const validationError = validateSignUp(username, email, password, confirmPassword);
@@ -99,17 +103,25 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       setError(null);
       toast.success("Inscription réussie");
       onSuccess?.();
+      navigate("/hub");
     } catch (err) {
       setError("Erreur lors de l'inscription");
       toast.error("Erreur lors de l'inscription");
       console.error(err);
     }
-  }, [onSuccess]);
+  }, [onSuccess, navigate]);
+
+  const logout = useCallback(() => {
+    document.cookie = "token=; path=/; max-age=0; Secure; SameSite=Strict";
+    toast.success("Déconnexion réussie");
+    navigate("/");
+  }, [navigate]);
 
   return {
     signIn,
     signUp,
     verify2FA,
+    logout,
     needs2FA,
     error,
   };

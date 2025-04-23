@@ -5,7 +5,6 @@ import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import VsButton from "./Vs/VsButton";
 import MultiButton from "./Multi/MultiButton";
-import TourButton from "./Tournament/TourButton";
 
 const Header = () => {
   const { navigate } = useNavigation();

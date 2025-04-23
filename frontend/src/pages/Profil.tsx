@@ -3,8 +3,8 @@ import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
 import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
-import FriendsPanel from "../components/FriendsComponent";
-import SettingsPage from "../components/SettingsComponent";
+import FriendsPanel from "../components/profil/FriendsComponent";
+import SettingsPage from "../components/profil/SettingsComponent";
 
 type Options = "friends" | "settings" | "pong" | "shifumi";
 

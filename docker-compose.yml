@@ -1,17 +1,46 @@
-
+version: '3.8'
 services:
+  #************* ----- caddy ----- ***********************
+  caddy:
+    container_name: ft_t_caddy
+    image: caddy:latest
+    volumes:
+      - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
+      - caddylog:/var/log/
+    ports:
+      - "8000:80"
+      - "8443:443"
+    # healthcheck:
+    #   test: ["CMD", "curl", "-k", "-f", "https://localhost"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    depends_on:
+      - auth-service
+      - user-service
+      - game-service
+      - stats-service
+      - frontend
+    networks:
+      - frontend
+      - backend
+    restart: always
+
+  #************* ----- db ----- ***********************
   db:
     container_name: db
     build:
       context: ./services/DB
       dockerfile: Dockerfile
     networks:
-      - ft_transcendence
+      - backend
     env_file: .env
     volumes:
       - db_data:/var/lib/mysql
     restart: always
   
+  #************* ----- Backend ----- ***********************
   auth-service:
     container_name: ft_t_auth
     build: 
@@ -27,7 +56,7 @@ services:
     depends_on:
       - db
     networks:
-      - ft_transcendence
+      - backend
     restart: always
 
   user-service:
@@ -45,7 +74,7 @@ services:
     depends_on:
       - db
     networks:
-      - ft_transcendence
+      - backend
     restart: always
 
   game-service:
@@ -63,7 +92,7 @@ services:
     depends_on:
       - db
     networks:
-      - ft_transcendence
+      - backend
     restart: always
 
   stats-service:
@@ -81,73 +110,118 @@ services:
     depends_on:
       - db
     networks:
-      - ft_transcendence
+      - backend
     restart: always
   
-  caddy:
-    container_name: ft_t_caddy
-    image: caddy:latest
-    volumes:
-      - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
-    ports:
-      - "8000:80"
-      - "8443:443"
-    depends_on:
-      - auth-service
-      - user-service
-      - game-service
-      - stats-service
-    networks:
-      - ft_transcendence
-    restart: always
+
+# ************* ----- frontend ----- ***********************
   frontend:
     container_name: ft_t_frontend
     build: 
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
     networks:
-      - ft_transcendence
+      - frontend
     restart: always
 
+
+#************* ----- ELK ----- ***********************
+
+  # setup:
+  #   build:
+  #     context: ./services/ELK/setup
+  #     dockerfile: Dockerfile
+  #   container_name: setup
+  #   depends_on:
+  #     - caddy
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - elk
+  #   restart: on-failure
+  #   # restart: always
+  #   healthcheck:
+  #     test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
+  #     interval: 1s
+  #     timeout: 5s
+  #     retries: 120
+  
   # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
-  #   environment:
-  #     - discovery.type=single-node
-  #     - xpack.security.enabled=false
-  #     - ES_JAVA_OPTS=-Xms512m -Xmx512m
-  #   ports:
-  #     - "9200:9200"
-  #   volumes:
-  #     - esdata:/usr/share/elasticsearch/data
-  #   networks:
-  #     - ft_transcendence
-  #   restart: always
-
-  # logstash:
-  #   image: docker.elastic.co/logstash/logstash:8.12.0
-  #   volumes:
-  #     - ./service/logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  #   container_name: elasticsearch
+  #   build:
+  #     context: ./services/ELK/elasticsearch
+  #     dockerfile: Dockerfile
   #   depends_on:
-  #     - elasticsearch
+  #     setup:
+  #       condition: service_healthy
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - elasticsearch:/usr/share/elasticsearch/data
+  #   ports:
+  #     - '9200:9200'
+  #   env_file:
+  #     - .env
   #   networks:
-  #     - ft_transcendence
+  #     - elk
   #   restart: always
-
+  #   mem_limit: ${MEM_LIMIT}
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   healthcheck:
+  #     test: ['CMD-SHELL', 'curl -s -k https://elasticsearch:9200 | grep -q "missing authentication credentials"']
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 120
+  
   # kibana:
-  #   image: docker.elastic.co/kibana/kibana:8.12.0
-  #   environment:
-  #     - ELASTICSEARCH_HOSTS=https://localhost:9200
-  #   ports:
-  #     - "5601:5601"
+  #   container_name: kibana
+  #   build:
+  #     context: ./services/ELK/kibana
+  #     dockerfile: Dockerfile
   #   depends_on:
-  #     - elasticsearch
-
-
+  #     setup:
+  #       condition: service_healthy
+  #   volumes:
+  #     - certs:/usr/share/kibana/config/certs
+  #     - kibana:/usr/share/kibana/data
+  #   ports:
+  #     - '5601:5601'
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - elk
+  #   restart: always
+  #   mem_limit: ${MEM_LIMIT}
+  
+  # logstash:
+  #   container_name: logstash
+  #   build:
+  #     context: ./services/ELK/logstash
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
+  #   volumes:
+  #     - certs:/usr/share/logstash/config/certs
+  #     - caddylog:/var/log/
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - elk
+  #   restart: always
+  
+  #***************************----- grafana -----*******************************************
+  
   # prometheus:
   #   container_name: ft_t_prometheus
   #   image: prom/prometheus
@@ -170,14 +244,38 @@ volumes:
       o: bind
       device: ${PWD}/volumes/data/
 
-  esdata:
+  certs:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: ${PWD}/volumes/logs/
-
-
+      device: ${PWD}/volumes/certs/
+  
+  elasticsearch:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/volumes/es01/
+  kibana:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/volumes/kibana/
+  caddylog:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/volumes/caddylog/
+  
+  
 networks:
-  ft_transcendence:
+  frontend:
     driver: bridge
+  backend:
+    driver: bridge
+  elk:
+    driver: bridge
+

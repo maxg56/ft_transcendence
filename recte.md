@@ -1,7 +1,36 @@
 ## join queue
 ``` json
 {
-  "event": "join_queue"
+  "event": "join_queue",
+  "format": {
+    "playersPerTeam": 2,
+    "teams": 2
+  }
+}
+```
+retoure
+``` json
+{
+  "event": "match_found",
+  "gameId": "xyz-123",
+  "format": { "playersPerTeam": 2, "teams": 2 },
+  "teamId": 1,
+  "teams": [
+    {
+      "id": 1,
+      "players": [
+        { "id": "p1", "name": "Alice" },
+        { "id": "p2", "name": "Bob" }
+      ]
+    },
+    {
+      "id": 2,
+      "players": [
+        { "id": "p3", "name": "Charlie" },
+        { "id": "p4", "name": "David" }
+      ]
+    }
+  ]
 }
 ```
 

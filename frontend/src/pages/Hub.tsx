@@ -23,7 +23,7 @@ const Hub: React.FC = () => {
     if (mode === "ia") {
       navigate("/solo");
     } else if (mode === "humain") {
-      navigate("/duel");
+      navigate("/duel2");
     } else {
       navigate("/solo");
     }

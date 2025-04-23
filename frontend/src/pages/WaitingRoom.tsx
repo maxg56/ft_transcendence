@@ -1,7 +1,6 @@
 import React from "react";
-import Header from "../components/HeaderComponent";
 
-const Solo: React.FC = () => {
+const Waitroom: React.FC = () => {
 
   return (
     <div className="scale-95">
@@ -12,7 +11,7 @@ const Solo: React.FC = () => {
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
           </div>
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden text-white">
-            <h1>hey solo page</h1>
+            <h1>hey waitroom page</h1>
           </div>
         </div>
       </div>
@@ -20,4 +19,4 @@ const Solo: React.FC = () => {
   );
 };
 
-export default Solo;
+export default Waitroom;

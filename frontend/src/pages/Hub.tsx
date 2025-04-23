@@ -24,6 +24,8 @@ const Hub: React.FC = () => {
       navigate("/solo");
     } else if (mode === "humain") {
       navigate("/duel2");
+    } else if (mode === "1 vs 1" || mode === "2 vs 2") {
+      navigate("/WaitingRoom");
     } else {
       navigate("/solo");
     }

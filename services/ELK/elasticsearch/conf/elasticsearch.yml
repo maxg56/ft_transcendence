@@ -1,0 +1,31 @@
+# Configuration du cluster
+cluster.name: docker-cluster
+cluster.initial_master_nodes: elasticsearch
+
+# Configuration du nœud
+node.name: elasticsearch
+
+# Configuration réseau
+network.host: 0.0.0.0
+bootstrap.memory_lock: true
+
+# Configuration de la licence
+xpack.license.self_generated.type: basic
+
+# Configuration de la sécurité
+xpack.security.enabled: true
+
+# Configuration SSL HTTP
+xpack.security.http.ssl:
+  enabled: true
+  key: certs/elasticsearch/elasticsearch.key
+  certificate: certs/elasticsearch/elasticsearch.crt
+  certificate_authorities: certs/ca/ca.crt
+
+# Configuration SSL Transport
+xpack.security.transport.ssl:
+  enabled: true
+  key: certs/elasticsearch/elasticsearch.key
+  certificate: certs/elasticsearch/elasticsearch.crt
+  certificate_authorities: certs/ca/ca.crt
+  verification_mode: certificate

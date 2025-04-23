@@ -1,0 +1,9 @@
+# Configuration HTTP
+http:
+  host: "logstash"
+  port: 9600
+
+# Configuration du monitoring
+xpack:
+  monitoring:
+    enabled: false    # Désactive le monitoring X-Pack pour Logstash optimisé

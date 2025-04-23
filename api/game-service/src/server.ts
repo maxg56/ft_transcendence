@@ -3,16 +3,17 @@ import WebSocket from 'ws';
 import { v4 as uuidv4 } from 'uuid';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
-import calculateElo from './controllers/calculateElo';
-import {verifyToken} from './controllers/JWT';
+import { verifyToken } from './controllers/JWT';
 import database from './plugins/database';
 import Match from "./models/Match";
 import MatchPlayer from "./models/MatchPlayer";
 import User from "./models/User";
-import {Player} from './models/Player';
-import handleGameResult from './controllers/game_result';
+import { Player } from './models/Player';
+
 import joinPrivateGame from './controllers/join_private_game';
 import { logformat, logError } from "./controllers/log";
+import {activeGames, privateGames , matchmakingQueue } from './config/data';
+import { MatchFormat,tryMatchmaking , enqueuePlayer } from './controllers/matchmaking';
 
 dotenv.config();
 
@@ -21,22 +22,15 @@ const server = createServer(fastify.server);
 const wss = new WebSocket.Server({ server });
 const PORT = process.env.PORT_GAME || 3000;
 
-
-
 fastify.register(database);
 
 fastify.ready().then(() => {
-  logformat(" \n\n📌 Fastify is ready, initializing models...\n",
-    "✅ User model loaded:", !!User,"\n",
+  logformat("\n\n📌 Fastify is ready, initializing models...\n",
+    "✅ User model loaded:", !!User, "\n",
     "✅ Match model loaded:", !!Match, "\n",
     "✅ MatchPlayer model loaded:", !!MatchPlayer
   )
 });
-
-const queue: Player[] = [];
-const activeGames = new Map<string, Player[]>();
-const privateGames = new Map<string, { host: Player; nb: number; maxPlayers: number; isFriend: Boolean; guest: Player[]} >();
-
 
 async function addUser(id: string): Promise<User | null> {
   return await User.findOne({ where: { id } });
@@ -59,7 +53,7 @@ async function handleNewConnection(ws: WebSocket, token: string) {
     return;
   }
 
-  const player: Player = { id: playerId ,name : user.username, ws, elo: user.elo };
+  const player: Player = { id: playerId, name: user.username, ws, elo: user.elo, joinedAt: Date.now() };
 
   ws.on('message', (message: string) => {
     try {
@@ -72,8 +66,15 @@ async function handleNewConnection(ws: WebSocket, token: string) {
   });
 
   ws.on('close', () => {
-    queue.splice(queue.findIndex((p) => p.id === player.id), 1);
+    for (const [key, queue] of matchmakingQueue.entries()) {
+      queue.splice(queue.findIndex((p) => p.id === player.id), 1);
+      matchmakingQueue.set(key, queue);
+    }
   });
+  ws.on('error', (error) => {
+    logError("WebSocket error: \n", error);
+  });
+  
 }
 
 wss.on('connection', (ws: WebSocket, req) => {
@@ -86,62 +87,48 @@ wss.on('connection', (ws: WebSocket, req) => {
   }
 });
 
-function findMatch(nb_players: number = 2) {
-  if (queue.length >= nb_players) {
-    const players: Player[] = queue.splice(0, nb_players);
-    const gameId = uuidv4();
-    activeGames.set(gameId, players);
-    logformat("Game is full, starting game", gameId);
-
-    players.forEach((player) => {
-      const opponent = players.find((p) => p.id !== player.id);
-      if (opponent) {
-        player.ws.send(JSON.stringify({
-          event: 'match_found',
-          gameId,
-          opponent: opponent.id,
-          name: opponent.name,
-          id: player.id
-        }));
-      }
-    });
-  }
-}
-
 
 function handleMessage(data: any, player: Player) {
   try {
     switch (data.event) {
       case 'join_queue':
-        queue.push(player);
-        findMatch();
+        enqueuePlayer(player,data.format);
         break;
-      case 'create_private_game':
+      case 'create_private_game': {
         const gameCode = uuidv4().slice(0, 6);
-        privateGames.set(gameCode, { host: player, nb : 1  , maxPlayers : data.nb_players, isFriend: data.isFriend, guest: [player] });
+        privateGames.set(gameCode, { host: player, nb: 1, maxPlayers: data.nb_players, guest: [player] });
         player.ws.send(JSON.stringify({ event: 'private_game_created', gameCode }));
         break;
+      }
       case 'join_private_game':
-        joinPrivateGame(player, data, privateGames, activeGames);
+        joinPrivateGame(player, data);
         break;
-      case 'game_result':
-        handleGameResult(activeGames, data, player);
-        break;
-      case 'game_update':
-        const activeGame = activeGames.get(data.gameId);
-        if (activeGame) {
-          activeGame.forEach((p) => {
-            p.ws.send(JSON.stringify({ event: 'game_update', data: data.payload, sender: data.sender }));
-          });
+      case 'move_paddle': {
+        const game = activeGames.get(data.gameId);
+        if (game) {
+          game.engine.movePaddle(data.side, data.direction);
         }
         break;
+      }
     }
   } catch (error) {
     console.error("Error handling message:", error);
     player.ws.send(JSON.stringify({ event: 'error', message: 'An error occurred while processing your request.' }));
   }
 }
-   
+
+const formats: MatchFormat[] = [
+  { playersPerTeam: 1, teams: 2 },  // 1v1
+  { playersPerTeam: 2, teams: 2 },  // 2v2
+  // { playersPerTeam: 1, teams: 4 }   // 1v1v1v1
+];
+
+setInterval(() => {
+  for (const format of formats) {
+    tryMatchmaking(format);
+  }
+}, 1000);
+
 server.listen(Number(PORT), () => {
   console.log(`WebSocket Server running on port ${PORT}`);
 });

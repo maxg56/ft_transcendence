@@ -6,6 +6,8 @@ import { TranslationProvider } from './context/TranslationContext.tsx'
 import { ProfileProvider } from './context/ProfilContext.tsx'
 import { TournamentProvider } from './context/ResultsContext.tsx'
 import { ModeProvider } from "../src/context/ModeContext";
+import { ConfKeyProvider } from './context/ConfKeyContext.tsx'
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
     <TranslationProvider>
       <TournamentProvider>
         <ModeProvider>
-        <App />
+          <ConfKeyProvider>
+            <App />
+          </ConfKeyProvider>
         </ModeProvider>
       </TournamentProvider>
     </TranslationProvider>

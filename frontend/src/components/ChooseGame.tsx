@@ -25,7 +25,7 @@ const Modeduel = () => {
       <div className="flex flex-col items-center justify-center h-[670px]">
         <div className="flex space-x-8 mb-8">
           <button className="px-12 py-3 bg-orange-300 text-black text-3xl rounded hover:bg-gray-200"
-          onClick={() => navigate('/duel')}>
+          onClick={() => navigate('/duel2')}>
             {t("Local")}
           </button>
           <button

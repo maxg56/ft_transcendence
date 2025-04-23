@@ -1,18 +1,19 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import User from '../models/User'
+import { sendSuccess, sendError } from '../utils/reply';
 
-export const getRank = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getElo = async (request: FastifyRequest, reply: FastifyReply) => {
 try {
-	const { id } = request.params as { id: string};
-	const rank = await User.findByPk(id, {attributes: ['elo']});
+	const id = request.user.id
+	const elo = await User.findByPk(id, {attributes: ['elo']});
 
-	if (!rank)
-		return reply.code(404).send({ message: 'rank not find' });
+	if (!elo)
+		return reply.code(404).send({ message: 'elo not find' });
 
-	return reply.send(rank);
+	return sendSuccess(reply, elo, 200);
 
 } catch (error) {
 	request.log.error(error);
-	return reply.code(500).send({message: 'server error'});
+	return sendError(reply, 'server error', 500);
 }
 }

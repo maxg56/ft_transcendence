@@ -110,13 +110,13 @@ const Accueil: React.FC = () => {
         <div className="scale-95">
         <div>
         <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
-        <div className="absolute top-20 right-20 z-50">
+        <div className="absolute top-20 right-20 z-50 text-white">
             <SettingsModal />
         </div>
         <div className="w-3/5 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
         <div className="relative text-center">
          {/* Centered Title */}
-        <h1 className="neonText text-9xl text-blue-100">ft_transcendence</h1>
+        <h1 className="neonText text-7xl text-blue-100">ft_transcendence</h1>
         </div>
         </div>
         {/* CRT Scanline Sweep */}

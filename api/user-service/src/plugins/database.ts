@@ -44,6 +44,11 @@ async function databasePlugin(fastify: any) {
 		// await User.sync({ alter: true })
 		// console.log("✅ User table synchronized")
 		
+		// await sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+		// await sequelize.sync({ force: true })
+		// await sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
+		// console.log('sync force all tables')
+		
 	} catch (error) {
 		console.error('❌ Unable to connect to the database:', error);
 		throw error;

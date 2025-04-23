@@ -9,7 +9,6 @@ const Hub: React.FC = () => {
     <div>
      <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
      <Header/>
-      {/* CRT Scanline Sweep */}
       <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
       <div className="w-full h-full absolute top-[-100%] scanline-glow" />
       </div>

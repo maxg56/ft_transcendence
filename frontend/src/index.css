@@ -1,12 +1,9 @@
 body {
   margin: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #02090e;
-  font-family: 'JustMyType', sans-serif;
+  font-family: 'GamePlayed', sans-serif;
   font-size: 30px;
   letter-spacing: 3px;
   font-weight: bold;
@@ -18,7 +15,6 @@ code {
 }
 
 .rounded-container {
-  /* border-radius: 150px; */
   overflow: hidden;
   background-color: #02090e;
 }
@@ -46,7 +42,7 @@ code {
 
 .neonText {
   position: relative;
-  font-family: 'JustMyType';
+  font-family: 'GamePlayed';
   letter-spacing: 4px;
   font-weight: bold;
   background: linear-gradient(90deg, #0400FF, #0400FF, #0400FF, #0400FF);
@@ -155,16 +151,33 @@ code {
   transform: scale(1.05);
 }
 
+.button-header {
+  background: #3836C9;
+  color: #000;
+  box-shadow:
+  0 0 5px #1814e7,
+  0 0 15px #1814e7,
+  0 0 30px #1814e7,
+  0 0 50px #1814e7;
+  /* animation: flicker 3s infinite; */
+  transition: all 0.2s ease-in-out;
+}
+.button-header:hover {
+  background: #cdcdf5;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 15px #0400FF,
+    0 0 30px #0400FF,
+    0 0 50px #0400FF;
+  transform: scale(1.05);
+}
+
 
 .flicker {
   animation: flicker 0.5s infinite;
 }
 
-
 @font-face {
-  font-family: 'JustMyType';
-  src: url('fonts/JustMyType-KePl.ttf') format('truetype');
+  font-family: 'GamePlayed';
+  src: url('fonts/GamePlayed-vYL7.ttf') format('truetype');
 }
-
-
-

@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { Environment } from '@react-three/drei';
 import  useNavigation from "../hooks/useNavigation";
 import { useTranslation } from "../context/TranslationContext";
-import myFont from '../fonts/JustMyType-KePl.ttf';
+import myFont from '../fonts/GamePlayed-vYL7.ttf';
 
 
 export function RotatingCube() {
@@ -35,7 +35,6 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         font={myFont}
-        letterSpacing={0.1}
       >
         {t('SOLO')}
       </Text>
@@ -48,7 +47,6 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         rotation={[0, Math.PI, 0]}
-        letterSpacing={0.1}
         font={myFont}
       >
         {t('DUEL')}
@@ -62,7 +60,6 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         rotation={[0, Math.PI / 2, 0]}
-        letterSpacing={0.1}
         font={myFont}
       >
         {t('MULTI')}
@@ -76,7 +73,6 @@ export function RotatingCube() {
         anchorX="center"
         anchorY="middle"
         rotation={[0, -Math.PI / 2, 0]}
-        letterSpacing={0.1}
         font={myFont}
       >
         {t('OTHER')}
@@ -98,7 +94,7 @@ function Scene() {
       <pointLight position={[10, 10, 10]} />
       <Stars radius={100} depth={50} count={5000} factor={4} fade />
       
-      <RotatingCube />
+      {/* <RotatingCube /> */}
       
       <group position={[0.7, -2, 0]}>
         <Button3D 
@@ -109,7 +105,7 @@ function Scene() {
         <Button3D 
           text={t('DUEL')} 
           position={[-1, 0, 0]} 
-          onClick={() => navigate("/duel")} 
+          onClick={() => navigate("/modeduel")} 
         />
         <Button3D 
           text={t('MULTI')} 

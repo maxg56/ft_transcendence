@@ -4,6 +4,8 @@ import { useProfileContext } from "../context/ProfilContext";
 import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import VsButton from "./Vs/VsButton";
+import MultiButton from "./Multi/MultiButton";
+import TourButton from "./Tournament/TourButton";
 
 const Header = () => {
   const { navigate } = useNavigation();
@@ -32,9 +34,7 @@ const Header = () => {
         {/* Navigation Buttons */}
         <div className="flex items-center justify-between gap-4">
           <VsButton />
-          <button className="button-header px-7 py-1 text-black rounded hover:bg-gray-300 transition">
-            {t("Multijoueur")}
-          </button>
+          <MultiButton />
           <button className="button-header px-7 py-1 text-black rounded hover:bg-gray-300 transition">
             {t("Tournois")}
           </button>

@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import dotenv from 'dotenv';
 import database from './plugins/database';
-import userRoutes from './routes/routes';
+import statsRoutes from './routes/routes';
 import User from './models/User';
 import auth from './plugins/auth';
 import Match from './models/Match';
@@ -11,13 +11,13 @@ dotenv.config();
 
 const fastify = Fastify({ logger: true });
 
-const PORT = process.env.PORT_USER || 3000;
+const PORT = process.env.PORT_STATS || 3000;
 
 // Plugins
 fastify.register(database);
 fastify.register(auth);
 // Plugin-routes
-fastify.register(userRoutes);
+fastify.register(statsRoutes);
 
 
 
@@ -32,7 +32,7 @@ fastify.ready().then(() => {
 const start = async () => {
 	try {
 	await fastify.listen({ port: Number(PORT), host: '0.0.0.0' });
-	console.log(`User Service launched on http://localhost:${PORT}`);
+	console.log(`Stats Service launched on http://localhost:${PORT}`);
 	} catch (err) {
 	fastify.log.error(err);
 	process.exit(1);

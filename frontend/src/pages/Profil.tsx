@@ -2,16 +2,25 @@ import React, { useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
 import { User } from "lucide-react";
+import { useTranslation } from "../context/TranslationContext";
 import FriendsPanel from "../components/FriendsComponent";
+import SettingsPage from "../components/SettingsComponent";
 
-type Options = "Amis" | "Settings" | "Stats Pong" | "Stats Shifumi"
+type Options = "friends" | "settings" | "pong" | "shifumi";
 
 const Profile: React.FC = () => {
   const { profileImage, setProfileImage } = useProfileContext();
   const { navigate } = useNavigation();
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectOptions, setSelectedOption] = useState<Options>("Amis");
+  const [selectOptions, setSelectedOption] = useState<Options>("friends");
 
+  const labelMap: Record<Options, string> = {
+    friends: t("Amis"),
+    settings: t("Options"),
+    pong: t("Stats Pong"),
+    shifumi: t("Stats Shifumi"),
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -35,11 +44,10 @@ const Profile: React.FC = () => {
 
   const username = "User";
   const rank = "Diamant";
+
   return (
     <div className="p-4 flex flex-col space-y-2 min-h-screen text-white">
-  
       <div className="flex items-start justify-between mb-8">
-  
         <div className="flex items-start space-x-6">
           <div className="flex flex-col items-center">
             <div
@@ -52,7 +60,7 @@ const Profile: React.FC = () => {
                 <User className="w-12 h-12 text-gray-500" />
               )}
             </div>
-  
+
             {profileImage && (
               <button
                 className="text-sm text-red-400 hover:underline mt-2"
@@ -62,16 +70,16 @@ const Profile: React.FC = () => {
               </button>
             )}
           </div>
-  
+
           <div className="flex flex-col justify-center">
             <span className="text-2xl font-semibold">{username}</span>
           </div>
         </div>
-  
+
         <div className="flex items-start space-x-6">
           <span className="text-lg text-gray-300 mt-2">{rank}</span>
         </div>
-  
+
         <input
           type="file"
           ref={fileInputRef}
@@ -80,10 +88,10 @@ const Profile: React.FC = () => {
           className="hidden"
         />
       </div>
-  
+
       <div className="flex flex-1 gap-4 w-full max-w-8xl">
         <nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col space-y-8 text-black">
-          {(["Amis", "Settings", "Stats Pong", "Stats Shifumi"] as Options[]).map((opt) => (
+          {(["friends", "settings", "pong", "shifumi"] as Options[]).map((opt) => (
             <button
               key={opt}
               onClick={() => setSelectedOption(opt)}
@@ -91,42 +99,26 @@ const Profile: React.FC = () => {
                 selectOptions === opt ? "font-bold bg-gray-300" : "hover:bg-gray-300"
               }`}
             >
-              {opt}
+              {labelMap[opt]}
             </button>
           ))}
-           <button
+          <button
             onClick={() => navigate("/hub")}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             Return Hub
           </button>
         </nav>
-  
+
         <div className="flex-1 bg-gray-100 p-6 rounded-md text-black">
-          {selectOptions === "Amis" && (
-            <div>
-              <FriendsPanel/>
-            </div>
-          )}
-          {selectOptions === "Settings" && (
-            <div>
-              <h3 className="font-bold mb-2">Parametres</h3>
-            </div>
-          )}
-          {selectOptions === "Stats Pong" && (
-            <div>
-              <h3 className="font-bold mb-2">Stats Pong</h3>
-            </div>
-          )}
-          {selectOptions === "Stats Shifumi" && (
-            <div>
-              <h3 className="font-bold mb-2">Stats Shifumi</h3>
-            </div>
-          )}
+          {selectOptions === "friends" && <FriendsPanel />}
+          {selectOptions === "settings" && <SettingsPage />}
+          {selectOptions === "pong" && <h3 className="font-bold mb-2">Stats Pong</h3>}
+          {selectOptions === "shifumi" && <h3 className="font-bold mb-2">Stats Shifumi</h3>}
         </div>
       </div>
     </div>
-  ); 
+  );
 };
 
 export default Profile;

@@ -6,7 +6,8 @@ import SettingsModal from "../components/SettingsModal";
 import StarsBackground from "../animation/StarsBackground";
 import {useAuth} from "../hooks/auth/useAuth";
 import PasswordStrengthBar from "../components/Auth/PasswordStrengthBar";
-import { Toaster } from "@/components/ui/sonner"
+
+
 
 
 
@@ -34,7 +35,7 @@ const Accueil: React.FC = () => {
     const { t } = useTranslation();
     const { navigate } = useNavigation();
 
-    const { signIn, signUp } = useAuth({
+    const { signIn, signUp ,verify2FA} = useAuth({
         onSuccess: () => {
           resetModals();
           navigate("/hub");
@@ -43,6 +44,9 @@ const Accueil: React.FC = () => {
 
     const [isSignInOpen, setIsSignInOpen] = useState(false);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+    const [is2FARequired, setIs2FARequired] = useState(false);
+    const [twoFACode, setTwoFACode] = useState("");
+
 
     const [login, setLogin] = useState("");
     const [passwordSignIn, setPasswordSignIn] = useState("");
@@ -119,6 +123,23 @@ const Accueil: React.FC = () => {
                         disabled={!username || !mail || !passwordSignUp || !confirmPassword}
                     >
                         {t("Inscription")}
+                    </button>
+                </AuthModal>
+                <AuthModal isOpen={is2FARequired} onClose={() => setIs2FARequired(false)}>
+                    <h2 className="text-lg font-bold mb-4">{t("Authentification à deux facteurs")}</h2>
+                    <input
+                      className="w-full px-3 py-2 border rounded mb-4"
+                      type="text"
+                      placeholder={t("Code 2FA")}
+                      value={twoFACode}
+                      onChange={(e) => setTwoFACode(e.target.value)}
+                    />
+                    <button
+                      className={`px-4 py-2 rounded w-full ${twoFACode ? "bg-blue-300 text-black hover:bg-gray-200" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                      onClick={() => verify2FA(twoFACode)}
+                      disabled={!twoFACode}
+                    >
+                      {t("Vérifier le code")}
                     </button>
                 </AuthModal>
             </div>

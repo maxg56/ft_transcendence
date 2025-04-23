@@ -14,7 +14,8 @@ async function login_controller(username: string, password: string, reply: Fasti
     }
 
     const token = await reply.jwtSign({ username: user.username, id: user.id });
-    return reply.send({ token });
+    const refreshtoken = await reply.jwtSign({ username: user.username, id: user.id }, { expiresIn: '7d' });
+    return reply.send({ token, refreshtoken});
 } 
 
 export default {
@@ -43,5 +44,17 @@ export default {
     catch (err) {
       return reply.status(500).send({ error: 'Error during registration' });
     }
+  },
+
+  async refresh(req: FastifyRequest<{ Body: { refreshtoken: string } }>, reply: FastifyReply) {
+    try {
+      const token = await reply.jwtSign({ username: req.user.username, id: req.user.id  });
+      return reply.send({ token });
+    } catch (err) {
+      console.error('Error refreshing token:', err);
+      return reply.status(401).send({ error: 'Invalid or expired refresh token' });
+    }
   }
+  
+  
 };

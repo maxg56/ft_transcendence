@@ -4,7 +4,7 @@ import {logformat,logError} from "./log"
 import { activeGames, privateGames } from "../config/data";
 import { GameEngineFactory } from "./GameEngineFactory";
 import {startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
-import { rome } from "../type";
+import { room } from "../type";
 
 
 async function joinPrivateGame(
@@ -34,7 +34,7 @@ async function joinPrivateGame(
     const gameId = uuidv4();
     logformat("Game is full, starting game", gameId);
     privateGames.delete(data.gameCode);
-    const rome : rome = {
+    const room : room = {
       players: game.guest,
       engine: GameEngineFactory.createEngine("1v1"),
       autoStartTimer: null,
@@ -45,7 +45,7 @@ async function joinPrivateGame(
     }
 
     
-    activeGames.set(gameId, rome);
+    activeGames.set(gameId, room);
     startAutoMatchGameTimer(gameId);
 
     for (const guest of game.guest) {

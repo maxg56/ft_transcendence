@@ -16,7 +16,7 @@ export type PlayerSide = PlayerSide2v2; // Si tu veux un superset par défaut
 export type GameScore = GameScore1v1 | GameScore2v2 | TeamScore ;
     
 
-export type rome = { 
+export type room = { 
     players: Player[],
     engine: GameEngine ,
     autoStartTimer: NodeJS.Timeout | null,
@@ -25,4 +25,4 @@ export type rome = {
     isPongGame: boolean,
     startTime: Date 
 };
-export type GameMode = '1v1' | '2v2' | 'ffa4';
+export type GameMode = '1v1' | '2v2' | 'ffa4' | 'tournament' | 'custom';

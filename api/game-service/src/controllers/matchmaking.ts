@@ -5,7 +5,7 @@ import { Player } from '../models/Player';
 import { logformat, logError } from './log';
 import { WebSocket } from 'ws';
 import { activeGames ,matchmakingQueue } from '../config/data';
-import { GameMode, rome } from '../type';
+import { GameMode, room } from '../type';
 import {startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
 
 
@@ -90,7 +90,7 @@ export function findMatchWithPlayers(players: Player[], format: MatchFormat,isPo
     const gameId = uuidv4();
     const mode: GameMode = getQueueKey(format);
     const engine = GameEngineFactory.createEngine(mode);
-    const rome : rome = {
+    const room : room = {
       players: players,
       mode: mode,
       engine: engine,
@@ -99,7 +99,7 @@ export function findMatchWithPlayers(players: Player[], format: MatchFormat,isPo
       autoStartTimer: null,
       startTime: new Date(),
     }
-    activeGames.set(gameId,rome);
+    activeGames.set(gameId,room);
     startAutoMatchGameTimer(gameId);
 
 

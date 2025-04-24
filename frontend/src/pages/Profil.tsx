@@ -5,6 +5,7 @@ import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import FriendsPanel from "../components/profil/FriendsComponent";
 import SettingsPage from "../components/profil/SettingsComponent";
+import StatsPong from "@/components/profil/StatsPongComponent";
 
 type Options = "friends" | "settings" | "pong" | "shifumi";
 
@@ -113,7 +114,7 @@ const Profile: React.FC = () => {
         <div className="flex-1 bg-gray-100 p-6 rounded-md text-black">
           {selectOptions === "friends" && <FriendsPanel />}
           {selectOptions === "settings" && <SettingsPage />}
-          {selectOptions === "pong" && <h3 className="font-bold mb-2">Stats Pong</h3>}
+          {selectOptions === "pong" && <StatsPong/>}
           {selectOptions === "shifumi" && <h3 className="font-bold mb-2">Stats Shifumi</h3>}
         </div>
       </div>

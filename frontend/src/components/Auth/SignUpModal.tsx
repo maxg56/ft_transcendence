@@ -72,7 +72,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
         onKeyDown={handleKeyDown}
         className={`${shake ? "animate-shake" : ""}`}
       >
-        <h2 className="text-lg font-bold mb-4 text-center">
+        <h2 className="px-2 py-2 rounded w-full  text-center">
           {t("Inscription")}
         </h2>
 
@@ -105,7 +105,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
         <PasswordInput
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          name={t("Confirmer le mot de passe")}
+          placeholder={t("Confirmer le mot de passe")}
         />
         <button
           className={`px-4 py-2 rounded w-full ${

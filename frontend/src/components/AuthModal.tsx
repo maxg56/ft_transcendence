@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils"
 
 type AuthModalProps = {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    className?: string;
 };
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, children }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, children, className }) => {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
@@ -17,12 +19,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, children 
 
         if (isOpen) {
             window.addEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = "hidden"; // empêche le scroll
+            document.body.style.overflow = "hidden";
         }
-
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = ""; // restaure le scroll
+            document.body.style.overflow = "";
         };
     }, [isOpen, onClose]);
 
@@ -30,13 +31,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, children 
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-1 z-10 flex items-center justify-center bg-black bg-opacity-50"
             role="dialog"
             aria-modal="true"
+            aria-labelledby="modal-title"
+            aria-label="Authentication modal"
             onClick={onClose}
         >
             <div
-                className="relative bg-white w-full max-w-3xl mx-4 md:mx-auto p-8 rounded-2xl shadow-xl"
+                className={cn("grid bg-white  max-w-3xl mx-4 md:mx-auto p-8 rounded-2xl shadow-xl transform transition-all duration-200 scale-95 animate-fade-in", className)}
                 onClick={(e) => e.stopPropagation()}
             >
                 <button

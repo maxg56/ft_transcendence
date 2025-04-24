@@ -3,7 +3,7 @@ import { useTranslation } from "@/context/TranslationContext";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { AuthModal } from "../AuthModal";
 import PasswordInput from "./PasswordInput";
-
+import TwoFAModal from "./TwoFAModal";
 interface SignInModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,7 +15,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const { signIn } = useAuth({
+  const {
+    signIn,
+    needs2FA,
+    cancel2FA
+  } = useAuth({
     onSuccess: () => {
       onClose();
     },
@@ -40,8 +44,9 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
+    <>
     <AuthModal isOpen={isOpen} onClose={onClose}>
-        <h2 className="text-2xl font-bold mb-4 text-center">{t("Connexion")}</h2>
+        <h2 className="`px-2 py-2 rounded w-full  text-center">{t("Se connecter")}</h2>
 
         {error && (
             <div className="border border-red-500 bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
@@ -50,7 +55,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
         )}
       <input
         aria-label={t("Nom d'utilisateur")}
-        className={`w-full px-3 py-2 border rounded mb-4 ${error != null   ? "border-red-500" : ""}`}
+        className={`w-full px-3 py-2 border rounded mb-4`}
         type="text"
         placeholder={t("Nom d'utilisateur")}
         value={login}
@@ -60,7 +65,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
       <PasswordInput
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        name={t("Mot de passe")}
+        placeholder={t("Mot de passe")}
       />
 
       <button
@@ -71,7 +76,13 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
       >
         {t("Se connecter")}
       </button>
+        
     </AuthModal>
+    <TwoFAModal
+        isOpen={needs2FA}
+        onClose={cancel2FA}
+      />
+    </>
   );
 };
 

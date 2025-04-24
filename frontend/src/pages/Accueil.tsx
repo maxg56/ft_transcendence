@@ -4,17 +4,15 @@ import SettingsModal from "@/components/SettingsModal";
 import StarsBackground from "@/animation/StarsBackground";
 import SignInModal from "@/components/Auth/SignInModal";
 import SignUpModal from "@/components/Auth/SignUpModal";
-import TwoFAModal from "@/components/Auth/TwoFAModal";
-import { useAuth } from "@/hooks/auth/useAuth";
+
 
 const Accueil: React.FC = () => {
     const { t } = useTranslation();
     const [isSignInOpen, setIsSignInOpen] = useState(false);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-    const { needs2FA, cancel2FA } = useAuth();
-    console.log("needees2FA", needs2FA);
 
-    const closeModal = (modal: "signIn" | "signUp" | "cd") => {
+
+    const closeModal = (modal: "signIn" | "signUp" ) => {
         modal === "signIn" ? setIsSignInOpen(false) : setIsSignUpOpen(false);
     };
 
@@ -45,7 +43,6 @@ const Accueil: React.FC = () => {
                 </div>
                 <SignInModal isOpen={isSignInOpen} onClose={() => closeModal("signIn")} />
                 <SignUpModal isOpen={isSignUpOpen} onClose={() => closeModal("signUp")} />
-                <TwoFAModal isOpen={needs2FA} onClose={cancel2FA} />
             </div>
         </div>
     );

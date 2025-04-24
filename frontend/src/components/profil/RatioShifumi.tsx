@@ -35,7 +35,7 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function RatioPong() {
+export function RatioShifumi() {
   const totalMatches = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.count, 0)
   }, [])

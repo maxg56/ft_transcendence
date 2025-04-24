@@ -31,7 +31,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function GraphEloPong() {
+export function GraphEloShifumi() {
   return (
     <Card>
       <CardHeader>

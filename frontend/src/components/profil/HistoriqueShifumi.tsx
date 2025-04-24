@@ -31,7 +31,7 @@ const matchHistory = [
 
 const ITEMS_PER_PAGE = 10
 
-export function HistoriquePong() {
+export function HistoriqueShifumi() {
 	const [page, setPage] = useState(0)
 	const start = page * ITEMS_PER_PAGE
 	const end = start + ITEMS_PER_PAGE
@@ -50,9 +50,8 @@ export function HistoriquePong() {
 	}
 
 	return (
-		<Card>
-			
-		<div className="flex flex-col gap-4 w-full">
+		<Card >
+		<div className="flex flex-col gap-4 w-full m-auto">
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -76,7 +75,7 @@ export function HistoriquePong() {
 				</TableBody>
 			</Table>
 
-			<div className="flex justify-between m-4">
+			<div className="flex justify-between">
 				<Button
 					onClick={handlePrev}
 					disabled={page === 0}

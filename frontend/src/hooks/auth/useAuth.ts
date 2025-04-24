@@ -13,16 +13,18 @@ function validateSignUp(username: string, email: string, password: string, confi
   return null;
 }
 
-export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
+export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onError?: (err: string) => void } = {}) {
   const [error, setError] = useState<string | null>(null);
-  const [needs2FA, setNeeds2FA] = useState(true);
+  const [needs2FA, setNeeds2FA] = useState(false);
   const [preToken, setPreToken] = useState<string | null>(null);
   const { navigate } = useNavigation();
 
   const signIn = useCallback(async (username: string, password: string) => {
     if (!username || !password) {
-      setError("Champs manquants");
-      toast.error("Champs manquants");
+      const errorMessage = "Champs manquants";
+      setError(errorMessage);
+      toast.error(errorMessage);
+      onError?.(errorMessage); // Call onError callback
       return;
     }
     try {
@@ -35,9 +37,10 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       const data = await res.json();
       if (!res.ok) throw new Error(`Erreur ${res.status}: ${data?.message || "Erreur inconnue"}`);
 
-      if (data.requires2FA) {
+      if (data.twoFactorRequired) {
+        console.log("2FA requis",needs2FA );
         setNeeds2FA(true);
-        setPreToken(data.preToken);
+        setPreToken(data.tempToken);
         toast.info("Code 2FA requis");
         return;
       }
@@ -50,15 +53,23 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       onSuccess?.();
       navigate("/hub");
     } catch (err) {
-      setError("Erreur lors de la connexion");
-      toast.error("Erreur lors de la connexion");
+      const errorMessage = "Erreur lors de la connexion";
+      setError(errorMessage);
+      toast.error(errorMessage);
+      onError?.(errorMessage); // Call onError callback
       console.error(err);
     }
-  }, [onSuccess, navigate]);
-
+  }, [onSuccess, navigate, onError]);
+  const cancel2FA = () => {
+    setNeeds2FA(false);
+    setPreToken(null); // ou autre état temporaire utilisé pour stocker le token avant validation
+  };
+  
   const verify2FA = useCallback(async (code: string) => {
     if (!preToken) {
-      toast.error("Aucun token de vérification trouvé");
+      const errorMessage = "Aucun token de vérification trouvé";
+      toast.error(errorMessage);
+      onError?.(errorMessage); // Call onError callback
       return;
     }
     try {
@@ -80,16 +91,19 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       onSuccess?.();
       navigate("/hub");
     } catch (err) {
-      toast.error("Code 2FA invalide");
+      const errorMessage = "Code 2FA invalide";
+      toast.error(errorMessage);
+      onError?.(errorMessage); // Call onError callback
       console.error("Erreur 2FA:", err);
     }
-  }, [onSuccess, preToken, navigate]);
+  }, [onSuccess, preToken, navigate, onError]);
 
   const signUp = useCallback(async (username: string, email: string, password: string, confirmPassword: string) => {
     // const validationError = validateSignUp(username, email, password, confirmPassword);
     // if (validationError) {
     //   setError(validationError);
     //   toast.error(validationError);
+    //   onError?.(validationError); 
     //   return;
     // }
     try {
@@ -105,24 +119,21 @@ export function useAuth({ onSuccess }: { onSuccess?: () => void } = {}) {
       onSuccess?.();
       navigate("/hub");
     } catch (err) {
-      setError("Erreur lors de l'inscription");
-      toast.error("Erreur lors de l'inscription");
+      const errorMessage = "Erreur lors de l'inscription";
+      setError(errorMessage);
+      toast.error(errorMessage);
+      onError?.(errorMessage); // Call onError callback
       console.error(err);
     }
-  }, [onSuccess, navigate]);
-
-  const logout = useCallback(() => {
-    document.cookie = "token=; path=/; max-age=0; Secure; SameSite=Strict";
-    toast.success("Déconnexion réussie");
-    navigate("/");
-  }, [navigate]);
+  }, [onSuccess, navigate, onError]);
 
   return {
     signIn,
     signUp,
     verify2FA,
-    logout,
+    cancel2FA,
     needs2FA,
+    preToken,
     error,
   };
 }

@@ -8,14 +8,18 @@ import { ProfileProvider } from './context/ProfilContext.tsx'
 import { TournamentProvider } from './context/ResultsContext.tsx'
 import { ModeProvider } from "../src/context/ModeContext";
 import { Toaster } from "@/components/ui/sonner"
+import { ConfKeyProvider } from './context/ConfKeyContext.tsx'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ProfileProvider>
     <TranslationProvider>
       <TournamentProvider>
         <ModeProvider>
-        <App />
-        <Toaster />
+          <ConfKeyProvider>
+            <App />
+            <Toaster />
+          </ConfKeyProvider>
         </ModeProvider>
       </TournamentProvider>
     </TranslationProvider>

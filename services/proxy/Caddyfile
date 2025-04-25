@@ -1,7 +1,15 @@
+{
+	log access-json {
+    include http.log.access.foo
+    output file /var/log/access-foo.json
+    format json
+  }
+
+}
 
 localhost:443, {$HOSTNAME}:443 {
   tls internal
-
+  log foo
   #Frontend routes
   handle {
     # Frontend main route

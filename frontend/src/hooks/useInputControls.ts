@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
 import { useKeyboard } from '../context/KeyboardContext';
-import { useConfKey } from './useConfKey';
-import { useWebSocket } from '../context/WebSocketContext';
+import { useConfKey } from '../context/ConfKeyContext';
 
 export const useInputControls = (
 	leftPaddleRef: React.MutableRefObject<THREE.Mesh | null>,

@@ -5,7 +5,7 @@ class Match extends Model {
   public id!: number;
   public is_pong_game!: boolean;
   public playedAt!: Date;
-  public durationSeconds!: number;
+  public duration_seconds!: number;
 }
 
 Match.init(
@@ -21,9 +21,10 @@ Match.init(
     },
     playedAt: {
       type: DataTypes.DATE,
+      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    durationSeconds: {
+    duration_seconds: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,

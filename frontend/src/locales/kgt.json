@@ -1,7 +1,7 @@
 {
 	"Se connecter": "yI'el",
 	"Inscription": "yIpoQ",
-	"Parametres": "qoy'rup",
+	"Options": "Duh",
 	"Langue": "Hol",
 	"Email": "bIQap",
 	"Connexion": "mIS",
@@ -16,5 +16,7 @@
 	"MULTI": "JOQ",
 	"OTHER": "LATLH",
 	"Commandes": "Quj",
-	"Tournois": "wa'leS"
+	"Tournois": "wa'leS",
+	"Amis": "Jup",
+	"Modifier": "vIh"
 }

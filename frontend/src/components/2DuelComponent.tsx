@@ -49,13 +49,13 @@ const resetGame = () => {
             </div>
             <div>
               <button
-                className="neon-button bg-blue-300 mt-2 px-20 py-7 rounded text-black hover:bg-gray-200 inline-block mr-4"
+                className=" neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block mr-4"
                 onClick={resetGame}
               >
                 {t("Revanche")}
               </button>
               <button
-                className="neon-button bg-blue-300 mt-2 px-20 py-7 rounded text-black hover:bg-gray-200 inline-block"
+                className="neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block"
                 onClick={() => navigate("/hub")}
               >
                 {t("Retour au menu")}
@@ -75,14 +75,6 @@ const resetGame = () => {
           <h2>{countdown === 0 ? 'GO !' : `${countdown}...`}</h2>
         </div>
       )}
-
-      <button
-        className="absolute center-left[20%] right-4 z-50 bg-white/80 text-black font-semibold px-4 py-2 rounded-lg shadow"
-        onClick={openModal}
-      >
-        {t("Controls")}
-      </button>
-      <ControlsModal isOpen={isModalOpen} onClose={closeModal} />
 
       <KeyboardProvider>
 			  <GameCanvas

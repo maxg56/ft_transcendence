@@ -45,14 +45,14 @@ const resetGame = () => {
         {winner ? (
           <div className="flex flex-col items-center text-white ">
             <div className="absolute top-[700%] text-5xl neonText">
-            <h2>{winner} t{("a gagné !")}</h2>
+            <h2>{winner} {t("gagne !")}</h2>
             </div>
             <div>
               <button
                 className="mt-2 px-3 py-1 rounded bg-gray-300 text-black hover:bg-gray-200 inline-block mr-4"
                 onClick={resetGame}
               >
-                {t("Restart")}
+                {t("Revanche")}
               </button>
               <button
                 className="mt-2 px-3 py-1 rounded bg-gray-300 text-black hover:bg-gray-200 inline-block"

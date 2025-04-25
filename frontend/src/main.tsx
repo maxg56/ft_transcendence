@@ -9,6 +9,7 @@ import { TournamentProvider } from './context/ResultsContext.tsx'
 import { ModeProvider } from "../src/context/ModeContext";
 import { Toaster } from "@/components/ui/sonner"
 import { ConfKeyProvider } from './context/ConfKeyContext.tsx'
+import { LogoutProvider } from './hooks/useLogOut.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')!).render(
       <TournamentProvider>
         <ModeProvider>
           <ConfKeyProvider>
-            <App />
+            <LogoutProvider>
+              <App />
+            </LogoutProvider>
             <Toaster />
           </ConfKeyProvider>
         </ModeProvider>

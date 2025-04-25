@@ -1,14 +1,25 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 interface ProfileContextType {
   profileImage: string | null;
-  setProfileImage: (image: string) => void;
+  setProfileImage: (image: string | null) => void;
 }
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
 export const ProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [profileImage, setProfileImage] = useState<string | null>(null); // Image stockee globalement
+  const [profileImage, setProfileImageState] = useState<string | null>(() => {
+    return localStorage.getItem("profileImage");
+  });
+
+  const setProfileImage = useCallback((image: string | null) => {
+    if (image) {
+      localStorage.setItem("profileImage", image);
+    } else {
+      localStorage.removeItem("profileImage");
+    }
+    setProfileImageState(image);
+  }, []);
 
   return (
     <ProfileContext.Provider value={{ profileImage, setProfileImage }}>

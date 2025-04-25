@@ -1,13 +1,186 @@
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #02090e;
+  font-family: 'GamePlayed', sans-serif;
+  font-size: 30px;
+  letter-spacing: 3px;
+  font-weight: bold;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.rounded-container {
+  overflow: hidden;
+  background-color: #02090e;
+}
+
+@keyframes neonPulseMulti {
+  0% {
+    text-shadow:
+      0 0 5px #0400FF,
+      0 0 100px #0400FF,
+      0 0 105px #0400FF,
+      0 0 20px #0400FF,
+      0 0 25px #0400FF,
+      0 0 135px #0400FF;
+  }
+  100% {
+    text-shadow:
+      0 0 12px #0400FF,
+      0 0 14px #0400FF,
+      100 0 18px #0400FF,
+      0 100 12px #0400FF,
+      0 100 216px #0400FF,
+      100 0 220px #0400FF;
+  }
+}
+
+.neonText {
+  position: relative;
+  font-family: 'GamePlayed';
+  letter-spacing: 4px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #0400FF, #0400FF, #0400FF, #0400FF);
+  -webkit-background-clip: text;
+
+  animation: neonPulseMulti 1.4s ease-in-out infinite alternate;
+}
+
+/* Flicker animation */
+@keyframes flicker {
+  0%, 100% { opacity: 0.98; }
+  50% { opacity: 1; }
+} 
+
+@keyframes scanline-glide {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.scanline-glow {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 45%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 55%,
+    transparent 100%
+  );
+  animation: scanline-glide 4s linear infinite;
+  mix-blend-mode: screen;
+}
+
+
+/* Add this to your global CSS or in a Tailwind-compatible way */
+.crt {
+  position: relative;
+  background: #02090e;
+  color: #0400FF;
+  overflow: hidden;
+}
+
+.crt::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 50%
+  );
+  background-size: 100% 2px;
+  z-index: 2;
+  animation: flicker 0.10s infinite;
+}
+
+@keyframes flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.72;
+  }
+  47% {
+    opacity: 0.88;
+  }
+  49% {
+    opacity: 0.94;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  52% {
+    opacity: 0.96;
+  }
+  70% {
+    opacity: 0.98;
+  }
+}
+
+.neon-button {
+  background: #00f0ff;
+  color: #000;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 10px #0400FF,
+    0 0 20px #0400FF,
+    0 0 40px #0400FF;
+  /* animation: flicker 3s infinite; */
+  transition: all 0.2s ease-in-out;
+}
+
+.neon-button:hover {
+  background: #00f0ff;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 15px #0400FF,
+    0 0 30px #0400FF,
+    0 0 50px #0400FF;
+  transform: scale(1.05);
+}
+
+.button-header {
+  background: #3836C9;
+  color: #000;
+  box-shadow:
+  0 0 5px #1814e7,
+  0 0 15px #1814e7,
+  0 0 30px #1814e7,
+  0 0 50px #1814e7;
+  /* animation: flicker 3s infinite; */
+  transition: all 0.2s ease-in-out;
+}
+.button-header:hover {
+  background: #cdcdf5;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 15px #0400FF,
+    0 0 30px #0400FF,
+    0 0 50px #0400FF;
+  transform: scale(1.05);
+}
+
+
+.flicker {
+  animation: flicker 0.5s infinite;
+}
+
+@font-face {
+  font-family: 'GamePlayed';
+  src: url('fonts/GamePlayed-vYL7.ttf') format('truetype');
+}
+
+

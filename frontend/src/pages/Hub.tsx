@@ -1,36 +1,58 @@
 import React from "react";
+import Header from "../components/HeaderComponent";
+import { App } from "../animation/hub_animation";
+import { useMode } from "../../src/context/ModeContext";
 import useNavigation from "../hooks/useNavigation";
-import { useTranslation } from "../context/TranslationContext";
-import { useProfileContext } from "../context/ProfilContext";
-import SettingsModal from "../components/SettingsModal";
 
 const Hub: React.FC = () => {
+  const { mode } = useMode();
   const { navigate } = useNavigation();
-  const { t } = useTranslation();
-  const { profileImage } = useProfileContext();
+
+  const getStartText = () => {
+    if (mode) {
+      return (
+        <>
+          Start !<br />{mode} mode
+        </>
+      );
+    }
+    return "Start !";
+  };
+
+  const handleStart = () => {
+    if (mode === "ia") {
+      navigate("/solo");
+    } else if (mode === "humain") {
+      navigate("/duel2");
+    } else if (mode === "1 vs 1" || mode === "2 vs 2") {
+      navigate("/WaitingRoom");
+    } else {
+      navigate("/solo");
+    }
+  };
 
   return (
-    <div>
-      <header className="bg-orange-300 p-8 text-white flex justify-between items-center relative">
-        {/* Texte centré */}
-        <h1 className="text-center flex-1">Bienvenue sur Hub</h1>
-          <SettingsModal />
-        <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-          <img
-            src={profileImage || "/default-profile.png"}
-            alt="Profile"
-            className="w-12 h-12 rounded-full cursor-pointer border border-gray-300"
-            onClick={() => navigate("/profile")}
-          />
+    <div className="scale-95">
+      <div>
+        <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
+          <Header />
+          {/* CRT Scanline Sweep */}
+          <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+            <div className="w-full h-full absolute top-[-100%] scanline-glow" />
+          </div>
+          <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
+            <App />
+            <button
+              className="absolute center neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
+              onClick={handleStart}
+            >
+              {getStartText()}
+            </button>
+          </div>
         </div>
-      </header>
-      <button className=""
-        onClick={() => navigate("/duel")}>
-        {t('Duel')}
-      </button>
+      </div>
     </div>
   );
 };
 
 export default Hub;
-

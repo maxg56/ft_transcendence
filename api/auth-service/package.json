@@ -1,0 +1,32 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/jwt": "^9.1.0",
+    "@prisma/client": "^6.5.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.0.0",
+    "fastify": "^5.2.1",
+    "fastify-auth": "^1.1.0",
+    "glob": "^9.3.5",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.0",
+    "qrcode": "^1.5.4",
+    "rimraf": "^4.4.1",
+    "sequelize": "^6.37.6",
+    "speakeasy": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.5",
+    "@types/speakeasy": "^2.0.10",
+    "ts-node-dev": "^2.0.0"
+  }
+}

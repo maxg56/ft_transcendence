@@ -1,57 +1,77 @@
 import { useState } from "react"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { DoubleAuthentificationModal } from "@/components/profil/DoubleAuthenModal"
+import { DoubleAuthentificationModal } from "@/components/profil/DoubleAuthenModal" // La modale que tu as créée
+import { ConfirmationModal } from "@/components/profil/DoubleAuthenModalAnnulation" // La nouvelle modale de confirmation
+
 export function DoubleAuthentification() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isEnabled, setIsEnabled] = useState(false) // État pour gérer si le switch est activé ou non
+  const [isEnabled, setIsEnabled] = useState(false) // Gère si le switch est activé ou non
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false) // Gère l'ouverture de la modale de confirmation
 
-  // Fonction pour gérer l'ouverture de la modale
   const handleModalOpen = () => {
     setIsModalOpen(true)
   }
 
-  // Fonction pour gérer la fermeture de la modale
   const handleModalClose = () => {
     setIsModalOpen(false)
   }
 
-  // Données exemple (QR code et clé secrète)
-  const qrCode = "data:image/png;base64,..."; // Remplace par le QR code venant de ton API
-  const secretKey = "JBSWY3DPEHPK3PXP" // Remplace par la clé secrète venant de ton API
-
-  // Fonction pour activer l'authentification
   const handleActivate = () => {
     setIsEnabled(true)
     handleModalClose()
     console.log("2FA activée")
   }
 
-  // Fonction pour annuler et remettre à false
   const handleCancel = () => {
     setIsEnabled(false)
     handleModalClose()
   }
 
+  const handleDeactivationRequest = () => {
+    setIsConfirmationOpen(true)
+  }
+
+  const handleDeactivationCancel = () => {
+    setIsConfirmationOpen(false)
+  }
+
+  const handleDeactivationConfirm = () => {
+    setIsEnabled(false)
+    setIsConfirmationOpen(false)
+  }
+
   return (
     <div>
       <div className="flex items-center space-x-2">
-        <Switch
-          id="authentification"
-          checked={isEnabled} // L'état du switch dépend de `isEnabled`
-          onClick={handleModalOpen} // Ouvre la modale quand on clique sur le switch
-        />
-        <Label className="text-size-[50px]" htmlFor="authentification">Activer Authentification</Label>
+        <div
+          onClick={() => {
+            if (isEnabled) {
+              handleDeactivationRequest()
+            } else {
+              setIsEnabled(!isEnabled)
+              handleModalOpen()
+            }
+          }}
+          className={`cursor-pointer w-14 h-8 rounded-full ${isEnabled ? "bg-blue-600" : "bg-gray-300"} flex items-center justify-between p-1 transition-all duration-300 ease-in-out`}
+        >
+          <div
+            className={`w-6 h-6 bg-white rounded-full transition-all duration-300 ease-in-out ${isEnabled ? "transform translate-x-6" : ""}`}
+          />
+        </div>
+
+        <label htmlFor="authentification" className="text-xl font-semibold">Activer Authentification</label>
       </div>
 
-      {/* Appel de la modale */}
       <DoubleAuthentificationModal
         open={isModalOpen}
         onClose={handleModalClose}
-        qrCode={qrCode}
-        secretKey={secretKey}
-        onActivate={handleActivate} // Passe handleActivate pour activer la 2FA
-        onCancel={handleCancel} // Passe handleCancel pour annuler
+        onActivate={handleActivate}
+        onCancel={handleCancel} 
+      />
+
+      <ConfirmationModal
+        open={isConfirmationOpen}
+        onConfirm={handleDeactivationConfirm}
+        onCancel={handleDeactivationCancel}
       />
     </div>
   )

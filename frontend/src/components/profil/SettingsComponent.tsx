@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "../../context/TranslationContext";
 import { useConfKey } from "../../context/ConfKeyContext";
 import KeyInput from "./KeyComponent";
+import { DoubleAuthentification } from "./DoubelAuthen";
 
 const SettingsPage: React.FC = () => {
 	const { t, changeLanguage } = useTranslation();
@@ -137,7 +138,7 @@ const SettingsPage: React.FC = () => {
 			</div>
 
 			<div>
-				<div className="flex flex-row gap-3">Double Authentification</div>
+				<div className="flex flex-row gap-[230px]">Double Authentification<DoubleAuthentification/></div>
 			</div>
 		</div>
 	);

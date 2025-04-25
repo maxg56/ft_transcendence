@@ -37,7 +37,7 @@ export const useGameScene = () => {
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
   
       sceneRef.current = new THREE.Scene();
-      sceneRef.current.background = new THREE.Color(0x758695);
+      sceneRef.current.background = new THREE.Color("#141929");
   
       cameraRef.current = new THREE.PerspectiveCamera(
         50,

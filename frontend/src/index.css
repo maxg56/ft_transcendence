@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -151,6 +152,27 @@ code {
   transform: scale(1.05);
 }
 
+.button-header {
+  background: #3836C9;
+  color: #000;
+  box-shadow:
+  0 0 5px #1814e7,
+  0 0 15px #1814e7,
+  0 0 30px #1814e7,
+  0 0 50px #1814e7;
+  /* animation: flicker 3s infinite; */
+  transition: all 0.2s ease-in-out;
+}
+.button-header:hover {
+  background: #cdcdf5;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 15px #0400FF,
+    0 0 30px #0400FF,
+    0 0 50px #0400FF;
+  transform: scale(1.05);
+}
+
 
 .flicker {
   animation: flicker 0.5s infinite;
@@ -160,3 +182,5 @@ code {
   font-family: 'GamePlayed';
   src: url('fonts/GamePlayed-vYL7.ttf') format('truetype');
 }
+
+

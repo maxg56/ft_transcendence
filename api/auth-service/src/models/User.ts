@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database'; // Import correct
+import sequelize from '../config/database';
 
 class User extends Model {
   public id!: number;
@@ -12,6 +12,9 @@ class User extends Model {
   public elo!: number;
   public created_at!: Date;
   public updated_at!: Date;
+  public lastLogin_at!: Date;
+  public twoFactorSecret!: string | null;
+  public is2FAEnabled!: boolean;
 }
 
 User.init(
@@ -65,6 +68,19 @@ User.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       onUpdate: 'CASCADE',
+    },
+    lastLogin_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    twoFactorSecret: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    is2FAEnabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {

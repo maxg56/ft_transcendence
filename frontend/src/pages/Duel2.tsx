@@ -10,7 +10,6 @@ const Duel2: React.FC = () => {
       <div className=" scale-95">
      <div>
       <div className="w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
-      <Header/>
       <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
         <DuelComponent />
       </div>

@@ -57,7 +57,6 @@ Un commit suivant cette convention est structuré de la façon suivante :
 **En-tête**
    Commence par le type suivi d’un deux-points et éventuellement d’un scope entre parenthèses.
    *Exemple :* `feat(auth): ajout de la fonctionnalité de double authentification`.
-
 ### ✅ **Format de réponse**
 
 #### Succès (`2xx`)
@@ -90,4 +89,3 @@ Un commit suivant cette convention est structuré de la façon suivante :
 ```
 Authorization: Bearer <token>
 ```
-

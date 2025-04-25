@@ -10,9 +10,9 @@ class User extends Model {
   public twoFA_enabled!: boolean;
   public twoFA_secret!: string | null;
   public elo!: number;
-  public lastLogin_at!: Date;
   public created_at!: Date;
   public updated_at!: Date;
+  public lastLogin_at!: Date;
 }
 
 User.init(
@@ -56,11 +56,6 @@ User.init(
       allowNull: false,
       defaultValue: 1000,
     },
-    lastLogin_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -72,6 +67,11 @@ User.init(
       defaultValue: DataTypes.NOW,
       onUpdate: 'CASCADE',
     },
+    lastLogin_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    }
   },
   {
     sequelize,

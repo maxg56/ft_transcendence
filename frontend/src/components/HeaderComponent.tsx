@@ -1,19 +1,22 @@
 import React from "react";
 import useNavigation from "../hooks/useNavigation";
 import { useProfileContext } from "../context/ProfilContext";
-import SettingsModal from "./SettingsModal";
 import { User } from "lucide-react";
+import { useTranslation } from "../context/TranslationContext";
+import VsButton from "./Vs/VsButton";
+import MultiButton from "./Multi/MultiButton";
 
-const Header: React.FC = () => {
+const Header = () => {
   const { navigate } = useNavigation();
   const { profileImage } = useProfileContext();
+  const { t } = useTranslation();
 
   return (
-    <div className="w-3/5 h-22 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
-      <div className="flex items-center justify-between">
+    <div>
+      <div className="w-3/5 h-22 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
         {/* Profile */}
         <div
-          className="w-12 h-12 rounded-full cursor-pointer border border-gray-300 bg-gray-700 flex items-center justify-center overflow-hidden"
+          className="absolute start-0 top-70 left-20 w-20 h-20 rounded-full cursor-pointer border border-gray-300 bg-gray-700 flex items-center justify-center overflow-hidden z-20"
           onClick={() => navigate("/profile")}
         >
           {profileImage ? (
@@ -27,14 +30,13 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        {/* Title */}
-        <h1 className="neonText text-7xl text-blue-100">
-          ft_transcendence
-        </h1>
-
-        {/* Settings */}
-        <div className="flex-shrink-0">
-          <SettingsModal />
+        {/* Navigation Buttons */}
+        <div className="flex items-center justify-between gap-4">
+          <VsButton />
+          <MultiButton />
+          <button className="button-header px-7 py-1 text-black rounded hover:bg-gray-300 transition">
+            {t("Tournois")}
+          </button>
         </div>
       </div>
     </div>

@@ -10,19 +10,27 @@ async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 		// const id = request.user.id
 		const { id} = request.params as {id: number}
 		console.log("🧩 user ID:", id)
+		const player = await User.findByPk(id, { attributes: ['username']})
 		const nbWin = await MatchPlayer.count({
 			where: {
 				player_id: id,
 				winner: true
+			},
+		})
+		const nbLose = await MatchPlayer.count({
+			where: {
+				player_id: id,
+				winner: false
 			}
 		})
 		const nbMatch = await MatchPlayer.count({ where: {player_id: id}})
-		if (!nbWin || !nbMatch)
+		if (!nbWin || !nbLose || !nbMatch || !player)
 			return sendError(reply, 'match not find', 404)
 		return sendSuccess(reply, {
-			playerId: id,
+			player: player.username,
 			matchNumber: nbMatch,
-			winNumber: nbWin
+			winNumber: nbWin,
+			loseNumber: nbLose
 		}, 200)
 	} catch (error) {
 		request.log.error(error);

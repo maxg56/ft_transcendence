@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import fp from 'fastify-plugin'
 import { ratioWinsLosses } from '../controllers/ratioWin';
+import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
 
@@ -9,10 +10,26 @@ async function getTest(req: FastifyRequest, reply: FastifyReply){
 	try {
 	const { joueur } = req.params as {joueur: number}
 	console.log('joueur id:', joueur)
-	const test = await MatchPlayer.findAll({ where: { player_id: joueur}})
+	const test = await MatchPlayer.findAll({ 
+		where: { player_id: joueur},
+		include: [{
+			model: User,
+			as: 'player',
+			attributes: ['username']
+		}]
+	})
 	if (test.length === 0)
 		return reply.code(404).send({ message: 'not find euh'})
-	reply.send(test)
+	const testReturn = test.map(testtest => {
+		return {
+			match_id: testtest.match_id,
+			player: testtest.player.username,
+			score: testtest.score,
+			elo_change: testtest.elo_change,
+			winner: testtest.winner
+		}
+	})
+	reply.send(testReturn)
 	} catch(error) {
 		reply.code(500).send({ message: 'Database error', error })
 	}

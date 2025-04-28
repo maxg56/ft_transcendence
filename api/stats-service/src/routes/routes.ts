@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import fp from 'fastify-plugin'
 import { ratioWinsLosses } from '../controllers/ratioWin';
+import { getElos } from '../controllers/elo';
 import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
@@ -58,10 +59,11 @@ async function postTest(request: FastifyRequest, reply: FastifyReply){
 
 
 async function statsRoutes(fastify: any) {
-	// penser a remettre { preHandler: [fastify.authenticate] } et enlever :id et verifier dans la fucntion ratiowinslosses
-	fastify.get('/stats/ratiowin/:id', ratioWinsLosses);
 	fastify.post('/stats/addtest', postTest);
 	fastify.get('/stats/gettest/:joueur', getTest);
+	// penser a remettre { preHandler: [fastify.authenticate] } et enlever :id et verifier dans la fucntion ratiowinslosses
+	fastify.get('/stats/ratiowin/:id', ratioWinsLosses);
+	fastify.get('/stats/elo/:id', getElos)
 }
 
 export default fp(statsRoutes);

@@ -7,7 +7,7 @@ import * as THREE from "three";
 export class Paddle {
 	public mesh: THREE.Mesh;
 
-	constructor(x: number, tableHeight: number, color = 0xeeeeee) {
+	constructor(x: number, tableHeight: number, color = "#3b35ff") {
 		const geometry = new THREE.BoxGeometry(10, 10, 59);
 		const material = new THREE.MeshStandardMaterial({ color });
 

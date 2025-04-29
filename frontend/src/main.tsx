@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-
+import { BrowserRouter } from 'react-router-dom'
 import { TranslationProvider } from './context/TranslationContext.tsx'
 import { ProfileProvider } from './context/ProfilContext.tsx'
 import { TournamentProvider } from './context/ResultsContext.tsx'
@@ -13,6 +13,7 @@ import { LogoutProvider } from './hooks/useLogOut.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+  <BrowserRouter>
     <ProfileProvider>
     <TranslationProvider>
       <TournamentProvider>
@@ -27,5 +28,6 @@ createRoot(document.getElementById('root')!).render(
       </TournamentProvider>
     </TranslationProvider>
     </ProfileProvider>
+  </BrowserRouter>
   </StrictMode> 
 )

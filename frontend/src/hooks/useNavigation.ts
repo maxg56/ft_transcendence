@@ -1,36 +1,23 @@
-import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useCallback } from "react";
 
 const useNavigation = () => {
-  const [path, setPath] = useState(window.location.pathname);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-	const onPopState = () => {
-	  setPath((prevPath) => {
-		if (prevPath !== window.location.pathname) {
-		  return window.location.pathname;
-		}
-		return prevPath;
-	  });
-	};
-  
-	window.addEventListener("popstate", onPopState);
-	window.addEventListener("navigation", onPopState);
-  
-	return () => {
-	  window.removeEventListener("popstate", onPopState);
-	  window.removeEventListener("navigation", onPopState);
-	};
-  }, []);
-  // 🔥 On ne met pas [path] pour éviter une boucle infinie
+  const goTo = useCallback(
+    (path: string) => {
+      if (path !== location.pathname) {
+        navigate(path);
+      }
+    },
+    [navigate, location.pathname]
+  );
 
-  const navigate = (newPath: string) => {
-    if (newPath === path) return; // 🔥 Bloque les navigations redondantes
-    window.history.pushState({}, "", newPath);
-    setPath(newPath);
-    window.dispatchEvent(new Event("navigation"));
+  return {
+    path: location.pathname,
+    navigate: goTo,
   };
-
-  return { path, navigate };
 };
 
 export default useNavigation;

@@ -19,4 +19,6 @@ async function userRoutes(fastify: any) {
   fastify.put('/user/delete', { preHandler: [fastify.authenticate] }, deleteUser)
 }
 
+
+
 export default fp(userRoutes);

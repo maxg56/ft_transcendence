@@ -63,7 +63,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
     setNeeds2FA(false);
   };
   
-  const verify2FA = useCallback(async (code: string) => {
+  const verify2FA = useCallback(async (code: string , nav = true ) => {
     try {
       const token = Cookies.get('token');
       if (!token) {
@@ -97,7 +97,9 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       setNeeds2FA(false);
       toast.success("Connexion réussie avec 2FA");
       onSuccess?.();
-      navigate("/hub");
+      if (nav) {
+        navigate("/hub");
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Code 2FA invalide";
       onError?.(errorMessage);

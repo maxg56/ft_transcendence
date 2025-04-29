@@ -1,5 +1,7 @@
 import React, { createContext, useContext } from "react";
-import useNavigation from "../hooks/useNavigation";
+import useNavigation from "./useNavigation";
+import Cookies from "js-cookie";
+
 
 type LogoutContextType = {
 	logout: () => void;
@@ -11,7 +13,8 @@ export const LogoutProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	const { navigate } = useNavigation();
 
 	const logout = () => {
-		localStorage.removeItem("token");
+		Cookies.remove('token');
+        Cookies.remove('refreshToken');
 		navigate("/");
 	};
 

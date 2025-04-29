@@ -71,6 +71,7 @@ export function DoubleAuthentification() {
       console.error("Erreur lors de la désactivation du 2FA", error)
       setIsEnabled(true)
     }
+  }
 
   const handleModalClose = () => {
     setIsModalOpen(false)
@@ -89,19 +90,6 @@ export function DoubleAuthentification() {
   const handleCancel = () => {
     setIsEnabled(false)
     handleModalClose()
-  }
-
-  const handleDeactivationRequest = () => {
-    setIsConfirmationOpen(true)
-  }
-
-  const handleDeactivationCancel = () => {
-    setIsConfirmationOpen(false)
-  }
-
-  const handleDeactivationConfirm = () => {
-    setIsEnabled(false)
-    setIsConfirmationOpen(false)
   }
 
   return (
@@ -129,12 +117,6 @@ export function DoubleAuthentification() {
         secretKey={secretKey}
         onActivate={handleActivate}
         onCancel={handleCancel}
-      />
-
-      <ConfirmationModal
-        open={isConfirmationOpen}
-        onConfirm={handleDeactivationConfirm}
-        onCancel={handleDeactivationCancel}
       />
     </div>
   )

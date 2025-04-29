@@ -1,0 +1,28 @@
+import React from "react";
+
+export default function VsPopup({ onSelect, onClose }) {
+  return (
+    <div
+      className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 min-w-[400px]"
+          onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the popup
+      >
+        <button
+          className="bg-blue-600 text-white rounded py-2 hover:bg-blue-700 transition"
+          onClick={() => { onSelect("1 vs 1"); onClose(); }}
+        >
+          1 vs 1
+        </button>
+        <button
+          className="bg-green-600 text-white rounded py-2 hover:bg-green-700 transition"
+          onClick={() => { onSelect("2 vs 2"); onClose(); }}
+        >
+          2 vs 2
+        </button>
+      </div>
+    </div>
+  );
+}

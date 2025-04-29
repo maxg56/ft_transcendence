@@ -1,7 +1,7 @@
 {
 	"Se connecter": "Conexão",
 	"Inscription": "Registro",
-	"Parametres": "Parâmetros",
+	"Options": "Opção",
 	"Langue": "Idiomas",
 	"Connexion": "Conexão",
 	"Nom d'utilisateur": "Nome",
@@ -13,5 +13,10 @@
 	"DUEL": "DUELO",
 	"OTHER": "OUTRA",
 	"Commandes": "Comandos",
-	"Tournois": "Torneios"
+	"Tournois": "Torneios",
+	"Amis": "Amigos",
+	"Modifier": "Modificar",
+	"gagne !": "ganho !",
+	"Revanche": "Vingança",
+	"Retour au menu": "Voltar ao cardápio"
 }

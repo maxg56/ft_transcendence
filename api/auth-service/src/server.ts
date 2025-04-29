@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import fastifyFormBody from '@fastify/formbody';
 import dotenv from 'dotenv';
-import routes from './routes/index';
+import authRoutes from './routes/index';
 import database from './plugins/database';
 import auth from './plugins/auth';
 import User from './models/User';
@@ -10,12 +10,12 @@ const fastify = Fastify({ logger: true });
 
 const PORT = process.env.PORT_AUTH || 3000;
 // Plugins
-fastify.register(fastifyFormBody); // Pour les requêtes x-www-form-urlencoded
+// fastify.register(fastifyFormBody); // Pour les requêtes x-www-form-urlencoded
 fastify.register(database);
 fastify.register(auth);
 
 // Routes
-fastify.register(routes);
+fastify.register(authRoutes);
 
 fastify.ready().then(() => {
   console.log("📌 Fastify is ready, initializing models...");

@@ -2,6 +2,14 @@ import { Dialog } from "@/components/ui/dialog" // Assure-toi que c'est bien le 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useAuth } from "@/hooks/auth/useAuth";
+import { useState } from "react"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
 
 export function DoubleAuthentificationModal({
   open,
@@ -18,6 +26,23 @@ export function DoubleAuthentificationModal({
   onActivate: () => void
   onCancel: () => void
 }) {
+  
+  
+  const [twoFACode, setTwoFACode] = useState("");
+  
+  const { verify2FA } = useAuth({
+      onSuccess: () => {
+        onActivate();
+        setTwoFACode("");
+      },
+      onError: (err) => {
+        console.error("Erreur de vérification 2FA :", err);
+      },
+    });
+    const handleVerify2FA = () => {
+      verify2FA(twoFACode , false);
+    };
+
   if (!open) return null
 
   return (
@@ -39,15 +64,31 @@ export function DoubleAuthentificationModal({
           </div>
           <div className="mb-4">
             <Label htmlFor="authCode">Code d'authentification</Label>
-            <Input
-              id="authCode"
-              type="text"
-              placeholder="Entrez votre code 2FA"
-              className="mt-1"
-            />
+            <InputOTP 
+            maxLength={6} 
+            value={twoFACode} 
+            onChange={setTwoFACode}
+            containerClassName="px-2 py-2 rounded  mb-3 flex justify-center"
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator/>
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
           </div>
           <div className="flex gap-4 mt-4">
-            <Button onClick={onActivate} className="flex-1">Activer</Button>
+            <Button 
+            onClick={handleVerify2FA}
+            disabled={twoFACode.length !== 6}
+            className="flex-1">Activer
+            </Button>
             <Button variant="secondary" onClick={onCancel} className="flex-1">Annuler</Button>
           </div>
         </div>

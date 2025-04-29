@@ -1,5 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
+import MatchPlayer from "./MatchPlayer";
+import User from "./User";
 
 class Match extends Model {
   public id!: number;
@@ -36,4 +38,7 @@ Match.init(
   }
 );
 
+// Match.belongsToMany(User, { through: MatchPlayer, foreignKey: "match_id", otherKey: "player_id" });
+
 export default Match;
+

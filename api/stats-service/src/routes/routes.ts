@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import fp from 'fastify-plugin'
 import { ratioWinsLosses } from '../controllers/ratioWin';
 import { getElos } from '../controllers/elo';
+import { matchesHistory } from '../controllers/history';
 import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
@@ -21,6 +22,11 @@ async function getTest(req: FastifyRequest, reply: FastifyReply){
 	})
 	if (test.length === 0)
 		return reply.code(404).send({ message: 'not find euh'})
+	const matchid = test.map(te => te.match_id)
+	console.log("id match:", matchid)
+	const test2 = await Match.findAll({
+		where: {id: matchid}
+	})
 	const testReturn = test.map(testtest => {
 		return {
 			match_id: testtest.match_id,
@@ -30,7 +36,7 @@ async function getTest(req: FastifyRequest, reply: FastifyReply){
 			winner: testtest.winner
 		}
 	})
-	reply.send(testReturn)
+	reply.send({testReturn, test2})
 	} catch(error) {
 		reply.code(500).send({ message: 'Database error', error })
 	}
@@ -38,14 +44,16 @@ async function getTest(req: FastifyRequest, reply: FastifyReply){
 
 // test
 async function postTest(request: FastifyRequest, reply: FastifyReply){
-	const { id, gameP, temps, joueur, score, elo, winner} = request.body as {
-		id: number, gameP: boolean, temps: number, joueur: number, score: number, elo: number, winner: boolean}
+	const { idmatch, id, gameP, temps, joueur, score, elo, winner} = request.body as {
+		idmatch:number, id: number, gameP: boolean, temps: number, joueur: number, score: number, elo: number, winner: boolean}
 	try {
-		await Match.create({
-		id: id,
-		is_pong_game: gameP,
-		duration_seconds: temps
-	})} catch (error) { reply.send({message: 'error match.create'})}
+		const firstMatch = await Match.findByPk(idmatch)
+		if (!firstMatch) {
+			await Match.create({
+			id: idmatch,
+			is_pong_game: gameP,
+			duration_seconds: temps
+	})}} catch (error) {  return reply.send({message: 'error match.create'})}
 	try {
 		await MatchPlayer.create({
 		match_id: id,
@@ -53,17 +61,18 @@ async function postTest(request: FastifyRequest, reply: FastifyReply){
 		score: score,
 		elo_change: elo,
 		winner: winner
-	})} catch (error) { reply.send({message: 'error matchplayer.create'})}
-	reply.send({ message: 'create ok' })
+	})} catch (error) { return reply.send({message: 'error matchplayer.create'})}
+	return reply.send({ message: 'create ok' })
 }
 
 
 async function statsRoutes(fastify: any) {
-	fastify.post('/stats/addtest', postTest);
-	fastify.get('/stats/gettest/:joueur', getTest);
+	// fastify.post('/stats/addtest', postTest);
+	// fastify.get('/stats/gettest/:joueur', getTest);
 	// penser a remettre { preHandler: [fastify.authenticate] } et enlever :id et verifier dans la fucntion ratiowinslosses
-	fastify.get('/stats/ratiowin/:id', ratioWinsLosses);
-	fastify.get('/stats/elo/:id', getElos)
+	fastify.get('/stats/ratiowin', { preHandler: [fastify.authenticate] }, ratioWinsLosses);
+	fastify.get('/stats/elo', { preHandler: [fastify.authenticate] }, getElos);
+	fastify.get('/stats/history', { preHandler: [fastify.authenticate] }, matchesHistory);
 }
 
 export default fp(statsRoutes);

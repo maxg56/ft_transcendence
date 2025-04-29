@@ -53,8 +53,9 @@ MatchPlayer.init(
 );
 
 // Définition des relations
-Match.belongsToMany(User, { through: MatchPlayer, foreignKey: "match_id" });
-User.belongsToMany(Match, { through: MatchPlayer, foreignKey: "player_id" });
 MatchPlayer.belongsTo(User, { as: 'player', foreignKey: 'player_id'});
+MatchPlayer.belongsTo(Match, { as: 'matchinfo', foreignKey: 'match_id'});
+Match.belongsToMany(User, { through: MatchPlayer, foreignKey: "match_id", otherKey: "player_id" });
+User.belongsToMany(Match, { through: MatchPlayer, foreignKey: "player_id", otherKey: "match_id" });
 
 export default MatchPlayer;

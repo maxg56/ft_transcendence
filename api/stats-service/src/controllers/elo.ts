@@ -5,8 +5,8 @@ import MatchPlayer from '../models/MatchPlayer';
 
 async function getElos(request: FastifyRequest, reply: FastifyReply) {
 	try {
-		// const id = request.user.id
-		const { id} = request.params as {id: number}
+		const id = request.user.id
+		// const { id} = request.params as {id: number}
 		const elo_start = await User.findByPk(id, { attributes: ['elo']})
 		const elo_gain = await MatchPlayer.findAll({
 			where: { player_id: id },

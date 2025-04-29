@@ -7,8 +7,8 @@ import MatchPlayer from '../models/MatchPlayer';
 
 async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 	try {
-		// const id = request.user.id
-		const { id} = request.params as {id: number}
+		const id = request.user.id
+		// const { id} = request.params as {id: number}
 		console.log("🧩 user ID:", id)
 		const player = await User.findByPk(id, { attributes: ['username']})
 		const nbWin = await MatchPlayer.count({

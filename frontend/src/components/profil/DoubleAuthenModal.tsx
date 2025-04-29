@@ -1,4 +1,4 @@
-import { Dialog } from "@/components/ui/dialog" // Assure-toi que c'est bien le composant "Dialog" de ShadCN ou un équivalent
+import { Dialog } from "@/components/ui/dialog" 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

@@ -8,8 +8,8 @@ type Props = {
 
 const GameOverlay: React.FC<Props> = ({ score, winner }) => {
   return (
-    <div className="text-white">
-      <p>Score: {score[0]} - {score[1]}</p>
+    <div className="text-white text-7xl">
+      <p>{score[0]} - {score[1]}</p>
       {winner && <p>Winner: Player {winner}</p>}
     </div>
   );

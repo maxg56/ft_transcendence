@@ -37,7 +37,7 @@ export const useGameScene = () => {
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
   
       sceneRef.current = new THREE.Scene();
-      sceneRef.current.background = new THREE.Color(0x758695);
+      sceneRef.current.background = new THREE.Color("#141929");
   
       cameraRef.current = new THREE.PerspectiveCamera(
         50,
@@ -57,7 +57,7 @@ export const useGameScene = () => {
   
       // Table
       const tableGeometry = new THREE.BoxGeometry(tableWidth, 10, tableHeight);
-      const tableMaterial = new THREE.MeshStandardMaterial({ color: 0x3b3b3b });
+      const tableMaterial = new THREE.MeshStandardMaterial({ color: "#385796" });
       const table = new THREE.Mesh(tableGeometry, tableMaterial);
       table.receiveShadow = true;
       table.position.y = -5;

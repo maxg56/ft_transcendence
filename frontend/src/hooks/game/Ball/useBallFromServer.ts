@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { useWebSocket } from '../context/WebSocketContext';
+import { useWebSocket } from '@/context/WebSocketContext';
 
 export const useBallFromServer = (
 	ballRef: React.MutableRefObject<THREE.Mesh | null>,
@@ -53,7 +53,10 @@ export const useBallFromServer = (
 			}
 		};
 
-		console.log('WebSocket connected');
+		if (!socket) {
+			console.error('WebSocket non initialisé');
+			return;
+		}
 		socket.addEventListener('message', onMessage);
 
 		return () => {

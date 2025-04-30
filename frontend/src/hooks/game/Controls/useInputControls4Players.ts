@@ -1,8 +1,8 @@
 // src/hooks/useInputControls4Players.ts
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { useKeyboard } from '../context/KeyboardContext';
-import { useConfKey } from '../context/ConfKeyContext';
+import { useKeyboard } from '@/context/KeyboardContext';
+import { useConfKey } from '@/context/ConfKeyContext';
 
 type MeshRef = React.MutableRefObject<THREE.Mesh | null>;
 

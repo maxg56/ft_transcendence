@@ -44,20 +44,6 @@ const resetGame = () => {
             <div className="absolute top-[250%] text-5xl neonText">
             <h2>{winner} {t("gagne !")}</h2>
             </div>
-            <div>
-              <button
-                className=" neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block mr-4"
-                onClick={resetGame}
-              >
-                {t("Revanche")}
-              </button>
-              <button
-                className="neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block"
-                onClick={() => navigate("/hub")}
-              >
-                {t("Retour au menu")}
-              </button>
-            </div>
           </div>
         ) : (
            <GameOverlay

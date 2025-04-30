@@ -1,7 +1,7 @@
-import { useGameScene } from '../../hooks/useGameScene';
-import { useInputControls, usePlayerControls } from '../../hooks/useInputControls';
-import { useBallPhysics } from '../../hooks/useBallPhysics';
-import { useBallFromServer } from '../../hooks/useBallFromServer';
+import { useGameScene } from '@/hooks/game/Scene/useGameScene';
+import { useInputControls, usePlayerControls } from '@/hooks/game/Controls/useInputControls';
+import { useBallPhysics } from '@/hooks/game/Ball/useBallPhysics';
+import { useBallFromServer } from '@/hooks/game/Ball/useBallFromServer';
 import Cookies from "js-cookie";
 
 type GameCanvasProps = {

@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import Solo from '@/pages/game/Solo';
 import Hub from '@/pages/Hub';
-import Duel2 from '@/pages/game/Duel2';
+import Duel2 from '@/pages/game/Duel';
 import Profile from '@/pages/Profil';
 import WaitingRoom from '@/pages/WaitingRoom';
 import MultiplayerSelection from '@/pages/MultiplayerSelection';

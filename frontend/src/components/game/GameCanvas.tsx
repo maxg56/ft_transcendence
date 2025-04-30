@@ -4,6 +4,7 @@ import { useBallPhysics } from '@/hooks/game/Ball/useBallPhysics';
 import { useBallFromServer } from '@/hooks/game/Ball/useBallFromServer';
 import Cookies from "js-cookie";
 
+
 type GameCanvasProps = {
 	gameStarted?: boolean;
 	isPaused?: boolean;
@@ -53,7 +54,7 @@ export const GameCanvasWs = ({
 		ballRef,
 	} = useGameScene();
 
-	var gameId = Cookies.get("gameId");
+	var gameId = Cookies.get("gameid");
 	if (gameId) {
 		usePlayerControls('left', gameId);	
 	}

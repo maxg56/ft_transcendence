@@ -3,7 +3,7 @@ import { useTranslation } from "../context/TranslationContext";
 import { X } from "lucide-react";
 import Header from "./HeaderComponent";
 import useNavigation from "../hooks/useNavigation";
-import { useSendWSMessage } from "../hooks/useSendWSMessage";
+import { useSendWSMessage } from "../hooks/WedSooket/useSendWSMessage";
 
 
 const Modeduel = () => {

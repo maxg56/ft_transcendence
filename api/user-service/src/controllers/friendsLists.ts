@@ -22,8 +22,8 @@ async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) 
 				attributes: ['username', 'avatar'],
 			}]});
 		
-		if (friends.length === 0)
-			return sendError(reply, 'No friend request pending', 404)
+		// if (friends.length === 0)
+		// 	return sendError(reply, 'No friend request pending', 404)
 		const pendingList = friends.map(friendship => {
 			const isUser1 = friendship.user1 === id;
 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
@@ -39,38 +39,38 @@ async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) 
 	}
 }
 
-async function seeFriends (request: FastifyRequest, reply: FastifyReply) {
-	const id = request.user.id
-		console.log("🧩 user ID:", id)
-		const friends = await Friendship.findAll({ where: { 
-				[Op.or]: [
-					{ user1: id },
-					{ user2: id }],
-				status: 'accepted'
-			},
-			include: [{
-				model: User,
-				as: 'userOne',
-				attributes: ['username', 'avatar'],
-			},
-			{	model: User,
-				as: 'userTwo',
-				attributes: ['username', 'avatar'],
-			}]});
+// async function seeFriends (request: FastifyRequest, reply: FastifyReply) {
+// 	const id = request.user.id
+// 		console.log("🧩 user ID:", id)
+// 		const friends = await Friendship.findAll({ where: { 
+// 				[Op.or]: [
+// 					{ user1: id },
+// 					{ user2: id }],
+// 				status: 'accepted'
+// 			},
+// 			include: [{
+// 				model: User,
+// 				as: 'userOne',
+// 				attributes: ['username', 'avatar'],
+// 			},
+// 			{	model: User,
+// 				as: 'userTwo',
+// 				attributes: ['username', 'avatar'],
+// 			}]});
 		
-		// if (friends.length === 0)
-		// 	return sendError(reply, 'No friend in the list', 404)
+// 		// if (friends.length === 0)
+// 		// 	return sendError(reply, 'No friend in the list', 404)
 
-		const friendList = friends.map(friendship => {
-			const isUser1 = friendship.user1 === id;
-			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
-			return {
-				username: otherUser.username,
-				avatar: otherUser.avatar
-			};
-		})
-		return friendList
-}
+// 		const friendList = friends.map(friendship => {
+// 			const isUser1 = friendship.user1 === id;
+// 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
+// 			return {
+// 				username: otherUser.username,
+// 				avatar: otherUser.avatar
+// 			};
+// 		})
+// 		return friendList
+// }
 
 async function getFriendsList (request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -94,8 +94,8 @@ async function getFriendsList (request: FastifyRequest, reply: FastifyReply) {
 				attributes: ['username', 'avatar'],
 			}]});
 		
-		if (friends.length === 0)
-			return sendError(reply, 'No friend in the list', 404)
+		// if (friends.length === 0)
+		// 	return sendError(reply, 'No friend in the list', 404)
 
 		const friendList = friends.map(friendship => {
 			const isUser1 = friendship.user1 === id;

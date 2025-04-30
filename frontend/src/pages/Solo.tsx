@@ -1,5 +1,5 @@
 import React from "react";
-import DuelComponent from "../components/Vs/2DuelComponent";
+import SoloComponent from "../components/Vs/SoloComponent";
 import { StarWarsEffect } from "../animation/StarWarsEffect";
 
 const Solo: React.FC = () => {
@@ -15,7 +15,7 @@ const Solo: React.FC = () => {
           {/* <BabylonTunnel/> */}
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden text-white">
             {/* <StarsBackground /> */}
-            <DuelComponent />
+            <SoloComponent />
             <StarWarsEffect/>
           </div>
         </div>

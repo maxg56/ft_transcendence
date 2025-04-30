@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useGameScene } from '../../hooks/useGameScene';
-import { useInputControls } from '../../hooks/useInputControls';
+import { useAiInputControl } from '../../hooks/useAiInputControl';
 import { useBallPhysics } from '../../hooks/useBallPhysics';
-import { useAIPaddle } from '../../hooks/useAiPaddle'; // <--  AI hook
 
 type GameCanvasProps = {
 	gameStarted: boolean;
@@ -26,8 +25,7 @@ export const GameCanvasAI = ({
 		rightPaddleRef,
 		ballRef,
 	} = useGameScene();
-	useAIPaddle(leftPaddleRef, ballRef, true); // Enable AI control
-	useInputControls(leftPaddleRef, rightPaddleRef);
+	useAiInputControl(leftPaddleRef, rightPaddleRef, ballRef, true);
 	useBallPhysics(ballRef, leftPaddleRef, rightPaddleRef, setScore, setWinner,setGameStarted, isPaused , gameStarted);
 
 	return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;

@@ -21,8 +21,21 @@ interface Refusing{
 	username: string
 }
 
+interface Invitation {
+	username: string;
+	avatar: string | null;
+}
+
+interface FriendListProps {
+	friends: Invitation[];
+	sentInvitations: Invitation[];
+}
+
+
 const FriendsPanel: React.FC = () => {
-	const [pending, setPending] = useState<string[]>([]);
+	const [pendingG, setPending] = useState<string[]>([]);
+	const [friends, setFriends] = useState<string[]>([]);
+	const [sentInvitations, setSentInvitations] = useState<Invitation[]>([])
 
 	 const {refetch: fetchPendingList } = useApi<Pending[]>(
 		"/user/friend/pendinglist",
@@ -77,9 +90,32 @@ const FriendsPanel: React.FC = () => {
 		}
 		)
 	
+		const {refetch: fetchfriendList } = useApi<FriendListProps[]>(
+			"/user/friend/list",
+			{
+			immediate: false,
+			  onSuccess: (res) => {
+				if (!res ) {
+				  console.error("Erreur friends list", res)
+				  return
+				}
+				const friendListUsername = res.data.friendList.map(friends => friends);
+				const friendListPending = res.data.pendingList.map(sentInvitations => sentInvitations)
+				setFriends(friendListUsername)
+				setSentInvitations(friendListPending)
+			  },
+			  onError: (errMsg) => {
+				
+				console.error('Erreur friendList :', errMsg)
+			  },
+			}
+		  )
+
+
 		useEffect(() => {
 			const fetchData = async () => {
 			  await fetchPendingList();
+			  await fetchfriendList();
 			  
 			  setTimeout(() => {
 				fetchData();
@@ -91,11 +127,11 @@ const FriendsPanel: React.FC = () => {
 		  
 		
 
-	const [friends, setFriends] = useState<string[]>(["Alice", "Tom", "Anna"]);
-	const [sentInvitations, setSentInvitations] = useState<Invitation[]>([
-		{ username: "@Tom", status: "En attente" },
-		{ username: "@Julie", status: "En attente" }
-	]);
+	// const [friends, setFriends] = useState<string[]>(["Alice", "Tom", "Anna"]);
+	// const [sentInvitations, setSentInvitations] = useState<Invitation[]>([
+	// 	{ username: "@Tom", status: "En attente" },
+	// 	{ username: "@Julie", status: "En attente" }
+	// ]);
 	// const [receivedInvitations, setReceivedInvitations] = useState<string[]>([
 	// 	// "@Lucas",
 	// 	// "@Emma",
@@ -131,7 +167,7 @@ const FriendsPanel: React.FC = () => {
 					<h3 className="font-bold mb-2 text-xs">Invitations reçues</h3>
 						<div className="max-h-48 overflow-y-auto pr-4">
 							<ul className="space-y-2 text-xs">
-							{pending.map((user, index) => (
+							{pendingG.map((user, index) => (
 								<li key={index} className="bg-gray-100 p-2 rounded flex justify-between items-center">
 								<span>{user}</span>
 								<div className="space-x-2">

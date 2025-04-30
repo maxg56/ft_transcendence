@@ -12,9 +12,9 @@ async function databasePlugin(fastify: any) {
       console.log('✅ Database connected successfully');
       break;
     } catch (error) {
-      console.error(`❌ Unable to connect to the database (Attempt ${attempt}/${maxRetries}):`, error);
+      console.error(`❌ Unable to connect to the database (Attempt ${attempt}/${maxRetries}):`);
       if (attempt === maxRetries) {
-        throw error;
+        console.error(error);
       }
       console.log(`Retrying in ${retryDelay / 1000} seconds...`);
       await new Promise((resolve) => setTimeout(resolve, retryDelay));

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useTranslation } from "../../context/TranslationContext";
-import { useConfKey } from "../../context/ConfKeyContext";
+import { useTranslation } from "@/context/TranslationContext";
+import { useConfKey } from "@/context/ConfKeyContext";
 import KeyInput from "./KeyComponent";
 import { DoubleAuthentification } from "./DoubelAuthen";
 

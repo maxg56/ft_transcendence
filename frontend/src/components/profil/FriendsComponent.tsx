@@ -1,35 +1,119 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import FriendList from "./FriendsList";
+import { useApi } from "@/hooks/api/useApi";
 
 interface Invitation {
 	username: string;
 	status: string;
 }
 
+interface Pending{
+	pending: string
+}
+
+
+interface Accepting{
+	username: string
+}
+
+interface Refusing{
+	username: string
+}
+
 const FriendsPanel: React.FC = () => {
+	const [pending, setPending] = useState<string[]>([]);
+
+	 const {refetch: fetchPendingList } = useApi<Pending[]>(
+		"/user/friend/pendinglist",
+		{
+		immediate: false,
+		  onSuccess: (res) => {
+			if (!res ) {
+			  console.error("Erreur pending list", res)
+			  return
+			}
+			const usernames = res.data.map(pending => pending.username);
+  			setPending(usernames)
+		  },
+		  onError: (errMsg) => {
+			
+			console.error('Erreur pemdimglist :', errMsg)
+		  },
+		}
+	  )
+
+	 const { refetch: acceptFriend } = useApi<Accepting>(
+		  "/user/friend/accept",
+		  {
+			method: 'PUT',
+			immediate: false,
+			onSuccess: (res) => {
+			  if (!res ) {
+				console.error("Erreur accepting friend : réponse invalide", res)
+				return
+			  }
+			},
+			onError: (errMsg) => {
+			  console.error('Erreur accepting friends :', errMsg)
+			},
+		  }
+		)
+
+	const { refetch: refuseFriend } = useApi<Refusing>(
+		"/user/friend/refuse",
+		{
+			method: 'PUT',
+			immediate: false,
+			onSuccess: (res) => {
+			if (!res ) {
+				console.error("Erreur refusing friend : réponse invalide", res)
+				return
+			}
+			},
+			onError: (errMsg) => {
+			console.error('Erreur refusing friends :', errMsg)
+			},
+		}
+		)
+	
+		useEffect(() => {
+			const fetchData = async () => {
+			  await fetchPendingList();
+			  
+			  setTimeout(() => {
+				fetchData();
+			  }, 5000);
+			};
+		  
+			fetchData();
+		  }, []);
+		  
+		
+
 	const [friends, setFriends] = useState<string[]>(["Alice", "Tom", "Anna"]);
 	const [sentInvitations, setSentInvitations] = useState<Invitation[]>([
 		{ username: "@Tom", status: "En attente" },
 		{ username: "@Julie", status: "En attente" }
 	]);
-	const [receivedInvitations, setReceivedInvitations] = useState<string[]>([
-		"@Lucas",
-		"@Emma",
-		"Pedro",
-		"Jumanji",
-		"Bozo"
-	]);
-
-	const handleAccept = (username: string) => {
-		setFriends([...friends, username]);
-		setReceivedInvitations(receivedInvitations.filter(user => user !== username));
-	};
-
-	const handleRefuse = (username: string) => {
-		setReceivedInvitations(receivedInvitations.filter(user => user !== username));
+	// const [receivedInvitations, setReceivedInvitations] = useState<string[]>([
+	// 	// "@Lucas",
+	// 	// "@Emma",
+	// 	// "Pedro",
+	// 	// "Jumanji",
+	// 	// "Bozo"
+	// ]);
+	
+	const handleAccept = async (username: string) => {
+		await acceptFriend({ username });
+		setPending(prev => prev.filter((u) => u !== username));
 	};
 	
+	const handleRefuse = async (username: string) => {
+		await refuseFriend({ username });
+		setPending(prev => prev.filter((u) => u !== username));
+	};
+
 	return (
 		<div className="space-y-4">
 			<div>
@@ -47,7 +131,7 @@ const FriendsPanel: React.FC = () => {
 					<h3 className="font-bold mb-2 text-xs">Invitations reçues</h3>
 						<div className="max-h-48 overflow-y-auto pr-4">
 							<ul className="space-y-2 text-xs">
-							{receivedInvitations.map((user, index) => (
+							{pending.map((user, index) => (
 								<li key={index} className="bg-gray-100 p-2 rounded flex justify-between items-center">
 								<span>{user}</span>
 								<div className="space-x-2">

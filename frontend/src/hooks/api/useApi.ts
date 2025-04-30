@@ -36,11 +36,13 @@ export function useApi<T>(
   const navigate = useNavigate();
   
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (bodyOverride?: any) => {
 	setLoading(true);
 	setError(null);
 
 	let token = istoken ? Cookies.get('token') : undefined;
+
+	const finalBody = bodyOverride ?? body;
 
 	const buildRequestOptions = (overrideToken?: string) => ({
 	  method,
@@ -49,8 +51,8 @@ export function useApi<T>(
 		...(overrideToken ? { Authorization: `Bearer ${overrideToken}` } : {}),
 		...headers,
 	  },
-	  body: body
-		? (body instanceof FormData ? body : JSON.stringify(body))
+	  body: finalBody
+		? (finalBody instanceof FormData ? finalBody : JSON.stringify(finalBody))
 		: undefined,
 	});
 
@@ -103,6 +105,7 @@ export function useApi<T>(
 	  setData(result);
 	  if (onSuccess) onSuccess(result);
 	} catch (err) {
+		
 	  setError(err);
 	  if (onError) onError(err);
 	} finally {

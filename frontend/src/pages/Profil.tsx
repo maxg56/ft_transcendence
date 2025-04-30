@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
 import { User } from "lucide-react";
@@ -8,6 +8,7 @@ import SettingsPage from "../components/profil/SettingsComponent";
 import StatsPong from "@/components/profil/StatsPongComponent";
 import LogoutButton from "@/components/profil/LogOutComponent";
 import StatsShifumi from "@/components/profil/StatsShifumi";
+import { useApi } from "@/hooks/api/useApi";
 
 type Options = "friends" | "settings" | "pong" | "shifumi";
 
@@ -24,6 +25,14 @@ const Profile: React.FC = () => {
     pong: t("Stats Pong"),
     shifumi: t("Stats Shifumi"),
   };
+
+  interface Elos {
+    elo: number;
+  }
+
+  interface userName {
+    username: string,
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -45,9 +54,65 @@ const Profile: React.FC = () => {
     setProfileImage(null);
   };
 
-  const username = "User";
-  const rank = "Diamant";
+  const [username, setUser] = useState("");
 
+  const rank = "Diamant";
+  const [elo, setElo] = useState(0);
+  
+  const { refetch: fetchElo} = useApi<Elos>(
+    "/user/elo",
+    {
+      immediate: false,
+      onSuccess: (res) => {
+        if (!res ) {
+          console.error("Erreur Elo : réponse invalide", res)
+          return
+        }
+        setElo(res.data.elo)
+      },
+      onError: (errMsg) => {
+        
+        console.error('Erreur Elo :', errMsg)
+      },
+    }
+  )
+
+  const { refetch: fetchUsername} = useApi<userName>(
+    "/user/info",
+    {
+      immediate: false,
+      onSuccess: (res) => {
+        if (!res ) {
+          console.error("Erreur Username: réponse invalide", res)
+          return
+        }
+        setUser(res.data.username)
+      },
+      onError: (errMsg) => {
+        
+        console.error('Erreur Username :', errMsg)
+      },
+    }
+  )
+
+  useEffect(() => {
+    // const fetchProfilData = async () => {
+    //   try {
+    //     const [eloRes, userRes] = await Promise.all([fetchElo(), fetchUsername()]);
+    //     if (eloRes?.data?.elo) setElo(eloRes.data.elo);
+    //     if (userRes?.data?.username) setUser(userRes.data.username);
+    //   } catch (err) {
+    //     console.error("Erreur lors de la récupération des données du profil", err);
+    //   }
+    // };
+    // fetchProfilData();
+    const fetchData = async () => {
+      await Promise.all([fetchElo(), fetchUsername()]);
+    };
+    fetchData();
+  }, []);
+
+  
   return (
     <div className="p-4 flex flex-col space-y-2 min-h-screen text-white">
       <div className="flex items-start justify-between mb-8">
@@ -79,8 +144,9 @@ const Profile: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-start space-x-6">
+        <div className="flex flex-col items-start space-x-6 space-y-2 mr-[100px]">
           <span className="text-lg text-gray-300 mt-2">{rank}</span>
+          <span className="text-lg text-gray-300 mt-2">{elo}</span>
         </div>
 
         <input

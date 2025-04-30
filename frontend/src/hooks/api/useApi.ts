@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import useNavigation from "../useNavigation";
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -33,7 +33,8 @@ export function useApi<T>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const { navigate } = useNavigation();
+  const navigate = useNavigate();
+  
 
   const fetchData = useCallback(async () => {
 	setLoading(true);

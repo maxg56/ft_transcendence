@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
-import GameCanvas from "./game/GameCanvas";
-import ControlsModal from "./ControlsOverlay";
-import { useCountdown } from "../hooks/useCountdown";
-import { useTranslation } from "../context/TranslationContext";
-import useNavigation from "../hooks/useNavigation";
-import { KeyboardProvider } from '../context/KeyboardContext';
-import GameOverlay from "./game/GameOverlay";
+import GameCanvas from "../game/GameCanvasAi";
+import ControlsModal from "../ControlsOverlay";
+import { useCountdown } from "../../hooks/useCountdown";
+import { useTranslation } from "../../context/TranslationContext";
+import useNavigation from "../../hooks/useNavigation";
+import { KeyboardProvider } from '../../context/KeyboardContext';
+import GameOverlay from "../game/GameOverlay";
 
 const DuelComponent: React.FC = () => {
 

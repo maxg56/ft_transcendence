@@ -1,13 +1,14 @@
 import React from "react";
-import Header from "../components/HeaderComponent";
-import { App } from "../animation/hub_animation";
-import { useMode } from "../../src/context/ModeContext";
-import useNavigation from "../hooks/useNavigation";
+import Header from "@/components/HeaderComponent";
+import { App } from "@/animation/hub_animation";
+import { useMode } from "@/context/ModeContext";
+import useNavigation from "@/hooks/useNavigation";
+import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
   const { navigate } = useNavigation();
-
+  const { joinQueue } = useJoinQueue();
   const getStartText = () => {
     if (mode) {
       return (
@@ -19,13 +20,24 @@ const Hub: React.FC = () => {
     return "Start !";
   };
 
+  
+  const handleJoinQueue2v2 = () => {
+    joinQueue({ playersPerTeam: 2, teams: 2 }, "/WaitingRoom");
+  };
+
+  const handleJoinQueue1v1 = () => {
+    joinQueue({ playersPerTeam: 1, teams: 2 }, "/WaitingRoom");
+  };
+
   const handleStart = () => {
     if (mode === "ia") {
       navigate("/solo");
     } else if (mode === "humain") {
       navigate("/duel2");
-    } else if (mode === "1 vs 1" || mode === "2 vs 2") {
-      navigate("/WaitingRoom");
+    } else if (mode === "1 vs 1") {
+      handleJoinQueue1v1();
+    } else  if  (mode === "2 vs 2") {
+      handleJoinQueue2v2();
     } else {
       navigate("/solo");
     }

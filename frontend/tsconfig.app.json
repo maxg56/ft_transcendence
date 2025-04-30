@@ -27,5 +27,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/hooks/entities"]
+  "include": ["src", "src/hooks/game/entities"]
 }

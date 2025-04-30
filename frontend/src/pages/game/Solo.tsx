@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/HeaderComponent";
+import Header from "@/components/HeaderComponent";
 
 const Solo: React.FC = () => {
 

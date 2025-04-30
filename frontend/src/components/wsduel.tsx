@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import {GameCanvas} from "./game/GameCanvas";
+import {GameCanvasWs} from "./game/GameCanvas";
 import ControlsModal from "./ControlsOverlay";
 import { useCountdown } from "../hooks/useCountdown";
 import { useTranslation } from "../context/TranslationContext";
@@ -13,17 +13,14 @@ const DuelComponent: React.FC = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const { navigate } = useNavigation();
   const { t } = useTranslation();
 
   const openModal = () => {
     setIsModalOpen(true);
-    setIsPaused(true);
   };
   const closeModal = () => {
     setIsModalOpen(false);
-    setIsPaused(false);
   };
 
   const handleCountdownDone = useCallback(() => {
@@ -47,20 +44,6 @@ const resetGame = () => {
             <div className="absolute top-[250%] text-5xl neonText">
             <h2>{winner} {t("gagne !")}</h2>
             </div>
-            <div>
-              <button
-                className=" neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block mr-4"
-                onClick={resetGame}
-              >
-                {t("Revanche")}
-              </button>
-              <button
-                className="neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block"
-                onClick={() => navigate("/hub")}
-              >
-                {t("Retour au menu")}
-              </button>
-            </div>
           </div>
         ) : (
            <GameOverlay
@@ -75,11 +58,11 @@ const resetGame = () => {
           <h2>{countdown === 0 ? 'GO !' : `${countdown}...`}</h2>
         </div>
       )}
+      <ControlsModal isOpen={isModalOpen} onClose={closeModal} />
 
       <KeyboardProvider>
-			  <GameCanvas
+			  <GameCanvasWs
           gameStarted={gameStarted}
-          isPaused={isPaused}
           setScore={setScore}
           setWinner={setWinner}
           setGameStarted={setGameStarted}

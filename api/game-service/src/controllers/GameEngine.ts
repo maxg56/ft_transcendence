@@ -1,14 +1,15 @@
-import { Types } from 'mysql2';
+
 import { PlayerSide, Position, Vector, GameMode,GameScore,GameScore1v1,GameScore2v2,PlayerSide1v1,PlayerSide2v2,TeamScore } from '../type';
 
-const TABLE_WIDTH = 400;
+const TABLE_WIDTH = 385;
 const TABLE_HEIGHT = 200;
-const BALL_RADIUS = 5;
+const BALL_RADIUS = 10;
 const PADDLE_HEIGHT = 40;
 const WINNING_SCORE = 3;
 const MAX_SPEED = 5;
 const ACCELERATION = 1.5;
 const MOVE_SPEED = 5;
+
 
 abstract class BaseGameEngine<
   TSide extends string = PlayerSide,
@@ -103,7 +104,7 @@ class GameEngine1v1 extends BaseGameEngine<PlayerSide1v1, GameScore1v1>{
 
 	score = { left: 0, right: 0 };
 
-	paddles = { left: { z: 0 }, right: { z: 0 } };
+	paddles = { left: { z: 0  }, right: { z: 0 } };
 
   	checkCollisions(): void {
     	if (this.ball.x <= -TABLE_WIDTH / 2 + BALL_RADIUS) {

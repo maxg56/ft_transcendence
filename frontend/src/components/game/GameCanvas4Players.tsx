@@ -3,9 +3,9 @@
 
 import React from "react"
 import * as THREE from "three"
-import { useGameScene4Players }    from "@/hooks/useGameScene4Players"
-import { useInputControls4Players } from "@/hooks/useInputControls4Players"
-import { useBallPhysics4Players }   from "@/hooks/useBallPhysics4Players"
+import { useGameScene4Players }    from "@/hooks/game/Scene/useGameScene4Players"
+import { useInputControls4Players } from "@/hooks/game/Controls/useInputControls4Players"
+import { useBallPhysics4Players }   from "@/hooks/game/Ball/useBallPhysics4Players"
 
 type GameCanvas4PlayersProps = {
   gameStarted: boolean

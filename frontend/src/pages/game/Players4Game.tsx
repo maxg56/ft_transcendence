@@ -1,9 +1,9 @@
 import React from "react";
-import { useTranslation } from "../context/TranslationContext";
-import DuelComponent from "../components/2DuelComponent";
-import StarsBackground from "../animation/StarsBackground";
+import { useTranslation } from "@/context/TranslationContext";
+import Game4Players from "@/components/Game4Players";
+import StarsBackground from "@/animation/StarsBackground";
 
-const Duel2: React.FC = () => {
+const PlayersGame4: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -16,11 +16,10 @@ const Duel2: React.FC = () => {
           </div>
         <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
           <StarsBackground />
-          <DuelComponent />
+          <Game4Players />
       </div>
       </div>
       </div>
 	    </div>
   )};
-
-export default Duel2;
+export default PlayersGame4; 

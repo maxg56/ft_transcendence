@@ -11,23 +11,23 @@
 	type Vector = { x: number; z: number };
 
 	function calculateBallRebound(
-	ballPos: THREE.Vector3,
-	paddlePos: THREE.Vector3,
-	direction: Vector,
-	acceleration: number,
-	maxSpeed: number
+		ballPos: THREE.Vector3,
+		paddlePos: THREE.Vector3,
+		direction: Vector,
+		acceleration: number,
+		maxSpeed: number
 	): Vector {
-	const angleOfApproach = Math.atan2(direction.z, direction.x);
-	const impactOffset = ballPos.z - paddlePos.z;
-	const spin = impactOffset * 0.05;
-
-	let newX = Math.abs(direction.x) * acceleration;
-	newX = Math.min(newX, maxSpeed);
-
-	let newZ = Math.sin(angleOfApproach) * Math.abs(newX) + spin;
-	newZ = Math.min(Math.abs(newZ), maxSpeed) * Math.sign(newZ);
-
-	return { x: newX, z: newZ };
+		const angleOfApproach = Math.atan2(direction.z, direction.x);
+		const impactOffset = ballPos.z - paddlePos.z;
+		const spin = impactOffset * 0.05;
+		
+		let newX = Math.abs(direction.x) * acceleration;
+		newX = Math.min(newX, maxSpeed);
+		
+		let newZ = Math.sin(angleOfApproach) * Math.abs(newX) + spin;
+		newZ = Math.min(Math.abs(newZ), maxSpeed) * Math.sign(newZ);
+		
+		return { x: newX, z: newZ };
 	}
 
 

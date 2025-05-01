@@ -13,7 +13,7 @@ export const useAiInputControl = (
 	const { confKey } = useConfKey();
     const tableHeight = 200;
     const paddleLimit = tableHeight / 2 - 30;
-	const aiSpeed = 1.9;
+	const aiSpeed = 4.2;
 
 	// AI state
     const aiTargetZ = useRef(0);
@@ -39,9 +39,13 @@ export const useAiInputControl = (
                 // Estimate ball Z velocity
                 const currentBallZ = ball.position.z;
                 const currentBallVelocityZ = (currentBallZ - lastBallZ.current) / ((now - lastSampleTime) / 1000);
+                
+                
+                const lookAheadTime = Math.min(1, 400 / Math.abs(currentBallVelocityZ + 0.001));
+                let predictedZ = currentBallZ + currentBallVelocityZ * lookAheadTime;
 
                 // Predict where the ball will be in 1 second, considering bounces
-                let predictedZ = currentBallZ + currentBallVelocityZ * 1; // 1 second ahead
+                // let predictedZ = currentBallZ + currentBallVelocityZ * 1; // 1 second ahead
                 let wallLimit = tableHeight / 2 - ball.geometry.parameters.radius;
 
                 // Simulate bounces

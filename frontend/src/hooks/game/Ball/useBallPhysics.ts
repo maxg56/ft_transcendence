@@ -6,7 +6,7 @@
 	const BALL_RADIUS = 5;
 	const WINNING_SCORE = 3;
 	const maxSpeed = 5;
-	const accelerationSpeed = 1.5;
+	const accelerationSpeed = 1.3;
 
 	type Vector = { x: number; z: number };
 

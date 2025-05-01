@@ -76,7 +76,7 @@ async function saveMatchInDatabase(
       const side = sides[i] ?? 'left';
       score = data.score[side];
     }
-
+    console.log("score", score , "isWinner", isWinner, "elo_change", elo_change);
     await MatchPlayer.create({
       match_id: match.id,
       player_id: player.id,
@@ -110,10 +110,12 @@ export default async function handleGameResult(data: GameResultData) {
     logError("Game not found", data.gameId);
     return;
   }
-
+  
   try {
-    const winnerIds = Array.isArray(data.winner) ? data.winner : [data.winner];
-    logformat("Game result", data.gameId, "Winner(s):", winnerIds.join(', '));
+
+    const winner = data.winner === "left" ? game.teams.get(1) : game.teams.get(2);
+    const winnerIds = winner ?.map(player => player.id) ?? [];
+    logformat("Game result", data.gameId, "Winner(s):", winnerIds.join(", "),);
 
     let updatedPlayers = game.players;
     let eloBefore: Map<string, number> | undefined = undefined;

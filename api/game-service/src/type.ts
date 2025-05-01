@@ -1,5 +1,5 @@
 import { Types } from "mysql2";
-import { GameEngine } from "./controllers/GameEngine";
+import { GameEngine } from "./controllers/GameEngine/type";
 import { Player } from "./models/Player";
 
 export type Vector = { x: number; z: number };
@@ -16,8 +16,9 @@ export type PlayerSide = PlayerSide2v2; // Si tu veux un superset par défaut
 export type GameScore = GameScore1v1 | GameScore2v2 | TeamScore ;
     
 
-export type room = { 
+export type Room = { 
     players: Player[],
+    teams: Map<number, Player[]>,
     engine: GameEngine ,
     autoStartTimer: NodeJS.Timeout | null,
     mode: GameMode,
@@ -25,4 +26,4 @@ export type room = {
     isPongGame: boolean,
     startTime: Date 
 };
-export type GameMode = '1v1' | '2v2' | 'ffa4' | 'tournament' | 'custom';
+export type GameMode = '1v1' | '2v2';

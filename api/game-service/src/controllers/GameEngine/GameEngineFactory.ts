@@ -1,5 +1,7 @@
-import { GameEngine1v1, GameEngine2v2, GameEngineFFA4 } from './GameEngine';
-import { GameMode } from '../type';
+
+import { GameEngine1v1 } from './game-engine-1v1';
+import { GameEngine2v2 } from './game-engine-2v2';
+import { GameMode } from '../../type';
 
 export class GameEngineFactory {
   static createEngine(mode: GameMode) {
@@ -8,8 +10,6 @@ export class GameEngineFactory {
         return new GameEngine1v1(mode);
       case '2v2':
         return new GameEngine2v2(mode);
-      case 'ffa4':
-        return new GameEngineFFA4(mode);
       default:
         throw new Error(`Unsupported game mode: ${mode}`);
     }

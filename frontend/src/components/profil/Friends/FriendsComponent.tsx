@@ -3,7 +3,7 @@ import { X, Check } from "lucide-react";
 import FriendList from "./FriendsList";
 import { useApi } from "@/hooks/api/useApi";
 import { Username, Invitation, FriendListProps } from "../type/friendsIntefarce";
-import { useFriendApi } from "@/hooks/api/profile/ApiFriends/ApiFriendsAccept";
+import { useFriendApi } from "@/hooks/api/profile/useApiFriends";
 
 const FriendsPanel: React.FC = () => {
 	const [research, setResearch] = useState<string[]>([]);

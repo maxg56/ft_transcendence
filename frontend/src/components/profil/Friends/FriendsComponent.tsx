@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import FriendList from "./FriendsList";
 import { useApi } from "@/hooks/api/useApi";
-import { Username, Invitation, FriendListProps } from "../type/friendsIntefarce";
+import { Invitation, FriendListProps } from "../type/friendsIntefarce";
+import { Username } from "../type/profilInterface";
 import { useFriendApi } from "@/hooks/api/profile/useApiFriends";
 
 const FriendsPanel: React.FC = () => {

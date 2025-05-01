@@ -1,5 +1,12 @@
-export interface UserModif{
-	username: string | null,
-	email: string | null,
-	avatar: string | null
+export interface Username {
+	username: string
 }
+
+export interface Elos {
+    elo: number;
+}
+
+export interface SettingsPageProps {
+	onUsernameChange?: (newUsername: string) => void
+}
+

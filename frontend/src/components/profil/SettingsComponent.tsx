@@ -4,9 +4,10 @@ import { useConfKey } from "@/context/ConfKeyContext";
 import KeyInput from "./KeyComponent";
 import { DoubleAuthentification } from "./DoubelAuthen";
 import { useModifProfilApi } from "@/hooks/api/profile/useApiModifProfil";
-import { Username } from "./type/friendsIntefarce";
+import { Username } from "./type/profilInterface";
+import { SettingsPageProps } from "./type/profilInterface";
 
-const SettingsPage: React.FC = () => {
+const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { t, changeLanguage } = useTranslation();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -19,7 +20,7 @@ const SettingsPage: React.FC = () => {
 			username: username,
 		}
 		await modifProfil.refetch(updatedUser);
-		console.log("New userName: ", username);
+		onUsernameChange?.(username);
 	};
 
 	const handlePasswordUpdate = () => {
@@ -113,7 +114,7 @@ const SettingsPage: React.FC = () => {
 						placeholder={t("Mot de passe")}
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						className="w-[250px] px-2 py-2 border border-gray-300 rounded-md text-xs"
+						className="w-[250px] px-2 py-2 border border-gray-300 rounded-md text-xl"
 					/>
 					<button
 						onClick={handlePasswordUpdate}

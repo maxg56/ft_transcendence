@@ -4,7 +4,6 @@ import * as THREE from "three";
 import {Ball} from '../entities/Ball';
 import {Paddle} from '../entities/Paddle';
 
-
 export const useGameScene = () => {
 	const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -32,13 +31,14 @@ export const useGameScene = () => {
   };
 
   const initializeScene = () => {
-      rendererRef.current = new THREE.WebGLRenderer({ antialias: true });
+      // rendererRef.current = new THREE.WebGLRenderer({ antialias: true });
+      rendererRef.current = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       rendererRef.current.shadowMap.enabled = true;
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-  
       sceneRef.current = new THREE.Scene();
-      sceneRef.current.background = new THREE.Color("#141929");
-  
+      // sceneRef.current.background = new THREE.Color("#141929");
+      sceneRef.current.background = null;
+
       cameraRef.current = new THREE.PerspectiveCamera(
         50,
         window.innerWidth / window.innerHeight,
@@ -76,7 +76,7 @@ export const useGameScene = () => {
       const ball = new Ball();
       ball.addToScene(sceneRef.current!);
       ballRef.current = ball.mesh;
-    
+
       if (mountRef.current)
         mountRef.current.appendChild(rendererRef.current.domElement);
     };

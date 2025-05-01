@@ -3,7 +3,7 @@ import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
 import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
-import FriendsPanel from "../components/profil/FriendsComponent";
+import FriendsPanel from "../components/profil/Friends/FriendsComponent";
 import SettingsPage from "../components/profil/SettingsComponent";
 import StatsPong from "@/components/profil/StatsPongComponent";
 import LogoutButton from "@/components/profil/LogOutComponent";

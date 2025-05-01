@@ -2,11 +2,11 @@ import React from "react";
 
 interface Invitation {
 	username: string;
-	status: string;
+	avatar: string | null;
 }
 
 interface FriendListProps {
-	friends: string[];
+	friends: Invitation[];
 	sentInvitations: Invitation[];
 }
 
@@ -19,11 +19,11 @@ const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations }) => 
 					{friends.map((friend, index) => (
 						<li key={`friend-${index}`} className="flex items-center gap-2 bg-gray-100 p-2 rounded">
 							<img
-								src={`https://robohash.org/${friend}`}
-								alt={friend}
+								src={`https://robohash.org/${friend.username}`}
+								alt={friend.username}
 								className="w-8 h-8 rounded-full"
 							/>
-							<span className="truncate max-w-[200px]">{friend}</span>
+							<span className="truncate max-w-[200px]">{friend.username}</span>
 						</li>
 					))}
 					{sentInvitations.map((inv, index) => (

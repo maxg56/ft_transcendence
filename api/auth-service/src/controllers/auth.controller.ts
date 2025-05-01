@@ -63,7 +63,8 @@ export default {
       return await login_controller(username, password, reply);
     } 
     catch (err) {
-      return reply.status(500).send({ error: 'Error during registration' });
+      console.error(err)
+      return reply.status(500).send({ error: `Error during registration $(err)` });
     }
   },
 

@@ -7,6 +7,8 @@ class MatchPlayer extends Model {
   public match_id!: number;
   public player_id!: number;
   public score!: number;
+  public elo_change!: number;
+  public winner!: boolean;
 }
 
 MatchPlayer.init(

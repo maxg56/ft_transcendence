@@ -1,12 +1,12 @@
-import { PlayerSide, room,GameMode } from '../type';
+import { PlayerSide, Room,GameMode } from '../type';
 import { Player } from '../models/Player';
-import { GameEngine , GameEngine1v1} from './GameEngine';
+import { GameEngine , GameEngine1v1} from './GameEngine/BaseGameEngine';
 
 type phase = 'WAITING' | 'SEMIS' | 'FINALS' | 'FINISHED';
 class Tournament {
     private nd_players: number = 0;
     private players: Player[] = [];
-    private TournGames = new Map<string, room>();
+    private TournGames = new Map<string, Room>();
     private phase: phase = 'WAITING';
     
     constructor(nd_players : number = 4) {
@@ -36,7 +36,7 @@ class Tournament {
         ; // Start automatically after 5s
       }, 5000);
   
-      const match: room = {
+      const match: Room = {
         players,
         engine,
         autoStartTimer: timer,
@@ -77,7 +77,7 @@ class Tournament {
       }
     }
   
-    private startFinals(finalist1: Player, finalist2: Player, semi1: room, semi2: room) {
+    private startFinals(finalist1: Player, finalist2: Player, semi1: Room, semi2: Room) {
       this.phase = 'FINALS';
   
       const loser1 = semi1.players.find(p => p.id !== finalist1.id)!;

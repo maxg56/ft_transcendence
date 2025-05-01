@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { GameEngine } from './GameEngine';
-import { GameEngineFactory } from './GameEngineFactory';
+import { GameEngineFactory } from './GameEngine/GameEngineFactory';
 import { Player } from '../models/Player';
 import { logformat, logError } from './log';
 import { WebSocket } from 'ws';
 import { activeGames ,matchmakingQueue } from '../config/data';
-import { GameMode, room } from '../type';
+import { GameMode, Room } from '../type';
 import {startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
 
 
@@ -15,10 +14,7 @@ export interface MatchFormat {
 }
 
 function getQueueKey(format: MatchFormat): GameMode {
-  if (format.teams === 4) {
-    return 'ffa4';
-  }
-
+  
   if (format.playersPerTeam <= 0 || format.teams <= 0) {
     throw new Error("Invalid match format: playersPerTeam and teams must be greater than 0.");
   }
@@ -34,6 +30,10 @@ export function enqueuePlayer(player: Player, format: MatchFormat) {
     const key = getQueueKey(format);
     const queue = matchmakingQueue.get(key) || [];
     player.joinedAt = Date.now();
+    if (queue.find(p => p.id === player.id)) {
+        player.ws.send(JSON.stringify({ event: 'already_in_queue', format }));
+        return;
+    }
     queue.push(player);
     matchmakingQueue.set(key, queue);
     player.ws.send(JSON.stringify({ event: 'join_queue', format }));
@@ -86,50 +86,83 @@ export function tryMatchmaking(format: MatchFormat ,isPongGame: boolean = true) 
 }
 
 
-export function findMatchWithPlayers(players: Player[], format: MatchFormat,isPongGame: boolean) {
-    const gameId = uuidv4();
-    const mode: GameMode = getQueueKey(format);
-    const engine = GameEngineFactory.createEngine(mode);
-    const room : room = {
-      players: players,
-      mode: mode,
-      engine: engine,
-      isPongGame: isPongGame,
-      isPrivateGame: false,
-      autoStartTimer: null,
-      startTime: new Date(),
-    }
-    activeGames.set(gameId,room);
-    startAutoMatchGameTimer(gameId);
-
-
-    const teams: { id: number, players: Player[] }[] = [];
-    const teamSize = format.playersPerTeam;
-  
-    for (let i = 0; i < players.length; i += teamSize) {
-      const teamPlayers = players.slice(i, i + teamSize);
-      teams.push({ id: i / teamSize + 1, players: teamPlayers });
-    }
-  
-    players.forEach((player) => {
-      const team = teams.find(t => t.players.some(p => p.id === player.id));
-      const payload = {
-        event: 'match_found',
-        gameId,
-        format,
-        teamId: team?.id ?? -1,
-        teams: teams.map(t => ({
-          id: t.id,
-          players: t.players.map(p => ({ id: p.id, name: p.name }))
-        }))
-      };
-  
-      if (player.ws.readyState === WebSocket.OPEN) {
-        player.ws.send(JSON.stringify(payload));
-      }
-    });
-  
-    logformat("Match created", "format", `${format.teams} teams of ${format.playersPerTeam}`, "gameId", gameId);
+function createTeams(players: Player[], teamSize: number): { id: number, players: Player[] }[] {
+  if (players.length % teamSize !== 0) {
+    throw new Error("Invalid player count for the specified format.");
   }
-  
+
+  const teams = [];
+  for (let i = 0; i < players.length; i += teamSize) {
+    const teamPlayers = players.slice(i, i + teamSize);
+    teams.push({ id: i / teamSize + 1, players: teamPlayers });
+  }
+  return teams;
+}
+
+function getPlayerTeamInfo(player: Player, teams: { id: number, players: Player[] }[]) {
+  for (const team of teams) {
+    const index = team.players.findIndex(p => p.id === player.id);
+    if (index !== -1) {
+      return { teamId: team.id, positionInTeam: index };
+    }
+  }
+  return { teamId: -1, positionInTeam: -1 };
+}
+
+function createPayload(player: Player, gameId: string, format: MatchFormat, teams: { id: number, players: Player[] }[]) {
+  const { teamId, positionInTeam } = getPlayerTeamInfo(player, teams);
+
+  return {
+    event: 'match_found',
+    gameId,
+    format,
+    teamId,
+    positionInTeam,
+    teams: teams.map(t => ({
+      id: t.id,
+      players: t.players.map(p => ({ id: p.id, name: p.name }))
+    }))
+  };
+}
+
+export function findMatchWithPlayers(players: Player[], format: MatchFormat, isPongGame: boolean) {
+  const gameId = uuidv4();
+  const mode: GameMode = getQueueKey(format);
+  const engine = GameEngineFactory.createEngine(mode);
+  const teamSize = format.playersPerTeam;
+
+  const teams = createTeams(players, teamSize);
+
+  const room: Room = {
+    players,
+    mode,
+    engine,
+    teams: new Map(teams.map(t => [t.id, t.players])),
+    isPongGame,
+    isPrivateGame: false,
+    autoStartTimer: null,
+    startTime: new Date(),
+  };
+
+  activeGames.set(gameId, room);
+  startAutoMatchGameTimer(gameId);
+
+  players.forEach((player) => {
+    const payload = createPayload(player, gameId, format, teams);
+
+    try {
+      if (player.ws && player.ws.readyState === WebSocket.OPEN) {
+        player.ws.send(JSON.stringify(payload));
+      } else {
+        console.warn(`[match] Could not send match_found to player ${player.id}: WebSocket not open`);
+      }
+    } catch (err) {
+      console.error(`[match] Error sending match_found to player ${player.id}:`, err);
+    }
+  });
+
+  logformat("Match created", "format", `${format.teams} teams of ${format.playersPerTeam}`, "gameId", gameId);
+}
+
+
   

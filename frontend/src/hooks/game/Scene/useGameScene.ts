@@ -1,8 +1,8 @@
 // hooks/useGameScene.ts
 import { useEffect, useRef } from 'react';
 import * as THREE from "three";
-import {Ball} from './entities/Ball';
-import {Paddle} from './entities/Paddle';
+import {Ball} from '../entities/Ball';
+import {Paddle} from '../entities/Paddle';
 
 export const useGameScene = () => {
 	const mountRef = useRef<HTMLDivElement>(null);

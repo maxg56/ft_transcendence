@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import useNavigation from "../hooks/useNavigation";
-import { useTournament } from '../context/ResultsContext';
+import useNavigation from "../../hooks/useNavigation";
+import { useTournament } from '../../context/ResultsContext';
 
 type Player = { id: number; name: string };
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { useTranslation } from "../context/TranslationContext";
-import DuelComponent from "../components/Vs/2DuelComponent";
-import StarsBackground from "../animation/StarsBackground";
+import { useTranslation } from "@/context/TranslationContext";
+import DuelComponent from "@/components/2DuelComponent";
+import StarsBackground from "@/animation/StarsBackground";
 
 const Duel2: React.FC = () => {
   const { t } = useTranslation();

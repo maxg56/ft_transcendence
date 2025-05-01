@@ -4,7 +4,7 @@ import './App.css';
 import Accueil from './pages/Accueil';
 import  AuthGuard  from '@/_halper/AuthGuard';
 import AppRouter  from '@/pages/appRouter';
-
+import {WebSocketProvider} from './context/WebSocketContext';
 
 
   const App: React.FC = () => {
@@ -13,7 +13,9 @@ import AppRouter  from '@/pages/appRouter';
         <Route path="/" element={<Accueil />} />
         <Route path="/*" element={
           <AuthGuard>
-            <AppRouter />
+            <WebSocketProvider>
+              <AppRouter />
+            </WebSocketProvider>
           </AuthGuard>
         } />
       </Routes>

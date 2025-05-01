@@ -1,6 +1,5 @@
 import React from "react";
-import SoloComponent from "../components/Vs/SoloComponent";
-import { StarWarsEffect } from "../animation/StarWarsEffect";
+import Header from "@/components/HeaderComponent";
 
 const Solo: React.FC = () => {
 
@@ -13,8 +12,7 @@ const Solo: React.FC = () => {
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
           </div>
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden text-white">
-            <SoloComponent />
-            <StarWarsEffect/>
+            <h1>hey solo page</h1>
           </div>
         </div>
       </div>

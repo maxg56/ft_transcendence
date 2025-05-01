@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { useKeyboard } from '../context/KeyboardContext';
-import { useConfKey } from '../context/ConfKeyContext';
+import { useKeyboard } from '@/context/KeyboardContext';
+import { useConfKey } from '@/context/ConfKeyContext';
+import { useWebSocket } from "@/context/WebSocketContext";
+import Cookies from "js-cookie";
 
 export const useInputControls = (
 	leftPaddleRef: React.MutableRefObject<THREE.Mesh | null>,
@@ -33,3 +35,38 @@ export const useInputControls = (
 		return () => clearInterval(interval);
 	}, [pressedKeys, confKey]);
 };
+
+
+export const usePlayerControls = (side: 'left' | 'right' , gameId: string) => {
+	const socket = useWebSocket();
+	const { pressedKeys } = useKeyboard();
+	const { confKey } = useConfKey();
+	const id = side === 'left' ? 1 : 2;
+	var idtme = Cookies.get("teamId");
+	if (idtme == '2') {
+		side = 'right';
+	}
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (socket?.readyState !== WebSocket.OPEN) return;
+
+			let direction: 'up' | 'down' | null = null;
+			if (pressedKeys.has(confKey[`p${id}_up`])) direction = 'up';
+			else if (pressedKeys.has(confKey[`p${id}_down`])) direction = 'down';
+
+			if (direction) {
+				socket.send(
+					JSON.stringify({
+						event: 'move_paddle',
+						gameId,
+						side,
+						direction,
+					})
+				);
+			}
+		}, 16); // ~60 FPS
+
+		return () => clearInterval(interval);
+	}, [socket, side, pressedKeys, confKey]);
+};
+

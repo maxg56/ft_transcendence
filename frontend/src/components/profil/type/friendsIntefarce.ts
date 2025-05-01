@@ -1,12 +1,4 @@
-export interface Pending{
-	pending: string
-}
-
-export interface Accepting{
-	username: string
-}
-
-export interface Refusing{
+export interface Username{
 	username: string
 }
 

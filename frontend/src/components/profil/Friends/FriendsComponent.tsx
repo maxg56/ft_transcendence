@@ -2,20 +2,42 @@ import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import FriendList from "./FriendsList";
 import { useApi } from "@/hooks/api/useApi";
-import { Pending, Invitation, FriendListProps } from "../type/friendsIntefarce";
+import { Username, Invitation, FriendListProps } from "../type/friendsIntefarce";
 import { useFriendApi } from "@/hooks/api/profile/ApiFriends/ApiFriendsAccept";
 
 const FriendsPanel: React.FC = () => {
+	const [research, setResearch] = useState<string[]>([]);
 	const [pendingG, setPending] = useState<string[]>([]);
 	const [friends, setFriends] = useState<string[]>([]);
 	const [sentInvitations, setSentInvitations] = useState<Invitation[]>([])
+	const [searchTerm, setSearchTerm] = useState("");
+	const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
 
 	const {
 		acceptFriend,
-		refuseFriend
+		refuseFriend,
+		addFriend
 	} = useFriendApi();
 
-	const {refetch: fetchPendingList} = useApi<Pending[]>(
+	const {refetch: fetchResearch} = useApi<Username[]>(
+		"/user/users",
+		{
+			immediate: false,
+			onSuccess: (res) => {
+			if (!res ) {
+				console.error("Erreur research list", res)
+				return
+			}
+			const usernames = res.data.map(research => research.username);
+			setResearch(usernames)
+			},
+			onError: (errMsg) => {
+				console.error('Erreur researchlist :', errMsg)
+			},
+		}
+	)
+
+	const {refetch: fetchPendingList} = useApi<Username[]>(
 		"/user/friend/pendinglist",
 		{
 			immediate: false,
@@ -78,15 +100,51 @@ const FriendsPanel: React.FC = () => {
 		setPending(prev => prev.filter((u) => u !== username));
 	};
 
+	const handleAddFriends = async (username: string) => {
+		await addFriend.refetch({ username });
+		
+	}
+
+	const handleResearch = async (value: string) => {
+		setSearchTerm(value);
+
+		if(value.length < 2){
+			setFilteredUsers([]);
+			return;
+		}
+
+		if (research.length === 0){
+			await fetchResearch();
+		}
+		const results = research.filter(username => username.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+	);
+	setFilteredUsers(results);
+	};
+
 	return (
 		<div className="space-y-4">
 			<div>
 				<h3 className="font-bold mb-2 text-xs">Rechercher un ami</h3>
 				<input
 					type="text"
+					value={searchTerm}
+					onChange={(e) => handleResearch(e.target.value)}
 					placeholder="Nom d'utilisateur..."
 					className="w-full px-2 py-2 border border-gray-300 rounded-md text-xs"
 				/>
+				<ul className="mt-2 space-y-1">
+				{filteredUsers.map((username) => (
+					<li key={username} className="flex justify-between items-center text-xs border px-2 py-1 rounded">
+						<span>{username}</span>
+						<button
+							className="bg-blue-500 text-white px-2 py-1 rounded"
+							onClick={() => handleAddFriends(username)}
+						>
+							Inviter
+						</button>
+					</li>
+				))}
+			</ul>
 			</div>
 			<FriendList friends={friends} sentInvitations={sentInvitations} />
 

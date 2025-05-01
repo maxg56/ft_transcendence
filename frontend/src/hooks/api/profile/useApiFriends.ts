@@ -1,8 +1,8 @@
-import { useApi } from "../../useApi";
-import { Accepting, Refusing } from "@/components/profil/type/friendsIntefarce";
+import { useApi } from "../useApi";
+import { Username } from "@/components/profil/type/friendsIntefarce";
 
 export const useFriendApi = () => {
-const acceptFriend = useApi<Accepting>(
+const acceptFriend = useApi<Username>(
 	"/user/friend/accept",
 	{
 		method: 'PUT',
@@ -19,7 +19,7 @@ const acceptFriend = useApi<Accepting>(
 	  }
 );
 
-const refuseFriend = useApi<Refusing>(
+const refuseFriend = useApi<Username>(
 	"/user/friend/refuse",
 	{
 		method: 'PUT',
@@ -36,8 +36,26 @@ const refuseFriend = useApi<Refusing>(
 	}
 );
 
+const addFriend = useApi<Username>(
+	"/user/friend/add",
+	{
+		method: 'POST',
+		immediate: false,
+		onSuccess: (res) => {
+		if (!res ) {
+			console.error("Erreur adding friend : réponse invalide", res)
+			return
+		}
+		},
+		onError: (errMsg) => {
+			console.error('Erreur adding friends :', errMsg)
+		},
+	}
+);
+
 return {
 	refuseFriend,
-	acceptFriend
+	acceptFriend,
+	addFriend
 };
 }

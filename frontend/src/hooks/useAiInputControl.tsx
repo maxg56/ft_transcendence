@@ -13,7 +13,7 @@ export const useAiInputControl = (
 	const { confKey } = useConfKey();
     const tableHeight = 200;
     const paddleLimit = tableHeight / 2 - 30;
-	const aiSpeed = 4.2;
+	const aiSpeed = 4.0;
 
 	// AI state
     const aiTargetZ = useRef(0);
@@ -22,71 +22,70 @@ export const useAiInputControl = (
 
     useEffect(() => {
         if (!isActive) return;
-
+    
         let lastSampleTime = Date.now();
-
+    
         const interval = setInterval(() => {
             const left = leftPaddleRef.current;
             const right = rightPaddleRef.current;
             const ball = ballRef.current;
             if (!left || !right || !ball) return;
-
+    
             const moveAmount = 5;
-
-            // --- AI ALGORITHM START ---
             const now = Date.now();
+            const dt = (now - lastSampleTime) / 1000;
+    
+            // --- AI ALGORITHM START ---
             if (now - lastSampleTime > 1000) { // Sample once per second
-                // Estimate ball Z velocity
                 const currentBallZ = ball.position.z;
-                const currentBallVelocityZ = (currentBallZ - lastBallZ.current) / ((now - lastSampleTime) / 1000);
-                
-                
-                const lookAheadTime = Math.min(1, 400 / Math.abs(currentBallVelocityZ + 0.001));
-                let predictedZ = currentBallZ + currentBallVelocityZ * lookAheadTime;
-
-                // Predict where the ball will be in 1 second, considering bounces
-                // let predictedZ = currentBallZ + currentBallVelocityZ * 1; // 1 second ahead
-                let wallLimit = tableHeight / 2 - ball.geometry.parameters.radius;
-
-                // Simulate bounces
-                let direction = Math.sign(currentBallVelocityZ);
-                while (Math.abs(predictedZ) > wallLimit) {
+                const velocityZ = (currentBallZ - lastBallZ.current) / dt;
+    
+                let predictedZ = currentBallZ + velocityZ * 1;
+                const radius = ball.geometry.parameters.radius || 5;
+                const wallLimit = tableHeight / 2 - radius;
+    
+                let bounces = 0;
+                let direction = Math.sign(velocityZ);
+    
+                while (Math.abs(predictedZ) > wallLimit && bounces < 10) {
                     if (predictedZ > wallLimit) {
                         predictedZ = wallLimit - (predictedZ - wallLimit);
-                        direction = -direction;
                     } else if (predictedZ < -wallLimit) {
                         predictedZ = -wallLimit + (-wallLimit - predictedZ);
-                        direction = -direction;
                     }
+                    direction = -direction;
+                    bounces++;
                 }
-
-                // Add some imprecision
-                // const error = (Math.random() - 0.5) * 5;
+    
                 aiTargetZ.current = predictedZ;
-
-                // Store for next velocity calculation
+    
+                // Store for next sample
                 lastBallZ.current = currentBallZ;
-                lastBallVelocityZ.current = currentBallVelocityZ;
+                lastBallVelocityZ.current = velocityZ;
                 lastSampleTime = now;
             }
-
-            // Move paddle toward the predicted (and imprecise) target
-            if (Math.abs(aiTargetZ.current - left.position.z) > 2) {
-                if (aiTargetZ.current < left.position.z && left.position.z > -paddleLimit) {
-                    left.position.z -= aiSpeed;
-                } else if (aiTargetZ.current > left.position.z && left.position.z < paddleLimit) {
-                    left.position.z += aiSpeed;
+    
+            // Smoothly move toward predicted target between samples
+            const maxMove = 4.0; // AI paddle speed
+            const error = aiTargetZ.current - left.position.z;
+    
+            if (Math.abs(error) > 1) {
+                const movement = Math.sign(error) * Math.min(Math.abs(error), maxMove);
+                const newZ = left.position.z + movement;
+                if (newZ > -paddleLimit && newZ < paddleLimit) {
+                    left.position.z = newZ;
                 }
             }
-            // --- AI ALGORITHM END ---
-
-            // Human player (right paddle)
-            if (pressedKeys.has(confKey.p2_up) && right.position.z > -paddleLimit) 
+    
+            // --- HUMAN CONTROL ---
+            if (pressedKeys.has(confKey.p2_up) && right.position.z > -paddleLimit)
                 right.position.z -= moveAmount;
-            if (pressedKeys.has(confKey.p2_down) && right.position.z < paddleLimit) 
+            if (pressedKeys.has(confKey.p2_down) && right.position.z < paddleLimit)
                 right.position.z += moveAmount;
+    
         }, 16); // ~60 FPS
-
+    
         return () => clearInterval(interval);
     }, [pressedKeys, confKey]);
+    
 };

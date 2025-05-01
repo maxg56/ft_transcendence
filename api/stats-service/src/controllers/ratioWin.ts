@@ -27,8 +27,8 @@ async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 		if (!nbWin || !nbLose || !nbMatch || !player)
 			return sendError(reply, 'match not find', 404)
 		return sendSuccess(reply, {
-			player: player.username,
-			matchNumber: nbMatch,
+			// player: player.username,
+			// matchNumber: nbMatch,
 			winNumber: nbWin,
 			loseNumber: nbLose
 		}, 200)

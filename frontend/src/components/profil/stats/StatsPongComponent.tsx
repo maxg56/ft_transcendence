@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from "react";
 import { GraphEloPong } from "./GraphEloPong";
 import { RatioPong } from "./RatioPongComponent";
 import { HistoriquePong } from "./HistoriquePong";

@@ -1,4 +1,5 @@
-export interface ElosHistory {
-	matchNb: string,
-	eloNb: number
+export interface RatioGame {
+	category: string,
+	count: number,
+	fill: string
 }

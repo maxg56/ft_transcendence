@@ -12,9 +12,7 @@ const Solo: React.FC = () => {
           <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
           </div>
-          {/* <BabylonTunnel/> */}
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden text-white">
-            {/* <StarsBackground /> */}
             <SoloComponent />
             <StarWarsEffect/>
           </div>

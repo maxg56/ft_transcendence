@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useGameScene } from '../../hooks/useGameScene';
+import { useGameScene } from '../../hooks/game/Scene/useGameScene';
 import { useAiInputControl } from '../../hooks/useAiInputControl';
-import { useBallPhysics } from '../../hooks/useBallPhysics';
+import { useBallPhysics } from '../../hooks/game/Ball/useBallPhysics';
 
 type GameCanvasProps = {
 	gameStarted: boolean;

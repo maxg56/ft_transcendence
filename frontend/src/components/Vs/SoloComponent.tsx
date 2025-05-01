@@ -7,7 +7,7 @@ import useNavigation from "../../hooks/useNavigation";
 import { KeyboardProvider } from '../../context/KeyboardContext';
 import GameOverlay from "../game/GameOverlay";
 
-const SoloComponent: React.FC = () => {
+export const SoloComponent: React.FC = () => {
 
   const [score, setScore] = useState<[number, number]>([0, 0]);
   const [gameStarted, setGameStarted] = useState(false);

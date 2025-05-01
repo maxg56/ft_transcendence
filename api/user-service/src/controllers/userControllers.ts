@@ -23,17 +23,15 @@ export const updateUser = async (request: FastifyRequest, reply: FastifyReply) =
 try {
 	const id = request.user.id
 	console.log("🧩🧪 Param ID for PUT:", id);
-	const { username, email, avatar } = request.body as { username?: string, email?: string, avatar?: string};
-	const user = await User.findByPk(id, { attributes: ['username', 'email', 'avatar']});
+	const { username } = request.body as { username?: string};
+	const user = await User.findByPk(id, { attributes: ['username']});
 	
 	if (!user) {
 		return sendError(reply, 'user not find', 404);
 }
 
 await User.update({ 
-	username: username ?? user.username,
-	email: email ?? user.email,
-	avatar: avatar ?? user.avatar },
+	username: username ?? user.username},
 	{where: {id: id}});
 	return sendSuccess(reply, 'modifications done', 200);
 } catch (error) {

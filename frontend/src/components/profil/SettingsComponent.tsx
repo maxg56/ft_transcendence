@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "@/context/TranslationContext";
 import { useConfKey } from "@/context/ConfKeyContext";
 import KeyInput from "./KeyComponent";
 import { DoubleAuthentification } from "./DoubelAuthen";
+import { useModifProfilApi } from "@/hooks/api/profile/useApiModifProfil";
+import { Username } from "./type/friendsIntefarce";
 
 const SettingsPage: React.FC = () => {
 	const { t, changeLanguage } = useTranslation();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [mail, setMail] = useState("");
 	const { confKey, changeKey } = useConfKey();
 
-	const handleUserUpdate = () => {
+	const {modifProfil} = useModifProfilApi();
+
+	const handleUserUpdate = async () => {
+		const updatedUser: Username = {
+			username: username,
+		}
+		await modifProfil.refetch(updatedUser);
 		console.log("New userName: ", username);
 	};
 
 	const handlePasswordUpdate = () => {
 		console.log("New Password: ", password);
-	};
-
-	const handleMailUpdate = () => {
-		console.log("New Mail: ", mail);
 	};
 
 	const isKeyUsed = (currentKey: string, newKey: string) => {
@@ -114,22 +117,6 @@ const SettingsPage: React.FC = () => {
 					/>
 					<button
 						onClick={handlePasswordUpdate}
-						className="px-3 py-2 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-					>
-						{t("Modifier")}
-					</button>
-				</div>
-
-				<div className="flex items-center">
-					<input
-						type="email"
-						placeholder="Email"
-						value={mail}
-						onChange={(e) => setMail(e.target.value)}
-						className="w-[250px] px-2 py-2 border border-gray-300 rounded-md text-xs"
-					/>
-					<button
-						onClick={handleMailUpdate}
 						className="px-3 py-2 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
 					>
 						{t("Modifier")}

@@ -11,8 +11,8 @@ async function getElos(request: FastifyRequest, reply: FastifyReply) {
 			attributes: ['elo_change'],
 			order:  [['match_id', 'ASC']],
 		})
-		if (elo_gain.length === 0)
-			return sendError(reply, 'elo not find', 404)
+		// if (elo_gain.length === 0)
+		// 	return sendError(reply, 'elo not find', 404)
 		let elo_now = 1000;
 		const elos = elo_gain.map(match => {
 			elo_now += match.elo_change;

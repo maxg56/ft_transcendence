@@ -47,7 +47,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	return (
 		<div>
 			<div className="flex flex-col gap-[20px]">
-				<Card>
+				<Card className="w-3/4 mx-auto my-auto">
 					<div className="flex flex-col items-center justify-center gap-3 m-2">
 						<h2 className="	font-semibold">{t("Langue")}</h2>
 						<div className="flex flex-row gap-[150px] m-3 items-center justify-center">
@@ -63,7 +63,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 						</div>
 					</div>
 				</Card>
-				<Card>
+				<Card className="w-3/4 mx-auto my-auto">
 					<div className="m-2">
 						<p className="text-center font-semibold">{t("Commandes")}</p>
 						<div className="flex flex-row items-center justify-center gap-[250px]">
@@ -98,7 +98,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 				</Card>
 
 
-				<Card>
+				<Card className="w-3/4 mx-auto my-auto">
 					<div className="flex flex-col items-center justify-center gap-3 m-2">
 						<h2 >{t("Modifier")}</h2>
 
@@ -139,7 +139,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 					</div>
 				</Card>
 
-				<Card>
+				<Card className="w-3/4  mx-auto my-auto">
 					<div className="flex flex-col gap-6 m-3 items-center justify-center h-[120px] m-1">
 						<div className="flex flex-col gap-4 items-center justify-center">
 							Double Authentification

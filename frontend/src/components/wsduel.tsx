@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from "react";
 import {GameCanvasWs} from "./game/GameCanvas";
-import ControlsModal from "./ControlsOverlay";
 import { useCountdown } from "../hooks/useCountdown";
 import { useTranslation } from "../context/TranslationContext";
-import useNavigation from "../hooks/useNavigation";
 import { KeyboardProvider } from '../context/KeyboardContext';
 import GameOverlay from "./game/GameOverlay";
 
@@ -12,29 +10,16 @@ const DuelComponent: React.FC = () => {
   const [score, setScore] = useState<[number, number]>([0, 0]);
   const [gameStarted, setGameStarted] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { navigate } = useNavigation();
   const { t } = useTranslation();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+ 
 
   const handleCountdownDone = useCallback(() => {
     setGameStarted(true);
 	}, []);
-  const [countdownKey, setCountdownKey] = useState(0);
-const countdown = useCountdown(3, handleCountdownDone, countdownKey);
+  const [countdownKey] = useState(0);
+  const countdown = useCountdown(3, handleCountdownDone, countdownKey);
 
-const resetGame = () => {
-  setScore([0, 0]);
-  setWinner(null);
-  setGameStarted(false);
-  setCountdownKey(prev => prev + 1); 
-};
 
   return (
     <>
@@ -42,7 +27,7 @@ const resetGame = () => {
         {winner ? (
           <div className="flex flex-col items-center text-white ">
             <div className="absolute top-[250%] text-5xl neonText">
-            <h2>{winner} {t("gagne !")}</h2>
+              <h2>{winner} {t("gagne !")}</h2>
             </div>
           </div>
         ) : (
@@ -58,8 +43,6 @@ const resetGame = () => {
           <h2>{countdown === 0 ? 'GO !' : `${countdown}...`}</h2>
         </div>
       )}
-      <ControlsModal isOpen={isModalOpen} onClose={closeModal} />
-
       <KeyboardProvider>
 			  <GameCanvasWs
           gameStarted={gameStarted}

@@ -28,17 +28,18 @@ export const GameCanvas = ({
 	} = useGameScene();
 
 	useInputControls(leftPaddleRef, rightPaddleRef);
-	useBallPhysics(
-		ballRef,
-		leftPaddleRef,
-		rightPaddleRef,
-		setScore,
-		setWinner,
-		setGameStarted,
-		isPaused,
-		gameStarted
-	);
-
+	if (isPaused && gameStarted) {
+		useBallPhysics(
+			ballRef,
+			leftPaddleRef,
+			rightPaddleRef,
+			setScore,
+			setWinner,
+			setGameStarted,
+			isPaused,
+			gameStarted
+		);
+	}
 	return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;
 };
 
@@ -54,7 +55,7 @@ export const GameCanvasWs = ({
 		ballRef,
 	} = useGameScene();
 
-	var gameId = Cookies.get("gameid");
+	const gameId = Cookies.get("gameid");
 	if (gameId) {
 		usePlayerControls('left', gameId);	
 	}

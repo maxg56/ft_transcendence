@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import GameCanvas4Players from "./game/GameCanvas4Players";
+import {GameCanvas4Players} from "./game/GameCanvas4Players";
 import ControlsModal from "./ControlsOverlay";
 import { useCountdown } from "../hooks/useCountdown";
 import { useTranslation } from "../context/TranslationContext";

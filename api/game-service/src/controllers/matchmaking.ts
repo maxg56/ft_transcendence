@@ -80,7 +80,7 @@ export function tryMatchmaking(format: MatchFormat ,isPongGame: boolean = true) 
   const totalPlayers = format.playersPerTeam * format.teams;
 
   if (queue.length < totalPlayers) return;
-
+  console.log(`[match] Trying to match ${totalPlayers} players in queue for ${key}`);
   const now = Date.now();
 
   for (let indices of generateCombinations(queue.length, totalPlayers)) {

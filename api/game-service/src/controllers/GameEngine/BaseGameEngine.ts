@@ -1,14 +1,7 @@
 
-import { PlayerSide, Position, Vector, GameMode,GameScore,GameScore1v1,GameScore2v2,PlayerSide1v1,PlayerSide2v2,TeamScore } from '../type';
+import { PlayerSide, Position, Vector, GameMode,GameScore,GameScore1v1,GameScore2v2,PlayerSide1v1,PlayerSide2v2,TeamScore } from '../../type';
+import { TABLE_WIDTH, TABLE_HEIGHT, BALL_RADIUS, PADDLE_HEIGHT, WINNING_SCORE, MAX_SPEED, ACCELERATION, MOVE_SPEED} from './constants';
 
-const TABLE_WIDTH = 385;
-const TABLE_HEIGHT = 200;
-const BALL_RADIUS = 10;
-const PADDLE_HEIGHT = 40;
-const WINNING_SCORE = 3;
-const MAX_SPEED = 5;
-const ACCELERATION = 1.5;
-const MOVE_SPEED = 5;
 
 
 abstract class BaseGameEngine<
@@ -100,82 +93,9 @@ abstract class BaseGameEngine<
   }
   
 
-class GameEngine1v1 extends BaseGameEngine<PlayerSide1v1, GameScore1v1>{
 
-	score = { left: 0, right: 0 };
 
-	paddles = { left: { z: 0  }, right: { z: 0 } };
 
-  	checkCollisions(): void {
-    	if (this.ball.x <= -TABLE_WIDTH / 2 + BALL_RADIUS) {
-    		if (Math.abs(this.ball.z - this.paddles.left.z) < PADDLE_HEIGHT / 2) {
-    		this.direction = this.calculateRebound('left');
-    	}
-    }
-
-    if (this.ball.x >= TABLE_WIDTH / 2 - BALL_RADIUS) {
-      if (Math.abs(this.ball.z - this.paddles.right.z) < PADDLE_HEIGHT / 2) {
-        this.direction = this.calculateRebound('right');
-      }
-    }
-  }
-
-  checkScore(): void {
-    if (this.ball.x < -TABLE_WIDTH / 2) {
-      this.score.right++;
-      if (this.score.right >= WINNING_SCORE) this.winner = 'right';
-      else this.resetBall(1);
-    }
-    if (this.ball.x > TABLE_WIDTH / 2) {
-      this.score.left++;
-      if (this.score.left >= WINNING_SCORE) this.winner = 'left';
-      else this.resetBall(-1);
-    }
-  }
-}
-
-class GameEngine2v2 extends BaseGameEngine<PlayerSide2v2, TeamScore> {
-  score = { left: 0, right: 0 };
-  paddles = {
-    left: { z: -30 },
-    left2: { z: 30 },
-    right: { z: -30 },
-    right2: { z: 30 },
-  };
-
-  checkCollisions(): void {
-    if (this.ball.x <= -TABLE_WIDTH / 2 + BALL_RADIUS) {
-      if (
-        Math.abs(this.ball.z - this.paddles.left.z) < PADDLE_HEIGHT / 2 ||
-        Math.abs(this.ball.z - this.paddles.left2.z) < PADDLE_HEIGHT / 2
-      ) {
-        this.direction = this.calculateRebound('left');
-      }
-    }
-
-    if (this.ball.x >= TABLE_WIDTH / 2 - BALL_RADIUS) {
-      if (
-        Math.abs(this.ball.z - this.paddles.right.z) < PADDLE_HEIGHT / 2 ||
-        Math.abs(this.ball.z - this.paddles.right2.z) < PADDLE_HEIGHT / 2
-      ) {
-        this.direction = this.calculateRebound('right');
-      }
-    }
-  }
-
-  checkScore(): void {
-    if (this.ball.x < -TABLE_WIDTH / 2) {
-      this.score.right++;
-      if (this.score.right >= WINNING_SCORE) this.winner = 'right';
-      else this.resetBall(1);
-    }
-    if (this.ball.x > TABLE_WIDTH / 2) {
-      this.score.left++;
-      if (this.score.left >= WINNING_SCORE) this.winner = 'left';
-      else this.resetBall(-1);
-    }
-  }
-}
 
 class GameEngineFFA4 extends BaseGameEngine<PlayerSide2v2, GameScore> {
   score = { left: 0, right: 0, left2: 0, right2: 0 };
@@ -214,6 +134,4 @@ class GameEngineFFA4 extends BaseGameEngine<PlayerSide2v2, GameScore> {
   }
 }
 
-export type GameEngine = GameEngine1v1 | GameEngine2v2 | GameEngineFFA4;
-
-export { GameEngine1v1, GameEngine2v2, GameEngineFFA4 };
+export { BaseGameEngine, GameEngineFFA4 };

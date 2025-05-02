@@ -5,6 +5,7 @@ import {Ball} from '../entities/Ball';
 import {Paddle} from '../entities/Paddle';
 
 
+
 export const useGameScene = () => {
 	const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -62,7 +63,7 @@ export const useGameScene = () => {
       table.receiveShadow = true;
       table.position.y = -5;
       sceneRef.current.add(table);
-  
+      
       // Paddles
       const leftPaddle = new Paddle(-tableWidth / 2 + 10, tableHeight);
       leftPaddle.addToScene(sceneRef.current!);

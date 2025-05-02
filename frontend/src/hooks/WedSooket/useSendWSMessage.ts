@@ -1,18 +1,17 @@
-// hooks/useSendWSMessage.ts
 import { useWebSocket } from "@/context/WebSocketContext";
 
 export const useSendWSMessage = () => {
-  const socket = useWebSocket();
+  const { socket } = useWebSocket();  // Correctement destructuré depuis useWebSocket
 
   const sendMessage = (data: Record<string, any>) => {
     if (!socket) {
-      console.error("WebSocket not initialized");
+      console.error("WebSocket non initialisé");
       return;
     }
     if (socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(data));
     } else {
-      console.warn("WebSocket not ready");
+      console.warn("WebSocket non prêt");
     }
   };
 

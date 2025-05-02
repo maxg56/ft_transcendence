@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import * as THREE from 'three';
 import { useKeyboard } from '@/context/KeyboardContext';
 import { useConfKey } from '@/context/ConfKeyContext';
 import { useWebSocket } from "@/context/WebSocketContext";
 import Cookies from "js-cookie";
+import { MeshRef } from "../type";
 
 export const useInputControls = (
-	leftPaddleRef: React.MutableRefObject<THREE.Mesh | null>,
-	rightPaddleRef: React.MutableRefObject<THREE.Mesh | null>
+	leftPaddleRef: MeshRef,
+	rightPaddleRef: MeshRef
 ) => {
 	const { pressedKeys } = useKeyboard();
 	const { confKey } = useConfKey();
@@ -22,7 +22,7 @@ export const useInputControls = (
 			const moveAmount = 5;
             
 			if (pressedKeys.has(confKey.p1_up) && left.position.z > -paddleLimit) 
-                    left.position.z -= moveAmount;
+                left.position.z -= moveAmount;
 			if (pressedKeys.has(confKey.p1_down ) && left.position.z < paddleLimit) 
                 left.position.z += moveAmount;
 
@@ -30,7 +30,7 @@ export const useInputControls = (
                 right.position.z -= moveAmount;
 			if (pressedKeys.has(confKey.p2_down) && right.position.z < paddleLimit) 
                 right.position.z += moveAmount;
-		}, 16); // ~60 FPS
+		}, 16);
 
 		return () => clearInterval(interval);
 	}, [pressedKeys, confKey]);
@@ -38,11 +38,11 @@ export const useInputControls = (
 
 
 export const usePlayerControls = (side: 'left' | 'right' , gameId: string) => {
-	const socket = useWebSocket();
+	const { socket } = useWebSocket();  
 	const { pressedKeys } = useKeyboard();
 	const { confKey } = useConfKey();
 	const id = side === 'left' ? 1 : 2;
-	var idtme = Cookies.get("teamId");
+	const idtme = Cookies.get("teamId");
 	if (idtme == '2') {
 		side = 'right';
 	}

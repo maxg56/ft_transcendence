@@ -13,7 +13,8 @@ import { Player } from './models/Player';
 import joinPrivateGame from './controllers/join_private_game';
 import { logformat, logError } from "./controllers/log";
 import {activeGames, privateGames , matchmakingQueue } from './config/data';
-import { MatchFormat,tryMatchmaking , enqueuePlayer } from './controllers/matchmaking';
+import { MatchFormat,tryMatchmaking , enqueuePlayer, cleanMatchmakingQueues } from './controllers/matchmaking';
+import { Query } from 'mysql2/typings/mysql/lib/protocol/sequences/Query';
 
 dotenv.config();
 
@@ -126,6 +127,13 @@ const formats: MatchFormat[] = [
 setInterval(() => {
   for (const format of formats) {
     tryMatchmaking(format);
+  }
+  cleanMatchmakingQueues();
+  console.log("Active Games: ", activeGames.size);
+  console.log("Private Games: ", privateGames.size);
+  console.log("Matchmaking Queues: ", matchmakingQueue.size);
+  for (const [key, queue] of matchmakingQueue.entries()) {
+    console.log(`Queue ${key}: ${queue.map(player => player.name).join(', ')}`);
   }
 }, 1000);
 

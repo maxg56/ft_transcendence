@@ -1,9 +1,9 @@
-import React from "react";
 import { GraphEloPong } from "./GraphEloPong";
 import { RatioPong } from "./RatioPongComponent";
 import { HistoriquePong } from "./HistoriquePong";
 
 const StatsPong: React.FC = () => {
+
   return (
     <div className="flex flex-row gap-10">
       <div className="flex flex-row gap-10 w-full">

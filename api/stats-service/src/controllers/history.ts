@@ -10,8 +10,16 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 	try {
 		const id = request.user.id
 		// const { id } = request.params as {id: number}
+		const valid2v2MatchIdsResult = await MatchPlayer.findAll({
+			attributes: ['match_id'],
+			group: ['match_id'],
+			having: Sequelize.literal('COUNT(*) = 4'),
+			raw: true
+		})
+		const valid2v2MatchIds = valid2v2MatchIdsResult.map(m => m.match_id)
+
 		const matchesPlayer = await MatchPlayer.findAll({
-			where: { player_id: id },
+			where: { player_id: id, match_id: valid2v2MatchIds },
 			order: [['match_id', 'DESC']]
 		})
 		if (matchesPlayer.length === 0) 
@@ -53,16 +61,19 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 			const opponentsData = opponents
 				.filter(o => o.match_id === matchId)
 				.map(o => ({
-					username: o.player.username.replace(/^deleted user \d+$/, 'deleted user'),
-					score: o.score
+				username: o.player.username.replace(/^deleted user \d+$/, 'deleted user'),
+				score: o.score
 				}))
+			const partner = opponentsData.find(o => o.score === playerData?.score )
+			const adversaries = opponentsData.filter(o => o.username !== partner?.username)
 			return {
 				match_id: match.id,
 				is_pong_game: match.is_pong_game,
 				playedAt: match.playedAt,
 				duration_seconds: match.duration_seconds,
 				player: playerData,
-				opponents: opponentsData
+				partner: partner,
+				opponents: adversaries
 			}
 		})
 

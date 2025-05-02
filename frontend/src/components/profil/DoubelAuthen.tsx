@@ -107,7 +107,7 @@ export function DoubleAuthentification() {
             }
           }}
         />
-        <Label className="text-[50px]" htmlFor="authentification">Activer Authentification</Label>
+        <Label className="text-2xl" htmlFor="authentification">Activer Authentification</Label>
       </div>
 
       <DoubleAuthentificationModal

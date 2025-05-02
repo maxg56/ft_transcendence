@@ -5,11 +5,9 @@ import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
 import { sendSuccess, sendError } from '../utils/reply';
 
-
 async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const id = request.user.id
-		// const { id } = request.params as {id: number}
 		const valid2v2MatchIdsResult = await MatchPlayer.findAll({
 			attributes: ['match_id'],
 			group: ['match_id'],
@@ -22,8 +20,6 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 			where: { player_id: id, match_id: valid2v2MatchIds },
 			order: [['match_id', 'DESC']]
 		})
-		if (matchesPlayer.length === 0) 
-			return sendError(reply, "no match find", 404)
 		const player = matchesPlayer.map( matchplayer => {
 			return {
 				match_id: matchplayer.match_id,
@@ -52,8 +48,6 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 			where: { id: matchIds },
 			order: [['id', 'DESC']],
 		})
-		if (matches.length === 0) 
-			return sendError(reply, "no match find with matchIds", 404)
 		
 		const matchesHistory = matches.map(match => {
 			const matchId = match.id
@@ -87,7 +81,6 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 async function matchesHistory1v1 (request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const id = request.user.id
-		// const { id } = request.params as {id: number}
 		const valid1v1MatchIdsResult = await MatchPlayer.findAll({
 			attributes: ['match_id'],
 			group: ['match_id'],
@@ -95,14 +88,11 @@ async function matchesHistory1v1 (request: FastifyRequest, reply: FastifyReply) 
 			raw: true
 		})
 		const valid1v1MatchIds = valid1v1MatchIdsResult.map(m => m.match_id)
-		console.log('validematchid', valid1v1MatchIds)
 
 		const matchesPlayer = await MatchPlayer.findAll({
 			where: { player_id: id, match_id: valid1v1MatchIds },
 			order: [['match_id', 'DESC']]
 		})
-		if (matchesPlayer.length === 0) 
-			return sendError(reply, "no match find", 404)
 
 		const player = matchesPlayer.map( matchplayer => {
 			return {
@@ -112,7 +102,6 @@ async function matchesHistory1v1 (request: FastifyRequest, reply: FastifyReply) 
 				winner: matchplayer.winner
 			}
 		})
-		console.log('player', player)
 
 		const matchIds = matchesPlayer.map(matchPlayer => matchPlayer.match_id)
 
@@ -133,8 +122,6 @@ async function matchesHistory1v1 (request: FastifyRequest, reply: FastifyReply) 
 			where: { id: matchIds },
 			order: [['id', 'DESC']],
 		})
-		if (matches.length === 0) 
-			return sendError(reply, "no match find with matchIds", 404)
 
 		const opponentformatted = opponents
 			.map(o => {

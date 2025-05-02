@@ -24,8 +24,8 @@ async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 			}
 		})
 		const nbMatch = await MatchPlayer.count({ where: {player_id: id}})
-		if (!nbWin || !nbLose || !nbMatch || !player)
-			return sendError(reply, 'match not find', 404)
+		// if (!nbWin || !nbLose || !nbMatch || !player)
+		// 	return sendError(reply, 'match not find', 404)
 		return sendSuccess(reply, {
 			// player: player.username,
 			// matchNumber: nbMatch,

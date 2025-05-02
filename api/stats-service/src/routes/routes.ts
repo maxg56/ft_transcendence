@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import fp from 'fastify-plugin'
 import { ratioWinsLosses } from '../controllers/ratioWin';
 import { getElos } from '../controllers/elo';
-import { matchesHistory } from '../controllers/history';
+import { matchesHistory1v1, matchesHistory2v2 } from '../controllers/history';
 import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
@@ -77,7 +77,8 @@ async function statsRoutes(fastify: any) {
 	// penser a remettre { preHandler: [fastify.authenticate] } et enlever :id et verifier dans la fucntion ratiowinslosses
 	fastify.get('/stats/ratiowin', { preHandler: [fastify.authenticate] }, ratioWinsLosses);
 	fastify.get('/stats/elo', { preHandler: [fastify.authenticate] }, getElos);
-	fastify.get('/stats/history', { preHandler: [fastify.authenticate] }, matchesHistory);
+	fastify.get('/stats/history1v1', { preHandler: [fastify.authenticate] }, matchesHistory1v1);
+	fastify.get('/stats/history2v2', { preHandler: [fastify.authenticate] }, matchesHistory2v2);
 }
 
 export default fp(statsRoutes);

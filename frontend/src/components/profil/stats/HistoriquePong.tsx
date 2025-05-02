@@ -1,4 +1,4 @@
-import  { useState } from "react"
+import  { useState, useEffect, use } from "react"
 import {
 	Table,
 	TableBody,
@@ -7,34 +7,58 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-
 import { Button } from "@/components/ui/button"
 import {
 	Card,
 	// CardContent,
 	// CardHeader,
 	// CardTitle,
-  }from "@/components/ui/card"
-const matchHistory = [
-	{ id: "MATCH001", adversaire: "Sam", resultat: "Victoire", score: "10 - 7", time:"3:30", elo: "+15" },
-	{ id: "MATCH002", adversaire: "Jane", resultat: "Défaite", score: "8 - 10", time:"3:30", elo: "-10" },
-	{ id: "MATCH003", adversaire: "Max", resultat: "Victoire", score: "10 - 2", time:"3:30", elo: "+20" },
-	{ id: "MATCH004", adversaire: "Leo", resultat: "Victoire", score: "10 - 9", time:"3:30", elo: "+12" },
-	{ id: "MATCH005", adversaire: "Tom", resultat: "Défaite", score: "7 - 10", time:"3:30", elo: "-8" },
-	{ id: "MATCH006", adversaire: "Anna", resultat: "Victoire", score: "10 - 3", time:"3:20", elo: "+18" },
-	{ id: "MATCH007", adversaire: "Lucas", resultat: "Défaite", score: "9 - 10", time:"3:35", elo: "-5" },
-	{ id: "MATCH008", adversaire: "Emma", resultat: "Victoire", score: "10 - 4", time:"3:25", elo: "+16" },
-	{ id: "MATCH009", adversaire: "Noah", resultat: "Victoire", score: "10 - 8", time:"3:40", elo: "+14" },
-	{ id: "MATCH010", adversaire: "Eva", resultat: "Défaite", score: "6 - 10", time:"3:50", elo: "-12" },
-	{ id: "MATCH011", adversaire: "Zoe", resultat: "Victoire", score: "10 - 6", time:"3:30", elo: "+10" },
-]
+}from "@/components/ui/card"
+import { HistoryGame } from "../type/statsInterface"
+import { useApi } from "@/hooks/api/useApi"
 
 const ITEMS_PER_PAGE = 10
 
 export function HistoriquePong() {
 	const [page, setPage] = useState(0)
+	const [matchHistory, setmatchHistory] = useState<HistoryGame[]>([])
 	const start = page * ITEMS_PER_PAGE
 	const end = start + ITEMS_PER_PAGE
+	
+	const {refetch: fetchHistory} = useApi<HistoryGame>(
+		"/stats/history1v1",
+		{
+			immediate: false,
+			onSuccess: (res) => {
+				if (!res) {
+					console.error("Erreur historygame", res)
+					return
+				}
+				const historyGameFormatted: HistoryGame[] = res.data.map((match: any) => ({
+					id: match.match_id,
+					opponent: match.opponents.username,
+					result: match.player.winner ? "Victory" : "Defeat",
+					scoreP: match.player.score,
+					scoreO: match.opponents.score,
+					time: match.duration_seconds,
+					elo_gain: match.player.elo_change
+				}))
+				setmatchHistory(historyGameFormatted);
+				},
+			onError: (errMsg) => {
+				console.error('Erreur history game :', errMsg)
+			},
+			}
+		)
+		
+		useEffect(() => {
+			const fetchData = async () => {
+				await Promise.all([fetchHistory()]);
+			};
+			fetchData();
+		}, []
+	);
+
 	const currentItems = matchHistory.slice(start, end)
 
 	const handleNext = () => {
@@ -66,11 +90,11 @@ export function HistoriquePong() {
 				<TableBody>
 					{currentItems.map((match) => (
 						<TableRow key={match.id}>
-							<TableCell className="font-medium">{match.adversaire}</TableCell>
-							<TableCell>{match.resultat}</TableCell>
-							<TableCell>{match.score}</TableCell>
+							<TableCell className="font-medium">{match.opponent}</TableCell>
+							<TableCell>{match.result}</TableCell>
+							<TableCell>{match.scoreP} - {match.scoreO}</TableCell>
 							<TableCell>{match.time}</TableCell>
-							<TableCell className="text-right">{match.elo}</TableCell>
+							<TableCell className="text-right">{match.elo_gain}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>

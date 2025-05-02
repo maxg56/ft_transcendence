@@ -5,7 +5,7 @@ import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import FriendsPanel from "../components/profil/Friends/FriendsComponent";
 import SettingsPage from "../components/profil/SettingsComponent";
-import StatsPong from "@/components/profil/StatsPongComponent";
+import StatsPong from "@/components/profil/stats/StatsPongComponent";
 import LogoutButton from "@/components/profil/LogOutComponent";
 import StatsShifumi from "@/components/profil/StatsShifumi";
 import { useApi } from "@/hooks/api/useApi";

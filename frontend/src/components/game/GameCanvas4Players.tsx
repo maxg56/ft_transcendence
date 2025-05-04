@@ -10,7 +10,6 @@ import Cookies from "js-cookie"
 
 type GameCanvas4PlayersProps = {
   gameStarted?: boolean
-  isPaused?: boolean
   setScore: (score: [number, number]) => void
   setWinner: (winner: string | null) => void
   setGameStarted: (started: boolean) => void
@@ -18,7 +17,6 @@ type GameCanvas4PlayersProps = {
 
 const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
   gameStarted,
-  isPaused,
   setScore,
   setWinner,
   setGameStarted,
@@ -38,7 +36,7 @@ const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
     rightPaddle1Ref,
     rightPaddle2Ref,
   )
-  if (isPaused && gameStarted) {
+  if (gameStarted) {
     useBallPhysics4Players(
       ballRef,
       leftPaddle1Ref,
@@ -48,7 +46,6 @@ const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
       setScore,
       setWinner,
       setGameStarted,
-      isPaused,
       gameStarted
     )
   }

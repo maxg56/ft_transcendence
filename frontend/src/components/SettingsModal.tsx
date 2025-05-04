@@ -2,7 +2,7 @@ import { X, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "../context/TranslationContext";
 import useNavigation from "../hooks/useNavigation";
-import { createPortal } from "react-dom";
+
 
 const SettingsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

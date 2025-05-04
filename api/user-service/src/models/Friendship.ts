@@ -6,6 +6,9 @@ class Friendship extends Model {
   public user1!: number;
   public user2!: number;
   public status!: "pending" | "accepted" | "blocked";
+
+  public userOne?: User;
+  public userTwo?: User;
 }
 
 Friendship.init(

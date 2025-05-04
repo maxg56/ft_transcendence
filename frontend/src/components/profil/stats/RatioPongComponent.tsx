@@ -17,6 +17,11 @@ import {
 import { RatioGame } from "../type/statsInterface"
 import { useApi } from "@/hooks/api/useApi"
 	
+type RatioGameAPI = {
+	winNumber: number
+	loseNumber: number
+}
+
 export function RatioPong() {
 	const [chartData, setChartData] = useState<RatioGame[]>([])
 
@@ -34,18 +39,18 @@ export function RatioPong() {
 		}
 	} satisfies ChartConfig
 
-	const {refetch: fetchRatio} = useApi<RatioGame>(
+	const {refetch: fetchRatio} = useApi<RatioGameAPI>(
 		"/stats/ratiowin",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-				if (!res) {
-					console.error("Erreur ratiogame", res)
+			onSuccess: (data) => {
+				if (!data) {
+					console.error("Erreur ratiogame", data)
 					return
 				}
 				const ratioGameFormatted: RatioGame[] = [
-					{ category: "Victories", count: res.data.winNumber, fill: "#04e0c7"},
-					{ category: "Defeats", count: res.data.loseNumber, fill: "#d11111"},
+					{ category: "Victories", count: data.winNumber, fill: "#04e0c7"},
+					{ category: "Defeats", count: data.loseNumber, fill: "#d11111"},
 				]
 				setChartData(ratioGameFormatted);
     		},

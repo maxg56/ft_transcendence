@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "@/context/TranslationContext";
-import { useConfKey } from "@/context/ConfKeyContext";
+import React, {useState } from "react";
+import { useTranslation , Language } from "@/context/TranslationContext";
+import { useConfKey, ConfKeyMap } from "@/context/ConfKeyContext";
 import KeyInput from "./KeyComponent";
 import { DoubleAuthentification } from "./DoubelAuthen";
 import { useModifProfilApi } from "@/hooks/api/profile/useApiModifProfil";
@@ -8,39 +8,36 @@ import { Username } from "./type/profilInterface";
 import { SettingsPageProps } from "./type/profilInterface";
 import { ConfirmPasswordModal } from "./Settings/ConfirmPassword";
 import { Card } from "../ui/card";
+
 const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { t, changeLanguage } = useTranslation();
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+	const [username, setUsername] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
 	const { confKey, changeKey } = useConfKey();
-	const [confirmPassword, setConfirmPassword] = useState(false);
+	const [confirmPassword, setConfirmPassword] = useState<boolean>(false);
 
-	const {modifProfil} = useModifProfilApi();
+	const { modifProfil } = useModifProfilApi();
 
 	const handleUserUpdate = async () => {
-		const updatedUser: Username = {
-			username: username,
-		}
+		const updatedUser: Username = { username };
 		await modifProfil.refetch(updatedUser);
 		onUsernameChange?.(username);
 	};
+		const handlePasswordUpdate = () => {
+			console.log("New Password: ", password);
+			setPassword("");
+		};
 
-	const handlePasswordUpdate = () => {
-		console.log("New Password: ", password);
-	};
-
-	const isKeyUsed = (currentKey: string, newKey: string) => {
+		const isKeyUsed = (currentKey: keyof ConfKeyMap, newKey: string) => {
 		return (
-			newKey !== "" &&
-			Object.entries(confKey).some(
-				([k, v]) => k !== currentKey && v === newKey
-			)
+	  		newKey !== "" &&
+	  		Object.entries(confKey).some(([k, v]) => k !== currentKey && v === newKey)
 		);
 	};
 
-	const handleKeyChange = (keyName: string, newKey: string) => {
+	const handleKeyChange = (keyName: keyof ConfKeyMap, newKey: string) => {
 		if (!isKeyUsed(keyName, newKey)) {
-			changeKey(keyName, newKey);
+		  changeKey(keyName, newKey);
 		}
 	};
 
@@ -55,7 +52,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 							<button
 							key={lang}
 							className="bg-blue-300 text-black rounded-2xl hover:bg-gray-200 px-6 py-3 w-32 text-center"
-							onClick={() => changeLanguage(lang)}
+							onClick={() => changeLanguage(lang as Language)}
 							>
 							{t(lang)}
 							</button>
@@ -71,11 +68,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 								<p className="text-lg font-bold text-gray-700">P1</p>
 								<div className="flex gap-10 ">
 									<div className="flex flex-col items-center gap-1">
-										<KeyInput keyName="p1_up" value={confKey.p1_up} onChange={(key) => handleKeyChange("p1_up", key)} />
+										<KeyInput value={confKey.p1_up} onChange={(key) => handleKeyChange("p1_up", key)} />
 										<p className="text-lg font-bold text-gray-700">Up</p>
 									</div>
 									<div className="flex flex-col items-center gap-1">
-										<KeyInput keyName="p1_down" value={confKey.p1_down} onChange={(key) => handleKeyChange("p1_down", key)} />
+										<KeyInput  value={confKey.p1_down} onChange={(key) => handleKeyChange("p1_down", key)} />
 										<p className="text-lg font-bold text-gray-700">Down</p>
 									</div>
 								</div>
@@ -84,11 +81,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 								<p className="text-lg font-bold text-gray-700">P2</p>
 								<div className="flex gap-10">
 									<div className="flex flex-col items-center gap-1">
-										<KeyInput keyName="p2_up" value={confKey.p2_up} onChange={(key) => handleKeyChange("p2_up", key)} />
+										<KeyInput  value={confKey.p2_up} onChange={(key) => handleKeyChange("p2_up", key)} />
 										<p className="text-lg font-bold text-gray-700">Up</p>
 									</div>
 									<div className="flex flex-col items-center gap-1">
-										<KeyInput keyName="p2_down" value={confKey.p2_down} onChange={(key) => handleKeyChange("p2_down", key)} />
+										<KeyInput value={confKey.p2_down} onChange={(key) => handleKeyChange("p2_down", key)} />
 										<p className="text-lg font-bold text-gray-700">Down</p>
 									</div>
 								</div>

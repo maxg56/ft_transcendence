@@ -1,6 +1,6 @@
 "use client"
 
-import { Area, AreaChart, CartesianGrid, Line, LineChart } from "recharts"
+import {CartesianGrid, Line, LineChart } from "recharts"
 import {
   Card,
   CardContent,
@@ -17,8 +17,12 @@ import { useEffect, useState } from "react";
 import { Elos } from "../type/profilInterface";
 import { useApi } from "@/hooks/api/useApi";
 
+type Points = {
+    points: number;
+}
+
 export function GraphEloPong() {
-  const [chartData, setChartData] = useState<Elos[]>([]);
+  const [chartData, setChartData] = useState<Points[]>([]);
 
   const chartConfig = {
     points: {
@@ -31,13 +35,13 @@ export function GraphEloPong() {
 		"/stats/elo",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-			if (!res ) {
-				console.error("Erreur elos list", res)
+			onSuccess: (data) => {
+			if (!data ) {
+				console.error("Erreur elos list", data)
 				return
 			}
       const initialElo = {points: 1000};
-			const elos = res.data.map((e) => ({points: e.elo}));
+			const elos = data.map((e) => ({points: e.elo}));
       setChartData([initialElo, ...elos]);
     },
     onError: (errMsg) => {

@@ -1,7 +1,7 @@
 // hooks/useConfKey.ts
 import React, {createContext, useState, useContext, ReactNode} from 'react';
 
-type ConfKeyMap = {
+export type ConfKeyMap = {
 	p1_up: string;
 	p1_down: string;
 	p2_up: string;
@@ -54,4 +54,3 @@ export const ConfKeyProvider: React.FC<{ children: ReactNode }> = ({ children })
 		}
 		return context;
 };
-// <button onClick={() => changeKey('up', 'z')}>Monter avec Z</button>

@@ -50,7 +50,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
       socketRef.current = ws;
     };
 
-    ws.onclose = (event) => {
+    ws.onclose = () => {
       console.log("❌ WebSocket disconnected");
       if (!manuallyClosed.current && retryCount.current < WS_CONFIG.maxRetries) {
         const delay = WS_CONFIG.baseDelay * 2 ** retryCount.current;

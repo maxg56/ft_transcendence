@@ -13,7 +13,7 @@ export const useAiInputControl = (
 	const { confKey } = useConfKey();
     const tableHeight = 200;
     const paddleLimit = tableHeight / 2 - 30;
-	const aiSpeed = 4.0;
+	// const aiSpeed = 4.0;
 
 	// AI state
     const aiTargetZ = useRef(0);
@@ -41,7 +41,10 @@ export const useAiInputControl = (
                 const velocityZ = (currentBallZ - lastBallZ.current) / dt;
     
                 let predictedZ = currentBallZ + velocityZ * 1;
-                const radius = ball.geometry.parameters.radius || 5;
+                let radius = 5;
+                if (ball && ball.geometry instanceof THREE.SphereGeometry) {
+                    radius = ball.geometry.parameters.radius;
+                }
                 const wallLimit = tableHeight / 2 - radius;
     
                 let bounces = 0;

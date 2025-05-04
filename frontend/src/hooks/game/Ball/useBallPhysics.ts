@@ -38,20 +38,17 @@
 		onScoreUpdate: (score: [number, number]) => void,
 		onGameEnd: (winner: string) => void,
 		setGameStarted: (gameStarted: boolean) => void,
-		isPaused: boolean,
 		gameStarted: boolean
 	) => {
 		const direction = useRef(new THREE.Vector3(1, 0, 1).normalize());
 		const speed = useRef(2);
 		const score = useRef<[number, number]>([0, 0]);
 
-		const isPausedRef = useRef(isPaused);
 		const gameStartedRef = useRef(gameStarted);
 
 		useEffect(() => {
-			isPausedRef.current = isPaused;
 			gameStartedRef.current = gameStarted;
-		}, [isPaused, gameStarted]);
+		}, [ gameStarted]);
 
 		useEffect(() => {
 			const updateBall = () => {
@@ -137,7 +134,7 @@
 			let animationFrameId: number;
 
 			const animate = () => {
-				if (!gameStartedRef.current || isPausedRef.current) {
+				if (!gameStartedRef.current) {
 					animationFrameId = requestAnimationFrame(animate);
 					return;
 				}

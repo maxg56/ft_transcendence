@@ -2,8 +2,10 @@ import * as THREE from 'three';
 
 export class Ball {
 	public mesh: THREE.Mesh;
+	private radius: number;
 
 	constructor(radius = 5, color = 0xff0000) {
+		this.radius = radius;
 		const geometry = new THREE.SphereGeometry(radius, 32, 32);
 		const material = new THREE.MeshStandardMaterial({
 			color,
@@ -22,6 +24,6 @@ export class Ball {
 	}
 
 	resetPosition() {
-		this.mesh.position.set(0, this.mesh.geometry.parameters.radius, 0);
+		this.mesh.position.set(0, this.radius, 0);
 	}
 }

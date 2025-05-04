@@ -4,10 +4,17 @@ import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
 import { sendSuccess, sendError } from '../utils/reply';
+import { hasId } from '../utils/hasId';
+import { MatchPlayerWithUser } from '../models/MatchPlayerWithUser';
+  
 
 async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: string = '';
+		if (hasId(value)) {
+			id = value.id;
+		}
 		const valid2v2MatchIdsResult = await MatchPlayer.findAll({
 			attributes: ['match_id'],
 			group: ['match_id'],
@@ -54,10 +61,12 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 			const playerData = player.find(p => p.match_id === matchId)
 			const opponentsData = opponents
 				.filter(o => o.match_id === matchId)
-				.map(o => ({
-				username: o.player.username.replace(/^deleted user \d+$/, 'deleted user'),
-				score: o.score
-				}))
+				.map(o => {
+					const op = o as MatchPlayerWithUser;
+					return {
+					username: op.player.username.replace(/^deleted user \d+$/, 'deleted user'),
+					score: op.score
+				}});
 			const partner = opponentsData.find(o => o.score === playerData?.score )
 			const adversaries = opponentsData.filter(o => o.username !== partner?.username)
 			return {
@@ -80,7 +89,11 @@ async function matchesHistory2v2 (request: FastifyRequest, reply: FastifyReply) 
 
 async function matchesHistory1v1 (request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+    	let id: string = '';
+    	if (hasId(value)) {
+      		id = value.id;
+   	 	}
 		const valid1v1MatchIdsResult = await MatchPlayer.findAll({
 			attributes: ['match_id'],
 			group: ['match_id'],
@@ -125,9 +138,10 @@ async function matchesHistory1v1 (request: FastifyRequest, reply: FastifyReply) 
 
 		const opponentformatted = opponents
 			.map(o => {
+			const op = o as MatchPlayerWithUser;
 			return {
-			match_id: o.match_id,
-			username: o.player.username.replace(/^deleted user \d+$/, 'deleted user'),
+			match_id: op.match_id,
+			username: op.player.username.replace(/^deleted user \d+$/, 'deleted user'),
 			score: o.score}
 		})
 		

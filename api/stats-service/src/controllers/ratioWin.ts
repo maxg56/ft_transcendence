@@ -4,10 +4,15 @@ import { Op } from 'sequelize';
 import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
+import { hasId } from '../utils/hasId';
 
 async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: string = '';
+		if (hasId(value)) {
+			id = value.id;
+		}
 		// const { id} = request.params as {id: number}
 		console.log("🧩 user ID:", id)
 		const player = await User.findByPk(id, { attributes: ['username']})

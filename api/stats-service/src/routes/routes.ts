@@ -6,6 +6,7 @@ import { matchesHistory1v1, matchesHistory2v2 } from '../controllers/history';
 import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
+import { MatchPlayerWithUser } from '../models/MatchPlayerWithUser';
 
 // test
 async function getTest(req: FastifyRequest, reply: FastifyReply){
@@ -29,9 +30,10 @@ async function getTest(req: FastifyRequest, reply: FastifyReply){
 		where: {id: matchids}
 	})
 	const testReturn = test.map(testtest => {
+		const op = testtest as MatchPlayerWithUser;
 		return {
 			match_id: testtest.match_id,
-			player: testtest.player?.username ?? 'inconnu',
+			player: op.player?.username ?? 'inconnu',
 			score: testtest.score,
 			elo_change: testtest.elo_change,
 			winner: testtest.winner

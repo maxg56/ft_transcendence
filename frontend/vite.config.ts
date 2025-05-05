@@ -18,8 +18,8 @@ export default defineConfig({
       plugins: [tailwindcss, autoprefixer],
     },
   },
-  preview: {
-    allowedHosts: ['mgendrot.pro', 'other.allowed.hosts']
+  server: {
+    allowedHosts: ['mgendrot.pro', 'localhost']
   },
 });
 

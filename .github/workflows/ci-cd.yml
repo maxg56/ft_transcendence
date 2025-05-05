@@ -26,9 +26,9 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "ft_transcendence/**"
+          source: "**"
           target: /opt/ft_transcendence
-          strip_components: 1
+          strip_components: 0
 
       - name: Deploy using Makefile
         uses: appleboy/ssh-action@v1.2.0

@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   #************* ----- caddy ----- ***********************
   caddy:
@@ -8,7 +7,7 @@ services:
       - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
       - caddylog:/var/log/
     ports:
-      - "000:80"
+      - "80:443"
       - "443:443"
     # healthcheck:
     #   test: ["CMD", "curl", "-k", "-f", "https://localhost"]
@@ -104,6 +103,7 @@ services:
     build: 
       context: ./frontend
       dockerfile: Dockerfile.prode
+    env_file: .env
     networks:
       - frontend
     restart: always

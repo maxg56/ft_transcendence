@@ -14,7 +14,7 @@ interface UseApiOptions<T> {
   istoken?: boolean;
 }
 
-const BASE_URL = "https://localhost:8443";
+const BASE_URL = "https://localhost:443";
 
 export function useApi<T>(
   url: string,

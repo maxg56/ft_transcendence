@@ -19,6 +19,7 @@ FROM node:23.10-alpine AS final
 WORKDIR /app
 COPY --from=base /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
+ENV NODE_ENV=production
 COPY ${APP_DIR}/package*.json ./
 
 CMD ["node", "dist/server.js"]

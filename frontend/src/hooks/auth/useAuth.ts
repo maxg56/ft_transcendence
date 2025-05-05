@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import useNavigation from "@/hooks/useNavigation";
 import Cookies from 'js-cookie';
 
-const API_URL = "https://localhost:8443/auth";
+const API_URL = "https://localhost:443/auth";
 
 function validateSignUp(username: string, email: string, password: string, confirmPassword: string): string | null {
   if (!username || !email || !password || !confirmPassword) return "Tous les champs doivent être remplis";

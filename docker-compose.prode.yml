@@ -2,10 +2,11 @@ services:
   #************* ----- caddy ----- ***********************
   caddy:
     container_name: ft_t_caddy
-    image: caddy:latest
+    image:  caddy:2-alpine
     volumes:
-      - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
+      - ./services/proxy/Caddyfile.prod:/etc/caddy/Caddyfile
       - caddylog:/var/log/
+      - caddydata:/data  
     ports:
       - "80:80"
       - "443:443"
@@ -244,6 +245,12 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/volumes/caddylog/
+  caddydata:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/volumes/caddystatic/
   
   
 networks:

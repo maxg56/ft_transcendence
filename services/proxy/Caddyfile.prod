@@ -1,0 +1,23 @@
+{
+  log {
+    output file /var/log/access-foo.json
+    format json
+  }
+
+  # Email utilisé par Let's Encrypt (recommandé)
+  email [email protected]
+}
+
+{$VITE_HOSTNAME} {
+  log {
+    output file /var/log/access-foo.json
+    format json
+  }
+
+  reverse_proxy /auth/* auth-service:3001
+  reverse_proxy /game/* game-service:3003
+  reverse_proxy /stats/* stats-service:3002
+  reverse_proxy /user/* user-service:3004
+  reverse_proxy /ws/game game-service:3003
+  reverse_proxy /* frontend:5173
+}

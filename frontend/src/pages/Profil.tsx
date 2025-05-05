@@ -7,11 +7,11 @@ import FriendsPanel from "../components/profil/Friends/FriendsComponent";
 import SettingsPage from "../components/profil/SettingsComponent";
 import StatsPong from "@/components/profil/stats/StatsPongComponent";
 import LogoutButton from "@/components/profil/LogOutComponent";
-import StatsShifumi from "@/components/profil/StatsShifumi";
 import { useApi } from "@/hooks/api/useApi";
 import { Username, Elos } from "@/components/profil/type/profilInterface";
-
-type Options = "friends" | "settings" | "pong" | "shifumi";
+import DeleteAccountModal from "@/components/profil/SuppresAccountModal";
+import useSceneCleanup from "@/hooks/useSceneCleanup";
+type Options = "friends" | "settings" | "pong" ;
 
 const Profile: React.FC = () => {
 	const { profileImage, setProfileImage } = useProfileContext();
@@ -23,11 +23,11 @@ const Profile: React.FC = () => {
 	const rank = "Diamant";
 	const [elo, setElo] = useState(0);
 
+
 	const labelMap: Record<Options, string> = {
 		friends: t("Amis"),
 		settings: t("Options"),
 		pong: t("Stats Pong"),
-		shifumi: t("Stats Shifumi"),
 	};
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +140,7 @@ const Profile: React.FC = () => {
 
 			<div className="flex flex-1 gap-4 w-full max-w-8xl">
 				<nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col space-y-8 text-black">
-					{(["friends", "settings", "pong", "shifumi"] as Options[]).map((opt) => (
+					{(["friends", "settings", "pong"] as Options[]).map((opt) => (
 						<button
 							key={opt}
 							onClick={() => setSelectedOption(opt)}
@@ -153,18 +153,17 @@ const Profile: React.FC = () => {
 					))}
 					<button
 						onClick={() => navigate("/hub")}
-						className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+						className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700"
 					>
 						Return Hub
 					</button>
 					<LogoutButton/>
+					<DeleteAccountModal/>
 				</nav>
-
 				<div className="flex-1 bg-gray-100 p-6 rounded-md text-black">
 					{selectOptions === "friends" && <FriendsPanel />}
 					{selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
 					{selectOptions === "pong" && <StatsPong/>}
-					{selectOptions === "shifumi" && <StatsShifumi/>}
 				</div>
 			</div>
 		</div>

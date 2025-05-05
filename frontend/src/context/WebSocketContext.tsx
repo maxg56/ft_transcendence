@@ -18,7 +18,7 @@ const WebSocketContext = createContext<WebSocketContextType | null>(null);
 const WS_CONFIG = {
   protocol: "wss",
   port: "443",
-  host: "localhost",
+  host: "168.231.81.129",
   path: "/ws/game",
   maxRetries: 5,
   baseDelay: 1000, // ms

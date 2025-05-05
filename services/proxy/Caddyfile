@@ -11,7 +11,7 @@
   redir https://{host}{uri} permanent
 }
 
-localhost:443, {$HOSTNAME} {
+localhost:443, {$HOSTNAME}, {$IP} {
   tls internal
   log foo
   #Frontend routes

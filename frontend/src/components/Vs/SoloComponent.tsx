@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
 import GameCanvas from "../game/GameCanvasAi";
 
-import { useCountdown } from "../../hooks/useCountdown";
-import { useTranslation } from "../../context/TranslationContext";
-import useNavigation from "../../hooks/useNavigation";
-import { KeyboardProvider } from '../../context/KeyboardContext';
+import { useCountdown } from "@/hooks/useCountdown";
+import { useTranslation } from "@/context/TranslationContext";
+import useNavigation from "@/hooks/useNavigation";
+import { KeyboardProvider } from '@/context/KeyboardContext';
 import GameOverlay from "../game/GameOverlay";
 
 export const SoloComponent: React.FC = () => {

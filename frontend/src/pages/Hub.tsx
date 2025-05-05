@@ -61,8 +61,9 @@ const Hub: React.FC = () => {
               <FriendListHub />
             </div>
           </div>
-
-          <div className="flex-1 flex justify-center items-center">
+          <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
+            <App />
+            {/* <StarTunnelBackground /> */}
             <button
               className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
               onClick={handleStart}

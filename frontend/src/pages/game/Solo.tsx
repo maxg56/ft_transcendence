@@ -1,6 +1,6 @@
 import React from "react";
-import { SoloComponent } from "../../components/Vs/SoloComponent"
-import {StarWarsEffect} from "../../animation/StarWarsEffect"
+import { SoloComponent } from "@/components/Vs/SoloComponent"
+import { StarTunnelBackground } from "@/animation/StarTunnelBackground"
 
 const Solo: React.FC = () => {
 
@@ -14,7 +14,7 @@ const Solo: React.FC = () => {
           </div>
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden text-white">
            <SoloComponent/>
-           <StarWarsEffect/>
+           <StarTunnelBackground />
           </div>
         </div>
       </div>

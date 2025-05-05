@@ -9,6 +9,8 @@ services:
     ports:
       - "80:443"
       - "443:443"
+    env_file:
+      - .env
     # healthcheck:
     #   test: ["CMD", "curl", "-k", "-f", "https://localhost"]
     #   interval: 30s

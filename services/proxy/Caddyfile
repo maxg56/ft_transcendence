@@ -1,8 +1,4 @@
 {
-  auto_https on
-}
-
-{
 	log access-json {
     include http.log.access.foo
     output file /var/log/access-foo.json
@@ -11,13 +7,16 @@
 
 }
 
-:80 {
-  redir https://{host}{uri} permanent
-}
-
-localhost:443,{$HOSTNAME}{
+localhost:443, {$HOSTNAME} {
   tls internal
   log foo
+  #Frontend routes
+  handle {
+    # Frontend main route
+    handle /* {
+      reverse_proxy frontend:5173
+    }
+  }
   handle /auth/* {
     reverse_proxy auth-service:3001
   }
@@ -35,8 +34,5 @@ localhost:443,{$HOSTNAME}{
   }
   handle_path /ws/game {
     reverse_proxy game-service:3003
-  }
-  handle /* {
-    reverse_proxy frontend:5173
   }
 }

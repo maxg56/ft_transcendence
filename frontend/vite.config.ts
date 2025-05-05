@@ -19,8 +19,8 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0',
+    host: true,
     port: 5173,
-    allowedHosts: ['mgendrot.pro', 'localhost'], // 👈 ne garde que les hôtes valides ici
+    allowedHosts: true, // 👈 ne garde que les hôtes valides ici
   },
 });

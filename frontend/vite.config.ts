@@ -22,11 +22,17 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      host: true,
+      host: '0.0.0.0',
       port: 5173,
       strictPort: true,
       cors: true,
-      allowedHosts: [env.VITE_HOSTNAME || 'localhost']
+      allowedHosts: [env.VITE_HOSTNAME || 'localhost'],
+    },
+    preview: {
+      host: '0.0.0.0',
+      port: 4173,
+      strictPort: true,
+      allowedHosts: [env.VITE_HOSTNAME || 'localhost'],
     },
     define: {
       'process.env.HOSTNAME': JSON.stringify(env.VITE_HOSTNAME),

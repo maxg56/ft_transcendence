@@ -1,26 +1,30 @@
 {
-	log access-json {
-    include http.log.access.foo
+  # Logging en JSON dans un fichier dédié
+  log access-json {
     output file /var/log/access-foo.json
     format json
   }
-
 }
 
+# Redirection HTTP → HTTPS
 :80 {
   redir https://{host}{uri} permanent
 }
 
-localhost:443, {$HOSTNAME}, {$IP} {
+# Bloc principal avec domaines autorisés
+https://localhost, https://{$HOSTNAME}, https://{$IP} {
   tls internal
-  log foo
-  #Frontend routes
-  handle {
-    # Frontend main route
-    handle /* {
-      reverse_proxy frontend:5173
-    }
+  log {
+    output file /var/log/caddy.log
+    format console
   }
+
+  # Route WebSocket (doit venir en haut si elle est spécifique)
+  handle_path /ws/game {
+    reverse_proxy game-service:3003
+  }
+
+  # API backend
   handle /auth/* {
     reverse_proxy auth-service:3001
   }
@@ -36,7 +40,9 @@ localhost:443, {$HOSTNAME}, {$IP} {
   handle /user/* {
     reverse_proxy user-service:3004
   }
-  handle_path /ws/game {
-    reverse_proxy game-service:3003
+
+  # Route par défaut : frontend SPA
+  handle {
+    reverse_proxy frontend:5173
   }
 }

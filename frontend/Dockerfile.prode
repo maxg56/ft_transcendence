@@ -12,9 +12,12 @@ RUN npm run build
 FROM node:23.10-alpine AS production
 WORKDIR /app
 
+# Copier uniquement ce qui est nécessaire
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./package.json
+
 RUN npm install -g vite
 
 ENV NODE_ENV=production
-CMD ["vite", "preview", "--host", "0.0.0.0", "--port", "5173"]
 
+CMD ["vite", "preview", "--host", "0.0.0.0", "--port", "5173"]

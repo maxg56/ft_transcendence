@@ -3,16 +3,23 @@ import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 import User from '../models/User';
 import { sendError, sendSuccess } from '../utils/reply';
+import { hasId } from '../utils/hasId';
 
 async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) {
-	try {
-		const id = request.user.id
+	try{
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		console.log("🧩 user ID:", id)
 		const friends= await Friendship.findAll({ where: { 
-				[Op.or]: [
-					{ user1: id },
-					{ user2: id }],
-				status: 'pending'
+			user2: id,
+			status: 'pending'
 			},
 			include: [{
 				model: User,
@@ -24,28 +31,69 @@ async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) 
 				attributes: ['username', 'avatar'],
 			}]});
 		
-		if (friends.length === 0)
-			return sendError(reply, 'No friend request pending', 404)
-		const friendList = friends.map(friendship => {
+		// if (friends.length === 0)
+		// 	return sendError(reply, 'No friend request pending', 404)
+		const pendingList = friends.map(friendship => {
 			const isUser1 = friendship.user1 === id;
 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
 			return {
-				// friendshipId: friendship.id, 
-				// userId: otherUser.id,
-				username: otherUser.username,
-				avatar: otherUser.avatar
+				username: otherUser!.username,
+				avatar: otherUser!.avatar
 			};
 		})
-		return sendSuccess(reply, friendList, 200)
+		return sendSuccess(reply, pendingList, 200)
 	} catch (error) {
 		request.log.error(error);
 		return sendError(reply, 'server error', 500)
 	}
 }
 
-async function seeFriends (request: FastifyRequest, reply: FastifyReply) {
+// async function seeFriends (request: FastifyRequest, reply: FastifyReply) {
+// 	const id = request.user.id
+// 		console.log("🧩 user ID:", id)
+// 		const friends = await Friendship.findAll({ where: { 
+// 				[Op.or]: [
+// 					{ user1: id },
+// 					{ user2: id }],
+// 				status: 'accepted'
+// 			},
+// 			include: [{
+// 				model: User,
+// 				as: 'userOne',
+// 				attributes: ['username', 'avatar'],
+// 			},
+// 			{	model: User,
+// 				as: 'userTwo',
+// 				attributes: ['username', 'avatar'],
+// 			}]});
+		
+// 		// if (friends.length === 0)
+// 		// 	return sendError(reply, 'No friend in the list', 404)
+
+// 		const friendList = friends.map(friendship => {
+// 			const isUser1 = friendship.user1 === id;
+// 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
+// 			return {
+// 				username: otherUser.username,
+// 				avatar: otherUser.avatar
+// 			};
+// 		})
+// 		return friendList
+// }
+
+async function getFriendsList (request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		// const acceptedList = seeFriends(request, reply)
+		// const pendingList = seeFriendRequests(request, reply)
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		console.log("🧩 user ID:", id)
 		const friends = await Friendship.findAll({ where: { 
 				[Op.or]: [
@@ -63,25 +111,47 @@ async function seeFriends (request: FastifyRequest, reply: FastifyReply) {
 				attributes: ['username', 'avatar'],
 			}]});
 		
-		if (friends.length === 0)
-			return sendError(reply, 'No friend in the list', 404)
+		// if (friends.length === 0)
+		// 	return sendError(reply, 'No friend in the list', 404)
 
 		const friendList = friends.map(friendship => {
 			const isUser1 = friendship.user1 === id;
 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
 			return {
-				// friendshipId: friendship.id, 
-				// userId: otherUser.id,
-				username: otherUser.username,
-				avatar: otherUser.avatar
+				username: otherUser!.username,
+				avatar: otherUser!.avatar
 			};
 		})
+
+		const pending= await Friendship.findAll({ where: { 
+			user1: id,
+			status: 'pending'
+			},
+			include: [{
+				model: User,
+				as: 'userOne',
+				attributes: ['username', 'avatar'],
+			},
+			{	model: User,
+				as: 'userTwo',
+				attributes: ['username', 'avatar'],
+			}]});
 		
-		return sendSuccess(reply, friendList, 200)
+		// if (pending.length === 0)
+		// 	return sendError(reply, 'No friend request pending', 404)
+		const pendingList = pending.map(friendship => {
+			const isUser1 = friendship.user1 === id;
+			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
+			return {
+				username: otherUser!.username,
+				avatar: otherUser!.avatar
+			};
+		})
+		return sendSuccess(reply, {friendList, pendingList}, 200)
 	} catch (error) {
 		request.log.error(error);
 		return sendError(reply, 'server error', 500)
 	}
 }
 
-export {seeFriendRequests, seeFriends}
+export {getFriendsList, seeFriendRequests}

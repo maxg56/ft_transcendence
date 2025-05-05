@@ -3,10 +3,19 @@ import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 import User from '../models/User';
 import { sendError, sendSuccess } from '../utils/reply';
+import { hasId } from '../utils/hasId';
 
 async function addFriend (request: FastifyRequest<{ Body: {username: string}}>, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		// console.log("id user login: ", id)
 		const { username } = request.body
 		// console.log("user2 name:", username)
@@ -37,7 +46,15 @@ async function addFriend (request: FastifyRequest<{ Body: {username: string}}>, 
 
 async function acceptFriend (request: FastifyRequest<{ Body: {username: string}}>, reply: FastifyReply)  {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		// console.log("user id", id)
 		const { username } = request.body
 		// console.log("🧩 sender request username:", username)
@@ -64,7 +81,15 @@ async function acceptFriend (request: FastifyRequest<{ Body: {username: string}}
 
 async function refuseFriend (request: FastifyRequest<{ Body: {username: string}}>, reply: FastifyReply)  {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		// console.log("user id", id)
 		const { username } = request.body
 		// console.log("sender request:", username)

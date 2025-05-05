@@ -4,10 +4,15 @@ import { Op } from 'sequelize';
 import User from '../models/User';
 import Match from '../models/Match';
 import MatchPlayer from '../models/MatchPlayer';
+import { hasId } from '../utils/hasId';
 
 async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: string = '';
+		if (hasId(value)) {
+			id = value.id;
+		}
 		// const { id} = request.params as {id: number}
 		console.log("🧩 user ID:", id)
 		const player = await User.findByPk(id, { attributes: ['username']})
@@ -24,11 +29,11 @@ async function ratioWinsLosses(request: FastifyRequest, reply: FastifyReply) {
 			}
 		})
 		const nbMatch = await MatchPlayer.count({ where: {player_id: id}})
-		if (!nbWin || !nbLose || !nbMatch || !player)
-			return sendError(reply, 'match not find', 404)
+		// if (!nbWin || !nbLose || !nbMatch || !player)
+		// 	return sendError(reply, 'match not find', 404)
 		return sendSuccess(reply, {
-			player: player.username,
-			matchNumber: nbMatch,
+			// player: player.username,
+			// matchNumber: nbMatch,
 			winNumber: nbWin,
 			loseNumber: nbLose
 		}, 200)

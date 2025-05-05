@@ -1,6 +1,11 @@
-import React from "react";
+import { Mode } from "@/context/ModeContext";
 
-export default function VsPopup({ onSelect, onClose }) {
+type Props = {
+  onSelect: (value: Mode) => void;
+  onClose: () => void;
+};
+
+export default function VsPopup({ onSelect, onClose } : Props) {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40"

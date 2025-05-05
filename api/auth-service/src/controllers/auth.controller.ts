@@ -63,13 +63,19 @@ export default {
       return await login_controller(username, password, reply);
     } 
     catch (err) {
-      return reply.status(500).send({ error: 'Error during registration' });
+      console.error(err)
+      return reply.status(500).send({ error: `Error during registration $(err)` });
     }
   },
 
   async refresh(req: FastifyRequest<{ Body: { refreshtoken: string } }>, reply: FastifyReply) {
     try {
-      const token = await reply.jwtSign({ username: req.user.username, id: req.user.id  });
+      let token;
+      if (req.user && typeof req.user === 'object' && 'username' in req.user && 'id' in req.user) {
+        token = await reply.jwtSign({ username: req.user.username, id: req.user.id });
+      } else {
+        throw new Error('User is not authenticated');
+      }
       return reply.send({ token });
     } catch (err) {
       console.error('Error refreshing token:', err);

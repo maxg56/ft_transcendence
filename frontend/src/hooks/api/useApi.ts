@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import useNavigation from "../useNavigation";
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -33,13 +33,16 @@ export function useApi<T>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const { navigate } = useNavigation();
+  const navigate = useNavigate();
+  
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (bodyOverride?: any) => {
 	setLoading(true);
 	setError(null);
 
 	let token = istoken ? Cookies.get('token') : undefined;
+
+	const finalBody = bodyOverride ?? body;
 
 	const buildRequestOptions = (overrideToken?: string) => ({
 	  method,
@@ -48,8 +51,8 @@ export function useApi<T>(
 		...(overrideToken ? { Authorization: `Bearer ${overrideToken}` } : {}),
 		...headers,
 	  },
-	  body: body
-		? (body instanceof FormData ? body : JSON.stringify(body))
+	  body: finalBody
+		? (finalBody instanceof FormData ? finalBody : JSON.stringify(finalBody))
 		: undefined,
 	});
 
@@ -99,9 +102,10 @@ export function useApi<T>(
 		throw new Error(result.message || 'Une erreur est survenue');
 	  }
 
-	  setData(result);
-	  if (onSuccess) onSuccess(result);
+	  setData(result.data);
+	  if (onSuccess) onSuccess(result.data);
 	} catch (err) {
+		
 	  setError(err);
 	  if (onError) onError(err);
 	} finally {

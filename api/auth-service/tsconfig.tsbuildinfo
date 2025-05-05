@@ -1,0 +1,1 @@
+{"root":["./src/server.ts","./src/config/database.ts","./src/controllers/auth.controller.ts","./src/controllers/disable2FA.ts","./src/controllers/enable-2fa.ts","./src/controllers/verify-2fa.ts","./src/models/User.ts","./src/plugins/auth.ts","./src/plugins/database.ts","./src/routes/index.ts","./src/utils/apiResponse.ts","./src/utils/hasId.ts"],"version":"5.8.3"}

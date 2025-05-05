@@ -5,7 +5,6 @@ import {logError,logformat} from './log';
 export function startAutoMatchGameTimer(gameId: string) {
     const game = activeGames.get(gameId);
     if (!game) return;
-  
     // Lancer un timer de 5 secondes
     const autoStartTimer = setTimeout(() => {
       const stillGame = activeGames.get(gameId);

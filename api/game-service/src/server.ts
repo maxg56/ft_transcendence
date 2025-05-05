@@ -13,7 +13,8 @@ import { Player } from './models/Player';
 import joinPrivateGame from './controllers/join_private_game';
 import { logformat, logError } from "./controllers/log";
 import {activeGames, privateGames , matchmakingQueue } from './config/data';
-import { MatchFormat,tryMatchmaking , enqueuePlayer } from './controllers/matchmaking';
+import { MatchFormat,tryMatchmaking , enqueuePlayer, cleanMatchmakingQueues } from './controllers/matchmaking';
+import { Query } from 'mysql2/typings/mysql/lib/protocol/sequences/Query';
 
 dotenv.config();
 
@@ -67,7 +68,9 @@ async function handleNewConnection(ws: WebSocket, token: string) {
 
   ws.on('close', () => {
     for (const [key, queue] of matchmakingQueue.entries()) {
-      queue.splice(queue.findIndex((p) => p.id === player.id), 1);
+      const index = queue.findIndex((p) => p.id === player.id);
+      if (index !== -1) 
+        queue.splice(index, 1);
       matchmakingQueue.set(key, queue);
     }
   });
@@ -78,7 +81,8 @@ async function handleNewConnection(ws: WebSocket, token: string) {
 }
 
 wss.on('connection', (ws: WebSocket, req) => {
-  const token = req.url?.split('token=')[1];
+  const url = new URL(req.url || '', `http://${req.headers.host}`);
+  const token = url.searchParams.get('token');
   if (token) {
     handleNewConnection(ws, token);
   } else {
@@ -120,14 +124,22 @@ function handleMessage(data: any, player: Player) {
 const formats: MatchFormat[] = [
   { playersPerTeam: 1, teams: 2 },  // 1v1
   { playersPerTeam: 2, teams: 2 },  // 2v2
-  // { playersPerTeam: 1, teams: 4 }   // 1v1v1v1
 ];
 
 setInterval(() => {
-  for (const format of formats) {
-    tryMatchmaking(format);
-  }
+  (async () => {
+    for (const format of formats) {
+      try {
+        tryMatchmaking(format);
+      } catch (err) {
+        logError("Matchmaking error for format:", format, err);
+      }
+      
+    }
+    cleanMatchmakingQueues();
+  })();
 }, 1000);
+
 
 server.listen(Number(PORT), () => {
   console.log(`WebSocket Server running on port ${PORT}`);

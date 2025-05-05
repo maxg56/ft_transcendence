@@ -1,37 +1,27 @@
+
 {
-  # Logging en JSON dans un fichier dédié
-  log access-json {
+	log access-json {
+    include http.log.access.foo
     output file /var/log/access-foo.json
     format json
   }
 
-  # Utilisation de Let's Encrypt pour gérer les certificats SSL
-  acme_dns <ton_fournisseur_dns> # Optionnel si tu veux utiliser DNS-01 challenge (si nécessaire)
 }
 
-# Redirection HTTP → HTTPS
 :80 {
   redir https://{host}{uri} permanent
 }
 
-# Bloc principal avec domaines autorisés
-https://localhost, https://{$VITE_HOSTNAME}, https://{$IP} {
-  # Let's Encrypt génère les certificats automatiquement
-  tls {
-    dns <ton_fournisseur_dns> # Facultatif, uniquement pour le challenge DNS
+localhost:443, https://{$VITE_HOSTNAME}:443 {
+  tls internal
+  log foo
+  #Frontend routes
+  handle {
+    # Frontend main route
+    handle /* {
+      reverse_proxy frontend:5173
+    }
   }
-
-  log {
-    output file /var/log/caddy.log
-    format console
-  }
-
-  # WebSocket Route
-  handle_path /ws/game {
-    reverse_proxy game-service:3003
-  }
-
-  # API backend
   handle /auth/* {
     reverse_proxy auth-service:3001
   }
@@ -47,9 +37,7 @@ https://localhost, https://{$VITE_HOSTNAME}, https://{$IP} {
   handle /user/* {
     reverse_proxy user-service:3004
   }
-
-  # Route par défaut : frontend SPA
-  handle {
-    reverse_proxy frontend:5173
+  handle_path /ws/game {
+    reverse_proxy game-service:3003
   }
 }

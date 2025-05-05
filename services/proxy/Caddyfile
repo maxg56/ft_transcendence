@@ -12,7 +12,7 @@
 }
 
 # Bloc principal avec domaines autorisés
-https://localhost, https://{$HOSTNAME}, https://{$IP} {
+https://localhost, https://{$VITE_HOSTNAME}, https://{$IP} {
   tls internal
   log {
     output file /var/log/caddy.log

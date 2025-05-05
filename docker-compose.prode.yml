@@ -7,16 +7,10 @@ services:
       - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
       - caddylog:/var/log/
     ports:
-      - "80:443"
+      - "80:80"
       - "443:443"
     env_file:
       - .env
-    # healthcheck:
-    #   test: ["CMD", "curl", "-k", "-f", "https://localhost"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 30s
     depends_on:
       - auth-service
       - user-service
@@ -99,7 +93,7 @@ services:
     restart: always
   
 
-# ************* ----- frontend ----- ***********************
+  # ************* ----- frontend ----- ***********************
   frontend:
     container_name: ft_t_frontend
     build: 
@@ -111,7 +105,7 @@ services:
     restart: always
 
 
-#************* ----- ELK ----- ***********************
+  #************* ----- ELK ----- ***********************
 
   # setup:
   #   build:

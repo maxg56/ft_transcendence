@@ -7,6 +7,10 @@
 
 }
 
+:80 {
+  redir https://{host}{uri} permanent
+}
+
 localhost:443, {$HOSTNAME} {
   tls internal
   log foo

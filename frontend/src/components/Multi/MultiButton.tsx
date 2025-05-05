@@ -16,7 +16,7 @@ export default function VsButton() {
   return (
     <>
       <button
-        className="button-header px-7 py-1 text-black rounded hover:bg-gray-300 transition"
+        className=" neon-button bg-blue-500 px-7 py-1 text-black rounded hover:bg-gray-300 transition"
         onClick={() => setShowPopup(true)}
       >
         {t("Multi")}

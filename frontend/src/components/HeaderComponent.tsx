@@ -40,7 +40,7 @@ const Header = () => {
         <div className="flex items-center justify-between gap-4">
           <VsButton />
           <MultiButton />
-          <button className="button-header px-7 py-1 text-black rounded hover:bg-gray-300 transition">
+          <button className=" neon-button bg-blue-500 px-7 py-1 text-black rounded hover:bg-gray-300 transition">
             {t("Tournois")}
           </button>
         </div>

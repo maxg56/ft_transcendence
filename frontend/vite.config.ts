@@ -19,7 +19,7 @@ export default defineConfig({
     },
   },
   preview: {
-    allowedHosts: ['mgendrot.pro'],
+    allowedHosts: ['*'],
   },
 });
 

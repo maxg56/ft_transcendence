@@ -54,12 +54,12 @@ const Profile: React.FC = () => {
 		"/user/elo",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-				if (!res ) {
-					console.error("Erreur Elo : réponse invalide", res)
+			onSuccess: (data) => {
+				if (!data ) {
+					console.error("Erreur Elo : réponse invalide", data)
 					return
 				}
-				setElo(res.data.elo)
+				setElo(data.elo)
 			},
 			onError: (errMsg) => {
 				console.error('Erreur Elo :', errMsg)
@@ -71,12 +71,12 @@ const Profile: React.FC = () => {
 		"/user/info",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-				if (!res ) {
-					console.error("Erreur Username: réponse invalide", res)
+			onSuccess: (data) => {
+				if (!data ) {
+					console.error("Erreur Username: réponse invalide", data)
 					return
 				}
-				setUser(res.data.username)
+				setUser(data.username)
 			},
 			onError: (errMsg) => {
 				console.error('Erreur Username :', errMsg)

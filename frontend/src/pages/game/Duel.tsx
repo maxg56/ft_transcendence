@@ -1,10 +1,8 @@
 import React from "react";
-import { useTranslation } from "@/context/TranslationContext";
 import DuelComponent from "../../components/Vs/2DuelComponent";
 import StarsBackground from "@/animation/StarsBackground";
 
 const Duel2: React.FC = () => {
-  const { t } = useTranslation();
 
   return (
       <div className=" scale-95">

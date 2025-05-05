@@ -3,10 +3,19 @@ import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 import User from '../models/User';
 import { sendError, sendSuccess } from '../utils/reply';
+import { hasId } from '../utils/hasId';
 
 async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) {
 	try{
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		console.log("🧩 user ID:", id)
 		const friends= await Friendship.findAll({ where: { 
 			user2: id,
@@ -28,8 +37,8 @@ async function seeFriendRequests (request: FastifyRequest, reply: FastifyReply) 
 			const isUser1 = friendship.user1 === id;
 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
 			return {
-				username: otherUser.username,
-				avatar: otherUser.avatar
+				username: otherUser!.username,
+				avatar: otherUser!.avatar
 			};
 		})
 		return sendSuccess(reply, pendingList, 200)
@@ -76,7 +85,15 @@ async function getFriendsList (request: FastifyRequest, reply: FastifyReply) {
 	try {
 		// const acceptedList = seeFriends(request, reply)
 		// const pendingList = seeFriendRequests(request, reply)
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		console.log("🧩 user ID:", id)
 		const friends = await Friendship.findAll({ where: { 
 				[Op.or]: [
@@ -101,8 +118,8 @@ async function getFriendsList (request: FastifyRequest, reply: FastifyReply) {
 			const isUser1 = friendship.user1 === id;
 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
 			return {
-				username: otherUser.username,
-				avatar: otherUser.avatar
+				username: otherUser!.username,
+				avatar: otherUser!.avatar
 			};
 		})
 
@@ -126,8 +143,8 @@ async function getFriendsList (request: FastifyRequest, reply: FastifyReply) {
 			const isUser1 = friendship.user1 === id;
 			const otherUser = isUser1 ? friendship.userTwo : friendship.userOne;
 			return {
-				username: otherUser.username,
-				avatar: otherUser.avatar
+				username: otherUser!.username,
+				avatar: otherUser!.avatar
 			};
 		})
 		return sendSuccess(reply, {friendList, pendingList}, 200)

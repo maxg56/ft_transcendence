@@ -1,26 +1,25 @@
-# Étape de construction de base
 FROM node:23.10-alpine AS base
 
+ARG APP_DIR
+
 WORKDIR /app
 
-COPY ./game-service/package*.json ./
+# Assure-toi que ceci fonctionne
+COPY ${APP_DIR}/package*.json ./
 
-# Installer les dépendances nécessaires (en production, éviter npm ci pour une installation rapide)
 RUN npm install --production
 
-# Étape de production finale
-FROM node:23.10-alpine AS final
-
+FROM node:23.10-alpine AS build
+ARG APP_DIR
 WORKDIR /app
+COPY ${APP_DIR}/ .
+RUN npm run build
 
-# Copier les fichiers de l'application depuis l'étape précédente
-COPY --from=base /app /app
+FROM node:23.10-alpine AS final
+WORKDIR /app
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY ${APP_DIR}/package*.json ./
 
-# Copier uniquement les fichiers nécessaires au déploiement
-COPY ./$APP_DIR/. .
+CMD ["node", "dist/server.js"]
 
-# Définir la variable d'environnement pour un environnement de production
-ENV NODE_ENV=production
-
-# Lancer l'application en mode production
-CMD ["npm", "run", "start"]

@@ -3,6 +3,7 @@ import { sendSuccess, sendError } from '../utils/reply';
 import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 import User from '../models/User';
+import { hasId } from '../utils/hasId';
 
 
 // -Anonymiser les données personnelles tout en gardant les informations
@@ -47,7 +48,15 @@ async function usernameAnonymise() {
 
 async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const id = request.user.id
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
 		await deleteFriends(id)
 		const user = await User.findByPk(id)
 		if (!user)

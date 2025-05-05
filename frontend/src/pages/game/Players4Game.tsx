@@ -1,11 +1,8 @@
 import React from "react";
-import { useTranslation } from "@/context/TranslationContext";
 import Game4Players from "@/components/Game4Players";
 import StarsBackground from "@/animation/StarsBackground";
 
 const PlayersGame4: React.FC = () => {
-  const { t } = useTranslation();
-
   return (
       <div className=" scale-95">
      <div>

@@ -102,8 +102,8 @@ export function useApi<T>(
 		throw new Error(result.message || 'Une erreur est survenue');
 	  }
 
-	  setData(result);
-	  if (onSuccess) onSuccess(result);
+	  setData(result.data);
+	  if (onSuccess) onSuccess(result.data);
 	} catch (err) {
 		
 	  setError(err);

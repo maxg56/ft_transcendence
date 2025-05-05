@@ -1,0 +1,69 @@
+name: TypeScript Compilation Check
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  check-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '23.9.0'  # Tu peux adapter la version de Node.js si nécessaire
+
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm install
+
+    - name: Run TypeScript compilation check for frontend
+      run: |
+        cd frontend
+        npx tsc --noEmit  # Vérifie la compilation sans générer de fichiers
+
+    - name: Frontend TypeScript check passed
+      run: echo "Frontend TypeScript compilation passed"
+      
+  check-microservices:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '23.9.0'
+
+    - name: Install api dependencies
+      run: |
+        for dir in api/*; do
+          if [ -d "$dir" ]; then
+            echo "Installing dependencies for $dir"
+            cd $dir
+            npm install
+            cd -
+          fi
+        done
+
+    - name: Run TypeScript compilation check for microservices
+      run: |
+        for dir in api/*; do
+          if [ -d "$dir" ]; then
+            echo "Checking TypeScript for $dir"
+            cd $dir
+            npx tsc --noEmit
+            cd -
+          fi
+        done
+
+    - name: Microservices TypeScript check passed
+      run: echo "Microservices TypeScript compilation passed"

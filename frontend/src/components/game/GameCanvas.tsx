@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 
 type GameCanvasProps = {
 	gameStarted?: boolean;
-	isPaused?: boolean;
 	setScore: (score: [number, number]) => void;
 	setWinner: (winner: string | null) => void;
 	setGameStarted: (gameStarted: boolean) => void;
@@ -15,7 +14,6 @@ type GameCanvasProps = {
 
 export const GameCanvas = ({
 	gameStarted,
-	isPaused,
 	setScore,
 	setWinner,
 	setGameStarted,
@@ -28,7 +26,7 @@ export const GameCanvas = ({
 	} = useGameScene();
 
 	useInputControls(leftPaddleRef, rightPaddleRef);
-	if (isPaused && gameStarted) {
+	if (gameStarted) {
 		useBallPhysics(
 			ballRef,
 			leftPaddleRef,
@@ -36,7 +34,6 @@ export const GameCanvas = ({
 			setScore,
 			setWinner,
 			setGameStarted,
-			isPaused,
 			gameStarted
 		);
 	}

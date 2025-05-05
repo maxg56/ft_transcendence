@@ -21,13 +21,13 @@ export function DoubleAuthentification() {
       method: 'POST',
       immediate: false,
       body: JSON.stringify({}),
-      onSuccess: (res) => {
-        if (!res || !res.data) {
-          console.error("Erreur 2FA : réponse invalide", res)
+      onSuccess: (data) => {
+        if (!data) {
+          console.error("Erreur 2FA : réponse invalide", data)
           return
         }
-        setQrCode(res.data.qrCode)
-        setSecretKey(res.data.secret)
+        setQrCode(data.qrCode)
+        setSecretKey(data.secret)
       },
       onError: (errMsg) => {
         console.error('Erreur 2FA :', errMsg)
@@ -113,8 +113,8 @@ export function DoubleAuthentification() {
       <DoubleAuthentificationModal
         open={isModalOpen}
         onClose={handleModalClose}
-        qrCode={qrCode}
-        secretKey={secretKey}
+        qrCode={qrCode ?? ''}
+        secretKey={secretKey ?? ''}
         onActivate={handleActivate}
         onCancel={handleCancel}
       />

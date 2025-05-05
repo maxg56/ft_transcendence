@@ -12,11 +12,11 @@ import {WebSocketProvider} from './context/WebSocketContext';
       <Routes>
         <Route path="/" element={<Accueil />} />
         <Route path="/*" element={
-          // <AuthGuard>
+          <AuthGuard>
             <WebSocketProvider>
               <AppRouter />
             </WebSocketProvider>
-          // </AuthGuard>
+          </AuthGuard>
         } />
       </Routes>
     );

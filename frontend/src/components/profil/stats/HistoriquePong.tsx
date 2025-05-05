@@ -1,4 +1,4 @@
-import  { useState, useEffect, use } from "react"
+import  { useState, useEffect} from "react"
 import {
 	Table,
 	TableBody,
@@ -26,16 +26,16 @@ export function HistoriquePong() {
 	const end = start + ITEMS_PER_PAGE
 	const [matchHistory2v2, setmatchHistory2v2] = useState<HistoryGame2v2[]>([])
 
-	const {refetch: fetchHistory2v2} = useApi<HistoryGame2v2>(
+	const {refetch: fetchHistory2v2} = useApi<HistoryGame2v2[]>(
 		"/stats/history2v2",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-				if (!res) {
-					console.error("Erreur history2v2game", res)
+			onSuccess: (data) => {
+				if (!data) {
+					console.error("Erreur history2v2game", data)
 					return
 				}
-				const historyGameFormatted: HistoryGame2v2[] = res.data.map((match: any) => ({
+				const historyGameFormatted: HistoryGame2v2[] = data.map((match: any) => ({
 					id: match.match_id,
 					opponent1: match.opponents[0]?.username,
 					opponent2: match.opponents[1]?.username,
@@ -54,16 +54,16 @@ export function HistoriquePong() {
 		}
 	)
 
-	const {refetch: fetchHistory} = useApi<HistoryGame>(
+	const {refetch: fetchHistory} = useApi<HistoryGame[]>(
 		"/stats/history1v1",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-				if (!res) {
-					console.error("Erreur historygame", res)
+			onSuccess: (data) => {
+				if (!data) {
+					console.error("Erreur historygame", data)
 					return
 				}
-				const historyGameFormatted: HistoryGame[] = res.data.map((match: any) => ({
+				const historyGameFormatted: HistoryGame[] = data.map((match: any) => ({
 					id: match.match_id,
 					opponent: match.opponents.username,
 					result: match.player.winner ? "Victory" : "Defeat",

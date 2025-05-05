@@ -1,42 +1,53 @@
 import { useEffect, useRef } from 'react';
-import * as BABYLON from 'babylonjs';
+import {
+  Engine,
+  Scene,
+  FreeCamera,
+  Vector3,
+  HemisphericLight,
+  MeshBuilder,
+  StandardMaterial,
+  Color3,
+  Color4,
+  Mesh
+} from '@babylonjs/core';
 
 export const StarWarsEffect = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const engine = new BABYLON.Engine(canvas, true, { alpha: true });
-    const scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color4(0, 0, 0, 0); // Transparent background
+    if (!canvas) return;
 
-    // Create camera
-    const camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 0, -10), scene);
-    camera.setTarget(BABYLON.Vector3.Zero());
+    const engine = new Engine(canvas, true, { alpha: true });
+    const scene = new Scene(engine);
+    scene.clearColor = new Color4(0, 0, 0, 0); // Transparent background
+
+    const camera = new FreeCamera("camera", new Vector3(0, 0, -10), scene);
+    camera.setTarget(Vector3.Zero());
     camera.position.z = -100;
 
-    // Lighting
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+    const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
     light.intensity = 0.5;
 
-    // Create the starfield
     const starCount = 200;
-    const stars = [];
+    const stars: Mesh[] = [];
     for (let i = 0; i < starCount; i++) {
-      const star = BABYLON.MeshBuilder.CreateSphere(`star${i}`, { diameter: Math.random() * 0.5 }, scene);
-      star.position = new BABYLON.Vector3(
-        Math.random() * 100 - 50, // Random X
-        Math.random() * 100 - 50, // Random Y
-        Math.random() * -200 // Random Z (deep in space)
+      const star = MeshBuilder.CreateSphere(`star${i}`, { diameter: Math.random() * 0.5 }, scene);
+      star.position = new Vector3(
+        Math.random() * 100 - 50,
+        Math.random() * 100 - 50,
+        Math.random() * -200
       );
-      star.material = new BABYLON.StandardMaterial(`starMat${i}`, scene);
-      star.material.emissiveColor = new BABYLON.Color3(1, 1, 1); // White color
+      const mat = new StandardMaterial(`mat${i}`, scene);
+      mat.emissiveColor = new Color3(1, 1, 1);
+      star.material = mat;
       stars.push(star);
     }
 
     const animateStars = () => {
       stars.forEach(star => {
-        star.position.z += 1; // Move stars forward
+        star.position.z += 1;// Move stars forward
         if (star.position.z > 0) {
           star.position.z = -100; // Reset the star to the far side
           star.position.x = Math.random() * 100 - 50;
@@ -44,13 +55,11 @@ export const StarWarsEffect = () => {
         }
       });
     };
-
     // Animate stars
     engine.runRenderLoop(() => {
       animateStars();
       scene.render();
     });
-
     // Resize event
     window.addEventListener('resize', () => engine.resize());
 

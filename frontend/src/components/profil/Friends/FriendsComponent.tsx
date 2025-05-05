@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import FriendList from "./FriendsList";
 import { useApi } from "@/hooks/api/useApi";
-import { Invitation, FriendListProps } from "../type/friendsIntefarce";
+import { Invitation, APIFriendListProps } from "../type/friendsIntefarce";
 import { Username } from "../type/profilInterface";
 import { useFriendApi } from "@/hooks/api/profile/useApiFriends";
 
 const FriendsPanel: React.FC = () => {
 	const [research, setResearch] = useState<string[]>([]);
 	const [pendingG, setPending] = useState<string[]>([]);
-	const [friends, setFriends] = useState<string[]>([]);
+	const [friends, setFriends] = useState<Invitation[]>([]);
 	const [sentInvitations, setSentInvitations] = useState<Invitation[]>([])
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
@@ -24,13 +24,13 @@ const FriendsPanel: React.FC = () => {
 		"/user/users",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-			if (!res ) {
-				console.error("Erreur research list", res)
-				return
-			}
-			const usernames = res.data.map(research => research.username);
-			setResearch(usernames)
+			onSuccess: (data) => {
+				if (!data ) {
+					console.error("Erreur research list", data)
+					return
+				}
+				const usernames = data.map(research => research.username);
+				setResearch(usernames)
 			},
 			onError: (errMsg) => {
 				console.error('Erreur researchlist :', errMsg)
@@ -42,12 +42,12 @@ const FriendsPanel: React.FC = () => {
 		"/user/friend/pendinglist",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-			if (!res ) {
-				console.error("Erreur pending list", res)
+			onSuccess: (data) => {
+			if (!data ) {
+				console.error("Erreur pending list", data)
 				return
 			}
-			const usernames = res.data.map(pending => pending.username);
+			const usernames = data.map(pending => pending.username);
 			setPending(usernames)
 			},
 			onError: (errMsg) => {
@@ -56,19 +56,17 @@ const FriendsPanel: React.FC = () => {
 		}
 	)
 	
-	const {refetch: fetchfriendList } = useApi<FriendListProps[]>(
+	const {refetch: fetchfriendList } = useApi<APIFriendListProps>(
 		"/user/friend/list",
 		{
 			immediate: false,
-			onSuccess: (res) => {
-			if (!res ) {
-				console.error("Erreur friends list", res)
+			onSuccess: (data) => {
+			if (!data ) {
+				console.error("Erreur friends list", data)
 				return
 			}
-			const friendListUsername = res.data.friendList.map(friends => friends);
-			const friendListPending = res.data.pendingList.map(sentInvitations => sentInvitations)
-			setFriends(friendListUsername)
-			setSentInvitations(friendListPending)
+			setFriends(data.friendList);
+			setSentInvitations(data.pendingList);
 			},
 			onError: (errMsg) => {
 			

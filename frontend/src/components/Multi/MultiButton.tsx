@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MultiPopup from "./MultiPopup";
 import { useTranslation } from "../../context/TranslationContext";
-import { useMode } from "../../context/ModeContext";
+import { useMode , Mode } from "@/context/ModeContext";
 
 export default function VsButton() {
   const [showPopup, setShowPopup] = useState(false);
   const { t } = useTranslation();
   const { setMode } = useMode();
 
-  const handleSelect = (choice) => {
+  const handleSelect = (choice : Mode) => {
     setMode(choice);
     setShowPopup(false);
   };

@@ -1,6 +1,5 @@
 import { useApi } from "../useApi";
-import { UserModif } from "@/components/profil/type/profilInterface";
-import { Username } from "@/components/profil/type/friendsIntefarce";
+import { Username } from "@/components/profil/type/profilInterface";
 
 export const useModifProfilApi = () => {
 	const modifProfil = useApi<Username>(

@@ -1,8 +1,9 @@
 import { useApi } from "../useApi";
-import { Username } from "@/components/profil/type/friendsIntefarce";
+import { Invitation } from "@/components/profil/type/friendsIntefarce";
+
 
 export const useFriendApi = () => {
-const acceptFriend = useApi<Username>(
+const acceptFriend = useApi<Invitation>(
 	"/user/friend/accept",
 	{
 		method: 'PUT',
@@ -19,7 +20,7 @@ const acceptFriend = useApi<Username>(
 	  }
 );
 
-const refuseFriend = useApi<Username>(
+const refuseFriend = useApi<Invitation>(
 	"/user/friend/refuse",
 	{
 		method: 'PUT',
@@ -36,7 +37,7 @@ const refuseFriend = useApi<Username>(
 	}
 );
 
-const addFriend = useApi<Username>(
+const addFriend = useApi<Invitation>(
 	"/user/friend/add",
 	{
 		method: 'POST',

@@ -10,7 +10,7 @@ import LogoutButton from "@/components/profil/LogOutComponent";
 import { useApi } from "@/hooks/api/useApi";
 import { Username, Elos } from "@/components/profil/type/profilInterface";
 import DeleteAccountModal from "@/components/profil/SuppresAccountModal";
-import useSceneCleanup from "@/hooks/useSceneCleanup";
+
 type Options = "friends" | "settings" | "pong" ;
 
 const Profile: React.FC = () => {

@@ -16,10 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      
-      - name: List workspace content
-        run: ls -R .
-
       - name: Upload project to VPS
         uses: appleboy/scp-action@v0.1.7
         with:

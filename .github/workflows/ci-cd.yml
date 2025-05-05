@@ -22,7 +22,7 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "/*"
+          source: "ft_transcendence/**"
           target: /opt/ft_transcendence
           strip_components: 1
 

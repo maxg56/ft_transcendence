@@ -16,5 +16,5 @@ COPY --from=builder /app/dist ./dist
 RUN npm install -g vite
 
 ENV NODE_ENV=production
-CMD ["vite", "preview", "--host", "--port", "5173"]
+CMD ["vite", "preview", "--host", "0.0.0.0", "--port", "5173"]
 

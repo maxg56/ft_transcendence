@@ -1,5 +1,5 @@
 {
-  email [email protected]
+  email mgendrot29@game.com
 
   log foo {
     output file /var/log/access-foo.json

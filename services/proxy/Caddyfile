@@ -12,7 +12,7 @@
   redir https://{host}{uri} permanent
 }
 
-localhost:443, https://{$VITE_HOSTNAME}:443 {
+localhost:443, {$VITE_HOSTNAME} {
   tls internal
   log foo
   #Frontend routes

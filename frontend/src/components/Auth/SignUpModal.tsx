@@ -179,6 +179,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                   <li>Identifiants : pseudonyme, mot de passe (hashé)</li>
                   <li>Profil : avatar, statut en ligne</li>
                   <li>Activité : historique des parties, scores, statistiques</li>
+                  <li>Ame : pour alimenter le server</li>
                   <li>Données techniques : date de dernière connexion</li>
                 </ul>
 
@@ -227,7 +228,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                 <p className="font-semibold text-xl">9. Contact</p>
                 <p className="text-sm">
                   Pour toute question sur cette politique ou l’usage de vos données :<br />
-                  📧 [votre@email.com]
+                  📧 [mpelluet@student.42lehavre.fr]
+                </p>
+
+                <p className="font-semibold text-xl">10. Démenti ésotérique officiel</p>
+                <p className="text-sm">
+                  Aucune entité occulte, démoniaque ou juridiquement ambiguë n’est impliquée dans le traitement de vos données personnelles.
                 </p>
               </div>
 

@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 const Header = () => {
   const { navigate } = useNavigation();
-  const { profileImage, userId, refreshProfile } = useProfileContext();
+  const { profileImage, refreshProfile } = useProfileContext();
   const { t } = useTranslation();
 
   useEffect(() => {

@@ -4,7 +4,6 @@ import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import { TranslationProvider } from './context/TranslationContext.tsx'
-import { ProfileProvider } from './context/ProfilContext.tsx'
 import { TournamentProvider } from './context/ResultsContext.tsx'
 import { ModeProvider } from "../src/context/ModeContext";
 import { Toaster } from "@/components/ui/sonner"
@@ -14,7 +13,6 @@ import { LogoutProvider } from './hooks/useLogOut.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
   <BrowserRouter>
-    <ProfileProvider>
     <TranslationProvider>
       <TournamentProvider>
         <ModeProvider>
@@ -27,7 +25,6 @@ createRoot(document.getElementById('root')!).render(
         </ModeProvider>
       </TournamentProvider>
     </TranslationProvider>
-    </ProfileProvider>
   </BrowserRouter>
   </StrictMode> 
 )

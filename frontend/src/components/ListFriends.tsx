@@ -7,7 +7,7 @@ const FriendListHub: React.FC = () => {
   const [friends, setFriends] = useState<Username[]>([]);
   const [sentInvitations, setSentInvitations] = useState<Username[]>([]);
   const [pendingList, setPendingList] = useState<Username[]>([]);
-
+  pendingList
   const { refetch: fetchFriendList } = useApi<APIFriendListProps>(
     "/user/friend/list",
     {

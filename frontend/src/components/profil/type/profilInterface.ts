@@ -16,3 +16,6 @@ export interface SettingsPageProps {
 	onUsernameChange?: (newUsername: string) => void
 }
 
+export interface Password {
+	password: string
+}

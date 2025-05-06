@@ -61,7 +61,7 @@ const Hub: React.FC = () => {
                   {getStartText()}
                 </button>
               </div>
-              <FriendListHub />
+              {/* <FriendListHub /> */}
             </div>
         </div>
       </div>

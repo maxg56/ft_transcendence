@@ -181,30 +181,35 @@ const Profile: React.FC = () => {
 				/>
 			</div>
 
-			<div className="flex flex-1 gap-4 w-full max-w-8xl">
-				<nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col space-y-8 text-black">
+			<div className="flex flex-1 gap-2 w-full max-w-12xl">
+			<nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col justify-between text-black h-[80vh]">
+				<div className="space-y-[60px]">
 					{(["friends", "settings", "pong"] as Options[]).map((opt) => (
 						<button
 							key={opt}
 							onClick={() => setSelectedOption(opt)}
-							className={`text-left px-3 py-2 rounded transition ${
+							className={`text-left px-3 py-1.5 rounded transition gap-6 ${
 								selectOptions === opt ? "font-bold bg-gray-300" : "hover:bg-gray-300"
 							}`}
 						>
 							{labelMap[opt]}
 						</button>
 					))}
+				</div>
+
+				<div className="space-y-3">
 					<button
 						onClick={() => navigate("/hub")}
-						className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700"
+						className="w-full px-4 py-2 bg-blue-500 text-white text-xl rounded-2xl hover:bg-blue-700"
 					>
 						Return Hub
 					</button>
-					<LogoutButton/>
-					<DeleteAccountModal/>
+					<LogoutButton />
+					<DeleteAccountModal />
+				</div>
 				</nav>
 				<div className="flex-1 bg-gray-100 p-6 rounded-md text-black">
-					{selectOptions === "friends" && <FriendsPanel />}
+					{selectOptions === "friends" && <FriendsPanel  />}
 					{selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
 					{selectOptions === "pong" && <StatsPong/>}
 				</div>

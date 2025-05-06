@@ -28,14 +28,21 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  // Reset form fields when modal is closed
   useEffect(() => {
-    if (!isOpen) {
-      setLogin("");
-      setPassword("");
-      setError(null);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && login && password) {
+        e.preventDefault();
+        handleSignIn();
+      }
+    };
+  
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
     }
-  }, [isOpen]);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, login, password]);
 
   const handleSignIn = () => {
     if (login && password) {

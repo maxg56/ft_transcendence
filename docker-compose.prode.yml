@@ -100,10 +100,10 @@ services:
     build: 
       context: ./frontend
       dockerfile: Dockerfile.prode
-    environment:
-      - VITE_PORT_PRODE=${VITE_PORT_PRODE}
-      - VITE_URL_PRODE=${VITE_URL_PRODE}
-      - VITE_HOSTNAME=${VITE_HOSTNAME}
+      args:
+        - VITE_PORT_PRODE=${VITE_PORT_PRODE}
+        - VITE_URL_PRODE=${VITE_URL_PRODE}
+        - VITE_HOSTNAME=${VITE_HOSTNAME}
     networks:
       - frontend
     restart: always

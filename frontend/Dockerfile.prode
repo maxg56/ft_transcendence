@@ -2,10 +2,22 @@
 FROM node:23.10-alpine AS builder
 WORKDIR /app
 
+# Ajout de l'argument pour la variable d'environnement Vite
+ARG VITE_URL_PRODE
+ARG VITE_PORT_PRODE
+ARG VITE_HOSTNAME
+
+ENV VITE_URL_PRODE=$VITE_URL_PRODE
+ENV VITE_PORT_PRODE=$VITE_PORT_PRODE
+ENV VITE_HOSTNAME=$VITE_HOSTNAME
+
+
 COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
+
+# Construire avec la variable disponible
 RUN npm run build
 
 # Étape de production avec serveur statique
@@ -20,5 +32,3 @@ EXPOSE 5173
 
 # Serve sur le bon port
 CMD [ "serve", "-s", "-l", "5173", "dist" ]
-
-

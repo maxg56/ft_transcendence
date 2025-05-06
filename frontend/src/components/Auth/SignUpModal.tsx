@@ -68,10 +68,22 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    if (!isOpen) {
-      handleClose();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && username && password && confirmPassword && acceptedPolicy) {
+        e.preventDefault();
+        handleSignUp();
+      }
+    };
+  
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
     }
-  }, [isOpen]);
+  
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, username, password, confirmPassword, acceptedPolicy]);
+  
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {

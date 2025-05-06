@@ -30,7 +30,7 @@ const DeleteAccountModal = () => {
 		<>
 			<button
 				onClick={() => setOpen(true)}
-				className="px-3 py-1 bg-red-500 text-white text-xl rounded-2xl hover:bg-red-600"
+				className="px-3 py-1 bg-red-500 text-white text-sm rounded-2xl hover:bg-red-600"
 			>
 				Supprimer mon compte
 			</button>

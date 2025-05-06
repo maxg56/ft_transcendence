@@ -13,7 +13,7 @@ interface UseApiOptions<T> {
   immediate?: boolean;
   istoken?: boolean;
 }
-const BASE_URL = import.meta.env.VITE_URL_PRODE || "http://localhost:8443";
+const BASE_URL = import.meta.env.VITE_URL_PRODE || "https://localhost:8443";
 
 
 export function useApi<T>(

@@ -5,9 +5,8 @@ import Cookies from 'js-cookie';
 
 const API_URL = "https://localhost:8443/auth";
 
-function validateSignUp(username: string, email: string, password: string, confirmPassword: string): string | null {
-  if (!username || !email || !password || !confirmPassword) return "Tous les champs doivent être remplis";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Adresse email invalide";
+function validateSignUp(username: string, password: string, confirmPassword: string): string | null {
+  if (!username || !password || !confirmPassword) return "Tous les champs doivent être remplis";
   if (username.length < 3 || username.length > 20) return "Le nom d'utilisateur doit contenir entre 3 et 20 caractères";
   if (password.length < 8 || password.length > 20) return "Le mot de passe doit contenir entre 8 et 20 caractères";
   if (password !== confirmPassword) return "Les mots de passe ne correspondent pas";
@@ -107,8 +106,8 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
   }, [onSuccess, navigate, onError]);
   
 
-  const signUp = useCallback(async (username: string, email: string, password: string, confirmPassword: string) => {
-    const validationError = validateSignUp(username, email, password, confirmPassword);
+  const signUp = useCallback(async (username: string, password: string, confirmPassword: string) => {
+    const validationError = validateSignUp(username, password, confirmPassword);
     if (validationError) {
     //   setError(validationError);
     //   onError?.(validationError); 
@@ -118,7 +117,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(`Erreur ${res.status}: ${await res.text()}`);

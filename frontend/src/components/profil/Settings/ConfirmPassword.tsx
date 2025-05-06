@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Modal } from "@/components/ModalCompo"
 import PasswordInput from "@/components/Auth/PasswordInput"
 import { useModifPassword } from "@/hooks/api/profile/useApiModifPassword"
@@ -36,23 +36,19 @@ export const ConfirmPasswordModal = ({
 				<h2 className="text-lg font-bold text-center">Modifier le mot de passe</h2>
 				
 				<PasswordInput
-					type="password"
 					placeholder="Nouveau mot de passe"
 					value={password}
 					onChange={(e) => {
 						setNewPassword(e.target.value);
 						setErrorMessage("");}}
-					className="border px-3 py-2 rounded-md text-xl"
 				/>
 
 				<PasswordInput
-					type="password"
 					placeholder="Confirmer le mot de passe"
 					value={confirmation}
 					onChange={(e) => {
 						setConfirmation(e.target.value);
 						setErrorMessage("")}}
-					className="border px-3 py-2 rounded-md text-xl"
 				/>
 
 				{errorMessage && (

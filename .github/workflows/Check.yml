@@ -26,7 +26,7 @@ jobs:
     - name: Run TypeScript compilation check for frontend
       run: |
         cd frontend
-        npx tsc --noEmit  # Vérifie la compilation sans générer de fichiers
+        npx tsc -b  # Vérifie la compilation sans générer de fichiers
 
     - name: Frontend TypeScript check passed
       run: echo "Frontend TypeScript compilation passed"
@@ -60,7 +60,7 @@ jobs:
           if [ -d "$dir" ]; then
             echo "Checking TypeScript for $dir"
             cd $dir
-            npx tsc --noEmit
+            npx tsc -b
             cd -
           fi
         done

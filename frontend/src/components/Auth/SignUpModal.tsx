@@ -16,7 +16,6 @@ interface SignUpModalProps {
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const [username, setUsername] = useState("");
-  // const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptedPolicy, setPolicy ] = useState(false);
@@ -38,7 +37,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
   });
 
   const handleSignUp = () => {
-    if (!username /*|| !mail */|| !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword) {
       setError(t("Tous les champs sont requis."));
       setShake(true);
       setTimeout(() => setShake(false), 500);
@@ -46,12 +45,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     }
 
     setError(null);
-    signUp(username, /*mail,*/ password, confirmPassword);
+    signUp(username, password, confirmPassword);
   };
 
   const handleClose = () => {
     setUsername("");
-    // setMail("");
     setPassword("");
     setConfirmPassword("");
     setError(null);

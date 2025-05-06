@@ -14,7 +14,7 @@ interface UseApiOptions<T> {
   istoken?: boolean;
 }
 
-const BASE_URL = "https://mgendrot.pro:443";
+const BASE_URL = import.meta.env.URL_PRODE || "http://localhost:8443";
 
 export function useApi<T>(
   url: string,

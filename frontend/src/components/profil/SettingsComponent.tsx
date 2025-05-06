@@ -12,7 +12,6 @@ import { Card } from "../ui/card";
 const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { t, changeLanguage } = useTranslation();
 	const [username, setUsername] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
 	const { confKey, changeKey } = useConfKey();
 	const [confirmPassword, setConfirmPassword] = useState<boolean>(false);
 
@@ -23,16 +22,13 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 		await modifProfil.refetch(updatedUser);
 		onUsernameChange?.(username);
 	};
-		const handlePasswordUpdate = () => {
-			console.log("New Password: ", password);
-			setPassword("");
-		};
+		
 
-		const isKeyUsed = (currentKey: keyof ConfKeyMap, newKey: string) => {
-		return (
-	  		newKey !== "" &&
-	  		Object.entries(confKey).some(([k, v]) => k !== currentKey && v === newKey)
-		);
+	const isKeyUsed = (currentKey: keyof ConfKeyMap, newKey: string) => {
+	return (
+		newKey !== "" &&
+		Object.entries(confKey).some(([k, v]) => k !== currentKey && v === newKey)
+	);
 	};
 
 	const handleKeyChange = (keyName: keyof ConfKeyMap, newKey: string) => {
@@ -126,8 +122,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 
 								{confirmPassword && (
 									<ConfirmPasswordModal
-										passwordToMatch={password}
-										onConfirm={handlePasswordUpdate}
 										onClose={() => setConfirmPassword(false)}
 									/>
 								)}

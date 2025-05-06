@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useApi } from "@/hooks/api/useApi";
 import { Username } from "./profil/type/profilInterface";
 import { APIFriendListProps } from "./profil/type/friendsIntefarce";
-import { Card } from "./ui/card";
 
 const FriendListHub: React.FC = () => {
   const [friends, setFriends] = useState<Username[]>([]);
   const [sentInvitations, setSentInvitations] = useState<Username[]>([]);
   const [pendingList, setPendingList] = useState<Username[]>([]);
 
-  // API pour récupérer la liste des amis
   const { refetch: fetchFriendList } = useApi<APIFriendListProps>(
     "/user/friend/list",
     {
@@ -28,15 +26,13 @@ const FriendListHub: React.FC = () => {
     }
   );
 
-  // API pour récupérer la liste des invitations en attente
   const { refetch: fetchPendingList } = useApi<Username[]>(
     "/user/friend/pendinglist",
     {
-    //   immediate: false,
+      immediate: false,
       onSuccess: (data) => {
         if (data) {
-          const usernames = data.map((pending) => pending.username);
-          setPendingList(usernames);
+          setPendingList(data);
         } else {
           console.error("Erreur pending list", data);
         }
@@ -51,16 +47,16 @@ const FriendListHub: React.FC = () => {
     const fetchData = async () => {
       await fetchPendingList();
       await fetchFriendList();
+  
+      setTimeout(() => {
+        fetchData();
+      }, 5000);
     };
-
+  
     fetchData();
+  }, []);
+  
 
-    const interval = setInterval(() => {
-      fetchData();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [fetchFriendList, fetchPendingList]);
 
   return (
 	<div className="w-64 h-[500px] p-2 bg-white shadow-lg rounded-lg mt-4">

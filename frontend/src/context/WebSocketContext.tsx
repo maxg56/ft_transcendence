@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import Cookies from "js-cookie";
 
+
 type WebSocketContextType = {
   socket: WebSocket | null;
   isConnected: boolean;
@@ -17,8 +18,8 @@ const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
 const WS_CONFIG = {
   protocol: "wss",
-  port: "8443",
-  host: "localhost",
+  port: import.meta.env.VITE_PORT_PRODE || "8443",
+  host: import.meta.env.VITE_HOSTNAME || "localhost",
   path: "/ws/game",
   maxRetries: 5,
   baseDelay: 1000, // ms

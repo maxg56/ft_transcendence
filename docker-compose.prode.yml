@@ -1,21 +1,17 @@
-version: '3.8'
 services:
   #************* ----- caddy ----- ***********************
   caddy:
     container_name: ft_t_caddy
-    image: caddy:latest
+    image:  caddy:2-alpine
     volumes:
-      - ./services/proxy/Caddyfile:/etc/caddy/Caddyfile
+      - ./services/proxy/Caddyfile.prod:/etc/caddy/Caddyfile
       - caddylog:/var/log/
+      - caddydata:/data  
     ports:
-      - "000:80"
+      - "80:80"
       - "443:443"
-    # healthcheck:
-    #   test: ["CMD", "curl", "-k", "-f", "https://localhost"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 30s
+    env_file:
+      - .env
     depends_on:
       - auth-service
       - user-service
@@ -98,18 +94,22 @@ services:
     restart: always
   
 
-# ************* ----- frontend ----- ***********************
+  # ************* ----- frontend ----- ***********************
   frontend:
     container_name: ft_t_frontend
     build: 
       context: ./frontend
       dockerfile: Dockerfile.prode
+      args:
+        - VITE_PORT_PRODE=${VITE_PORT_PRODE}
+        - VITE_URL_PRODE=${VITE_URL_PRODE}
+        - VITE_HOSTNAME=${VITE_HOSTNAME}
     networks:
       - frontend
     restart: always
 
 
-#************* ----- ELK ----- ***********************
+  #************* ----- ELK ----- ***********************
 
   # setup:
   #   build:
@@ -248,6 +248,12 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/volumes/caddylog/
+  caddydata:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/volumes/caddystatic/
   
   
 networks:

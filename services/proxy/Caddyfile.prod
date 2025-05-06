@@ -1,27 +1,19 @@
-
 {
-	log access-json {
-    include http.log.access.foo
+  email mgendrot29@game.com
+
+  log foo {
     output file /var/log/access-foo.json
     format json
   }
-
 }
 
 :80 {
   redir https://{host}{uri} permanent
 }
 
-localhost:443, {$VITE_HOSTNAME}:443 {
-  tls internal
+{$VITE_HOSTNAME} {
   log foo
-  #Frontend routes
-  handle {
-    # Frontend main route
-    handle /* {
-      reverse_proxy frontend:5173
-    }
-  }
+
   handle /auth/* {
     reverse_proxy auth-service:3001
   }
@@ -37,7 +29,12 @@ localhost:443, {$VITE_HOSTNAME}:443 {
   handle /user/* {
     reverse_proxy user-service:3004
   }
+
   handle_path /ws/game {
     reverse_proxy game-service:3003
+  }
+
+  handle /* {
+    reverse_proxy frontend:5173
   }
 }

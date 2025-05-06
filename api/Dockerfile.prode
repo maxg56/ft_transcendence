@@ -1,25 +1,47 @@
+# Étape 1 : Base image avec les dépendances en production
 FROM node:23.10-alpine AS base
 
 ARG APP_DIR
 
 WORKDIR /app
 
-# Assure-toi que ceci fonctionne
+# Copie des fichiers package.json pour l'installation des dépendances
 COPY ${APP_DIR}/package*.json ./
 
+# Installation des dépendances en production
 RUN npm install --production
 
+# Étape 2 : Build
 FROM node:23.10-alpine AS build
+
 ARG APP_DIR
 WORKDIR /app
+
+# Copie tous les fichiers du projet
 COPY ${APP_DIR}/ .
+
+# Installer toutes les dépendances, y compris TypeScript, pour le build
+RUN npm install
+
+# Build du projet (compilation TypeScript)
 RUN npm run build
 
+# Étape 3 : Final image
 FROM node:23.10-alpine AS final
+
 WORKDIR /app
+
+# Copier les node_modules de la phase 'base' pour éviter d'installer à nouveau
 COPY --from=base /app/node_modules ./node_modules
+
+# Copier les fichiers buildés depuis la phase 'build'
 COPY --from=build /app/dist ./dist
+
+# Variable d'environnement pour la production
+ENV NODE_ENV=production
+
+# Copier package.json pour que le service fonctionne
 COPY ${APP_DIR}/package*.json ./
 
+# Commande par défaut
 CMD ["node", "dist/server.js"]
-

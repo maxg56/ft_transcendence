@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import useNavigation from "@/hooks/useNavigation";
 import Cookies from 'js-cookie';
 
-const API_URL = "https://localhost:8443/auth";
+const API_URL = import.meta.env.VITE_URL_PRODE || "http://localhost:8443";
 
 function validateSignUp(username: string, password: string, confirmPassword: string): string | null {
   if (!username || !password || !confirmPassword) return "Tous les champs doivent être remplis";
@@ -26,7 +26,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       return;
     }
     try {
-      const res = await fetch(`${API_URL}/login`, {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -69,7 +69,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
         throw new Error("Token manquant. Veuillez vous reconnecter.");
       }
   
-      const res = await fetch(`${API_URL}/verify-2fa`, {
+      const res = await fetch(`${API_URL}/auth/verify-2fa`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
     //   return;
     }
     try {
-      const res = await fetch(`${API_URL}/register`, {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

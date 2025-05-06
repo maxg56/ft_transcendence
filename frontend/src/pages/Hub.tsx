@@ -3,6 +3,8 @@ import Header from "@/components/HeaderComponent";
 import { useMode } from "@/context/ModeContext";
 import useNavigation from "@/hooks/useNavigation";
 import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
+import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
+import {StarsBackground} from "@/animation/StarsBackground";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";
 import PrivateMessage from "@/components/chat/PrivateMessage";
@@ -62,14 +64,9 @@ const Hub: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
-            <App />
-            {/* <StarTunnelBackground /> */}
-            <button
-              className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
-              onClick={handleStart}
-            >
-              {getStartText()}
-            </button>
+           
+            <SpaceShipInterior/>
+            {/* <StarsBackground/> */}
           </div>
 
           <div className="w-[22%] place-content-evenly overflow-y-auto">

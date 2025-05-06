@@ -18,8 +18,8 @@ const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
 const WS_CONFIG = {
   protocol: "wss",
-  port: import.meta.env.PORT_PRODE || "8443",
-  host: import.meta.env.URL_PRODE_WS || "localhost",
+  port: import.meta.env.VITE_PORT_PRODE || "8443",
+  host: import.meta.env.VITE_HOSTNAME || "localhost",
   path: "/ws/game",
   maxRetries: 5,
   baseDelay: 1000, // ms

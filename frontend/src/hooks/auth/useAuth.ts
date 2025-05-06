@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import useNavigation from "@/hooks/useNavigation";
 import Cookies from 'js-cookie';
 
-const API_URL = import.meta.env.URL_PRODE || "http://localhost:8443";
+const API_URL = import.meta.env.VITE_URL_PRODE || "http://localhost:8443";
 
 function validateSignUp(username: string, email: string, password: string, confirmPassword: string): string | null {
   if (!username || !email || !password || !confirmPassword) return "Tous les champs doivent être remplis";

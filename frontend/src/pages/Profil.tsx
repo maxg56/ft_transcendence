@@ -8,13 +8,13 @@ import SettingsPage from "../components/profil/SettingsComponent";
 import StatsPong from "@/components/profil/stats/StatsPongComponent";
 import LogoutButton from "@/components/profil/LogOutComponent";
 import { useApi } from "@/hooks/api/useApi";
-import { Username, Elos } from "@/components/profil/type/profilInterface";
+import { Elos, UserInfos } from "@/components/profil/type/profilInterface";
 import DeleteAccountModal from "@/components/profil/SuppresAccountModal";
 
 type Options = "friends" | "settings" | "pong" ;
 
 const Profile: React.FC = () => {
-	const { profileImage, setProfileImage } = useProfileContext();
+	const { profileImage, setProfileImage, setUserId, refreshProfile } = useProfileContext();
 	const { navigate } = useNavigation();
 	const { t } = useTranslation();
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,11 +30,47 @@ const Profile: React.FC = () => {
 		pong: t("Stats Pong"),
 	};
 
+	const { refetch: fetchUploadAvatar } = useApi<any>(
+		"/user/avatar/upload",
+		{
+			method: 'PUT',
+			immediate: false,
+			onSuccess: (data) => {
+				if (!data ) {
+					console.error("Erreur avatar upload: réponse invalide", data)
+					return
+				}
+			},
+			onError: (errMsg) => {
+				console.error('Erreur avatar upload :', errMsg)
+			},
+		}
+	)
+
+	const { refetch: fetchDeleteAvatar } = useApi<any>(
+		"/user/avatar/delete",
+		{
+			method: 'DELETE',
+			immediate: false,
+			onSuccess: (data) => {
+				if (!data ) {
+					console.error("Erreur avatar delete: réponse invalide", data)
+					return
+				}
+			},
+			onError: (errMsg) => {
+				console.error('Erreur avatar delete :', errMsg)
+			},
+		}
+	)
+
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
 			const reader = new FileReader();
 			reader.onloadend = () => {
-				setProfileImage(reader.result as string);
+				const base64 = reader.result as string;
+				setProfileImage(base64);
+				fetchUploadAvatar({ image: base64 });
 			};
 			reader.readAsDataURL(e.target.files[0]);
 		}
@@ -46,8 +82,10 @@ const Profile: React.FC = () => {
 		}
 	};
 
-	const handleRemoveImage = () => {
-		setProfileImage(null);
+	const handleRemoveImage = async () => {
+		await fetchDeleteAvatar({});
+			setProfileImage(null);
+			refreshProfile();
 	};
 
 	const { refetch: fetchElo} = useApi<Elos>(
@@ -67,26 +105,31 @@ const Profile: React.FC = () => {
 		}
 	)
 
-	const { refetch: fetchUsername } = useApi<Username>(
+	const { refetch: fetchUserInfos } = useApi<UserInfos>(
 		"/user/info",
 		{
 			immediate: false,
 			onSuccess: (data) => {
 				if (!data ) {
-					console.error("Erreur Username: réponse invalide", data)
+					console.error("Erreur User: réponse invalide", data)
 					return
 				}
-				setUser(data.username)
+				setUserId(data.id);
+				setUser(data.username);
+				setProfileImage(data.avatar)
 			},
 			onError: (errMsg) => {
-				console.error('Erreur Username :', errMsg)
+				console.error('Erreur User :', errMsg)
 			},
 		}
 	)
 
 	useEffect(() => {
 		const fetchData = async () => {
-			await Promise.all([fetchElo(), fetchUsername()]);
+			await Promise.all([fetchElo(),
+				fetchUserInfos(),
+			]);
+			refreshProfile();
 		};
 		fetchData();
 	}, []

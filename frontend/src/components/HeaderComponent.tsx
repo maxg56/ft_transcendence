@@ -5,11 +5,17 @@ import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import VsButton from "./Vs/VsButton";
 import MultiButton from "./Multi/MultiButton";
+import { useEffect } from "react";
+
 
 const Header = () => {
   const { navigate } = useNavigation();
-  const { profileImage } = useProfileContext();
+  const { profileImage, userId, refreshProfile } = useProfileContext();
   const { t } = useTranslation();
+
+  useEffect(() => {
+      refreshProfile();
+  }, []);
 
   return (
     <div>

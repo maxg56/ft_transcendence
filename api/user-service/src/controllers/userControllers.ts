@@ -15,7 +15,7 @@ try {
 	  return sendError(reply, 'Invalid user ID', 400);
 	}
 	console.log("🧩 Param ID:", id);
-	const user = await User.findByPk(id, { attributes: ['username', 'avatar']});
+	const user = await User.findByPk(id, { attributes: ['id', 'username', 'avatar']});
 
 	if (!user) {
 		return sendError(reply, 'user not find', 404);

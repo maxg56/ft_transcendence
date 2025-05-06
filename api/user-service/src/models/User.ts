@@ -4,7 +4,7 @@ import sequelize from '../config/database';
 class User extends Model {
   public id!: number;
   public username!: string;
-  public email!: string;
+  public email!: string | null;
   public password!: string;
   public avatar!: string | null;
   public twoFA_enabled!: boolean;
@@ -29,15 +29,14 @@ User.init(
     },
     email: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: true,
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
     avatar: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT('long'),
       allowNull: true,
       defaultValue: null,
     },

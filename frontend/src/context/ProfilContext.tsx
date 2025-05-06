@@ -1,28 +1,55 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { UserInfos } from "@/components/profil/type/profilInterface";
+import { useApi } from "@/hooks/api/useApi";
 
 interface ProfileContextType {
   profileImage: string | null;
   setProfileImage: (image: string | null) => void;
+  userId: number | null;
+  setUserId: (id: number | null) => void;
+  refreshProfile: () => void;
 }
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
-export const ProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [profileImage, setProfileImageState] = useState<string | null>(() => {
-    return localStorage.getItem("profileImage");
-  });
+export const ProfileProvider: React.FC<{ userId: number; children: ReactNode }> = ({ children }) => {
+  const [profileImage, setProfileImageState] = useState<string | null>(null)
+  const [userId, setUserIdState] = useState<number | null>(null);
 
   const setProfileImage = useCallback((image: string | null) => {
-    if (image) {
-      localStorage.setItem("profileImage", image);
-    } else {
-      localStorage.removeItem("profileImage");
-    }
     setProfileImageState(image);
   }, []);
 
+  const setUserId = useCallback((id: number | null) => {
+    setUserIdState(id);
+    setProfileImageState(null);
+  }, []);
+  
+  const { refetch: fetchUserInfos } = useApi<UserInfos>(
+		"/user/info",
+		{
+			immediate: false,
+			onSuccess: (data) => {
+				if (!data ) {
+					console.error("Erreur User: réponse invalide", data)
+					return
+				}
+				setUserId(data.id);
+				setProfileImage(data.avatar)
+			},
+			onError: (errMsg) => {
+				console.error('Erreur User :', errMsg)
+			},
+		}
+	)
+
+  const refreshProfile = useCallback(() => {
+		fetchUserInfos();
+	}, [fetchUserInfos])
+
+
   return (
-    <ProfileContext.Provider value={{ profileImage, setProfileImage }}>
+    <ProfileContext.Provider value={{ profileImage, setProfileImage, userId, setUserId, refreshProfile }}>
       {children}
     </ProfileContext.Provider>
   );

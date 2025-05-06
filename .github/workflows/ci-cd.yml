@@ -1,12 +1,9 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches:
-      - prod
-  pull_request:
-    branches:
-      - prod
+      - dev
+
 
 jobs:
   deploy:

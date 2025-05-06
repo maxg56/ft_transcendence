@@ -164,7 +164,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                 <p className="font-semibold text-xl">2. Données collectées</p>
                 <p className="text-sm">Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :</p>
                 <ul className="list-disc list-inside text-sm">
-                  <li>Identifiants : pseudonyme, adresse email, mot de passe (hashé)</li>
+                  <li>Identifiants : pseudonyme, mot de passe (hashé)</li>
                   <li>Profil : avatar, statut en ligne</li>
                   <li>Activité : historique des parties, scores, statistiques</li>
                   <li>Données techniques : date de dernière connexion</li>

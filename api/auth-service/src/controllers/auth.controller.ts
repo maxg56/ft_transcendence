@@ -45,20 +45,16 @@ export default {
     return await login_controller(username, password, reply);
   },
 
-  async register(req: FastifyRequest<{ Body: { username: string; email: string; password: string } }>, reply: FastifyReply) {
-    const { username, email, password } = req.body;
+  async register(req: FastifyRequest<{ Body: { username: string; password: string } }>, reply: FastifyReply) {
+    const { username, password } = req.body;
     try {
       const existingUser = await User.findOne({ where: { username } });
       if (existingUser) {
         return reply.status(400).send({ error: 'Username already taken' });
       }
 
-      const existingEmail = await User.findOne({ where: { email } });
-      if (existingEmail) {
-        return reply.status(400).send({ error: 'Email already in use' });
-      }
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({ username, email, password: hashedPassword });
+      const user = await User.create({ username, password: hashedPassword });
       console.log('📌 New user registered:', user.username);
       return await login_controller(username, password, reply);
     } 

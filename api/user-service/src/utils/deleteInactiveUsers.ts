@@ -18,8 +18,7 @@ async function deleteInactiveUsers(){
 			await deleteFriends(user.id)
 			const newName = await usernameAnonymise()
 			await User.update(
-				{username: newName,
-				email: newName},
+				{username: newName},
 				{ where: {
 					id: user.id
 				}},

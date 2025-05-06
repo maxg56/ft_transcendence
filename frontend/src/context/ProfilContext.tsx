@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
+import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 import { UserInfos } from "@/components/profil/type/profilInterface";
 import { useApi } from "@/hooks/api/useApi";
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
 import { User } from "lucide-react";
@@ -83,13 +83,9 @@ const Profile: React.FC = () => {
 	};
 
 	const handleRemoveImage = async () => {
-		console.log('suppression image lancee')
-		const result = await fetchDeleteAvatar({});
-		console.log('res suppr:', result)
-		if (result && result.success === true) {
+		await fetchDeleteAvatar({});
 			setProfileImage(null);
-			// refreshProfile();
-		}
+			refreshProfile();
 	};
 
 	const { refetch: fetchElo} = useApi<Elos>(

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MultiPopup from "./MultiPopup";
+import TournamentPopup from "./TournamentPopup";
 import { useTranslation } from "@/context/TranslationContext";
 import { useMode , Mode } from "@/context/ModeContext";
 
@@ -25,10 +25,10 @@ export default function VsButton() {
              transition duration-300"
         onClick={() => setShowPopup(true)}
       >
-        {t("Multi")}
+        {t("Tournois")}
       </button>
       {showPopup && (
-        <MultiPopup
+        <TournamentPopup
           onSelect={handleSelect}
           onClose={() => setShowPopup(false)}
         />

@@ -59,7 +59,11 @@ const FriendListHub: React.FC = () => {
 
 
   return (
-	<div className="w-64 h-[500px] p-2 bg-white shadow-lg rounded-lg mt-4">
+	<div className="w-64 h-[500px] p-2 shadow-lg rounded-lg mt-4 rounded-xl p-4 
+                bg-gradient-to-br from-cyan-400/10 via-blue-500/10
+                backdrop-blur-md border border-cyan-300/20 
+                shadow-[0_0_15px_rgba(0,255,255,0.2)] 
+                text-white w-[350px] h-[400px] overflow-hidden" >
 		<h3 className="font-bold mb-2 text-xs">Liste d’amis</h3>
 		<div className="max-h-[400px] overflow-y-auto pr-1">
 			<ul className="space-y-2 text-xs">

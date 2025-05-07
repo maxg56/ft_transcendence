@@ -19,10 +19,9 @@ const Header = () => {
 
   return (
     <div>
-      <div className="w-3/5 h-22 mx-auto mt-4 py-3 px-6 bg-gray-800 rounded-[20px] border-2 border-gray-600 shadow-lg text-white">
         {/* Profile */}
         <div
-          className="absolute start-0 top-70 left-20 w-20 h-20 rounded-full cursor-pointer border border-gray-300 bg-gray-700 flex items-center justify-center overflow-hidden z-20"
+          className="neon-button-profil absolute top-[10%] left-1/2 top-70 left-40 w-20 h-20 rounded-full cursor-pointer border border-gray-300 bg-gray-700 flex items-center justify-center overflow-hidden"
           onClick={() => navigate("/profile")}
         >
           {profileImage ? (
@@ -37,14 +36,21 @@ const Header = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="absolute top-[10%] left-[55%] -translate-x-1/2 flex items-center justify-between gap-4">
           <VsButton />
           <MultiButton />
-          <button className="button-header px-7 py-1 text-black rounded hover:bg-gray-300 transition">
-            {t("Tournois")}
-          </button>
+          <button
+  className="text-glow px-40 py-2 rounded-md text-white font-semibold 
+             bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/60 
+             backdrop-blur-md 
+             shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+             hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+             border border-cyan-300/30 
+             transition duration-300"
+>
+  {t("Tournois")}
+</button>
         </div>
-      </div>
     </div>
   );
 };

@@ -13,7 +13,10 @@ const Chat: React.FC = () => {
   ];
 
   return (
-    <div className="w-[400px] h-[500px] bg-white rounded-lg shadow-lg flex flex-col overflow-hidden">
+    <div className="w-[440px] h-[500px] rounded-lg shadow-lg flex flex-col overflow-hidden bg-gradient-to-br from-cyan-400/10 via-blue-500/10
+                backdrop-blur-md border border-cyan-300/20 
+                shadow-[0_0_15px_rgba(0,255,255,0.2)] 
+                text-black w-[350px] h-[400px] overflow-hidden ">
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((msg, index) => (
           <div

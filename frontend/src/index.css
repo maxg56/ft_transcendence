@@ -15,6 +15,10 @@ code {
     monospace;
 }
 
+.text-glow {
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.7);
+}
+
 .rounded-container {
   overflow: hidden;
   background-color: #02090e;
@@ -130,6 +134,29 @@ code {
   }
 }
 
+.neon-button-profil {
+  background: #00f0ff;
+  color: #000;
+  box-shadow:
+    0 0 5px #00f0ff,
+    0 0 10px #00f0ff,
+    0 0 20px #00f0ff,
+    0 0 40px #00f0ff;
+  /* animation: flicker 3s infinite; */
+  transition: all 0.2s ease-in-out;
+}
+
+.neon-button-profil:hover {
+  background: #00f0ff;
+  box-shadow:
+    0 0 5px #0400FF,
+    0 0 15px #0400FF,
+    0 0 30px #0400FF,
+    0 0 50px #0400FF;
+  transform: scale(1.05);
+}
+
+
 .neon-button {
   background: #00f0ff;
   color: #000;
@@ -153,17 +180,16 @@ code {
 }
 
 .button-header {
-  background: #3836C9;
+  background: #3e3cc5;
   color: #000;
   box-shadow:
   0 0 5px #1814e7,
   0 0 15px #1814e7,
   0 0 30px #1814e7,
   0 0 50px #1814e7;
-  /* animation: flicker 3s infinite; */
   transition: all 0.2s ease-in-out;
 }
-.button-header:hover {
+/* .button-header:hover {
   background: #cdcdf5;
   box-shadow:
     0 0 5px #0400FF,
@@ -171,7 +197,7 @@ code {
     0 0 30px #0400FF,
     0 0 50px #0400FF;
   transform: scale(1.05);
-}
+} */
 
 
 .flicker {

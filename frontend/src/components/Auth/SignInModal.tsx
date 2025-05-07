@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/auth/useAuth";
 import { AuthModal } from "../AuthModal";
 import PasswordInput from "./PasswordInput";
 import TwoFAModal from "./TwoFAModal";
+
 interface SignInModalProps {
   isOpen: boolean;
   onClose: () => void;

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { X } from "lucide-react";
 interface ModalProps {
   children: React.ReactNode;
   onClose: () => void;
@@ -13,7 +13,7 @@ export const Modal = ({ children, onClose }: ModalProps) => {
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
         >
-          X
+          <X/>
         </button>
         {children}
       </div>

@@ -7,8 +7,7 @@ type Props = {
       onClose: () => void;
     };
 
-export default function TournamentPopup({ onSelect, onClose }: Props) {
-  const [mode, setMode] = useState<'friends' | 'tournois'>('friends');
+export default function TournamentPopup({ onClose }: Props) {
   const [code, setCode] = useState('');
 
   return (
@@ -26,21 +25,13 @@ export default function TournamentPopup({ onSelect, onClose }: Props) {
         {/* Toggle Buttons */}
         <div className="flex justify-center gap-4 mb-4">
           <button
-            className={`px-4 py-2 rounded-md font-semibold transition shadow-md ${
-              mode === 'friends'
-                ? 'bg-blue-500/80'
-                : 'bg-blue-300/40 hover:bg-blue-400/60'
-            }`}
+            className={`px-4 py-2 rounded-md font-semibold transition shadow-md`}
             onClick={() => null}
           >
             Friends
           </button>
           <button
-            className={`px-4 py-2 rounded-md font-semibold transition shadow-md ${
-              mode === 'tournois'
-                ? 'bg-green-500/80'
-                : 'bg-green-300/40 hover:bg-green-400/60'
-            }`}
+            className={`px-4 py-2 rounded-md font-semibold transition shadow-md`}
             onClick={() => null}
           >
             Tournois
@@ -61,7 +52,6 @@ export default function TournamentPopup({ onSelect, onClose }: Props) {
           <button
             className="px-4 py-2 rounded-md font-semibold bg-purple-500/70 hover:bg-purple-600/80 transition shadow-md"
             onClick={() => {
-              onSelect(`${mode}-join:${code}`);
               onClose();
             }}
           >
@@ -70,7 +60,6 @@ export default function TournamentPopup({ onSelect, onClose }: Props) {
           <button
             className="px-4 py-2 rounded-md font-semibold bg-yellow-500/70 hover:bg-yellow-600/80 transition shadow-md"
             onClick={() => {
-              onSelect(`${mode}-create`);
               onClose();
             }}
           >

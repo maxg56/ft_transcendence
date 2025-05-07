@@ -54,7 +54,6 @@ abstract class BaseGameEngine<
 	  const limit = TABLE_HEIGHT / 2 - PADDLE_HEIGHT / 2;
 	  this.paddles[side].z = Math.max(-limit, Math.min(limit, nextZ));
 	}
-	// abstract movePaddle(side: TSide, direction: 'up' | 'down'): void;
 	
 	protected calculateRebound(side: TSide): Vector {
 		const paddle = this.paddles[side];

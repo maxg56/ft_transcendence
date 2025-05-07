@@ -1,6 +1,6 @@
 import React from "react";
-import DuelComponent from "../../components/Vs/2DuelComponent";
-import StarsBackground from "@/animation/StarsBackground";
+import DuelComponent from "@/components/Vs/2DuelComponent";
+import { StarTunnelBackground } from "@/animation/StarTunnelBackground"
 
 const Duel2: React.FC = () => {
 
@@ -13,7 +13,7 @@ const Duel2: React.FC = () => {
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
           </div>
         <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
-          <StarsBackground />
+          <StarTunnelBackground />
           <DuelComponent />
       </div>
       </div>

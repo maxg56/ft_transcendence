@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const StarsBackground: React.FC = () => {
+export const StarsBackground: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {

@@ -3,7 +3,10 @@ import Header from "@/components/HeaderComponent";
 import { useMode } from "@/context/ModeContext";
 import useNavigation from "@/hooks/useNavigation";
 import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
+import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
 import FriendListHub from "@/components/ListFriends";
+import Chat from "@/components/chat/Chat";
+import PrivateMessage from "@/components/chat/PrivateMessage";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
@@ -45,28 +48,41 @@ const Hub: React.FC = () => {
 
   return (
     <div className="scale-95">
-      <div>
-        <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
+      <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
+          <div className="absolute top-6 right-12 z-80">
+            <PrivateMessage />
+          </div>
+          <SpaceShipInterior/>
           <Header />
           <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
           </div>
-          <div className="flex flex-row justify-between items-center w-full h-[839px] px-10 overflow-hidden">
-              <FriendListHub />
-              <div className="flex-1 flex justify-center">
-                <button
-                  className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
-                  onClick={handleStart}
-                >
-                  {getStartText()}
-                </button>
+          <div className="flex flex-1 justify-between items-stretch px-10 pb-4 z-50">
+            <div className="absolute top-[28%] justify-center z-100">
+                <FriendListHub />
               </div>
-              {/* <FriendListHub /> */}
+              <div className="absolute top-[30%] left-[75%] justify-center z-100  ">
+                <Chat />
+                </div>
+            <div className="w-[22%] place-content-evenly overflow-y-auto">
+              <button
+                className="absolute bottom-[10%] left-1/2 -translate-x-1/2 
+                       px-20 py-10 rounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-600/20 
+                        backdrop-blur-md
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300"
+                    onClick={handleStart}
+                    >
+                {getStartText()}
+              </button>
             </div>
-        </div>
+       </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default Hub;

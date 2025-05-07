@@ -61,7 +61,7 @@ export function GraphEloPong() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="items-center pb-0 text-xl">Elos</CardTitle>
+        <CardTitle className="items-center pb-0 text-xl">Elo</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

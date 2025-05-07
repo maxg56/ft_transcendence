@@ -10,13 +10,13 @@ class GameEngine1v1 extends BaseGameEngine<PlayerSide1v1, GameScore1v1>{
 
     checkCollisions(): void {
         if (this.ball.x <= -TABLE_WIDTH / 2 + BALL_RADIUS) {
-            if (Math.abs(this.ball.z - this.paddles.left.z) < PADDLE_HEIGHT / 2) {
+            if (Math.abs(this.ball.z - this.paddles.left.z) < PADDLE_HEIGHT / 1.2) {
             this.direction = this.calculateRebound('left');
         }
     }
 
     if (this.ball.x >= TABLE_WIDTH / 2 - BALL_RADIUS) {
-      if (Math.abs(this.ball.z - this.paddles.right.z) < PADDLE_HEIGHT / 2) {
+      if (Math.abs(this.ball.z - this.paddles.right.z) < PADDLE_HEIGHT / 1.2) {
         this.direction = this.calculateRebound('right');
       }
     }

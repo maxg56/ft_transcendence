@@ -15,8 +15,8 @@ class GameEngine2v2 extends BaseGameEngine<PlayerSide2v2, TeamScore> {
   checkCollisions(): void {
     if (this.ball.x <= -TABLE_WIDTH / 2 + BALL_RADIUS) {
       if (
-        Math.abs(this.ball.z - this.paddles.left.z) < PADDLE_HEIGHT / 2 ||
-        Math.abs(this.ball.z - this.paddles.left2.z) < PADDLE_HEIGHT / 2
+        Math.abs(this.ball.z - this.paddles.left.z) < PADDLE_HEIGHT / 1.1 ||
+        Math.abs(this.ball.z - this.paddles.left2.z) < PADDLE_HEIGHT / 1.1
       ) {
         this.direction = this.calculateRebound('left');
       }
@@ -24,8 +24,8 @@ class GameEngine2v2 extends BaseGameEngine<PlayerSide2v2, TeamScore> {
 
     if (this.ball.x >= TABLE_WIDTH / 2 - BALL_RADIUS) {
       if (
-        Math.abs(this.ball.z - this.paddles.right.z) < PADDLE_HEIGHT / 2 ||
-        Math.abs(this.ball.z - this.paddles.right2.z) < PADDLE_HEIGHT / 2
+        Math.abs(this.ball.z - this.paddles.right.z) < PADDLE_HEIGHT / 1.1 ||
+        Math.abs(this.ball.z - this.paddles.right2.z) < PADDLE_HEIGHT / 1.1
       ) {
         this.direction = this.calculateRebound('right');
       }

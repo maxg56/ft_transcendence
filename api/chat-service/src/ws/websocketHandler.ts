@@ -66,7 +66,7 @@ async function sendMessage({
   await Message.create({
     sender_id: senderId,
     channel_type: channelType,
-    channel_id: typeof channelId === 'number' ? channelId : 0,
+    channel_id: Number(channelId),
     content,
     created_at: new Date(),
   });

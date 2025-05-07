@@ -4,12 +4,9 @@ import { useMode } from "@/context/ModeContext";
 import useNavigation from "@/hooks/useNavigation";
 import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
 import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
-import {StarsBackground} from "@/animation/StarsBackground";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";
 import PrivateMessage from "@/components/chat/PrivateMessage";
-import VsButton from "@/components/Vs/VsButton";
-import MultiButton from "@/components/Multi/MultiButton";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
@@ -50,7 +47,7 @@ const Hub: React.FC = () => {
   };
 
   return (
-    <div className="scale-95 w-screen h-screen">
+    <div className="scale-95">
       <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
         {/* <Header /> */}
           
@@ -68,39 +65,28 @@ const Hub: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-center items-center w-full h-[839px] overflow-hidden">
-          {/* <div className="flex items-center justify-between gap-4 z-100">
-          <VsButton /> */}
-          <MultiButton />
-          <button className=" neon-button bg-blue-500 px-7 py-1 text-black rounded hover:bg-gray-300 transition">
-            {"Tournois"}
-          </button>
-        {/* </div> */}
-           
-            {/* <SpaceShipInterior/> */}
-            {/* <StarsBackground/> */}
-          </div>
+            <Header />
+            </div>
 
           <div className="w-[22%] place-content-evenly overflow-y-auto">
             <Chat />
-<button
-  className="absolute bottom-1/4 left-1/2 -translate-x-1/2 
-             px-20 py-10 rounded-md text-white font-semibold 
-             bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-600/20 
-             backdrop-blur-md 
-             shadow-[0_0_20px_rgba(0,255,255,0.4)] 
-             hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
-             border border-cyan-300/30 
-             transition duration-300"
-  onClick={handleStart}
->
-  {getStartText()}
-</button>
-
+            <button
+            className="absolute bottom-[10%] left-1/2 -translate-x-1/2 
+                       px-20 py-10 rounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-600/20 
+                        backdrop-blur-md 
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300"
+                    onClick={handleStart}
+                    >
+               {getStartText()}
+            </button>
           </div>
         </div>
-
       </div>
-    </div>
+      </div>
   );  
 };
 

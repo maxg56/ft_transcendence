@@ -8,21 +8,29 @@ type Props = {
 export default function VsPopup({ onSelect, onClose } : Props) {
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40"
+      className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 min-w-[400px]"
-          onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the popup
+        className="bg-gradient-to-br from-cyan-400/40 via-blue-500/40 to-purple-600/40 
+                   backdrop-blur-md border border-cyan-300/30 
+                   shadow-[0_0_30px_rgba(0,255,255,0.3)] 
+                   rounded-2xl p-8 flex flex-col gap-4 min-w-[300px] text-white text-center"
+        onClick={(e) => e.stopPropagation()}
       >
+        <h2 className="text-lg font-semibold mb-2">Select Mode</h2>
         <button
-          className="bg-blue-600 text-white rounded py-2 hover:bg-blue-700 transition"
+          className="px-4 py-2 rounded-md font-semibold 
+                     bg-blue-500/70 hover:bg-blue-600/80 
+                     backdrop-blur-sm transition shadow-md"
           onClick={() => { onSelect("ia"); onClose(); }}
         >
           IA
         </button>
         <button
-          className="bg-green-600 text-white rounded py-2 hover:bg-green-700 transition"
+          className="px-4 py-2 rounded-md font-semibold 
+                     bg-green-500/70 hover:bg-green-600/80 
+                     backdrop-blur-sm transition shadow-md"
           onClick={() => { onSelect("humain"); onClose(); }}
         >
           HUMAIN

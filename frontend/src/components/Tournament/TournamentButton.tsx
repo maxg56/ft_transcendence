@@ -1,17 +1,10 @@
 import { useState } from "react";
 import TournamentPopup from "./TournamentPopup";
 import { useTranslation } from "@/context/TranslationContext";
-import { useMode , Mode } from "@/context/ModeContext";
 
 export default function VsButton() {
   const [showPopup, setShowPopup] = useState(false);
   const { t } = useTranslation();
-  const { setMode } = useMode();
-
-  const handleSelect = (choice : Mode) => {
-    setMode(choice);
-    setShowPopup(false);
-  };
 
   return (
     <>
@@ -29,7 +22,7 @@ export default function VsButton() {
       </button>
       {showPopup && (
         <TournamentPopup
-          onSelect={handleSelect}
+          onSelect={()=> null}
           onClose={() => setShowPopup(false)}
         />
       )}

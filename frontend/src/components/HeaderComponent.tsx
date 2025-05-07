@@ -1,7 +1,6 @@
 import useNavigation from "../hooks/useNavigation";
 import { useProfileContext } from "../context/ProfilContext";
 import { User } from "lucide-react";
-import { useTranslation } from "../context/TranslationContext";
 import VsButton from "./Vs/VsButton";
 import MultiButton from "./Multi/MultiButton";
 import { useEffect } from "react";
@@ -10,7 +9,6 @@ import TournamentButton from "./Tournament/TournamentButton"
 const Header = () => {
   const { navigate } = useNavigation();
   const { profileImage, refreshProfile } = useProfileContext();
-  const { t } = useTranslation();
 
   useEffect(() => {
       refreshProfile();

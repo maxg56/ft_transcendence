@@ -31,7 +31,9 @@ ChatGroup.init({
     sequelize,
     modelName: 'ChatGroup',
     tableName: 'chat_groups',
-    timestamps: false
+    timestamps: false,
+    underscored: true,
+     
 });
 
 ChatGroup.belongsTo(User, 

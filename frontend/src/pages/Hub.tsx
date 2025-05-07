@@ -5,6 +5,7 @@ import useNavigation from "@/hooks/useNavigation";
 import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";
+import PrivateMessage from "@/components/chat/PrivateMessage";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
@@ -48,6 +49,9 @@ const Hub: React.FC = () => {
     <div className="scale-95 w-screen h-screen">
       <div className="crt w-full h-full rounded-[150px] overflow-hidden bg-gray-900 flex flex-col">
         <Header />
+        <div className="absolute top-6 right-12 z-30">
+          <PrivateMessage />
+        </div>
         <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
           <div className="w-full h-full absolute top-[-100%] scanline-glow" />
         </div>

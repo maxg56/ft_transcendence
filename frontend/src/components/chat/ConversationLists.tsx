@@ -3,11 +3,12 @@ import React from "react";
 interface Props {
 	onUserSelect: (user: string) => void;
 	selectedUser: string | null;
+	unread: { [user: string]: boolean };
 }
 
 const users = ["Alice", "Bob", "Charlie"];
 
-const ConversationList: React.FC<Props> = ({ onUserSelect, selectedUser }) => {
+const ConversationList: React.FC<Props> = ({ onUserSelect, selectedUser, unread }) => {
 	return (
 		<div className="w-1/4 border-r overflow-y-auto bg-gray-200 rounded-2xl flex flex-col">
 			<div className="gap-6">
@@ -25,7 +26,12 @@ const ConversationList: React.FC<Props> = ({ onUserSelect, selectedUser }) => {
 						selectedUser === user ? "bg-gray-300 font-semibold" : ""
 					}`}
 				>
-					{user}
+					<div className="flex justify-between items-center">
+					<span>{user}</span>
+					{unread[user] && (
+						<span className="w-2 h-2 rounded-full bg-red-500 ml-2" />
+					)}
+				</div>
 			</div>
 			))}
 		</div>

@@ -4,7 +4,6 @@ import {
     Scene,
     FreeCamera,
     Vector3,
-    HemisphericLight,
     MeshBuilder,
     StandardMaterial,
     Color3,

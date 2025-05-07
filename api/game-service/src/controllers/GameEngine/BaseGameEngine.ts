@@ -54,31 +54,31 @@ abstract class BaseGameEngine<
 	  const limit = TABLE_HEIGHT / 2 - PADDLE_HEIGHT / 2;
 	  this.paddles[side].z = Math.max(-limit, Math.min(limit, nextZ));
 	}
-  
+	
 	protected calculateRebound(side: TSide): Vector {
-	  const paddle = this.paddles[side];
-	  const impactOffset = this.ball.z - paddle.z;
-	  const spin = impactOffset * 0.05;
-  
-	  let newX = ACCELERATION * Math.abs(this.direction.x);
-	  newX = Math.min(newX, MAX_SPEED);
-  
-	  let newZ = Math.sin(Math.atan2(this.direction.z, this.direction.x)) * newX + spin;
-	  newZ = Math.min(Math.abs(newZ), MAX_SPEED) * Math.sign(newZ);
-  
+		const paddle = this.paddles[side];
+		const impactOffset = this.ball.z - paddle.z;
+		const spin = impactOffset * 0.05;
+		
+		let newX = ACCELERATION * Math.abs(this.direction.x);
+		newX = Math.min(newX, MAX_SPEED);
+		
+		let newZ = Math.sin(Math.atan2(this.direction.z, this.direction.x)) * newX + spin;
+		newZ = Math.min(Math.abs(newZ), MAX_SPEED) * Math.sign(newZ);
+		
 	  const directionX = side === 'left' || side === 'left2' ? Math.abs(newX) : -Math.abs(newX);
-  
+	  
 	  return { x: directionX, z: newZ };
 	}
 	movePlayer(playerId: TSide, direction: 'up' | 'down') {
 		if (this.paddles[playerId]) {
-		  this.movePaddle(playerId, direction);
+			this.movePaddle(playerId, direction);
 		}
-	  }
-	  
+	}
+	
 	abstract checkCollisions(): void;
 	abstract checkScore(): void;
-  
+	
 	getGameState() {
 	  return {
 		ball: this.ball,

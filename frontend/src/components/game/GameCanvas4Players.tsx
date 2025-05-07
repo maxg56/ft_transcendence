@@ -76,7 +76,7 @@ const GameCanvas4PlayersWS: React.FC<GameCanvas4PlayersProps> = ({
     ballRef,
   } = useGameScene4Players()
   
-  usePlayerControls(Cookies.get("gameId") || "")
+  usePlayerControls(Cookies.get("gameid") || "")
 
   useBallFromServer4Players(
     ballRef,

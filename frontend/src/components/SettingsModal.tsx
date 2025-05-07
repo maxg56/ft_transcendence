@@ -1,14 +1,12 @@
 import { X, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "../context/TranslationContext";
-import useNavigation from "../hooks/useNavigation";
 
 
 const SettingsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLangOptions, setShowLangOptions] = useState(false);
   const { t, changeLanguage } = useTranslation();
-  const { navigate } = useNavigation();
 
   useEffect(() => {
     if (isOpen) setShowLangOptions(false);
@@ -16,14 +14,12 @@ const SettingsModal: React.FC = () => {
 
   return (
     <>
-      {/* Bouton Paramètres */}
       <button
         onClick={() => setIsOpen(true)}
       >
         <Settings size={32} />
       </button>
 
-      {/* Modale Paramètres */}
       {isOpen && (
          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
@@ -58,16 +54,7 @@ const SettingsModal: React.FC = () => {
                   Klingon
                 </button>
               </div>
-            )}
-
-            {/* Bouton Déconnexion */}
-            <button 
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-full mt-6"
-              onClick={() => {
-                navigate("/"); // Redirige vers l'accueil après déconnexion
-              }}>
-              {t("Se déconnecter")}
-            </button>
+            )}            
           </div>
          </div>
       )}

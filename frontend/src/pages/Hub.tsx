@@ -4,6 +4,7 @@ import { useMode } from "@/context/ModeContext";
 import useNavigation from "@/hooks/useNavigation";
 import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
 import FriendListHub from "@/components/ListFriends";
+import Chat from "@/components/chat/Chat";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
@@ -44,29 +45,36 @@ const Hub: React.FC = () => {
   };
 
   return (
-    <div className="scale-95">
-      <div>
-        <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
-          <Header />
-          <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-            <div className="w-full h-full absolute top-[-100%] scanline-glow" />
-          </div>
-          <div className="flex flex-row justify-between items-center w-full h-[839px] px-10 overflow-hidden">
-              <FriendListHub />
-              <div className="flex-1 flex justify-center">
-                <button
-                  className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
-                  onClick={handleStart}
-                >
-                  {getStartText()}
-                </button>
-              </div>
-              {/* <FriendListHub /> */}
-            </div>
+    <div className="scale-95 w-screen h-screen">
+      <div className="crt w-full h-full rounded-[150px] overflow-hidden bg-gray-900 flex flex-col">
+        <Header />
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+          <div className="w-full h-full absolute top-[-100%] scanline-glow" />
         </div>
+        <div className="flex flex-1 justify-between items-stretch px-10 pb-4">
+          <div className="w-[22%] flex items-center justify-center">
+            <div className="overflow-y-auto place-content-evenly">
+              <FriendListHub />
+            </div>
+          </div>
+
+          <div className="flex-1 flex justify-center items-center">
+            <button
+              className="neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50"
+              onClick={handleStart}
+            >
+              {getStartText()}
+            </button>
+          </div>
+
+          <div className="w-[22%] place-content-evenly overflow-y-auto">
+            <Chat />
+          </div>
+        </div>
+
       </div>
     </div>
-  );
+  );  
 };
 
 export default Hub;

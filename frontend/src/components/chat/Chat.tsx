@@ -8,8 +8,11 @@ export const Chat: React.FC = () => {
   const { messages, sendMessage, channels, selectedChannel } = useChatWebSocket();
   const [newMessage, setNewMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  setSearchTerm(searchTerm);
+  // const [searchTerm, setSearchTerm] = React.useState("");
+
+  // Supprime cette ligne
+  // setSearchTerm(searchTerm); // <-- Supprimer cela !
+
   if (!selectedChannel) return null;
 
   const currentChannel = channels.find(c => c.id === selectedChannel);
@@ -20,7 +23,6 @@ export const Chat: React.FC = () => {
     sendMessage(newMessage.trim());
     setNewMessage("");
   };
-  
 
   const allChannelUsers = channels
     .map((c) => {
@@ -33,7 +35,7 @@ export const Chat: React.FC = () => {
       }
     })
     .filter((name, index, self) => self.indexOf(name) === index) // éviter les doublons
-    .filter((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+    // .filter((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="w-[440px] h-[500px] rounded-lg shadow-lg

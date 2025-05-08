@@ -13,9 +13,9 @@ interface FriendListProps {
 const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations }) => {
 	return (
 		<div className="w-full p-4 bg-white shadow-lg rounded-lg">
-			<h3 className="font-bold mb-2 text-xs">Liste d’amis</h3>
+			<h3 className="font-bold mb-2 text-2xl">Liste d’amis</h3>
 			<div className="max-h-60 overflow-y-auto pr-1">
-				<ul className="space-y-2 text-xs">
+				<ul className="space-y-2 text-xl">
 					{friends.map((friend, index) => (
 						<li key={`friend-${index}`} className="flex items-center gap-2 bg-gray-100 p-2 rounded">
 							<img

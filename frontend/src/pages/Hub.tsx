@@ -6,7 +6,6 @@ import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
 import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";
-
 const Hub: React.FC = () => {
   const { mode } = useMode();
   const { navigate } = useNavigation();

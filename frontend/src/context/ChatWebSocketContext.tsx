@@ -131,8 +131,6 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       if (data.type === 'history') {
-        console.log("Historique des messages reçu :", data);
-      
         if (Array.isArray(data.history)) {
           const sortedMessages = [...data.history].sort((a, b) =>
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()

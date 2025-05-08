@@ -15,19 +15,26 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 }) => {
   return (
     <div className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}>
-      <div
-        className={`p-2 max-w-[70%] text-sm rounded-md font-normal border break-words whitespace-pre-wrap
-        ${isOwnMessage
-          ? "bg-blue-100 text-black border-blue-200"
-          : "bg-gray-100 text-black border-gray-200"
-        }`}
-      >
+      <div className="flex flex-col max-w-[70%] ">
         {!isOwnMessage && (
-          <div className="text-[9px] text-gray-400 mb-1">{senderUsername}</div>
+          <div className="text-[10px] text-cyan-300 mb-1 font-semibold">
+            {senderUsername}
+          </div>
         )}
-        <div>{content}</div>
+        <div
+          className={`p-2 rounded-md font-normal border break-words whitespace-pre-wrap
+            backdrop-blur-md shadow-[0_0_10px_rgba(0,255,255,0.2)] transition duration-300
+            ${isOwnMessage
+              ? "bg-gradient-to-r from-purple-500/60 to-purple-600/60 border-purple-400/50"
+              : "bg-gradient-to-r from-cyan-500/60 to-cyan-600/60 border-cyan-400/50"
+            }`}
+        >
+          <div className="text-sm text-white">{content}</div>
+        </div>
         {formattedTimestamp && (
-          <div className="text-[9px] text-gray-400 text-right mt-1">{formattedTimestamp}</div>
+          <div className="text-[9px] text-cyan-200 text-right mt-1">
+            {formattedTimestamp}
+          </div>
         )}
       </div>
     </div>
@@ -35,4 +42,3 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 };
 
 export default MessageBubble;
-

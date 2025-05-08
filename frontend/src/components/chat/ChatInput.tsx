@@ -1,5 +1,5 @@
 import React from "react";
-import {Send , Mail} from "lucide-react";
+import { Send, Mail } from "lucide-react";
 
 interface ChatInputProps {
   value: string;
@@ -9,18 +9,34 @@ interface ChatInputProps {
   open: boolean;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ value, onChange, onSend, setOpen, open }) => {
+const buttonStyle =
+  "p-2 text-white font-semibold rounded-md text-glow bg-gradient-to-r " +
+  "from-cyan-600/60 to-purple-600/60 border border-cyan-500/60 " +
+  "shadow-[0_0_10px_rgba(0,255,255,0.4)] hover:shadow-[0_0_10px_rgba(0,255,255,0.8)] " +
+  "transition duration-300";
+
+const ChatInput: React.FC<ChatInputProps> = ({
+  value,
+  onChange,
+  onSend,
+  setOpen,
+  open,
+}) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") onSend();
   };
 
   return (
-    <div className="p-3 border-t flex gap-2">
-      <button onClick={() => setOpen(!open)} className="px-3 py-1 bg-blue-500 text-white text-sm rounded-2xl hover:bg-blue-600 relative">
-        <Mail/>
+    <div className="flex items-center gap-2 p-3 border-t w-full absolute bottom-0 bg-white/5 backdrop-blur-sm">
+      <button
+        onClick={() => setOpen(!open)}
+        className={buttonStyle}
+        title={open ? "Fermer la boîte mail" : "Ouvrir la boîte mail"}
+      >
+        <Mail size={20} />
       </button>
       <input
-        className="flex-1 border rounded-md p-2 text-sm"
+        className="flex-1 border border-cyan-500/40 rounded-md p-2 text-sm text-white bg-transparent placeholder:text-cyan-200 focus:outline-none"
         type="text"
         placeholder="Écrire un message..."
         value={value}
@@ -29,9 +45,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ value, onChange, onSend, setOpen,
       />
       <button
         onClick={onSend}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm"
+        className={buttonStyle}
+        title="Envoyer"
       >
-       <Send/>
+        <Send size={20} />
       </button>
     </div>
   );

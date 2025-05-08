@@ -8,7 +8,8 @@ export const Chat: React.FC = () => {
   const { messages, sendMessage, channels, selectedChannel } = useChatWebSocket();
   const [newMessage, setNewMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-
+  const [searchTerm, setSearchTerm] = React.useState("");
+  setSearchTerm(searchTerm);
   if (!selectedChannel) return null;
 
   const currentChannel = channels.find(c => c.id === selectedChannel);
@@ -19,6 +20,20 @@ export const Chat: React.FC = () => {
     sendMessage(newMessage.trim());
     setNewMessage("");
   };
+  
+
+  const allChannelUsers = channels
+    .map((c) => {
+      if (c.type === "private" && c.id.startsWith("private:")) {
+        return c.id.replace("private:", "");
+      } else if (c.type === "group" && c.name) {
+        return c.name;
+      } else {
+        return c.id;
+      }
+    })
+    .filter((name, index, self) => self.indexOf(name) === index) // éviter les doublons
+    .filter((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="w-[440px] h-[500px] rounded-lg shadow-lg
@@ -29,11 +44,10 @@ export const Chat: React.FC = () => {
       <h2 className="text-center text-lg text-white font-semibold p-4 border-b">
         {currentChannel?.name || 'Chat'}
       </h2>
-
       {/* Scrollable content */}
-      <div className="flex-1 overflow-auto px-2 py-1">
+      <div className="flex-1 px-2 py-1 overflow-auto pb-14">
         {open ? (
-          <ConversationList />
+          <ConversationList allChannelUsers={allChannelUsers} setOpen={setOpen} />
         ) : (
           <MessageList messages={currentMessages} />
         )}

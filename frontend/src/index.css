@@ -6,7 +6,6 @@ body {
   background-color: #02090e;
   font-family: 'Neutre', sans-serif;
   font-size: 30px;
-  /* letter-spacing: 3px; */
   font-weight: bold;
 }
 
@@ -16,6 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'GamePlayed', sans-serif;
   font-size: 30px;
+  letter-spacing: 3px;
   font-weight: bold;
 }
 

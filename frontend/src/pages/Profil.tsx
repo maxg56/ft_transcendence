@@ -137,6 +137,7 @@ const Profile: React.FC = () => {
 
 	
 	return (
+		<div className="scale-95">
 		<div className="p-4 flex flex-col space-y-2 h-screen text-white">
 			<div className="flex items-start justify-between mb-8">
 				<div className="flex items-start space-x-6">
@@ -214,6 +215,7 @@ const Profile: React.FC = () => {
 					{selectOptions === "pong" && <StatsPong/>}
 				</div>
 			</div>
+		</div>
 		</div>
 	);
 };

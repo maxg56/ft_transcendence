@@ -9,6 +9,8 @@ type Props = {
 
 export default function TournamentPopup({ onClose }: Props) {
   const [code, setCode] = useState('');
+  const [mode, setMode] = useState<'friends' | 'tournois'>('friends');
+
 
   return (
     <div
@@ -25,18 +27,27 @@ export default function TournamentPopup({ onClose }: Props) {
         {/* Toggle Buttons */}
         <div className="flex justify-center gap-4 mb-4">
           <button
-            className={`px-4 py-2 rounded-md font-semibold transition shadow-md`}
-            onClick={() => null}
-          >
+            className={`px-4 py-2 rounded-md font-semibold transition shadow-md ${
+              mode === 'friends'
+              ? 'bg-blue-600'
+              : 'bg-blue-300 hover:bg-blue-400'
+            }`}
+            onClick={() => setMode('friends')}
+            >
             Friends
           </button>
           <button
-            className={`px-4 py-2 rounded-md font-semibold transition shadow-md`}
-            onClick={() => null}
-          >
+          className={`px-4 py-2 rounded-md font-semibold transition shadow-md ${
+              mode === 'tournois'
+              ? 'bg-green-600'
+              : 'bg-green-300 hover:bg-green-400'
+              }`}
+              onClick={() => setMode('tournois')}
+            >
             Tournois
           </button>
-        </div>
+      </div>
+
 
         {/* Input */}
         <input

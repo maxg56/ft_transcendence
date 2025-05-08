@@ -33,7 +33,7 @@ const Header = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="absolute top-[10%] left-[55%] -translate-x-1/2 flex items-center justify-between gap-4">
+        <div className="title absolute top-[10%] left-[55%] -translate-x-1/2 flex items-center justify-between gap-4">
           <VsButton />
           <MultiButton />
           <TournamentButton/>

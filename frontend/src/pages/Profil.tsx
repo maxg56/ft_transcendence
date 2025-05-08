@@ -137,7 +137,7 @@ const Profile: React.FC = () => {
 
 	
 	return (
-		<div className="p-4 flex flex-col space-y-2 min-h-screen text-white">
+		<div className="p-4 flex flex-col space-y-2 h-screen text-white">
 			<div className="flex items-start justify-between mb-8">
 				<div className="flex items-start space-x-6">
 					<div className="flex flex-col items-center">

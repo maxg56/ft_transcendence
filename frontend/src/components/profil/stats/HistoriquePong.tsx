@@ -8,22 +8,21 @@ import {
 	TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import {
-	Card,
-	// CardContent,
-	// CardHeader,
-	// CardTitle,
-}from "@/components/ui/card"
+import {Card,}from "@/components/ui/card"
 import { HistoryGame, HistoryGame2v2 } from "../type/statsInterface"
 import { useApi } from "@/hooks/api/useApi"
 
-const ITEMS_PER_PAGE = 10
+const ITEMS_PER_PAGE = 5
 
 export function HistoriquePong() {
 	const [page, setPage] = useState(0)
+	const [page2v2, setPage2v2] = useState(0)
 	const [matchHistory, setmatchHistory] = useState<HistoryGame[]>([])
 	const start = page * ITEMS_PER_PAGE
 	const end = start + ITEMS_PER_PAGE
+	const start2v2 = page2v2 * ITEMS_PER_PAGE
+	const end2v2 = start2v2 + ITEMS_PER_PAGE
+
 	const [matchHistory2v2, setmatchHistory2v2] = useState<HistoryGame2v2[]>([])
 
 	const {refetch: fetchHistory2v2} = useApi<HistoryGame2v2[]>(
@@ -89,7 +88,7 @@ export function HistoriquePong() {
 	);
 
 	const currentItems = matchHistory.slice(start, end)
-	const currentItems2v2 = matchHistory2v2.slice(start, end)
+	const currentItems2v2 = matchHistory2v2.slice(start2v2, end2v2)
 
 	const handleNext = () => {
 		if (end < matchHistory.length) {
@@ -103,92 +102,106 @@ export function HistoriquePong() {
 		}
 	}
 
+	const handleNext2v2 = () => {
+		if (end2v2 < matchHistory2v2.length) {
+			setPage2v2((prev) => prev + 1)
+		}
+	}
+
+	const handlePrev2v2 = () => {
+		if (page2v2 > 0) {
+			setPage2v2((prev) => prev - 1)
+		}
+	}
+
 	return (
 		<div className="flex flex-col gap-6 w-full">
-		<Card>
-			
-		<div className="flex flex-col gap-4 w-full">
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead className="font-medium text-center">Adversaire</TableHead>
-						<TableHead className="font-medium text-center">Resultat</TableHead>
-						<TableHead className="font-medium text-center">Score</TableHead>
-						<TableHead className="font-medium text-center">Temps</TableHead>
-						<TableHead className="font-medium text-center">Elo</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody >
-					{currentItems.map((match) => (
-						<TableRow key={match.id}>
-							<TableCell className="font-medium text-center">{match.opponent}</TableCell>
-							<TableCell className="font-medium text-center">{match.result}</TableCell>
-							<TableCell className="font-medium text-center">{match.scoreP} - {match.scoreO}</TableCell>
-							<TableCell className="font-medium text-center">{match.time} s</TableCell>
-							<TableCell className="text-center font-medium">{match.elo_gain}</TableCell>
-						</TableRow>
-					))}
-					</TableBody>
-				</Table>
-			
-			<div className="flex justify-between m-4">
-				<Button
-					onClick={handlePrev}
-					disabled={page === 0}
-					>
-					Précédent
-				</Button>
-				<Button
-					onClick={handleNext}
-					disabled={end >= matchHistory.length}
-					>
-					Suivant
-				</Button>
-			</div>
+			<Card>
+				<div className="flex flex-col gap-4 w-full">
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="font-medium text-center">Adversaire</TableHead>
+								<TableHead className="font-medium text-center">Résultat</TableHead>
+								<TableHead className="font-medium text-center">Score</TableHead>
+								<TableHead className="font-medium text-center">Temps</TableHead>
+								<TableHead className="font-medium text-center">Elo</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{currentItems.map((match) => (
+								<TableRow key={match.id}>
+									<TableCell className="font-medium text-center">{match.opponent}</TableCell>
+									<TableCell className="font-medium text-center">{match.result}</TableCell>
+									<TableCell className="font-medium text-center">{match.scoreP} - {match.scoreO}</TableCell>
+									<TableCell className="font-medium text-center">{match.time} s</TableCell>
+									<TableCell className="text-center font-medium">{match.elo_gain}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+	
+					<div className="flex justify-between m-4">
+						<Button
+							onClick={handlePrev}
+							disabled={page === 0}
+						>
+							Précédent
+						</Button>
+						<Button
+							onClick={handleNext}
+							disabled={end >= matchHistory.length}
+						>
+							Suivant
+						</Button>
+					</div>
+				</div>
+			</Card>
+	
+			<Card>
+				<div className="flex flex-col gap-4 w-full">
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="text-center font-medium">Adversaires</TableHead>
+								<TableHead className="text-center font-medium">Coéquipier</TableHead>
+								<TableHead className="text-center font-medium">Résultat</TableHead>
+								<TableHead className="text-center font-medium">Score</TableHead>
+								<TableHead className="text-center font-medium">Temps</TableHead>
+								<TableHead className="text-center font-medium">Elo</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{currentItems2v2.map((match) => (
+								<TableRow key={match.id}>
+									<TableCell className="font-medium text-center">{match.opponent1} - {match.opponent2}</TableCell>
+									<TableCell className="font-medium text-center">{match.partner}</TableCell>
+									<TableCell className="text-center font-medium">{match.result}</TableCell>
+									<TableCell className="text-center font-medium">{match.scoreP} - {match.scoreO}</TableCell>
+									<TableCell className="text-center font-medium">{match.time} s</TableCell>
+									<TableCell className="text-center font-medium">{match.elo_gain}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+	
+					<div className="flex justify-between m-4">
+						<Button
+							onClick={handlePrev2v2}
+							disabled={page2v2 === 0}
+						>
+							Précédent
+						</Button>
+						<Button
+							onClick={handleNext2v2}
+							disabled={end2v2 >= matchHistory2v2.length}
+						>
+							Suivant
+						</Button>
+					</div>
+				</div>
+			</Card>
 		</div>
-	</Card>
-	<Card>		
-		<div className="flex flex-col gap-4 w-full">
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead className="text-center font-medium">Adversaires</TableHead>
-						<TableHead className="text-center font-medium">Coequipier</TableHead>
-						<TableHead className="text-center font-medium">Resultat</TableHead>
-						<TableHead className="text-center font-medium">Score</TableHead>
-						<TableHead className="text-center font-medium">Temps</TableHead>
-						<TableHead className="text-center font-medium">Elo</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody >
-					{currentItems2v2.map((match) => (
-						<TableRow key={match.id}>
-							<TableCell className="font-medium text-center ">{match.opponent1} - {match.opponent2}</TableCell>
-							<TableCell className="font-medium text-center ">{match.partner}</TableCell>
-							<TableCell className="text-center font-medium">{match.result}</TableCell>
-							<TableCell className="text-center font-medium"> {match.scoreP} - {match.scoreO}</TableCell>
-							<TableCell className="text-center font-medium">{match.time}</TableCell>
-							<TableCell className="text-center font-medium">{match.elo_gain}</TableCell>
-						</TableRow>
-					))}
-					</TableBody>
-				</Table>
-			<div className="flex justify-between m-4">
-				<Button
-					onClick={handlePrev}
-					disabled={page === 0}
-					>
-					Précédent
-				</Button>
-				<Button
-					onClick={handleNext}
-					disabled={end >= matchHistory.length}
-					>
-					Suivant
-				</Button>
-			</div>
-		</div>
-	</Card>
-	</div>
 	)
+	
 }

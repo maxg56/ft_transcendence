@@ -21,7 +21,10 @@ async function userRoutes(fastify: any) {
   fastify.get('/user/friend/list', { preHandler: [fastify.authenticate] }, getFriendsList);
   fastify.get('/user/friend/status', { preHandler: [fastify.authenticate] }, getFriendStatus);
   fastify.put('/user/delete', { preHandler: [fastify.authenticate] }, deleteUser);
-  fastify.put('/user/avatar/upload', { preHandler: [fastify.authenticate] }, putAvatar);
+  fastify.put('/user/avatar/upload', { 
+    preHandler: [fastify.authenticate],
+      bodyLimit: 5 * 1024 * 1024
+    }, putAvatar);
   fastify.delete('/user/avatar/delete', { preHandler: [fastify.authenticate] }, deleteAvatar);
   fastify.put('/user/password', { preHandler: [fastify.authenticate] }, passwordChange);
   fastify.get('/user/getpassword', { preHandler: [fastify.authenticate] }, getPassword);

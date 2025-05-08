@@ -4,10 +4,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #02090e;
+  font-family: 'Neutre', sans-serif;
+  font-size: 30px;
+  /* letter-spacing: 3px; */
+  font-weight: bold;
+}
+
+.title {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-family: 'GamePlayed', sans-serif;
   font-size: 30px;
-  letter-spacing: 3px;
   font-weight: bold;
+}
+
+.basic_font {
+  font-family: 'Neutre', sans-serif;
 }
 
 code {
@@ -47,7 +60,7 @@ code {
 
 .neonText {
   position: relative;
-  font-family: 'GamePlayed';
+  /* font-family: 'GamePlayed'; */
   letter-spacing: 4px;
   font-weight: bold;
   background: linear-gradient(90deg, #0400FF, #0400FF, #0400FF, #0400FF);
@@ -189,16 +202,6 @@ code {
   0 0 50px #1814e7;
   transition: all 0.2s ease-in-out;
 }
-/* .button-header:hover {
-  background: #cdcdf5;
-  box-shadow:
-    0 0 5px #0400FF,
-    0 0 15px #0400FF,
-    0 0 30px #0400FF,
-    0 0 50px #0400FF;
-  transform: scale(1.05);
-} */
-
 
 .flicker {
   animation: flicker 0.5s infinite;
@@ -209,7 +212,10 @@ code {
   src: url('fonts/GamePlayed-vYL7.ttf') format('truetype');
 }
 
-
+@font-face {
+  font-family: 'Neutre';
+  src: url('fonts/Lato-Bold.ttf') format('truetype');
+}
 
 ::-webkit-scrollbar {
   width: 8px;

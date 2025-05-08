@@ -6,7 +6,6 @@ import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
 import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";
-import PrivateMessage from "@/components/chat/PrivateMessage";
 
 const Hub: React.FC = () => {
   const { mode } = useMode();
@@ -49,9 +48,6 @@ const Hub: React.FC = () => {
   return (
     <div className="scale-95">
       <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 flex flex-col">
-          <div className="absolute top-6 right-12 z-80">
-            <PrivateMessage />
-          </div>
           <SpaceShipInterior/>
           <Header />
           <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">

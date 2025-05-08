@@ -6,6 +6,7 @@ import  AuthGuard  from '@/_halper/AuthGuard';
 import AppRouter  from '@/pages/appRouter';
 import {WebSocketProvider} from './context/WebSocketContext';
 import { ProfileProvider } from "./context/ProfilContext"
+import { ChatWebSocketProvider } from './context/ChatWebSocketContext';
 
   const App: React.FC = () => {
     return (
@@ -16,7 +17,9 @@ import { ProfileProvider } from "./context/ProfilContext"
             <ProfileProvider userId={0}>
               {/* <ProfileProvider> */}
               <WebSocketProvider>
-                <AppRouter />
+                <ChatWebSocketProvider>
+                  <AppRouter />
+                </ChatWebSocketProvider>
               </WebSocketProvider>
             </ProfileProvider>
           </AuthGuard>

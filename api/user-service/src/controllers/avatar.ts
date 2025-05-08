@@ -20,7 +20,7 @@ try {
 	if (!/^data:image\/(png|jpeg|jpg);base64,/.test(image)) {
 		return sendError(reply, 'Invalid image', 400);
 	}
-
+	console.log("image size in bytes:", Buffer.byteLength(image, 'utf8'));
 	await User.update(
 		{ avatar: image },
 		{ where: { id: id}}

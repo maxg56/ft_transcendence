@@ -10,7 +10,7 @@ import {
   banUser,
   blockUser 
 } from '../controllers/GroupController';
-import friendsRoutes from './friends';
+// import friendsRoutes from './friends';
 // import { getPrivateChannel } from '../utils/channel';
 // import Friendship from '../models/Friendship';
 // import User from '../models/User';
@@ -44,7 +44,7 @@ async function chatRoutes(fastify: any) {
   //     return { channel };
   //   }
   // );
-  fastify.register(friendsRoutes);
+  // fastify.register(friendsRoutes);
 }
 
 export default fp(chatRoutes);

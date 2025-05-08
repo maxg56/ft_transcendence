@@ -32,7 +32,6 @@ jobs:
           source: "**"
           target: /opt/ft_transcendence
           strip_components: 0
-          rm: true
 
       - name: Deploy using Makefile
         uses: appleboy/ssh-action@v1.2.0

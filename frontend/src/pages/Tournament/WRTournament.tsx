@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import useNavigation from "@/hooks/useNavigation";
-import { useTournament } from '@/context/ResultsContext';
+import TournamentCode from '@/components/Tournament/TournamentCode';
+import ParticipantsList from '@/components/Tournament/TournamentList';
+
 
 type Player = {
 	id: number;
 	name: string;
+	username: string;
+	avatar: string;
 };
+
 
 type Match = {
 	id: number;
@@ -19,19 +23,37 @@ type Match = {
 
 const TournamentT1 = () => {
 	const [players] = useState<Player[]>([
-		{ id: 1, name: 'Joueur 1' },
-		{ id: 2, name: 'Joueur 2' },
-		{ id: 3, name: 'Joueur 3' },
-		{ id: 4, name: 'Joueur 4' }
+		{
+			id: 1,
+			name: 'Joueur 1',
+			username: 'joueur1',
+			avatar: `https://robohash.org/joueur1`
+		},
+		{
+			id: 2,
+			name: 'Joueur 2',
+			username: 'joueur2',
+			avatar: `https://robohash.org/joueur2`
+		},
+		{
+			id: 3,
+			name: 'Joueur 3',
+			username: 'joueur3',
+			avatar: `https://robohash.org/joueur3`
+		},
+		{
+			id: 4,
+			name: 'Joueur 4',
+			username: 'joueur4',
+			avatar: `https://robohash.org/joueur4`
+		}
 	]);
-
+		
 	const [matches, setMatches] = useState<Match[]>([
 		{ id: 1, player1: players[0], player2: players[1] },
 		{ id: 2, player1: players[2], player2: players[3] }
 	]);
 
-	const { setResults } = useTournament();
-	const { navigate } = useNavigation();
 
 	const handleScoreChange = (matchId: number, player: 'player1' | 'player2', value: string) => {
 		setMatches(prev =>
@@ -95,10 +117,6 @@ const TournamentT1 = () => {
 		</div>
 	);
 
-	const handleNext = () => {
-		setResults(matches);
-		navigate("/tournamentStage2");
-	};
 
 	return (
 		<div className="min-h-screen bg-gray-50 p-8">
@@ -108,14 +126,12 @@ const TournamentT1 = () => {
 					<div className="flex flex-row gap-8">{matches.map(renderMatch)}</div>
 				</div>
 			</div>
-
+			<div className='text-center flex flex-col'>
+				Code de la partie
+				<TournamentCode/>
+			</div>
 			<div className="flex justify-center mt-12">
-				<button
-					onClick={handleNext}
-					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
-				>
-					Next
-				</button>
+				<ParticipantsList players={players}/>
 			</div>
 		</div>
 	);

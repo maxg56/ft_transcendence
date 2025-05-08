@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useNavigation from '@/hooks/useNavigation';
 
 type Mode = "1 vs 1" | "2 vs 2" | `${'friends' | 'tournois'}-join:${string}` | `${'friends' | 'tournois'}-create`;
 
@@ -10,7 +11,7 @@ type Props = {
 export default function TournamentPopup({ onClose }: Props) {
   const [code, setCode] = useState('');
   const [mode, setMode] = useState<'friends' | 'tournois'>('friends');
-
+  const {navigate} = useNavigation();
 
   return (
     <div
@@ -64,6 +65,9 @@ export default function TournamentPopup({ onClose }: Props) {
             className="px-4 py-2 rounded-md font-semibold bg-purple-500/70 hover:bg-purple-600/80 transition shadow-md"
             onClick={() => {
               onClose();
+              if (mode === 'tournois') {
+                navigate("/waitingroomtournament");
+              }
             }}
           >
             Join
@@ -72,6 +76,9 @@ export default function TournamentPopup({ onClose }: Props) {
             className="px-4 py-2 rounded-md font-semibold bg-yellow-500/70 hover:bg-yellow-600/80 transition shadow-md"
             onClick={() => {
               onClose();
+              if (mode === 'tournois') {
+                navigate("/waitingroomtournament");
+              }
             }}
           >
             Create

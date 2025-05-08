@@ -56,10 +56,17 @@ export const SpaceShipInterior = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: '100%', height: '100vh', display: 'block' }}
-    />
+<canvas
+  ref={canvasRef}
+  style={{
+    width: '100%',
+    height: '100%',
+    display: 'block',
+    objectFit: 'cover',
+    borderRadius: '100px',
+  }}
+/>
+
   );
 };
 

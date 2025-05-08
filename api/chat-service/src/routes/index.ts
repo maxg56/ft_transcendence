@@ -11,9 +11,9 @@ import {
   blockUser 
 } from '../controllers/GroupController';
 import friendsRoutes from './friends';
-import { getPrivateChannel } from '../utils/channel';
-import Friendship from '../models/Friendship';
-import User from '../models/User';
+// import { getPrivateChannel } from '../utils/channel';
+// import Friendship from '../models/Friendship';
+// import User from '../models/User';
 
 async function chatRoutes(fastify: any) {
   fastify.post("/chat/banned", { preHandler: [fastify.authenticate] }, banUser);

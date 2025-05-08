@@ -12,6 +12,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: download and install Make
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /opt/ft_transcendence
+            make prod-down || true
 
       - name: Upload project to VPS
         uses: appleboy/scp-action@v0.1.7
@@ -22,6 +32,7 @@ jobs:
           source: "**"
           target: /opt/ft_transcendence
           strip_components: 0
+          rm: true
 
       - name: Deploy using Makefile
         uses: appleboy/ssh-action@v1.2.0

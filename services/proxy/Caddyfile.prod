@@ -18,8 +18,8 @@
     reverse_proxy auth-service:3001
   }
 
-  handle /game/* {
-    reverse_proxy game-service:3003
+  handle /chat/* {
+    reverse_proxy chat-service:3005
   }
 
   handle /stats/* {
@@ -32,6 +32,9 @@
 
   handle_path /ws/game {
     reverse_proxy game-service:3003
+  }
+  handle_path /ws/chat {
+    reverse_proxy chat-service:3005
   }
 
   handle /* {

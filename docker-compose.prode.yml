@@ -35,6 +35,14 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: always
+
+    #************* ----- redis ----- ***********************
+  redis:
+    image: redis:7.0.0
+    container_name: redis
+    networks:
+      - backend
+    restart: always
   
   #************* ----- Backend ----- ***********************
   auth-service:
@@ -92,6 +100,21 @@ services:
     networks:
       - backend
     restart: always
+
+  chat-service:
+    container_name: ft_t_chat
+    build: 
+      context: ./api/
+      dockerfile: Dockerfile.prode
+      args: 
+        - APP_DIR=chat-service
+    env_file: .env
+    depends_on:
+      - db
+    networks:
+      - backend
+    restart: always
+  
   
 
   # ************* ----- frontend ----- ***********************
@@ -254,6 +277,13 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/volumes/caddystatic/
+
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/volumes/redis/
   
   
 networks:

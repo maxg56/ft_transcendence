@@ -27,5 +27,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/hooks/game/entities"]
+  "include": ["src", "src/hooks/game/entities", "src/components/chat/.PrivateMessage.tsx"]
 }

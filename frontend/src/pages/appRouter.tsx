@@ -15,7 +15,6 @@ import NotFound from '@/pages/NotFound';
 import Game4Players from '@/pages/game/Player4WSGame';
 import Duel3 from '@/pages/game/DuelWS';
 
-
 const AppRouter = () => {
     return (
         <Routes >

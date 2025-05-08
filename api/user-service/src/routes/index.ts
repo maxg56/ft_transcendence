@@ -7,6 +7,7 @@ import { getAllUsernames } from '../controllers/getAllUsernames';
 import { deleteUser } from '../controllers/deleteUser';
 import { putAvatar, deleteAvatar } from '../controllers/avatar';
 import { passwordChange, getPassword } from '../controllers/passwordChange';
+import { getFriendStatus } from '../controllers/FriendController';
 
 async function userRoutes(fastify: any) {
   fastify.put('/user/update', { preHandler: [fastify.authenticate] }, updateUser);
@@ -18,6 +19,7 @@ async function userRoutes(fastify: any) {
   fastify.put('/user/friend/refuse', { preHandler: [fastify.authenticate] }, refuseFriend);
   fastify.get('/user/friend/pendinglist', { preHandler: [fastify.authenticate] }, seeFriendRequests);
   fastify.get('/user/friend/list', { preHandler: [fastify.authenticate] }, getFriendsList);
+  fastify.get('/user/friend/status', { preHandler: [fastify.authenticate] }, getFriendStatus);
   fastify.put('/user/delete', { preHandler: [fastify.authenticate] }, deleteUser);
   fastify.put('/user/avatar/upload', { preHandler: [fastify.authenticate] }, putAvatar);
   fastify.delete('/user/avatar/delete', { preHandler: [fastify.authenticate] }, deleteAvatar);

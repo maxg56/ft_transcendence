@@ -15,12 +15,13 @@ type GameCanvas4PlayersProps = {
   setGameStarted: (started: boolean) => void
 }
 
-const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
+// const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
+  const GameCanvas4Players = ({
   gameStarted,
   setScore,
   setWinner,
   setGameStarted,
-}) => {
+}: React.FC<GameCanvas4PlayersProps>) => {
   const {
     mountRef,
     leftPaddle1Ref,
@@ -62,11 +63,11 @@ const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
 
 
 
-const GameCanvas4PlayersWS: React.FC<GameCanvas4PlayersProps> = ({
+const GameCanvas4PlayersWS = ({
   setScore,
   setWinner,
   setGameStarted,
-}) => {
+}: React.FC<GameCanvas4PlayersProps>) => {
   const {
     mountRef,
     leftPaddle1Ref,

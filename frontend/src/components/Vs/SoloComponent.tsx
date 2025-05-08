@@ -33,9 +33,12 @@ const resetGame = () => {
     <>
       <div className="absolute top-[5%] left-1/2 transform -translate-x-1/2 text-black text-2xl">
         {winner ? (
-          <div className="flex flex-col items-center text-white ">
+          <div className="flex flex-col items-center text-white text-center">
             <div className="absolute top-[250%] text-5xl neonText">
-            <h2>{winner} {t("gagne !")}</h2>
+            {/* Affichage du score */}
+            <p className="text-white text-7xl">{score[0]} - {score[1]}</p>
+            {/* Affichage du gagnant */}
+            <p className="text-white text-7xl">{winner} {t("gagne !")}</p>
             </div>
             <div>
               <button

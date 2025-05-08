@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from "three";
 import { Ball } from '../entities/Ball';
-import { Paddle } from '../entities/Paddle';
+import { Paddle2v2 } from '../entities/Paddle';
 
 export const useGameScene4Players = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -62,22 +62,22 @@ export const useGameScene4Players = () => {
     table.position.y = -5;
     sceneRef.current.add(table);
 
-    const leftPaddle1 = new Paddle(-tableWidth / 2 + 10, tableHeight);
+    const leftPaddle1 = new Paddle2v2(-tableWidth / 2 + 10, tableHeight);
     leftPaddle1.mesh.position.z = 50;
     leftPaddle1.addToScene(sceneRef.current!);
     leftPaddle1Ref.current = leftPaddle1.mesh;
 
-    const leftPaddle2 = new Paddle(-tableWidth / 2 + 10, tableHeight);
+    const leftPaddle2 = new Paddle2v2(-tableWidth / 2 + 10, tableHeight);
     leftPaddle2.mesh.position.z = -50;
     leftPaddle2.addToScene(sceneRef.current!);
     leftPaddle2Ref.current = leftPaddle2.mesh;
 
-    const rightPaddle1 = new Paddle(tableWidth / 2 - 10, tableHeight);
+    const rightPaddle1 = new Paddle2v2(tableWidth / 2 - 10, tableHeight);
     rightPaddle1.mesh.position.z = 50;
     rightPaddle1.addToScene(sceneRef.current!);
     rightPaddle1Ref.current = rightPaddle1.mesh;
 
-    const rightPaddle2 = new Paddle(tableWidth / 2 - 10, tableHeight);
+    const rightPaddle2 = new Paddle2v2(tableWidth / 2 - 10, tableHeight);
     rightPaddle2.mesh.position.z = -50;
     rightPaddle2.addToScene(sceneRef.current!);
     rightPaddle2Ref.current = rightPaddle2.mesh;

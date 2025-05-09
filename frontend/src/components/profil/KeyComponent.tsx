@@ -29,7 +29,9 @@ const KeyInput: React.FC<KeyInputProps> = ({value, onChange }) => {
 
   return (
     <div
-      className={`relative w-12 h-12 flex items-center justify-center border rounded bg-white text-center cursor-pointer hover:bg-gray-100 ${
+      className={`relative w-12 h-12 flex items-center justify-center border rounded text-center cursor-pointer bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent backdrop-blur-md 
+  								shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
+  								transition duration-300 text-cyan-200 ${
         isFocused ? "border-blue-500" : "border-gray-400"
       }`}
       onClick={() => {

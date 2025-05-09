@@ -155,7 +155,7 @@ const Profile: React.FC = () => {
 				  <div
 					className="w-32 h-32 rounded-full 
 							   bg-gradient-to-br from-cyan-400/60 via-blue-500/60 to-purple-600/10 
-							   border border-cyan-300/30 
+							   border border-cyan-300/30 to-transparent
 							   backdrop-blur-md 
 							   shadow-[0_0_20px_rgba(0,255,255,0.4)] 
 							   hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
@@ -170,7 +170,7 @@ const Profile: React.FC = () => {
 						className="w-full h-full object-cover"
 					  />
 					) : (
-					  <User className="w-16 h-16 text-white/70 mx-auto my-auto" />
+					  <User className="w-[45%] h-36 text-white/70 mx-auto my-auto" />
 					)}
 				  </div>
 	  
@@ -187,9 +187,8 @@ const Profile: React.FC = () => {
 				{/* Username */}
 				<div className="flex flex-col justify-center">
 				  <h1 className="text-glow text-4xl font-bold text-white tracking-wide drop-shadow-md">
-					{username}
+					{username} test
 				  </h1>
-				  <p className="text-md text-cyan-200 italic mt-1">Space fighter</p>
 				</div>
 			  </div>
 	  
@@ -267,12 +266,23 @@ const Profile: React.FC = () => {
 				</div>
 			  </nav>
 	  
-			  {/* Panel Content */}
-			  <div className="flex-1 bg-gray-100/10 backdrop-blur-md p-6 rounded-2xl text-white border border-cyan-300/20 shadow-inner">
-				{selectOptions === "friends" && <FriendsPanel />}
-				{selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
-				{selectOptions === "pong" && <StatsPong />}
-			  </div>
+			  <div className="flex-1 relative p-6 rounded-2xlrounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-200/20 
+                        backdrop-blur-md
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300"
+>
+
+  {/* Panel content */}
+  <div className="relative z-10">
+    {selectOptions === "friends" && <FriendsPanel />}
+    {selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
+    {selectOptions === "pong" && <StatsPong />}
+  </div>
+</div>
+
 			</div>
 		  </div>
 		</div>

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { useNavigate } from "react-router-dom";
 import { useWebSocket } from '@/context/WebSocketContext';
 import Cookies from "js-cookie";
 
@@ -15,7 +14,6 @@ export const useBallFromServer4Players = (
 	setGameStarted: (started: boolean) => void
 ) => {
 	const { socket } = useWebSocket();  
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const handleGameState = (data: any) => {
@@ -53,7 +51,6 @@ export const useBallFromServer4Players = (
 				} else if (message.event === 'game_result') {
 					onGameEnd(message.data.winner);
 					setGameStarted(false);
-					// navigate('/hub');
 				} else {
 					console.warn('Message WebSocket inattendu:', message);
 				}

@@ -14,20 +14,11 @@ const DuelComponent: React.FC = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
 
- 
-
   const handleCountdownDone = useCallback(() => {
     setGameStarted(true);
 	}, []);
-  const [countdownKey, setCountdownKey] = useState(0);
+  const [countdownKey] = useState(0);
 const countdown = useCountdown(3, handleCountdownDone, countdownKey);
-
-const resetGame = () => {
-  setScore([0, 0]);
-  setWinner(null);
-  setGameStarted(false);
-  setCountdownKey(prev => prev + 1); 
-};
 
   return (
     <>

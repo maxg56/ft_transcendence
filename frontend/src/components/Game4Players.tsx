@@ -71,7 +71,7 @@ const resetGame = () => {
 
       <KeyboardProvider>
 			  <GameCanvas4Players
-          // gameStarted={gameStarted}
+          gameStarted={gameStarted}
           setScore={setScore}
           setWinner={setWinner}
           setGameStarted={setGameStarted}

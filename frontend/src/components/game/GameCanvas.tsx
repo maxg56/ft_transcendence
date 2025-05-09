@@ -11,6 +11,12 @@ type GameCanvasProps = {
 	setGameStarted: (gameStarted: boolean) => void;
 };
 
+type GameCanvasPropsWs = {
+	setScore: (score: [number, number]) => void;
+	setWinner: (winner: string | null) => void;
+	setGameStarted: (gameStarted: boolean) => void;
+};
+
 export const GameCanvas = ({
 	gameStarted,
 	setScore,
@@ -41,7 +47,7 @@ export const GameCanvasWs = ({
 	setScore,
 	setWinner,
 	setGameStarted,
-}: GameCanvasProps) => {
+}: GameCanvasPropsWs) => {
 	const {
 		mountRef,
 		leftPaddleRef,

@@ -31,7 +31,6 @@ export const TranslationProvider = ({ children }: { children: React.ReactNode })
     return "en";
   });
 
-  // const t = (key: string) => translations[language][key] || key;
   const t = (key: string, variables?: Record<string, string>) => {
     let translation = translations[language][key] || key;
   

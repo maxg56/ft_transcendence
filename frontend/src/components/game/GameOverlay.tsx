@@ -4,11 +4,17 @@ import { useTranslation } from '@/context/TranslationContext';
 
 type Props = {
   score: [number, number];
-  winner?: string[] | null;
+  winner?: string | string[] | null;
 };
 
 const GameOverlay: React.FC<Props> = ({ score, winner }) => {
   const { t } = useTranslation();
+
+  const getWinner = () => {
+    if (!winner) return null;
+    const winnerNames = Array.isArray(winner) ? winner.join(" & ") : winner;
+    return t("winnerMessage", { side: winnerNames });
+  }
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -17,7 +23,7 @@ const GameOverlay: React.FC<Props> = ({ score, winner }) => {
 
       {/* Gagnant affiché seulement si défini */}
       {winner && (
-        <p className="text-white text-7xl mt-4">{t("winnerMessage", { side: winner})}</p>
+        <p className="text-white text-7xl mt-4">{getWinner()}</p>
       )}
     </div>
   );

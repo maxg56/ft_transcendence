@@ -7,6 +7,8 @@ interface ProfileContextType {
   setProfileImage: (image: string | null) => void;
   userId: number | null;
   setUserId: (id: number | null) => void;
+  username: string | null;
+  setUsername: (username: string | null) => void;
   refreshProfile: () => void;
 }
 
@@ -15,6 +17,7 @@ const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 export const ProfileProvider: React.FC<{ userId: number; children: ReactNode }> = ({ children }) => {
   const [profileImage, setProfileImageState] = useState<string | null>(null)
   const [userId, setUserIdState] = useState<number | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   const setProfileImage = useCallback((image: string | null) => {
     setProfileImageState(image);
@@ -23,6 +26,7 @@ export const ProfileProvider: React.FC<{ userId: number; children: ReactNode }> 
   const setUserId = useCallback((id: number | null) => {
     setUserIdState(id);
     setProfileImageState(null);
+    setUsername(null);
   }, []);
   
   const { refetch: fetchUserInfos } = useApi<UserInfos>(
@@ -36,6 +40,7 @@ export const ProfileProvider: React.FC<{ userId: number; children: ReactNode }> 
 				}
 				setUserId(data.id);
 				setProfileImage(data.avatar)
+        setUsername(data.username)
 			},
 			onError: (errMsg) => {
 				console.error('Erreur User :', errMsg)
@@ -49,7 +54,7 @@ export const ProfileProvider: React.FC<{ userId: number; children: ReactNode }> 
 
 
   return (
-    <ProfileContext.Provider value={{ profileImage, setProfileImage, userId, setUserId, refreshProfile }}>
+    <ProfileContext.Provider value={{ profileImage, setProfileImage, userId, setUserId, username, setUsername, refreshProfile }}>
       {children}
     </ProfileContext.Provider>
   );

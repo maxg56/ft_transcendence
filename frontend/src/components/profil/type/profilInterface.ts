@@ -19,3 +19,14 @@ export interface SettingsPageProps {
 export interface Password {
 	password: string
 }
+
+export interface FriendWithStatus{
+	id: number;
+	username: string;
+	online: boolean;
+	avatar: string;
+}
+
+export interface FriendStatusResponse {
+	friends: FriendWithStatus[];
+}

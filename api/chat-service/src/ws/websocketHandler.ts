@@ -12,14 +12,13 @@ import User from '../models/User';
 import ChatGroupMember from '../models/ChatGroupMember';
 import Friendship from '../models/Friendship';
 
-import { setUserOnline } from './onlinePresence';
+import { setUserOnline, setUserOffline } from './onlinePresence';
 import { verifyToken } from '../controllers/JWT';
-import { getGroupMembers } from './getGroupMembers';
 import { censorMessage } from '../utils/censor';
-import { logError } from '../utils/log';
 import { getUserHistory } from './UserHistory';
 import { Op } from 'sequelize';
 import { getPrivateChannel } from '../utils/channel';
+
 
 import { handleInfractions } from './handlers/infractions';
 import { broadcastMessage, sendToUser, setClient, getClientMap } from './ws-utils';
@@ -30,14 +29,16 @@ type ChatMessage = { type: 'message' | 'private_message' | 'group_message', cont
 type CheckFriendsMessage = { type: 'check_friends', friends: string[] };
 type GetHistoryMessage = { type: 'get_history'; channel: string };
 type PrivateInitiateMessage = { type: 'private:initiate'; friendId: number };
-type Messages = InitMessage | ChatMessage | CheckFriendsMessage | GetHistoryMessage | PrivateInitiateMessage;
+type BlockUserMessage = { type: 'block_user' | 'unblock_user'; userId: number };
+type PongInviteMessage = { type: 'pong_invite'; to: string };
+type FetchProfileMessage = { type: 'fetch_profile'; userId: number };
+type Messages = InitMessage | ChatMessage | CheckFriendsMessage | GetHistoryMessage | PrivateInitiateMessage | BlockUserMessage | PongInviteMessage | FetchProfileMessage;
 
 async function addUser(id: string): Promise<User | null> {
   return await User.findOne({ where: { id } });
 }
 
 // Fonction centralisée d'envoi de message
-// Fonction centralisée d'envoi de message avec notifications offline
 async function sendMessage({
   type,
   content,
@@ -80,7 +81,16 @@ async function sendMessage({
   });
 
   const clientMap = getClientMap();
-  const validRecipients = recipients.filter(id => clientMap.has(id) && clientMap.get(id)?.readyState === 1);
+  const validRecipients: string[] = [];
+  for (const id of recipients) {
+    // skip if offline
+    if (!clientMap.has(id) || clientMap.get(id)?.readyState !== 1) continue;
+    // skip if sender blocked recipient or vice versa
+    const blockedBySender = await UserBlock.findOne({ where: { blocker_id: senderId, blocked_id: id } });
+    const blockedByRecipient = await UserBlock.findOne({ where: { blocker_id: id, blocked_id: senderId } });
+    if (blockedBySender || blockedByRecipient) continue;
+    validRecipients.push(id);
+  }
 
   let partnerId: string | undefined;
   if (channelType === 'private') {
@@ -177,12 +187,11 @@ export async function handleWSConnection(ws: WebSocket, token: string) {
 
     if (msg.type === 'init') {
       await setUserOnline(userId);
-      const groupMembers = await ChatGroupMember.findAll({ where: { user_id: userId } });
-      const groupChannels = groupMembers.map(m => `group:${m.group_id}`);
+
       const privateRecords = await Message.findAll({
-        attributes: ['sender_id', 'channel_id'],
-        where: { channel_type: 'private', [Op.or]: [{ sender_id: +userId }, { channel_id: +userId }] },
-        group: ['sender_id', 'channel_id'],
+        attributes: ['sender_id'],
+        where: { channel_type: 'private', [Op.or]: [{ sender_id: +userId }] },
+        group: ['sender_id'],
       });
       const privatePartners = new Set<number>();
       privateRecords.forEach(m => {
@@ -194,7 +203,7 @@ export async function handleWSConnection(ws: WebSocket, token: string) {
       const privateChannels = partnerUsers.map(u =>
         `private:${[playerUsername, u.username].sort().join('-')}`
       );
-      const channels = [CHANNEL_GENERAL, ...groupChannels, ...privateChannels];
+      const channels = [CHANNEL_GENERAL, ...privateChannels];
       sendToUser(userId, { type: 'channels', channels });
       return;
     }
@@ -260,27 +269,6 @@ export async function handleWSConnection(ws: WebSocket, token: string) {
         recipients: [userId, partnerId],
       });
     }
-
-    if (msg.type === 'group_message' && msg.channelId) {
-      const mute = await MutedUser.findOne({ where: { user_id: userId, group_id: msg.channelId } });
-      if (mute && mute.muted_until > new Date()) {
-        sendToUser(userId, { type: 'error', error: 'Vous êtes temporairement mute dans ce groupe.' });
-        return;
-      }
-
-      const { censored, count } = censorMessage(msg.content?.trim() || '');
-      await handleInfractions(userId, count, ws, Number(msg.channelId));
-
-      const members = await getGroupMembers(msg.channelId);
-      await sendMessage({
-        type: 'group_message',
-        content: censored,
-        senderId: userId,
-        channelType: 'group',
-        channelId: msg.channelId,
-        recipients: members,
-      });
-    }
     if (msg.type === 'get_history') {
       // Extract channel key and parse
       const { channel } = msg as GetHistoryMessage;
@@ -302,9 +290,53 @@ export async function handleWSConnection(ws: WebSocket, token: string) {
       // Send back history with channel key
       sendToUser(userId, { type: 'history', channel, history });
     }
+
+    // Block/unblock users
+    if (msg.type === 'block_user' && (msg as BlockUserMessage).userId) {
+      const targetId = (msg as BlockUserMessage).userId;
+      // avoid duplicate blocks
+      const [block, created] = await UserBlock.findOrCreate({
+        where: { blocker_id: userId, blocked_id: String(targetId) }
+      });
+      sendToUser(userId, { type: 'block_user:success', userId: targetId, alreadyBlocked: !created });
+      return;
+    }
+    if (msg.type === 'unblock_user' && (msg as BlockUserMessage).userId) {
+      const targetId = (msg as BlockUserMessage).userId;
+      await UserBlock.destroy({ where: { blocker_id: userId, blocked_id: String(targetId) } });
+      sendToUser(userId, { type: 'unblock_user:success', userId: targetId });
+      return;
+    }
+
+    // Pong game invite
+    if (msg.type === 'pong_invite' && (msg as PongInviteMessage).to) {
+      const otherUser = await User.findOne({ where: { username: (msg as PongInviteMessage).to } });
+      if (!otherUser) {
+        sendToUser(userId, { type: 'error', error: 'Utilisateur introuvable.' });
+        return;
+      }
+      const invitation = { from: userId, to: String(otherUser.id), timestamp: new Date().toISOString() };
+      await Notification.create({ user_id: otherUser.id, type: 'pong_invite', message: JSON.stringify(invitation), is_read: false, created_at: new Date() });
+      sendToUser(String(otherUser.id), { type: 'pong_invite', invitation });
+      sendToUser(userId, { type: 'pong_invite:sent', to: otherUser.id });
+      return;
+    }
+
+    // Fetch user profile
+    if (msg.type === 'fetch_profile' && (msg as FetchProfileMessage).userId) {
+      const profileUser = await User.findByPk((msg as FetchProfileMessage).userId);
+      if (!profileUser) {
+        sendToUser(userId, { type: 'error', error: 'User not found.' });
+        return;
+      }
+      const profile = { id: profileUser.id, username: profileUser.username, avatar: profileUser.avatar, elo: profileUser.elo };
+      sendToUser(userId, { type: 'profile', profile });
+      return;
+    }
   });
 
   ws.on('close', () => {
+    setUserOffline(userId);
     getClientMap().delete(userId);
     console.log("User disconnected:", userId);
   });

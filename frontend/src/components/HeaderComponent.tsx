@@ -1,6 +1,6 @@
 import useNavigation from "../hooks/useNavigation";
 import { useProfileContext } from "../context/ProfilContext";
-import { User } from "lucide-react";
+
 import VsButton from "./Vs/VsButton";
 import MultiButton from "./Multi/MultiButton";
 import { useEffect } from "react";
@@ -8,7 +8,7 @@ import TournamentButton from "./Tournament/TournamentButton"
 
 const Header = () => {
   const { navigate } = useNavigation();
-  const { profileImage, refreshProfile } = useProfileContext();
+  const { profileImage, refreshProfile , username } = useProfileContext();
 
   useEffect(() => {
       refreshProfile();
@@ -18,7 +18,10 @@ const Header = () => {
     <div>
         {/* Profile */}
         <div
-          className="neon-button-profil absolute top-[10%] left-1/2 top-70 left-40 w-20 h-20 rounded-full cursor-pointer border border-gray-300 bg-gray-700 flex items-center justify-center overflow-hidden"
+          className="neon-button-profil
+           absolute top-[10%] left-1/2 top-70 left-40
+            w-20 h-20 rounded-full
+             cursor-pointer border border-gray-300 bg-gray-700 flex items-center justify-center overflow-hidden"
           onClick={() => navigate("/profile")}
         >
           {profileImage ? (
@@ -28,7 +31,10 @@ const Header = () => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <User className="w-6 h-6 text-white" />
+              <img
+                  src={`https://robohash.org/${username}`}
+                  className="w-full h-full object-cover"
+                />
           )}
         </div>
 

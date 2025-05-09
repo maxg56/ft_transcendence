@@ -31,6 +31,12 @@ interface ChatContextType {
   selectChannel: (id: string) => void;
   sendMessage: (content: string) => void;
   initiatePrivate: (friend: { id: number; username: string }) => void;
+  blockUser: (userId: number) => void;
+  unblockUser: (userId: number) => void;
+  invitePong: (toUsername: string) => void;
+  fetchProfile: (userId: number) => void;
+  profile: any | null;
+  clearProfile: () => void;
   loading: boolean;
 }
 
@@ -54,6 +60,7 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [messages, setMessages] = useState<Record<string, Message[]>>({ general: [] });
   const [unread, setUnread] = useState<Record<string, number>>({});
   const [selectedChannel, setSelectedChannel] = useState<string>('general');
+  const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   const wsRef = useRef<WebSocket | null>(null);
@@ -208,6 +215,24 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
         ws.send(JSON.stringify({ type: 'get_history', channel }));
         return;
       }
+
+      if (data.type === 'block_user:success') {
+        console.log(`Blocked user ${data.userId}`);
+      }
+      if (data.type === 'unblock_user:success') {
+        console.log(`Unblocked user ${data.userId}`);
+      }
+      if (data.type === 'pong_invite') {
+        console.log('Received Pong invite', data.invitation);
+        // Optionally: update UI or notifications
+      }
+      if (data.type === 'pong_invite:sent') {
+        console.log(`Pong invite sent to ${data.to}`);
+      }
+      if (data.type === 'profile') {
+        setProfile(data.profile);
+        // Optionally: display profile modal
+      }
     };
 
     ws.onclose = () => {
@@ -271,18 +296,52 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
     wsRef.current.send(JSON.stringify({ type: 'private:initiate', friendId: friend.id }));
   };
 
+  const blockUser = (userId: number) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'block_user', userId }));
+    }
+  };
+
+  const unblockUser = (userId: number) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'unblock_user', userId }));
+    }
+  };
+
+  const invitePong = (toUsername: string) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'pong_invite', to: toUsername }));
+    }
+  };
+
+  const fetchProfile = (userId: number) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'fetch_profile', userId }));
+    }
+  };
+
+  const clearProfile = () => setProfile(null);
+
   return (
-    <ChatWebSocketContext.Provider value={{
-      ws: socket,
-      channels,
-      messages,
-      unread,
-      selectedChannel,
-      selectChannel,
-      sendMessage,
-      initiatePrivate,
-      loading
-    }}>
+    <ChatWebSocketContext.Provider
+      value={{
+        ws: socket,
+        channels,
+        messages,
+        unread,
+        selectedChannel,
+        selectChannel,
+        sendMessage,
+        initiatePrivate,
+        blockUser,
+        unblockUser,
+        invitePong,
+        fetchProfile,
+        profile,
+        clearProfile,
+        loading,
+      }}
+    >
       {children}
     </ChatWebSocketContext.Provider>
   );

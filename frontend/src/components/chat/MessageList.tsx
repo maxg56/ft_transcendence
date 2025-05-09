@@ -3,6 +3,7 @@ import MessageBubble from "./MessageBubble";
 
 interface Message {
   id?: string | number;
+  senderId: number;
   content: string;
   senderUsername: string;
   isOwnMessage?: boolean;
@@ -25,6 +26,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       {messages.map((msg, index) => (
         <MessageBubble
           key={msg.id ?? index}
+          senderId={msg.senderId}
           content={msg.content}
           senderUsername={msg.senderUsername}
           isOwnMessage={msg.isOwnMessage}

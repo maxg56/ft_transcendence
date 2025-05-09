@@ -1,5 +1,5 @@
 import { useApi } from "../useApi";
-import { Invitation } from "@/components/profil/type/friendsIntefarce";
+import { Invitation } from "@/components/profil/type/friendsInterface";
 
 
 export const useFriendApi = () => {

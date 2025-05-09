@@ -26,12 +26,12 @@ export async function getFriendStatus(req: FastifyRequest, reply: FastifyReply) 
           {
             model: User,
             as: 'userOne',
-            attributes: ['id', 'username'],
+            attributes: ['id', 'username', 'avatar'],
           },
           {
             model: User,
             as: 'userTwo',
-            attributes: ['id', 'username'],
+            attributes: ['id', 'username', 'avatar'],
           },
         ],
       });
@@ -53,6 +53,7 @@ export async function getFriendStatus(req: FastifyRequest, reply: FastifyReply) 
           friends.push({
             id: friend.id,
             username: friend.username,
+            avatar: friend.avatar,
             online: online === 1,
           });
         }

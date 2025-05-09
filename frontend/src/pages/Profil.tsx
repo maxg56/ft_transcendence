@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfilContext";
 import useNavigation from "../hooks/useNavigation";
-import { User } from "lucide-react";
 import { useTranslation } from "../context/TranslationContext";
 import FriendsPanel from "../components/profil/Friends/FriendsComponent";
 import SettingsPage from "../components/profil/SettingsComponent";
@@ -170,7 +169,11 @@ const Profile: React.FC = () => {
 						className="w-full h-full object-cover"
 					  />
 					) : (
-					  <User className="w-[45%] h-36 text-white/70 mx-auto my-auto" />
+						<img
+						src={`https://robohash.org/${username}`}
+						alt={username}
+						className="w-full h-full object-cover"
+					/>
 					)}
 				  </div>
 	  

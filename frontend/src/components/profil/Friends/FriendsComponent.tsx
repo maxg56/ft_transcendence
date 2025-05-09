@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import FriendList from "./FriendsList";
 import { useApi } from "@/hooks/api/useApi";
-import { Invitation, APIFriendListProps } from "../type/friendsIntefarce";
+import { Invitation, APIFriendListProps } from "../type/friendsInterface";
 import { Username } from "../type/profilInterface";
 import { useFriendApi } from "@/hooks/api/profile/useApiFriends";
 

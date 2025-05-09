@@ -31,44 +31,11 @@ const resetGame = () => {
 
   return (
     <>
-      <div className="absolute top-[5%] left-1/2 transform -translate-x-1/2 text-black text-2xl">
-        {winner ? (
-          <div className="flex flex-col items-center text-white text-center">
-            <div className="absolute top-[250%] text-5xl neonText">
-            {/* Affichage du score */}
-            <p className="text-white text-7xl">{score[0]} - {score[1]}</p>
-            {/* Affichage du gagnant */}
-            <p className="text-white text-7xl">{winner} {t("gagne !")}</p>
-            </div>
-            <div>
-              <button
-                className=" neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block mr-4"
-                onClick={resetGame}
-              >
-                {t("Revanche")}
-              </button>
-              <button
-                className="neon-button bg-blue-500 mt-2 px-20 py-7 rounded text-black hover:bg-gray-300 inline-block"
-                onClick={() => navigate("/hub")}
-              >
-                {t("Retour au menu")}
-              </button>
-            </div>
-          </div>
-        ) : (
-           <GameOverlay
-            score={score}
-            winner={winner}
-            />
-        )}
-      </div>
-        
       {countdown != -1 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-6xl">
           <h2>{countdown === 0 ? 'GO !' : `${countdown}...`}</h2>
         </div>
       )}
-
       <KeyboardProvider>
 			  <GameCanvas
           gameStarted={gameStarted}
@@ -77,7 +44,22 @@ const resetGame = () => {
           setGameStarted={setGameStarted}
          />
 		  </KeyboardProvider>
-      
+      <div className="absolute top-[5%] left-1/2 transform -translate-x-1/2 text-black text-2xl">
+        <GameOverlay
+          score={score}
+          winner={winner}
+        />
+        </div>
+        {winner && (
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+          <button
+            className="neon-button bg-blue-500 px-20 py-7 rounded text-black hover:bg-gray-300"
+            onClick={() => navigate("/hub")}
+          >
+            {t("Retour au menu")}
+          </button>
+        </div>
+      )}
     </>
   );
 };

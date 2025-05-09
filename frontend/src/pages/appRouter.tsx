@@ -10,7 +10,7 @@ import PlayersGame4 from '@/pages/game/Players4Game';
 import WRTournament from '@/pages/Tournament/WRTournament';
 import TournamentT2 from '@/pages/Tournament/TournamentT2';
 import Modeduel from '@/components/ChooseGame';
-import Results from '@/pages/Results';
+import Results from '@/pages/Tournament/Results';
 import NotFound from '@/pages/NotFound';
 import Game4Players from '@/pages/game/Player4WSGame';
 import Duel3 from '@/pages/game/DuelWS';

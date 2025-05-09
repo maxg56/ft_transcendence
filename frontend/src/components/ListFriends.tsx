@@ -66,9 +66,11 @@ const FriendListHub: React.FC = () => {
                 text-white w-[350px] h-[400px] overflow-hidden" >
 		<h3 className="font-bold mb-2 text-xs">Liste d’amis</h3>
 		<div className="max-h-[400px] overflow-y-auto pr-1">
-			<ul className="space-y-2 text-xs">
+			<ul className="space-y-2 text-xs ">
 				{friends.map((friend, index) => (
-					<li key={`friend-${index}`} className="flex items-center gap-2 bg-gray-100 p-2 rounded">
+					<li key={`friend-${index}`} className="flex items-center gap-2 p-2 rounded-lg 
+          bg-gradient-to-r from-cyan-200/30 via-blue-200/30 to-cyan-200/30 
+          backdrop-blur-sm border border-white/20 shadow-inner text-sm">
 						<img
 							src={`https://robohash.org/${friend.username}`}
 							alt={friend.username}
@@ -78,7 +80,9 @@ const FriendListHub: React.FC = () => {
 					</li>
 				))}
 				{sentInvitations.map((inv, index) => (
-					<li key={`inv-${index}`} className="flex items-center gap-2 bg-gray-200 p-2 rounded opacity-60 italic">
+					<li key={`inv-${index}`} className="flex items-center gap-2 p-2 rounded-lg 
+          bg-gradient-to-r from-cyan-200/30 via-blue-200/30 to-cyan-200/30 
+          backdrop-blur-sm border border-white/20 shadow-inner text-sm">
 						<img
 							src={`https://robohash.org/${inv.username}`}
 							alt={inv.username}

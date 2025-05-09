@@ -12,14 +12,13 @@ import User from '../models/User';
 import ChatGroupMember from '../models/ChatGroupMember';
 import Friendship from '../models/Friendship';
 
-import { setUserOnline } from './onlinePresence';
+import { setUserOnline, setUserOffline } from './onlinePresence';
 import { verifyToken } from '../controllers/JWT';
-import { getGroupMembers } from './getGroupMembers';
 import { censorMessage } from '../utils/censor';
-import { logError } from '../utils/log';
 import { getUserHistory } from './UserHistory';
 import { Op } from 'sequelize';
 import { getPrivateChannel } from '../utils/channel';
+
 
 import { handleInfractions } from './handlers/infractions';
 import { broadcastMessage, sendToUser, setClient, getClientMap } from './ws-utils';
@@ -336,7 +335,8 @@ export async function handleWSConnection(ws: WebSocket, token: string) {
     }
   });
 
-  ws.on('close', () => {
+  ws.on('close', async () => {
+    await setUserOffline(userId);
     getClientMap().delete(userId);
     console.log("User disconnected:", userId);
   });

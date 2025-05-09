@@ -21,8 +21,18 @@ export const SpaceShipInterior = () => {
     scene.clearColor = new Color4(0, 0, 0, 1); // Opaque black background
 
     // Camera
-    const camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 2.5, 10, Vector3.Zero(), scene);
+    const camera = new ArcRotateCamera('camera', Math.PI/ 2, Math.PI -3 / 2.5, 0, Vector3.Zero(), scene);
     camera.attachControl(canvas, true);
+    //camera zoom disable
+    camera.lowerRadiusLimit = 500;
+    camera.upperRadiusLimit = 500;
+    //camera axe-x limited
+    camera.lowerAlphaLimit = Math.PI / 6;  // min angle (e.g., 45°)
+    camera.upperAlphaLimit = (3 * Math.PI) / 3; 
+    //camera axe-y
+    camera.lowerBetaLimit = 1;           
+    camera.upperBetaLimit = Math.PI / 1.5;
+    
 
     // Lighting
     new HemisphericLight('light', new Vector3(0, 1, 0), scene);

@@ -73,7 +73,7 @@ export function RatioPong() {
 	}, [chartData])
 
 	return (
-		<Card className="flex flex-col">
+		<Card className="flex flex-col h-[250px]">
 			<CardHeader className="items-center pb-0 text-xl">
 				<CardTitle>Ratio</CardTitle>
 			</CardHeader>

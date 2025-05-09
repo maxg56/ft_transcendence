@@ -10,6 +10,7 @@ import LogoutButton from "@/components/profil/LogOutComponent";
 import { useApi } from "@/hooks/api/useApi";
 import { Elos, UserInfos } from "@/components/profil/type/profilInterface";
 import DeleteAccountModal from "@/components/profil/SuppresAccountModal";
+import StarsBackground from "@/animation/StarsBackground";
 
 type Options = "friends" | "settings" | "pong" ;
 
@@ -138,86 +139,144 @@ const Profile: React.FC = () => {
 	
 	return (
 		<div className="scale-95">
-		<div className="p-4 flex flex-col space-y-2 h-screen text-white">
-			<div className="flex items-start justify-between mb-8">
-				<div className="flex items-start space-x-6">
-					<div className="flex flex-col items-center">
-						<div
-							className="w-24 h-24 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center overflow-hidden cursor-pointer"
-							onClick={triggerFileSelect}
-						>
-							{profileImage ? (
-								<img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
-							) : (
-								<User className="w-12 h-12 text-gray-500" />
-							)}
-						</div>
-
-						{profileImage && (
-							<button
-								className="text-sm text-red-400 hover:underline mt-2"
-								onClick={handleRemoveImage}
-							>
-								Supprimer la photo
-							</button>
-						)}
-					</div>
-
-					<div className="flex flex-col justify-center">
-						<span className="text-2xl font-semibold">{username}</span>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-start space-x-6 space-y-2 mr-[100px]">
-					<span className="text-lg text-gray-300 mt-2">{rank}</span>
-					<span className="text-lg text-gray-300 mt-2">{elo}</span>
-				</div>
-
-				<input
-					type="file"
-					ref={fileInputRef}
-					onChange={handleImageChange}
-					accept="image/*"
-					className="hidden"
-				/>
+		  <div className="crt w-screen h-screen rounded-[150px] overflow-hidden bg-gray-900 relative">
+		  <StarsBackground/>
+			{/* Glow Layer */}
+			<div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+			  <div className="w-full h-full absolute top-[-100%] scanline-glow" />
 			</div>
-
-			<div className="flex flex-1 gap-2 w-full max-w-12xl">
-			<nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col justify-between text-black h-[80vh]">
-				<div className="space-y-[50px] text-[41px]">
-					{(["friends", "settings", "pong"] as Options[]).map((opt) => (
-						<button
-							key={opt}
-							onClick={() => setSelectedOption(opt)}
-							className={`text-left px-3 py-1.5 rounded transition gap-6 ${
-								selectOptions === opt ? "font-bold bg-gray-300" : "hover:bg-gray-300"
-							}`}
-						>
-							{labelMap[opt]}
-						</button>
-					))}
-				</div>
-
-				<div className="space-y-3">
+	  
+			{/* Top Profile Info */}
+			<div className="relative z-10 flex justify-between items-center px-20 py-10">
+			  {/* Profile Section */}
+			  <div className="flex items-center space-x-12">
+				{/* Avatar */}
+				<div className="flex flex-col items-center">
+				  <div
+					className="w-32 h-32 rounded-full 
+							   bg-gradient-to-br from-cyan-400/60 via-blue-500/60 to-purple-600/10 
+							   border border-cyan-300/30 
+							   backdrop-blur-md 
+							   shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+							   hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+							   transition duration-300 
+							   overflow-hidden cursor-pointer"
+					onClick={triggerFileSelect}
+				  >
+					{profileImage ? (
+					  <img
+						src={profileImage}
+						alt="Profile"
+						className="w-full h-full object-cover"
+					  />
+					) : (
+					  <User className="w-16 h-16 text-white/70 mx-auto my-auto" />
+					)}
+				  </div>
+	  
+				  {profileImage && (
 					<button
-						onClick={() => navigate("/hub")}
-						className="w-full px-4 py-2 bg-blue-500 text-white text-xl rounded-2xl hover:bg-blue-700"
+					  className="mt-2 text-sm text-red-400 hover:underline"
+					  onClick={handleRemoveImage}
 					>
-						Return Hub
+					  Supprimer la photo
 					</button>
-					<LogoutButton />
-					<DeleteAccountModal />
+				  )}
 				</div>
-				</nav>
-				<div className="flex-1 bg-gray-100 p-6 rounded-md text-black">
-					{selectOptions === "friends" && <FriendsPanel  />}
-					{selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
-					{selectOptions === "pong" && <StatsPong/>}
+	  
+				{/* Username */}
+				<div className="flex flex-col justify-center">
+				  <h1 className="text-glow text-4xl font-bold text-white tracking-wide drop-shadow-md">
+					{username}
+				  </h1>
+				  <p className="text-md text-cyan-200 italic mt-1">Space fighter</p>
 				</div>
+			  </div>
+	  
+			  {/* Rank & Elo */}
+			  <div className="flex flex-col space-y-4">
+				<div
+				  className="text-glow px-10 py-2 rounded-md text-white font-semibold 
+							 bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/10 
+							 backdrop-blur-md 
+							 shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+							 hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+							 border border-cyan-300/30 
+							 transition duration-300"
+				>
+				  Rank: <span className="text-yellow-300">{rank}</span>
+				</div>
+				<div
+				  className="text-glow px-10 py-2 rounded-md text-white font-semibold 
+							 bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/10 
+							 backdrop-blur-md 
+							 shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+							 hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+							 border border-cyan-300/30 
+							 transition duration-300"
+				>
+				  Elo: <span className="text-green-300">{elo}</span>
+				</div>
+			  </div>
+	  
+			  <input
+				type="file"
+				ref={fileInputRef}
+				onChange={handleImageChange}
+				accept="image/*"
+				className="hidden"
+			  />
 			</div>
+	  
+			{/* Main Content */}
+			<div className="relative z-10 flex h-[70%] gap-4 px-8">
+			  {/* Sidebar */}
+			  <nav
+				className="w-72 p-6 rounded-2xl text-white bg-gradient-to-br from-cyan-400/20 via-blue-500/20 to-purple-600/10 
+						   backdrop-blur-md border border-cyan-300/30 
+						   shadow-[0_0_20px_rgba(0,255,255,0.3)] flex flex-col justify-between"
+			  >
+				<div className="space-y-8 text-3xl">
+				  {(["friends", "settings", "pong"] as Options[]).map((opt) => (
+					<button
+					  key={opt}
+					  onClick={() => setSelectedOption(opt)}
+					  className={`w-full text-left px-4 py-2 rounded-xl transition ${
+						selectOptions === opt
+						  ? "bg-white/10 font-bold text-cyan-300 shadow-inner"
+						  : "hover:bg-white/10 text-white/80"
+					  }`}
+					>
+					  {labelMap[opt]}
+					</button>
+				  ))}
+				</div>
+	  
+				<div className="space-y-3 text-lg">
+				  <button
+					onClick={() => navigate("/hub")}
+					className="w-full px-4 py-2 rounded-xl text-white font-semibold 
+							   bg-gradient-to-r from-blue-500/60 to-purple-600/10 
+							   hover:from-blue-600 hover:to-purple-700 
+							   transition shadow-md border border-blue-300/30"
+				  >
+					Return Hub
+				  </button>
+				  <LogoutButton />
+				  <DeleteAccountModal />
+				</div>
+			  </nav>
+	  
+			  {/* Panel Content */}
+			  <div className="flex-1 bg-gray-100/10 backdrop-blur-md p-6 rounded-2xl text-white border border-cyan-300/20 shadow-inner">
+				{selectOptions === "friends" && <FriendsPanel />}
+				{selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
+				{selectOptions === "pong" && <StatsPong />}
+			  </div>
+			</div>
+		  </div>
 		</div>
-		</div>
-	);
+	  );	  
 };
 
 export default Profile;

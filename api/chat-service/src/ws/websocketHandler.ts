@@ -335,8 +335,8 @@ export async function handleWSConnection(ws: WebSocket, token: string) {
     }
   });
 
-  ws.on('close', async () => {
-    await setUserOffline(userId);
+  ws.on('close', () => {
+    setUserOffline(userId);
     getClientMap().delete(userId);
     console.log("User disconnected:", userId);
   });

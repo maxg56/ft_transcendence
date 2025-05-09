@@ -32,8 +32,11 @@ export const ConfirmPasswordModal = ({
 
 	return (
 		<Modal onClose={onClose}>
-			<div className="flex flex-col space-y-4 w-[800px]">
-				<h2 className="text-lg font-bold text-center">Modifier le mot de passe</h2>
+			<div className="absolute w-[500px] bottom-[10%] left-1/2 -translate-x-1/2 
+  							rounded-2xl text-white px-6 py-4 bg-blue-500
+  							z-50
+							">
+				<h2 className="text-g font-bold text-center">Modifier le mot de passe</h2>
 				
 				<PasswordInput
 					placeholder="Nouveau mot de passe"

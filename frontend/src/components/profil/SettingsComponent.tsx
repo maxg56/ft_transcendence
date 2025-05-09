@@ -103,7 +103,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 
 
 				<Card className="w-3/4 mx-auto my-auto w-[70%] h-[70%] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
-								bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent backdrop-blur-md 
+								bg-gradient-to-br from-cyan-400/10 via-purple-500/10 backdrop-blur-md 
   								shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
   								transition duration-300 text-cyan-200 ">
 					<div className="flex flex-col items-center justify-center gap-3 m-2">

@@ -183,7 +183,7 @@ const Profile: React.FC = () => {
 
 			<div className="flex flex-1 gap-2 w-full max-w-12xl">
 			<nav className="w-64 bg-gray-200 p-4 rounded-md flex flex-col justify-between text-black h-[80vh]">
-				<div className="space-y-[60px]">
+				<div className="space-y-[50px] text-[41px]">
 					{(["friends", "settings", "pong"] as Options[]).map((opt) => (
 						<button
 							key={opt}

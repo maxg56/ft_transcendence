@@ -123,13 +123,13 @@ const FriendsPanel: React.FC = () => {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h3 className="font-bold mb-2 text-xs">Rechercher un ami</h3>
+				<h3 className="font-bold mb-2 text-2xl">Rechercher un ami</h3>
 				<input
 					type="text"
 					value={searchTerm}
 					onChange={(e) => handleResearch(e.target.value)}
 					placeholder="Nom d'utilisateur..."
-					className="w-full px-2 py-2 border border-gray-300 rounded-md text-xs"
+					className="w-full px-2 py-2 border border-gray-300 rounded-md text-xl"
 				/>
 				<ul className="mt-2 space-y-1">
 				{filteredUsers.map((username) => (
@@ -149,9 +149,9 @@ const FriendsPanel: React.FC = () => {
 
 			<div className="flex gap-8">
 				<div className="w-full p-4 bg-white shadow-lg rounded-lg">
-					<h3 className="font-bold mb-2 text-xs">Invitations reçues</h3>
+					<h3 className="font-bold mb-2 text-2xl">Invitations reçues</h3>
 						<div className="max-h-48 overflow-y-auto pr-4">
-							<ul className="space-y-2 text-xs">
+							<ul className="space-y-2 text-xl">
 							{pendingG.map((user, index) => (
 								<li key={index} className="bg-gray-100 p-2 rounded flex justify-between items-center">
 								<span>{user}</span>

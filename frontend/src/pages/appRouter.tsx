@@ -7,7 +7,7 @@ import Profile from '@/pages/Profil';
 import WaitingRoom from '@/pages/WaitingRoom';
 import MultiplayerSelection from '@/pages/MultiplayerSelection';
 import PlayersGame4 from '@/pages/game/Players4Game';
-import TournamentT1 from '@/pages/Tournament/TournamentT1';
+import WRTournament from '@/pages/Tournament/WRTournament';
 import TournamentT2 from '@/pages/Tournament/TournamentT2';
 import Modeduel from '@/components/ChooseGame';
 import Results from '@/pages/Results';
@@ -27,7 +27,7 @@ const AppRouter = () => {
             <Route path="/wsGame" element={<Game4Players />} />
             <Route path="/multiplayerselect" element={<MultiplayerSelection />} />
             <Route path="/playersgame4" element={<PlayersGame4 />} />
-            <Route path="/tournamentStage1" element={<TournamentT1 />} />
+            <Route path="/waitingroomtournament" element={<WRTournament />} />
             <Route path="/tournamentStage2" element={<TournamentT2 />} />
             <Route path="/modeduel" element={<Modeduel />} />
             <Route path="/results" element={<Results />} />

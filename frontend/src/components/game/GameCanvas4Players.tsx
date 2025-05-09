@@ -9,13 +9,12 @@ import { useBallFromServer4Players  } from '@/hooks/game/Ball/useBallFromServer4
 import Cookies from "js-cookie"
 
 type GameCanvas4PlayersProps = {
-  gameStarted?: boolean
+  gameStarted: boolean
   setScore: (score: [number, number]) => void
   setWinner: (winner: string | null) => void
   setGameStarted: (started: boolean) => void
 }
 
-// const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
   const GameCanvas4Players = ({
   gameStarted,
   setScore,
@@ -37,7 +36,6 @@ type GameCanvas4PlayersProps = {
     rightPaddle1Ref,
     rightPaddle2Ref,
   )
-  if (gameStarted) {
     useBallPhysics4Players(
       ballRef,
       leftPaddle1Ref,
@@ -49,7 +47,6 @@ type GameCanvas4PlayersProps = {
       setGameStarted,
       gameStarted
     )
-  }
  
 
   return (

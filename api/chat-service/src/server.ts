@@ -6,22 +6,17 @@ import { handleWSConnection } from './ws/websocketHandler';
 import dotenv from 'dotenv';
 import database from './plugins/database';
 import { logformat, logError } from "./utils/log";
-import { verifyToken } from './controllers/JWT';
 import User from "./models/User";
-import authRoutes from './routes/index';
-import auth from './plugins/auth';
 dotenv.config();
 
 const fastify = Fastify({ logger: true });
 const server = createServer(fastify.server);
 const wss = new WebSocket.Server({ server });
 const PORT = process.env.PORT_CHAT || 3000;
-// fastify.register(fastifyFormBody); // Pour les requêtes x-www-form-urlencoded
-fastify.register(database);
-fastify.register(auth);
 
-// Routes
-fastify.register(authRoutes);
+
+fastify.register(database);
+
 
 fastify.ready().then(() => {
     logformat("\n\n📌 Fastify is ready, initializing models...\n",

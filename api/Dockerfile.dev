@@ -1,6 +1,3 @@
-
-
-
 # Étape de base : installation des dépendances
 FROM node:23.10-alpine AS base
 

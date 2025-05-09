@@ -10,7 +10,7 @@ import Cookies from "js-cookie"
 const DuelComponent: React.FC = () => {
 
   const [score, setScore] = useState<[number, number]>([0, 0]);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [setGameStarted] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const { navigate } = useNavigation();
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ const DuelComponent: React.FC = () => {
       )}
       <KeyboardProvider>
 			  <GameCanvasWs
-          gameStarted={gameStarted}
+          // gameStarted={gameStarted}
           setScore={setScore}
           setWinner={setWinner}
           setGameStarted={setGameStarted}

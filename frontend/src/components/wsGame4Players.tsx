@@ -9,7 +9,7 @@ import Cookies from "js-cookie"
 
 const Game4PlayersWS: React.FC = () => {
     const [score, setScore] = useState<[number, number]>([0, 0]);
-    const [gameStarted, setGameStarted] = useState(false);
+    const [setGameStarted] = useState(false);
     const [winner, setWinner] = useState<string | null>(null);
     const { navigate } = useNavigation();
     const { t } = useTranslation();
@@ -39,7 +39,7 @@ const Game4PlayersWS: React.FC = () => {
         )}
         <KeyboardProvider>
 			<GameCanvas4PlayersWS
-                gameStarted={gameStarted}
+                // gameStarted={gameStarted}
                 setScore={setScore}
                 setWinner={setWinner}
                 setGameStarted={setGameStarted}

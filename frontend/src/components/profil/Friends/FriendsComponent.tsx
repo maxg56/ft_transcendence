@@ -121,60 +121,62 @@ const FriendsPanel: React.FC = () => {
 	};
 
 	return (
-		<div className="space-y-4">
-			<div>
-				<h3 className="font-bold mb-2 text-2xl">Rechercher un ami</h3>
-				<input
-					type="text"
-					value={searchTerm}
-					onChange={(e) => handleResearch(e.target.value)}
-					placeholder="Nom d'utilisateur..."
-					className="w-full px-2 py-2 border border-gray-300 rounded-md text-xl"
-				/>
-				<ul className="mt-2 space-y-1">
-				{filteredUsers.map((username) => (
-					<li key={username} className="flex justify-between items-center text-xs border px-2 py-1 rounded">
-						<span>{username}</span>
-						<button
-							className="bg-blue-500 text-white px-2 py-1 rounded"
-							onClick={() => handleAddFriends(username)}
-						>
-							Inviter
-						</button>
-					</li>
-				))}
-			</ul>
-			</div>
-			<FriendList friends={friends} sentInvitations={sentInvitations} />
+		<div className="space-y-6 text-white">
+  			{/* Search Friend */}
+  			<div className="p-6 rounded-2xl border border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_15px_rgba(0,255,255,0.1)] transition duration-300">
+    			<h3 className="font-bold mb-4 text-2xl text-cyan-200">Rechercher un ami</h3>
+    				<input
+      					type="text"
+      					value={searchTerm}
+      					onChange={(e) => handleResearch(e.target.value)}
+      					placeholder="Nom d'utilisateur..."
+      					className="w-full px-4 py-2 rounded-md bg-white/10 border border-cyan-300/20 text-white placeholder-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+    					/>
+    				<ul className="mt-4 space-y-2">
+      					{filteredUsers.map((username) => (
+        					<li key={username} className="flex justify-between items-center text-sm px-4 py-2 rounded-md bg-white/5 border border-cyan-200/10 shadow-sm">
+          						<span>{username}</span>
+          						<button
+            						className="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white px-3 py-1 rounded text-xs transition"
+            							onClick={() => handleAddFriends(username)}
+          								>
+            						Inviter
+          						</button>
+        					</li>
+      					))}
+    				</ul>
+  			</div>
 
-			<div className="flex gap-8">
-				<div className="w-full p-4 bg-white shadow-lg rounded-lg">
-					<h3 className="font-bold mb-2 text-2xl">Invitations reçues</h3>
-						<div className="max-h-48 overflow-y-auto pr-4">
-							<ul className="space-y-2 text-xl">
-							{pendingG.map((user, index) => (
-								<li key={index} className="bg-gray-100 p-2 rounded flex justify-between items-center">
-								<span>{user}</span>
-								<div className="space-x-2">
-									<button
-									onClick={() => handleAccept(user)}
-									className="text-green-600 hover:underline text-xs"
-									>
-									<Check />
-									</button>
-									<button
-									onClick={() => handleRefuse(user)}
-									className="text-red-600 hover:underline text-xs"
-									>
-									<X />
-									</button>
-								</div>
-								</li>
-							))}
-						</ul>
-					</div>
-				</div>
-			</div>
+  			{/* Friend List Component */}
+  			<FriendList friends={friends} sentInvitations={sentInvitations} />
+
+  			{/* Invitations Received */}
+  			<div className="p-6 rounded-2xl border border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_15px_rgba(0,255,255,0.1)] transition duration-300">
+    			<h3 className="font-bold mb-4 text-2xl text-cyan-200">Invitations reçues</h3>
+    			<div className="max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+      				<ul className="space-y-2 text-base">
+        			{pendingG.map((user, index) => (
+          			<li key={index} className="bg-white/5 border border-cyan-200/10 p-2 rounded-md flex justify-between items-center">
+            			<span>{user}</span>
+            			<div className="space-x-2">
+              				<button
+                				onClick={() => handleAccept(user)}
+                				className="text-green-400 hover:text-green-300"
+              					>
+                				<Check />
+              				</button>
+              				<button
+                				onClick={() => handleRefuse(user)}
+                				className="text-red-400 hover:text-red-300"
+              					>
+                				<X />
+              				</button>
+            			</div>
+          			</li>
+        			))}
+      				</ul>
+    			</div>
+  			</div>
 		</div>
 	);
 };

@@ -54,6 +54,7 @@ export const useWaitroomListener = () => {
 
           if (opponent) Cookies.set("opponentName", opponent.name || "Unknown");
           if (myAlly) Cookies.set("allyName", myAlly.name || "Unknown");
+          if (myName) Cookies.set("myName", myName.name || "Unknown");
 
           if (format.playersPerTeam === 1) {
             console.log("1v1 game");

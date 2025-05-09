@@ -23,21 +23,6 @@ const DuelComponent: React.FC = () => {
 
   return (
     <>
-      <div className="absolute top-[5%] left-1/2 transform -translate-x-1/2 text-black text-2xl">
-        {winner ? (
-          <div className="flex flex-col items-center text-white ">
-            <div className="absolute top-[250%] text-5xl neonText">
-              <h2>{winner} {t("gagne !")}</h2>
-            </div>
-          </div>
-        ) : (
-           <GameOverlay
-            score={score}
-            winner={winner}
-            />
-        )}
-      </div>
-        
       {countdown != -1 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-6xl">
           <h2>{countdown === 0 ? 'GO !' : `${countdown}...`}</h2>
@@ -51,7 +36,12 @@ const DuelComponent: React.FC = () => {
           setGameStarted={setGameStarted}
          />
 		  </KeyboardProvider>
-      
+      <div className="absolute top-[5%] left-1/2 transform -translate-x-1/2 text-black text-2xl">
+        <GameOverlay
+          score={score}
+          winner={winner}
+        />
+      </div>
     </>
   );
 };

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from '@/context/WebSocketContext';
 import Cookies from "js-cookie";
+import { ConfKeyProvider } from '@/context/ConfKeyContext';
 
 export const useBallFromServer = (
   ballRef: React.MutableRefObject<THREE.Mesh | null>,
@@ -38,14 +39,15 @@ export const useBallFromServer = (
     onScoreUpdate(updatedScore);
   };
 
+  const clearGameCookies = () => {
+    ['allyName', 'gameid', 'myName', 'opponentName', 'positionInTeam', 'teamId'].forEach(n => Cookies.remove(n));
+  }
   // Fonction pour gérer les résultats du jeu
   const handleGameResult = (message: any) => {
-    const teamId = Cookies.get("teamId");
-    const isTeam1 = teamId === '1';
-    const winner = isTeam1 ? message.winner : message.winner === 'left' ? 'right' : 'left';
-    onGameEnd(winner);
+    onGameEnd(message.data.winner[0]);
     setGameStarted(false);
-    navigate('/hub');
+    // clearGameCookies(); quand decommente ca fait ecran noir apres le match
+    // navigate('/hub');
   };
 
   // Fonction pour traiter les messages WebSocket

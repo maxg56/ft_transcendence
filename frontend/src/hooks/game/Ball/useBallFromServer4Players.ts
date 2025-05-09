@@ -51,12 +51,9 @@ export const useBallFromServer4Players = (
 				if (message.event === 'game_state' && message.state) {
 					handleGameState(message);
 				} else if (message.event === 'game_result') {
-					const teamId = Cookies.get("teamId");
-					const isTeam1 = teamId === '1';
-					const winner = isTeam1 ? message.winner : message.winner === 'left' ? 'right' : 'left';
-					onGameEnd(winner);
+					onGameEnd(message.data.winner);
 					setGameStarted(false);
-					navigate('/hub');
+					// navigate('/hub');
 				} else {
 					console.warn('Message WebSocket inattendu:', message);
 				}

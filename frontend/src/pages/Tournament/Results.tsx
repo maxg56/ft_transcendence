@@ -1,8 +1,12 @@
 import React from 'react';
-import { useTournament } from '../context/ResultsContext';
+import { useTournament } from '../../context/ResultsContext';
+import useNavigation from '@/hooks/useNavigation';
+import { useTranslation } from '@/context/TranslationContext';
 
 const Results: React.FC = () => {
   const { results } = useTournament();
+  const {navigate} = useNavigation();
+  const {t} = useTranslation();
 
   const participants = Array.from(
     new Set(
@@ -57,6 +61,14 @@ const Results: React.FC = () => {
           ))}
         </ul>
       </div>
+      <div className="flex justify-center mt-12">
+				<button
+					onClick={() => navigate("/hub")}
+					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+				>
+					{t("Return Hub")}
+				</button>
+        </div>
     </div>
   );
 };

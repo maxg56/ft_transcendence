@@ -27,7 +27,7 @@ export const useWaitroomListener = () => {
       const handleMessage = (event: MessageEvent) => {
         try {
           const message = JSON.parse(event.data);
-
+          console.log("Message WebSocket reçu:", message);
           if (message.event !== "match_found") {
             console.warn("Message WebSocket inattendu:", message);
             return;
@@ -39,7 +39,7 @@ export const useWaitroomListener = () => {
             console.warn("Format de jeu invalide:", format);
             return;
           }
-
+          
           // Stockage des infos essentielles
           Cookies.set("gameid", gameId);
           Cookies.set("teamId", String(teamId));
@@ -62,8 +62,6 @@ export const useWaitroomListener = () => {
             console.log("2v2 game");
             navigate("/wsGame");
           }
-
-          console.log("🎮 Match trouvé:", message);
         } catch (err) {
           console.error("Erreur de parsing WebSocket:", err);
         }

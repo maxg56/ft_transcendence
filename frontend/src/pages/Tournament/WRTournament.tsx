@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import TournamentCode from '@/components/Tournament/TournamentCode';
 import ParticipantsList from '@/components/Tournament/TournamentList';
-
+import { useNavigate } from 'react-router-dom';
+import { useTournament } from '@/context/ResultsContext';
 
 type Player = {
 	id: number;
@@ -22,6 +23,8 @@ type Match = {
 };
 
 const TournamentT1 = () => {
+	const {setResults} = useTournament();
+	const navigate = useNavigate();
 	const [players] = useState<Player[]>([
 		{
 			id: 1,
@@ -55,33 +58,29 @@ const TournamentT1 = () => {
 	]);
 
 
-	const handleScoreChange = (matchId: number, player: 'player1' | 'player2', value: string) => {
-		setMatches(prev =>
-			prev.map(match => {
-				if (match.id !== matchId) return match;
-
-				const updated = { ...match };
-				if (player === 'player1') updated.score1 = Number(value);
-				else updated.score2 = Number(value);
-
-				if (
-					updated.score1 !== undefined &&
-					updated.score2 !== undefined &&
-					!isNaN(updated.score1) &&
-					!isNaN(updated.score2)
-				) {
-					if (updated.score1 > updated.score2) {
-						updated.winner = updated.player1;
-						updated.loser = updated.player2;
-					} else {
-						updated.winner = updated.player2;
-						updated.loser = updated.player1;
-					}
-				}
-				return updated;
-			})
-		);
+	const simulateAndGoToNext = () => {
+		const simulatedMatches = matches.map(match => {
+			const score1 = Math.floor(Math.random() * 11);
+			const score2 = Math.floor(Math.random() * 11);
+			const winner = score1 > score2 ? match.player1 : match.player2;
+			const loser = score1 > score2 ? match.player2 : match.player1;
+	
+			return {
+				...match,
+				score1,
+				score2,
+				winner,
+				loser
+			};
+		});
+	
+		setMatches(simulatedMatches);
+		setResults(simulatedMatches);
+		setTimeout(() => {
+			navigate('/tournamentStage2 ');
+		}, 300);
 	};
+	
 
 	const renderMatch = (match: Match) => (
 		<div key={match.id} className="flex mb-8">
@@ -91,7 +90,7 @@ const TournamentT1 = () => {
 						type="number"
 						className="w-16 border rounded p-2 text-lg"
 						value={match.score1 ?? ''}
-						onChange={e => handleScoreChange(match.id, 'player1', e.target.value)}
+						// onChange={e => handleScoreChange(match.id, 'player1', e.target.value)}
 					/>
 					<span className="flex-1 truncate">{match.player1?.name || '?'}</span>
 				</div>
@@ -103,7 +102,7 @@ const TournamentT1 = () => {
 						type="number"
 						className="w-16 border rounded p-2 text-lg"
 						value={match.score2 ?? ''}
-						onChange={e => handleScoreChange(match.id, 'player2', e.target.value)}
+						// onChange={e => handleScoreChange(match.id, 'player2', e.target.value)}
 					/>
 					<span className="flex-1 truncate">{match.player2?.name || '?'}</span>
 				</div>
@@ -133,6 +132,12 @@ const TournamentT1 = () => {
 			<div className="flex justify-center mt-12">
 				<ParticipantsList players={players}/>
 			</div>
+			<button
+				className="bg-blue-200 rounded-2xl text-sm text-right flex-col position-bottom-right p-4"
+				onClick={simulateAndGoToNext}
+			>
+				Next
+			</button>
 		</div>
 	);
 };

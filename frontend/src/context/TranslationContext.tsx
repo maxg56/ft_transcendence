@@ -12,7 +12,7 @@ const translations: Record<Language, Translations> = { en, fr, pt, kgt };
 
 interface TranslationContextType {
   language: Language;
-  t: (key: string) => string;
+  t: (key: string, variables?: Record<string, string>) => string;
   changeLanguage: (lang: Language) => void;
 }
 

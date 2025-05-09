@@ -3,6 +3,7 @@
 
 import React from "react"
 import { useGameScene4Players }    from "@/hooks/game/Scene/useGameScene4Players"
+import { usePlayerControls } from "@/hooks/game/Controls/useInputControls4Players"
 import { useBallFromServer4Players  } from '@/hooks/game/Ball/useBallFromServer4Players';
 import Cookies from "js-cookie"
 
@@ -16,7 +17,7 @@ const GameCanvas4PlayersWS = ({
   setScore,
   setWinner,
   setGameStarted,
-}: React.FC<GameCanvas4PlayersPropsWs>) => {
+}: GameCanvas4PlayersPropsWs) => {
   const {
     mountRef,
     leftPaddle1Ref,

@@ -14,5 +14,6 @@
 	"OTHER": "AUTRE",
 	"Amis": "Amis",
 	"Modifier": "Modifier",
-	"Vérifier le code" : "Vérifier le code"
+	"Vérifier le code" : "Vérifier le code",
+	"winnerMessage": "{{side}} gagne !"
 }

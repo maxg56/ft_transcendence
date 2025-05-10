@@ -4,9 +4,14 @@ import { useBallPhysics } from '@/hooks/game/Ball/useBallPhysics';
 import { useBallFromServer } from '@/hooks/game/Ball/useBallFromServer';
 import Cookies from "js-cookie";
 
-
 type GameCanvasProps = {
-	gameStarted?: boolean;
+	gameStarted: boolean;
+	setScore: (score: [number, number]) => void;
+	setWinner: (winner: string | null) => void;
+	setGameStarted: (gameStarted: boolean) => void;
+};
+
+type GameCanvasPropsWs = {
 	setScore: (score: [number, number]) => void;
 	setWinner: (winner: string | null) => void;
 	setGameStarted: (gameStarted: boolean) => void;
@@ -26,7 +31,6 @@ export const GameCanvas = ({
 	} = useGameScene();
 
 	useInputControls(leftPaddleRef, rightPaddleRef);
-	if (gameStarted) {
 		useBallPhysics(
 			ballRef,
 			leftPaddleRef,
@@ -36,7 +40,6 @@ export const GameCanvas = ({
 			setGameStarted,
 			gameStarted
 		);
-	}
 	return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;
 };
 
@@ -44,7 +47,7 @@ export const GameCanvasWs = ({
 	setScore,
 	setWinner,
 	setGameStarted,
-}: GameCanvasProps) => {
+}: GameCanvasPropsWs) => {
 	const {
 		mountRef,
 		leftPaddleRef,

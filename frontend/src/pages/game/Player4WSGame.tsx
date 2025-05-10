@@ -1,7 +1,7 @@
 import React from "react";
 
 import Game4PlayersWS from "@/components/wsGame4Players";
-const Game4Players: React.FC = () => {
+const WsGame4Players: React.FC = () => {
     return (
         <div className=" scale-95">
             <div>
@@ -14,4 +14,4 @@ const Game4Players: React.FC = () => {
 	    </div>
   )};
 
-export default Game4Players;
+export default WsGame4Players;

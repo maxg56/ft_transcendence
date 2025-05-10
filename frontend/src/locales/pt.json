@@ -18,5 +18,6 @@
 	"Modifier": "Modificar",
 	"gagne !": "ganho !",
 	"Revanche": "Vingança",
-	"Retour au menu": "Voltar ao cardápio"
+	"Retour au menu": "Voltar ao cardápio",
+	"winnerMessage": "{{side}} venceu !"
 }

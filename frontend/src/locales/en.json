@@ -16,7 +16,8 @@
 	"Tournois": "tournaments",
 	"Amis": "Friends",
 	"Modifier": "Modify",
-	"gagne !": "won !",
+	"gagne !": "won!",
 	"Revanche": "Revenge",
-	"Retour au menu": "Back to menu"
+	"Retour au menu": "Back to menu",
+	"winnerMessage": "{{side}} won!"
 }

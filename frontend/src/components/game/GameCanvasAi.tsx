@@ -24,7 +24,14 @@ export const GameCanvasAI = ({
 		ballRef,
 	} = useGameScene();
 	useAiInputControl(leftPaddleRef, rightPaddleRef, ballRef, true);
-	useBallPhysics(ballRef, leftPaddleRef, rightPaddleRef, setScore, setWinner,setGameStarted, gameStarted);
+	useBallPhysics(
+		ballRef,
+		leftPaddleRef,
+		rightPaddleRef,
+		setScore,
+		setWinner,
+		setGameStarted,
+		gameStarted);
 
 	return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;
 };

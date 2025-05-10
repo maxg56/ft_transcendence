@@ -36,19 +36,55 @@ async function joinPrivateGame(player: Player, data: any) {
     game.nb++;
     game.guest.push(player);
 
-    const joinData = {
+    // Nouveau joueur : reçoit la liste des joueurs déjà présents
+    const existingPlayersInfo = [host, ...game.guest.filter(p => p.id !== player.id)].map(p => ({
+      id: p.id,
+      username: p.name,
+      avatar: p.avatar,
+      isHost: p.id === game.host.id,
+    }));
+
+    sendJSON(player, "joined_game", {
       gameCode: data.gameCode,
-      host: host.id,
-      NameHost: host.name,
-      guest: player.id
+      existingPlayers: existingPlayersInfo
+    });
+
+    // Tous les autres joueurs reçoivent les infos du nouveau joueur
+    const newPlayerInfo = {
+      id: player.id,
+      username: player.name,
+      avatar: player.avatar,
+      isHost: false
     };
 
-    sendJSON(player, "joined_game", joinData);
-    sendJSON(host, "guest_joined", joinData);
+    [host, ...game.guest.filter(p => p.id !== player.id)].forEach(p => {
+      sendJSON(p, "new_player_joined", { player: newPlayerInfo });
+    });
 
     logformat("Player joined private game", player.id, data.gameCode);
   }
+  else {
+    sendJSON(player, "error", { message: "Game is full" });
+    logError("Game is full", data.gameCode);
+  }
+}
 
+async function statePrivateGameHandler(player: Player, data: any) {
+  if (!data?.gameCode) {
+    logError("Missing gameCode in joinPrivateGame", data);
+    sendJSON(player, "error", { message: "Missing game code" });
+    return;
+  }
+  const game = privateGames.get(data.gameCode);
+  if (!game) {
+    logError("Game not found", data.gameCode);
+    sendJSON(player, "error", { message: "Game not found" });
+    return;
+  }
+  if ( player.id !== game.host.id) {
+    sendJSON(player, "error", { message: "You are not the host" });
+    return;
+  }
   if (game.nb === game.maxPlayers) {
     const gameId = uuidv4();
     logformat("Game is full, starting game", gameId);
@@ -91,4 +127,4 @@ async function joinPrivateGame(player: Player, data: any) {
   }
 }
 
-export default joinPrivateGame;
+export { joinPrivateGame, statePrivateGameHandler };

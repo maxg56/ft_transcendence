@@ -10,7 +10,7 @@ import MatchPlayer from "./models/MatchPlayer";
 import User from "./models/User";
 import { Player } from './models/Player';
 
-import joinPrivateGame from './controllers/join_private_game';
+import { joinPrivateGame, statePrivateGameHandler } from './controllers/join_private_game';
 import {create_private_game} from './controllers/create_private_game';
 import joinTournamentGame from './controllers/joinTournamentGame';
 import { logformat, logError } from "./utils/log";
@@ -55,7 +55,7 @@ async function handleNewConnection(ws: WebSocket, token: string) {
     return;
   }
 
-  const player: Player = { id: playerId, name: user.username, ws, elo: user.elo, joinedAt: Date.now() };
+  const player: Player = { id: playerId, name: user.username, ws, elo: user.elo, joinedAt: Date.now() , avatar: user.avatar};
 
   ws.on('message', (message: string) => {
     try {
@@ -104,6 +104,9 @@ function handleMessage(data: any, player: Player) {
         break;
       case 'join_private_game':
         joinPrivateGame(player, data);
+        break;
+      case 'state_private_game':
+        statePrivateGameHandler(player, data);
         break;
       case 'join_tournament_game': {
         joinTournamentGame(player, data);

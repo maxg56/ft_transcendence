@@ -6,6 +6,7 @@ export interface Player {
     name: string;
     ws: WS;
     elo: number;
+    avatar: string | null;
     joinedAt: number;
 }
 

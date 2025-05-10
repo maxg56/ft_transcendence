@@ -25,6 +25,9 @@ try {
 		elo_now += match.elo_change;
 		return { elo: elo_now }
 	})
+	if (elos.length === 0) {
+		return sendSuccess(reply, {elo: 1000}, 200)
+	}
 	return sendSuccess(reply, elos[elos.length - 1], 200)
 } catch (error) {
 	request.log.error(error);

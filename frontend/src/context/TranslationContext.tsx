@@ -12,7 +12,7 @@ const translations: Record<Language, Translations> = { en, fr, pt, kgt };
 
 interface TranslationContextType {
   language: Language;
-  t: (key: string) => string;
+  t: (key: string, variables?: Record<string, string>) => string;
   changeLanguage: (lang: Language) => void;
 }
 
@@ -31,7 +31,17 @@ export const TranslationProvider = ({ children }: { children: React.ReactNode })
     return "en";
   });
 
-  const t = (key: string) => translations[language][key] || key;
+  const t = (key: string, variables?: Record<string, string>) => {
+    let translation = translations[language][key] || key;
+  
+    if (variables) {
+      for (const [name, value] of Object.entries(variables)) {
+        translation = translation.replace(`{{${name}}}`, value);
+      }
+    }
+  
+    return translation;
+  };
 
   const changeLanguage = (lang: Language) => {
     setLanguage(lang);

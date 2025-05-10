@@ -1,72 +1,23 @@
 // src/components/GameCanvas4Players.tsx
 "use client"
 
-import React from "react"
+// import React from "react"
 import { useGameScene4Players }    from "@/hooks/game/Scene/useGameScene4Players"
-import { useInputControls4Players, usePlayerControls } from "@/hooks/game/Controls/useInputControls4Players"
-import { useBallPhysics4Players }   from "@/hooks/game/Ball/useBallPhysics4Players"
+import { usePlayerControls } from "@/hooks/game/Controls/useInputControls4Players"
 import { useBallFromServer4Players  } from '@/hooks/game/Ball/useBallFromServer4Players';
 import Cookies from "js-cookie"
 
-type GameCanvas4PlayersProps = {
-  gameStarted?: boolean
+type GameCanvas4PlayersPropsWs = {
   setScore: (score: [number, number]) => void
   setWinner: (winner: string | null) => void
   setGameStarted: (started: boolean) => void
 }
 
-const GameCanvas4Players: React.FC<GameCanvas4PlayersProps> = ({
-  gameStarted,
+const GameCanvas4PlayersWS = ({
   setScore,
   setWinner,
   setGameStarted,
-}) => {
-  const {
-    mountRef,
-    leftPaddle1Ref,
-    leftPaddle2Ref,
-    rightPaddle1Ref,
-    rightPaddle2Ref,
-    ballRef,
-  } = useGameScene4Players()
-
-  useInputControls4Players(
-    leftPaddle1Ref,
-    leftPaddle2Ref,
-    rightPaddle1Ref,
-    rightPaddle2Ref,
-  )
-  if (gameStarted) {
-    useBallPhysics4Players(
-      ballRef,
-      leftPaddle1Ref,
-      leftPaddle2Ref,
-      rightPaddle1Ref,
-      rightPaddle2Ref,
-      setScore,
-      setWinner,
-      setGameStarted,
-      gameStarted
-    )
-  }
- 
-
-  return (
-    <div
-      ref={mountRef}
-      style={{ width: "100vw", height: "100vh" }}
-      className="relative"
-    />
-  )
-}
-
-
-
-const GameCanvas4PlayersWS: React.FC<GameCanvas4PlayersProps> = ({
-  setScore,
-  setWinner,
-  setGameStarted,
-}) => {
+}: GameCanvas4PlayersPropsWs) => {
   const {
     mountRef,
     leftPaddle1Ref,
@@ -101,7 +52,7 @@ const GameCanvas4PlayersWS: React.FC<GameCanvas4PlayersProps> = ({
 
 
 
-export { GameCanvas4PlayersWS , GameCanvas4Players }
+export { GameCanvas4PlayersWS }
 
 
 

@@ -91,7 +91,7 @@ async function saveMatchInDatabase(
 
 function notifyPlayers(players: Player[], winnerIds: string[], data: GameResultData) {
   players.forEach(player => {
-    const isWinner = winnerIds.includes(player.id);
+    const isWinner = winnerIds.includes(player.name);
     if (player.ws.readyState === player.ws.OPEN) {
       player.ws.send(JSON.stringify({
         event: 'game_result',
@@ -115,7 +115,9 @@ export default async function handleGameResult(data: GameResultData) {
 
     const winner = data.winner === "left" ? game.teams.get(1) : game.teams.get(2);
     const winnerIds = winner ?.map(player => player.id) ?? [];
-    logformat("Game result", data.gameId, "Winner(s):", winnerIds.join(", "),);
+    const winnerName = winner ?.map(player => player.name) ?? [];
+    // logformat("Game result", data.gameId, "Winner(s):", winnerIds.join(", "),);
+    logformat("Game result", data.gameId, "Winner(s):", winnerName.join(", "),);
 
     let updatedPlayers = game.players;
     let eloBefore: Map<string, number> | undefined = undefined;
@@ -129,7 +131,7 @@ export default async function handleGameResult(data: GameResultData) {
     }
 
     await saveMatchInDatabase(data, updatedPlayers, winnerIds, eloBefore, eloAfter);
-    notifyPlayers(game.players, winnerIds, data);
+    notifyPlayers(game.players, winnerName, data);
 
     activeGames.delete(data.gameId);
   } catch (err) {

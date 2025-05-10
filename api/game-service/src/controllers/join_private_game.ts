@@ -1,21 +1,32 @@
 import { Player } from "../models/Player";
 import { v4 as uuidv4 } from "uuid";
-import {logformat,logError} from "./log"
+import { logformat, logError } from "../utils/log";
 import { activeGames, privateGames } from "../config/data";
 import { GameEngineFactory } from "./GameEngine/GameEngineFactory";
-import {startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
+import { startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
 import { Room } from "../type";
 
+function sendJSON(player: Player, event: string, data: any) {
+  player.ws.send(JSON.stringify({ event, data }));
+}
 
-async function joinPrivateGame(
-  player: Player,
-  data: any
-) {
+async function joinPrivateGame(player: Player, data: any) {
+  if (!data?.gameCode) {
+    logError("Missing gameCode in joinPrivateGame", data);
+    sendJSON(player, "error", { message: "Missing game code" });
+    return;
+  }
+
   const game = privateGames.get(data.gameCode);
 
   if (!game) {
     logError("Game not found", data.gameCode);
-    player.ws.send(JSON.stringify({ event: "error", message: "Game not found" }));
+    sendJSON(player, "error", { message: "Game not found" });
+    return;
+  }
+
+  if (game.guest.find(p => p.id === player.id)) {
+    sendJSON(player, "error", { message: "Already joined this game" });
     return;
   }
 
@@ -24,9 +35,18 @@ async function joinPrivateGame(
   if (game.nb < game.maxPlayers) {
     game.nb++;
     game.guest.push(player);
-    player.ws.send(JSON.stringify({ event: "join_private_game", data: { gameId: data.gameId, host: host.id , NameHost: host.name, guest: player.id} }));
-    host.ws.send(JSON.stringify({ event: "join_private_game", data: { gameId: data.gameId, host: host.id , NameHost: host.name, guest: player.id} }));
-    logformat("Player joined private game", player.id, data.gameId);
+
+    const joinData = {
+      gameCode: data.gameCode,
+      host: host.id,
+      NameHost: host.name,
+      guest: player.id
+    };
+
+    sendJSON(player, "joined_game", joinData);
+    sendJSON(host, "guest_joined", joinData);
+
+    logformat("Player joined private game", player.id, data.gameCode);
   }
 
   if (game.nb === game.maxPlayers) {
@@ -54,22 +74,21 @@ async function joinPrivateGame(
     activeGames.set(gameId, room);
     startAutoMatchGameTimer(gameId);
 
+    const teamsResponse = players.map((pl, i) => ({
+      id: i + 1,
+      players: [{ id: pl.id, name: pl.name }]
+    }));
+
     players.forEach((p, idx) => {
-      p.ws.send(JSON.stringify({
-        event: "match_found",
+      sendJSON(p, "match_found", {
         gameId,
         format: { teams: 2, playersPerTeam: 1 },
         teamId: idx + 1,
-        positionInTeam: 0, // always 0 in 1v1
-        teams: players.map((pl, i) => ({
-          id: i + 1,
-          players: [{ id: pl.id, name: pl.name }]
-        }))
-      }));
+        positionInTeam: 0,
+        teams: teamsResponse
+      });
     });
   }
 }
-
-
 
 export default joinPrivateGame;

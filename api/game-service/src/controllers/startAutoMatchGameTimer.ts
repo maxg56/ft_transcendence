@@ -1,6 +1,6 @@
 import { activeGames } from '../config/data';
 import { startGameLoop } from './gameLoop';
-import {logError,logformat} from './log';
+import {logError,logformat} from '../utils/log';
 
 export function startAutoMatchGameTimer(gameId: string) {
     const game = activeGames.get(gameId);

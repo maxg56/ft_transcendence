@@ -34,7 +34,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
 
       const data = await res.json();
       if (!res.ok) throw new Error(`Erreur ${res.status}: ${data?.message || "Erreur inconnue"}`);
-      console.log("data", data.tempToken);
+      // console.log("data", data.tempToken);
       if (data.twoFactorRequired) {
         setNeeds2FA(true);
         document.cookie = `token=${data.tempToken}; path=/; max-age=${60 * 3}; Secure; SameSite=Strict`;
@@ -79,7 +79,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       });
   
       const data = await res.json();
-      console.log("data", data);
+      // console.log("data", data);
   
       if (!res.ok) {
         throw new Error(`${data?.message || "Erreur inconnue"}`);

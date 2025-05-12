@@ -190,14 +190,14 @@ const Profile: React.FC = () => {
 				{/* Username */}
 				<div className="flex flex-col justify-center">
 				  <h1 className="text-glow text-4xl font-bold text-white tracking-wide drop-shadow-md">
-					{username} test
+					{username}
 				  </h1>
 				</div>
 			  </div>
 	  
 			  {/* Rank & Elo */}
 			  <div className="flex flex-col space-y-4">
-				<div
+				{/* <div
 				  className="text-glow px-10 py-2 rounded-md text-white font-semibold 
 							 bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/10 
 							 backdrop-blur-md 
@@ -207,7 +207,7 @@ const Profile: React.FC = () => {
 							 transition duration-300"
 				>
 				  Rank: <span className="text-yellow-300">{rank}</span>
-				</div>
+				</div> */}
 				<div
 				  className="text-glow px-10 py-2 rounded-md text-white font-semibold 
 							 bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/10 

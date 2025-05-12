@@ -70,21 +70,21 @@ export const useAiInputControl = (
     
             // Smoothly move toward predicted target between samples
             const maxMove = 4.0; // AI paddle speed
-            const error = aiTargetZ.current - left.position.z;
+            const error = aiTargetZ.current - right.position.z;
     
             if (Math.abs(error) > 1) {
                 const movement = Math.sign(error) * Math.min(Math.abs(error), maxMove);
-                const newZ = left.position.z + movement;
+                const newZ = right.position.z + movement;
                 if (newZ > -paddleLimit && newZ < paddleLimit) {
-                    left.position.z = newZ;
+                    right.position.z = newZ;
                 }
             }
     
             // --- HUMAN CONTROL ---
-            if (pressedKeys.has(confKey.p2_up) && right.position.z > -paddleLimit)
-                right.position.z -= moveAmount;
-            if (pressedKeys.has(confKey.p2_down) && right.position.z < paddleLimit)
-                right.position.z += moveAmount;
+            if (pressedKeys.has(confKey.p1_up) && left.position.z > -paddleLimit)
+                left.position.z -= moveAmount;
+            if (pressedKeys.has(confKey.p1_down) && left.position.z < paddleLimit)
+                left.position.z += moveAmount;
     
         }, 16); // ~60 FPS
     

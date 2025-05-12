@@ -26,7 +26,7 @@ export default function VsPopup({ onSelect, onClose } : Props) {
           className="px-4 py-2 rounded-md font-semibold 
                      bg-blue-500/70 hover:bg-blue-600/80 
                      backdrop-blur-sm transition shadow-md"
-          onClick={() => { onSelect(t("ia")); onClose(); }}
+          onClick={() => { onSelect("ia"); onClose(); }}
         >
           {t("IA")}
         </button>
@@ -34,7 +34,7 @@ export default function VsPopup({ onSelect, onClose } : Props) {
           className="px-4 py-2 rounded-md font-semibold 
                      bg-green-500/70 hover:bg-green-600/80 
                      backdrop-blur-sm transition shadow-md"
-          onClick={() => { onSelect(t("humain")); onClose(); }}
+          onClick={() => { onSelect("humain"); onClose(); }}
         >
           {t("HUMAIN")}
         </button>

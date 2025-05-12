@@ -17,13 +17,13 @@ const GameOverlay: React.FC<Props> = ({ score, winner }) => {
   }
 
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className="title flex flex-col items-center text-center">
       {/* Score affiché tout le temps */}
       <p className="text-white text-7xl">{score[0]} - {score[1]}</p>
 
       {/* Gagnant affiché seulement si défini */}
       {winner && (
-        <p className="text-white text-7xl mt-4">{getWinner()}</p>
+        <p className="top-[80px] text-white text-8xl mt-4 neonText">{getWinner()}</p>
       )}
     </div>
   );

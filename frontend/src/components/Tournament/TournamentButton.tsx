@@ -1,9 +1,13 @@
-import { useState } from "react";
 import TournamentPopup from "./TournamentPopup";
 import { useTranslation } from "@/context/TranslationContext";
 
-export default function VsButton() {
-  const [showPopup, setShowPopup] = useState(false);
+type TournamentButton = {
+  isOpen: boolean,
+  open: () => void,
+  close: () => void
+};
+
+export default function TournamentButton({isOpen, open, close}: TournamentButton) {
   const { t } = useTranslation();
 
   return (
@@ -16,14 +20,14 @@ export default function VsButton() {
              hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
              border border-cyan-300/30 
              transition duration-300"
-        onClick={() => setShowPopup(true)}
+        onClick={() => open()}
       >
         {t("Tournois")}
       </button>
-      {showPopup && (
+      {isOpen && (
         <TournamentPopup
           onSelect={()=> null}
-          onClose={() => setShowPopup(false)}
+          onClose={close}
         />
       )}
     </>

@@ -1,16 +1,20 @@
-import { useState } from "react";
 import MultiPopup from "./MultiPopup";
 import { useTranslation } from "@/context/TranslationContext";
 import { useMode , Mode } from "@/context/ModeContext";
 
-export default function VsButton() {
-  const [showPopup, setShowPopup] = useState(false);
+type MultiButtonProps = {
+  isOpen: boolean,
+  open: () => void;
+  close: () => void;
+};
+
+export default function MultiButton({ isOpen, open, close }: MultiButtonProps) {
   const { t } = useTranslation();
   const { setMode } = useMode();
 
   const handleSelect = (choice : Mode) => {
     setMode(choice);
-    setShowPopup(false);
+    close();
   };
 
   return (
@@ -23,14 +27,14 @@ export default function VsButton() {
              hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
              border border-cyan-300/30 
              transition duration-300"
-        onClick={() => setShowPopup(true)}
+        onClick={() => open()}
       >
         {t("Multi")}
       </button>
-      {showPopup && (
+      {isOpen && (
         <MultiPopup
           onSelect={handleSelect}
-          onClose={() => setShowPopup(false)}
+          onClose={close}
         />
       )}
     </>

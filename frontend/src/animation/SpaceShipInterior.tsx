@@ -39,12 +39,12 @@ export const SpaceShipInterior = () => {
 
     // Load 360° skybox textures from public folder
     const filePaths = [
-      '/textures/px.png',
-      '/textures/py.png',
-      '/textures/pz.png',
-      '/textures/nx.png',
-      '/textures/ny.png',
-      '/textures/nz.png',
+      '/textures/px.jpg',
+      '/textures/py.jpg',
+      '/textures/pz.jpg',
+      '/textures/nx.jpg',
+      '/textures/ny.jpg',
+      '/textures/nz.jpg',
     ];
 
     const cubeTexture = CubeTexture.CreateFromImages(filePaths, scene);

@@ -46,7 +46,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
 
   return (
     <div
-  className="absolute top-[350%] right-[33.5%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
+  className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
   onClick={onClose}
 >
   <div

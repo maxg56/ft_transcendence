@@ -49,7 +49,7 @@ const countdown = useCountdown(3, handleCountdownDone, countdownKey);
              shadow-[0_0_20px_rgba(0,255,255,0.4)] 
              hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
              border border-cyan-300/30 
-             transition duration-300 px-20 py-7 rounded "
+             transition duration-300 px-20 py-7 rounded"
             onClick={() => navigate("/hub")}
           >
             {t("Retour au menu")}

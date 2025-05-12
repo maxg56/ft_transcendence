@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { useApi } from "@/hooks/api/useApi"
@@ -41,13 +41,27 @@ export function DoubleAuthentification() {
       method: 'POST',
       immediate: false,
       body: JSON.stringify({}),
-      onSuccess: (res) => {
-        if (!res) {
-          console.error("Erreur 2FA : réponse invalide", res)
+      onSuccess: (data) => {
+        if (!data) {
+          console.error("Erreur 2FA : réponse invalide", data)
         }
       },
       onError: (errMsg) => {
         console.error('Erreur 2FA :', errMsg)
+      },
+    }
+  )
+
+  const { refetch: check2FAStatus } = useApi(
+    "/auth/check2FA",
+    {
+      immediate: false,
+      onSuccess: (data) => {
+        if (data === true)
+          setIsEnabled(true)
+      },
+      onError: (errMsg) => {
+        console.error('Erreur 2FA check :', errMsg)
       },
     }
   )
@@ -92,6 +106,14 @@ export function DoubleAuthentification() {
     handleModalClose()
   }
 
+  useEffect(() => {
+		const fetchData = async () => {
+			await Promise.all([check2FAStatus()]);
+		};
+		fetchData();
+	}, []
+	);
+
   return (
     <div>
       <div className="flex items-center space-x-2">
@@ -100,8 +122,9 @@ export function DoubleAuthentification() {
           id="authentification"
           checked={isEnabled}
           onCheckedChange={(checked) => {
-            if (checked) handleModalOpen()
-            else {
+            if (checked) {
+              handleModalOpen()
+            } else {
               SwitchClose()
               
             }

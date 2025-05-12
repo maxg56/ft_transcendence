@@ -2,25 +2,28 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import useNavigation from "@/hooks/useNavigation";
 import Cookies from 'js-cookie';
+import { useTranslation } from "@/context/TranslationContext";
 
 const API_URL = import.meta.env.VITE_URL_PRODE || "https://localhost:8443";
 
 function validateSignUp(username: string, password: string, confirmPassword: string): string | null {
-  if (!username || !password || !confirmPassword) return "Tous les champs doivent être remplis";
-  if (username.length < 3 || username.length > 20) return "Le nom d'utilisateur doit contenir entre 3 et 20 caractères";
-  if (password.length < 8 || password.length > 20) return "Le mot de passe doit contenir entre 8 et 20 caractères";
-  if (password !== confirmPassword) return "Les mots de passe ne correspondent pas";
+  const { t } = useTranslation();
+  if (!username || !password || !confirmPassword) return t("Tous les champs doivent être remplis");
+  if (username.length < 3 || username.length > 20) return t("Le nom d'utilisateur doit contenir entre 3 et 20 caractères");
+  if (password.length < 8 || password.length > 20) return t("Le mot de passe doit contenir entre 8 et 20 caractères");
+  if (password !== confirmPassword) return t("Les mots de passe ne correspondent pas");
   return null;
 }
 
 export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onError?: (err: string) => void } = {}) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [needs2FA, setNeeds2FA] = useState(false);
   const { navigate } = useNavigation();
 
   const signIn = useCallback(async (username: string, password: string) => {
     if (!username || !password) {
-      const errorMessage = "Champs manquants";
+      const errorMessage = t("Champs manquants");
       setError(errorMessage);
       onError?.(errorMessage);
       return;
@@ -33,7 +36,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(`Erreur ${res.status}: ${data?.message || "Erreur inconnue"}`);
+      if (!res.ok) throw new Error(`Erreur ${res.status}: ${data?.message || t("Erreur inconnue")}`);
       // console.log("data", data.tempToken);
       if (data.twoFactorRequired) {
         setNeeds2FA(true);
@@ -42,16 +45,16 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
         return;
       }
 
-      if (!data.token) throw new Error("Token non reçu");
+      if (!data.token) throw new Error(t("Token non reçu"));
 
       document.cookie = `token=${data.token}; path=/; max-age=${60 * 60}; Secure; SameSite=Strict`;
       document.cookie = `refreshtoken=${data.refreshToken}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
       setError(null);
-      toast.success("Connexion réussie");
+      toast.success(t("Connexion réussie"));
       onSuccess?.();
       navigate("/hub");
     } catch (err) {
-      const errorMessage = "Erreur lors de la connexion";
+      const errorMessage = t("Erreur lors de la connexion");
       setError(errorMessage);
       onError?.(errorMessage); // Call onError callback
       console.error(err);
@@ -66,7 +69,7 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
     try {
       const token = Cookies.get('token');
       if (!token) {
-        throw new Error("Token manquant. Veuillez vous reconnecter.");
+        throw new Error(t("Token manquant. Veuillez vous reconnecter."));
       }
   
       const res = await fetch(`${API_URL}/auth/verify-2fa`, {
@@ -82,11 +85,11 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       // console.log("data", data);
   
       if (!res.ok) {
-        throw new Error(`${data?.message || "Erreur inconnue"}`);
+        throw new Error(`${data?.message || t("Erreur inconnue")}`);
       }
   
       if (!data.data.token) {
-        throw new Error("Token final non reçu");
+        throw new Error(t("Token final non reçu"));
       }
       
       document.cookie = `token=${data.data.token}; path=/; max-age=${60 * 60}; Secure; SameSite=Strict`;
@@ -94,13 +97,13 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
   
       // Reset 2FA state and notify user
       setNeeds2FA(false);
-      toast.success("Connexion réussie avec 2FA");
+      toast.success(t("Connexion réussie avec 2FA"));
       onSuccess?.();
       if (nav) {
         navigate("/hub");
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Code 2FA invalide";
+      const errorMessage = err instanceof Error ? err.message : t("Code 2FA invalide");
       onError?.(errorMessage);
     }
   }, [onSuccess, navigate, onError]);
@@ -121,14 +124,14 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
       });
       const data = await res.json();
       if (!res.ok) throw new Error(`Erreur ${res.status}: ${await res.text()}`);
-      if (!data.token) throw new Error("Token non reçu");
+      if (!data.token) throw new Error(t("Token non reçu"));
       document.cookie = `token=${data.token}; path=/; max-age=${60 * 60}; Secure; SameSite=Strict`;
       document.cookie = `refreshtoken=${data.refreshToken}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
       setError(null);
       onSuccess?.();
       navigate("/hub");
     } catch (err) {
-      const errorMessage = "Erreur lors de l'inscription";
+      const errorMessage = t("Erreur lors de l'inscription");
       setError(errorMessage);
       onError?.(errorMessage);
       console.error(err);

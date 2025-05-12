@@ -140,7 +140,6 @@ export function DoubleAuthentification() {
         secretKey={secretKey ?? ''}
         onActivate={handleActivate}
         onCancel={handleCancel}
-        setIsEnabled={setIsEnabled}
       />
     </div>
   )

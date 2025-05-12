@@ -20,7 +20,6 @@ const Profile: React.FC = () => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [selectOptions, setSelectedOption] = useState<Options>("friends");
 	const [username, setUser] = useState("");
-	const rank = "Diamant";
 	const [elo, setElo] = useState(0);
 
 

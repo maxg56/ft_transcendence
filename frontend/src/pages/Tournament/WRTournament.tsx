@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import TournamentCode from '@/components/Tournament/TournamentCode';
-import ParticipantsList from '@/components/Tournament/TournamentList';
+// t TournamentCode from '@/components/Tournament/TournamentCode';
+// import ParticipantsList from '@/components/Tournament/TournamentList';impor
 import { useNavigate } from 'react-router-dom';
 import { useTournament } from '@/context/ResultsContext';
 
 type Player = {
+	id: number;
 	isHost?: boolean;
 	name: string;
 	username: string;
@@ -27,24 +28,28 @@ const TournamentT1 = () => {
 	const navigate = useNavigate();
 	const [players] = useState<Player[]>([
 		{
+			id: 1,
 			isHost: true,
 			name: 'Joueur 1',
 			username: 'joueur1',
 			avatar: `https://robohash.org/joueur1`
 		},
 		{
+			id: 2,
 			isHost: false,
 			name: 'Joueur 2',
 			username: 'joueur2',
 			avatar: `https://robohash.org/joueur2`
 		},
 		{
+			id: 3,
 			isHost: false,
 			name: 'Joueur 3',
 			username: 'joueur3',
 			avatar: `https://robohash.org/joueur3`
 		},
 		{
+			id: 4,
 			isHost: false,
 			name: 'Joueur 4',
 			username: 'joueur4',
@@ -75,8 +80,9 @@ const TournamentT1 = () => {
 		});
 	
 		setMatches(simulatedMatches);
+		setResults(simulatedMatches);
 		setTimeout(() => {
-			navigate('/tournamentStage2 ');
+			navigate('/tournamentStage2');
 		}, 300);
 	};
 	
@@ -123,7 +129,14 @@ const TournamentT1 = () => {
 					<h2 className="text-lg font-semibold text-center">Matchs à venir</h2>
 					<div className="flex flex-row gap-8">{matches.map(renderMatch)}</div>
 				</div>
+
 			</div>
+			<button
+				className="bg-blue-200 rounded-2xl text-sm text-right flex-col position-bottom-right p-4"
+				onClick={simulateAndGoToNext}
+			>
+				Next
+			</button>
 		</div>
 	);
 };

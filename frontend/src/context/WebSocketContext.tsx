@@ -12,7 +12,9 @@ type WebSocketContextType = {
   socket: WebSocket | null;
   isConnected: boolean;
   sendMessage: (msg: string) => void;
+  addMessageListener: (cb: (msg: any) => void) => () => void;
 };
+
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
@@ -33,7 +35,9 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
   const manuallyClosed = useRef(false);
   const socketRef = useRef<WebSocket | null>(null);
+  const listeners = useRef<((msg: any) => void)[]>([]);
   const token = Cookies.get("token");
+
 
   const connect = () => {
     if (!token) {
@@ -63,11 +67,27 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
         }, delay);
       }
     };
-
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        listeners.current.forEach((listener) => listener(data));
+      } catch (err) {
+        console.error("WebSocket message parse error:", err);
+      }
+    };
+    
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
   };
+
+  const addMessageListener = (listener: (msg: any) => void) => {
+    listeners.current.push(listener);
+    return () => {
+      listeners.current = listeners.current.filter(l => l !== listener);
+    };
+  };
+  
 
   useEffect(() => {
     manuallyClosed.current = false;
@@ -83,6 +103,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [token]);
 
   const sendMessage = (msg: string) => {
+
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(msg);
     } else {
@@ -91,7 +112,13 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   };
   
   return (
-    <WebSocketContext.Provider value={{ socket, isConnected: socket?.readyState === WebSocket.OPEN, sendMessage }}>
+    <WebSocketContext.Provider 
+    value={{ 
+      socket,
+      isConnected: socket?.readyState === WebSocket.OPEN,
+      sendMessage,
+      addMessageListener
+      }}>
         {children}
     </WebSocketContext.Provider>
   );

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { GameEngineFactory } from './GameEngine/GameEngineFactory';
 import { Player } from '../models/Player';
-import { logformat, logError } from './log';
+import { logformat, logError } from '../utils/log';
 import { WebSocket } from 'ws';
 import { activeGames ,matchmakingQueue } from '../config/data';
 import { GameMode, Room } from '../type';
@@ -13,6 +13,7 @@ export interface MatchFormat {
     teams: number;
 }
 const SUPPORTED_GAME_MODES: Set<GameMode> = new Set(['1v1', '2v2']);
+
 function getQueueKey(format: MatchFormat): GameMode {
   
   if (format.playersPerTeam <= 0 || format.teams <= 0) {
@@ -180,19 +181,35 @@ export function findMatchWithPlayers(players: Player[], format: MatchFormat, isP
   logformat("Match created", "format", `${format.teams} teams of ${format.playersPerTeam}`, "gameId", gameId);
 }
 
-export function cleanMatchmakingQueues(timeoutSeconds = 120) {
-  const now = Date.now();
+export function cleanMatchmakingQueues(timeoutSeconds = 120, now = Date.now()) {
   for (const [key, queue] of matchmakingQueue.entries()) {
     const filteredQueue = queue.filter(player => {
       const isActive = player.ws && player.ws.readyState === WebSocket.OPEN;
       const isRecent = (now - player.joinedAt) < timeoutSeconds * 1000;
+
       if (!isActive || !isRecent) {
         console.log(`[match] Removing inactive/expired player ${player.id} from ${key}`);
+
+        // Envoie un message au client s’il est encore connecté
+        if (player.ws && player.ws.readyState === WebSocket.OPEN) {
+          player.ws.send(JSON.stringify({
+            type: 'matchmaking:removed',
+            reason: !isActive ? 'disconnected' : 'timeout',
+          }));
+        }
       }
+
       return isActive && isRecent;
     });
-    matchmakingQueue.set(key, filteredQueue);
+
+    if (filteredQueue.length > 0) {
+      matchmakingQueue.set(key, filteredQueue);
+    } else {
+      matchmakingQueue.delete(key);
+      console.log(`[match] Removed empty queue for ${key}`);
+    }
   }
 }
+
 
   

@@ -12,7 +12,6 @@ const FriendListHub: React.FC = () => {
       immediate: false,
       onSuccess: (data) => {
         if (data) {
-          // console.log("Données reçues :", data);
           setFriendStatus(data.friends);
         } else {
           console.error("Erreur friends list", data);
@@ -24,8 +23,6 @@ const FriendListHub: React.FC = () => {
     }
   );
   
-
-
   useEffect(() => {
     const fetchData = async () => {
       await fetchFriendList()

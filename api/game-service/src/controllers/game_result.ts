@@ -1,9 +1,9 @@
-import calculateElo from './calculateElo';
+import calculateElo from '../utils/calculateElo';
 import Match from "../models/Match";
 import MatchPlayer from "../models/MatchPlayer";
 import User from "../models/User";
 import { Player } from "../models/Player";
-import { logformat, logError } from "./log";
+import { logformat, logError } from "../utils/log";
 import { activeGames } from '../config/data';
 import { GameScore, TeamScore,GameScore1v1,GameScore2v2 } from '../type';
 

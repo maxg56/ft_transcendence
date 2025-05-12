@@ -61,7 +61,6 @@ export function useApi<T>(
 	  const result = await response.json();
 
 	  if (!response.ok) {
-		console.log("Response status", response.status);
 		if (response.status === 401 && istoken) {
 		  Cookies.remove('token');
 		  const refreshToken = Cookies.get('refreshtoken');
@@ -79,9 +78,7 @@ export function useApi<T>(
 			  const newToken = refreshData.token;
 			  
 			  if (newToken) {
-				console.log("Nouveau token", newToken);
 				Cookies.set('token', newToken);
-				// Retry original request with new token
 				const retryResponse = await fetch(BASE_URL + url, buildRequestOptions(newToken));
 				const retryResult = await retryResponse.json();
 

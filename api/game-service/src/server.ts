@@ -3,18 +3,19 @@ import WebSocket from 'ws';
 import { v4 as uuidv4 } from 'uuid';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
-import { verifyToken } from './controllers/JWT';
+import { verifyToken } from './utils/JWT';
 import database from './plugins/database';
 import Match from "./models/Match";
 import MatchPlayer from "./models/MatchPlayer";
 import User from "./models/User";
 import { Player } from './models/Player';
 
-import joinPrivateGame from './controllers/join_private_game';
-import { logformat, logError } from "./controllers/log";
+import { joinPrivateGame, statePrivateGameHandler } from './controllers/join_private_game';
+import {create_private_game} from './controllers/create_private_game';
+import joinTournamentGame from './controllers/joinTournamentGame';
+import { logformat, logError } from "./utils/log";
 import {activeGames, privateGames , matchmakingQueue } from './config/data';
 import { MatchFormat,tryMatchmaking , enqueuePlayer, cleanMatchmakingQueues } from './controllers/matchmaking';
-import { Query } from 'mysql2/typings/mysql/lib/protocol/sequences/Query';
 
 dotenv.config();
 
@@ -54,7 +55,7 @@ async function handleNewConnection(ws: WebSocket, token: string) {
     return;
   }
 
-  const player: Player = { id: playerId, name: user.username, ws, elo: user.elo, joinedAt: Date.now() };
+  const player: Player = { id: playerId, name: user.username, ws, elo: user.elo, joinedAt: Date.now() , avatar: user.avatar};
 
   ws.on('message', (message: string) => {
     try {
@@ -98,15 +99,19 @@ function handleMessage(data: any, player: Player) {
       case 'join_queue':
         enqueuePlayer(player,data.format);
         break;
-      case 'create_private_game': {
-        const gameCode = uuidv4().slice(0, 6);
-        privateGames.set(gameCode, { host: player, nb: 1, maxPlayers: data.nb_players, guest: [player] });
-        player.ws.send(JSON.stringify({ event: 'private_game_created', gameCode }));
+      case 'create_private_game':
+        create_private_game(player, data);
         break;
-      }
       case 'join_private_game':
         joinPrivateGame(player, data);
         break;
+      case 'state_private_game':
+        statePrivateGameHandler(player, data);
+        break;
+      case 'join_tournament_game': {
+        joinTournamentGame(player, data);
+        break;
+      }
       case 'move_paddle': {
         const game = activeGames.get(data.gameId);
         if (game) {

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "@/components/HeaderComponent";
 import { useMode } from "@/context/ModeContext";
 import useNavigation from "@/hooks/useNavigation";
-import { useJoinQueue } from "@/hooks/WedSooket/useJoinQueue";
+import { useJoinQueue} from "@/hooks/WedSooket/useJoinQueue";
 import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";

@@ -17,7 +17,7 @@ abstract class BaseGameEngine<
 	abstract paddles: Record<TSide, { z: number }>;
   
 	constructor(protected mode: GameMode) {
-	  this.resetBall(1);
+	  this.resetBall(-1);
 	}
   
 	update(): void {

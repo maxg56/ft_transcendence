@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useApi } from "@/hooks/api/useApi";
 import { FriendStatusResponse, FriendWithStatus } from "./profil/type/profilInterface";
+import { useTranslation } from "@/context/TranslationContext";
 
 const FriendListHub: React.FC = () => {
+  const { t } = useTranslation();
 
   const [friendStatus, setFriendStatus] = useState<FriendWithStatus[]>([]);
 
@@ -44,7 +46,7 @@ const FriendListHub: React.FC = () => {
         <div className="max-h-[400px] overflow-y-auto pr-1 text-xs space-y-4">
 
           <div>
-            <h4 className="font-semibold text-green-400 mb-1">En ligne</h4>
+            <h4 className="font-semibold text-green-400 mb-1">{t("En ligne")}</h4>
             <ul className="space-y-2">
               {friendStatus
                 .filter(friend => friend.online)
@@ -67,7 +69,7 @@ const FriendListHub: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-red-400 mb-1">Hors ligne</h4>
+            <h4 className="font-semibold text-red-400 mb-1">{t("Hors ligne")}</h4>
             <ul className="space-y-2">
               {friendStatus
                 .filter(friend => !friend.online)

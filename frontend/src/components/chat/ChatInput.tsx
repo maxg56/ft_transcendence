@@ -1,5 +1,6 @@
 import React from "react";
 import { Send, Mail } from "lucide-react";
+import { useTranslation } from "@/context/TranslationContext";
 
 interface ChatInputProps {
   value: string;
@@ -22,6 +23,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   setOpen,
   open,
 }) => {
+  const { t } = useTranslation();
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") onSend();
   };
@@ -31,14 +33,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
       <button
         onClick={() => setOpen(!open)}
         className={buttonStyle}
-        title={open ? "Fermer la boîte mail" : "Ouvrir la boîte mail"}
+        title={open ? t("Fermer la boîte mail") : t("Ouvrir la boîte mail")}
       >
         <Mail size={20} />
       </button>
       <input
         className="flex-1 border border-cyan-500/40 rounded-md p-2 text-sm text-white bg-transparent placeholder:text-cyan-200 focus:outline-none"
         type="text"
-        placeholder="Écrire un message..."
+        placeholder={t("Écrire un message...")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -46,7 +48,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       <button
         onClick={onSend}
         className={buttonStyle}
-        title="Envoyer"
+        title={t("Envoyer")}
       >
         <Send size={20} />
       </button>

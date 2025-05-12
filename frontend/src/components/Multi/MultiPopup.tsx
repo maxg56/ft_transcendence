@@ -1,10 +1,14 @@
 import { Mode } from "@/context/ModeContext";
+import { useTranslation } from "@/context/TranslationContext";
+
 type Props = {
   onSelect: (value: Mode) => void;
   onClose: () => void;
 };
 
 export default function MultiPopup({ onSelect, onClose }: Props) {
+  const { t } = useTranslation();
+
   return (
     <div
       className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
@@ -17,7 +21,7 @@ export default function MultiPopup({ onSelect, onClose }: Props) {
                    rounded-2xl p-8 flex flex-col gap-4 min-w-[300px] text-white text-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-lg font-semibold mb-2">Select Mode</h2>
+        <h2 className="text-lg font-semibold mb-2">{t("Select Mode")}</h2>
 
         <button
           className="px-4 py-2 rounded-md font-semibold 

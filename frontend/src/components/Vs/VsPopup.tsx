@@ -1,4 +1,5 @@
 import { Mode } from "@/context/ModeContext";
+import { useTranslation } from "@/context/TranslationContext";
 
 type Props = {
   onSelect: (value: Mode) => void;
@@ -6,6 +7,8 @@ type Props = {
 };
 
 export default function VsPopup({ onSelect, onClose } : Props) {
+  const { t } = useTranslation();
+
   return (
     <div
       className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
@@ -18,22 +21,22 @@ export default function VsPopup({ onSelect, onClose } : Props) {
                    rounded-2xl p-8 flex flex-col gap-4 min-w-[300px] text-white text-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-lg font-semibold mb-2">Select Mode</h2>
+        <h2 className="text-lg font-semibold mb-2">{t("Select Mode")}</h2>
         <button
           className="px-4 py-2 rounded-md font-semibold 
                      bg-blue-500/70 hover:bg-blue-600/80 
                      backdrop-blur-sm transition shadow-md"
-          onClick={() => { onSelect("ia"); onClose(); }}
+          onClick={() => { onSelect(t("ia")); onClose(); }}
         >
-          IA
+          {t("IA")}
         </button>
         <button
           className="px-4 py-2 rounded-md font-semibold 
                      bg-green-500/70 hover:bg-green-600/80 
                      backdrop-blur-sm transition shadow-md"
-          onClick={() => { onSelect("humain"); onClose(); }}
+          onClick={() => { onSelect(t("humain")); onClose(); }}
         >
-          HUMAIN
+          {t("HUMAIN")}
         </button>
       </div>
     </div>

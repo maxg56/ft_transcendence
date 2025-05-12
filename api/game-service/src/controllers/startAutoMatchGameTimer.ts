@@ -13,11 +13,10 @@ export function startAutoMatchGameTimer(gameId: string) {
         startGameLoop(gameId);
         logformat(`Partie ${gameId} démarrée automatiquement après 5 secondes.`);
         stillGame.players.forEach((p) => {
-          p.ws.send(JSON.stringify({ event: 'game_started_auto' }));
+          p.ws.send(JSON.stringify({ event: 'game_started_auto', data: { gameId } }));
         });
       }
     }, 5000);
   
     game.autoStartTimer = autoStartTimer;
 }
-  

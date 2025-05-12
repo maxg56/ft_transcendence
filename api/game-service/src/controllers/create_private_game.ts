@@ -20,12 +20,12 @@ export async function create_private_game(player: Player, data: any) {
     return;
   }
   
-  const gameCode = uuidv4().slice(0, 6);
+  const gameCode = uuidv4().slice(0, 4);
   const game: PrivateGame = {
     host: player,
     nb: 1,
     maxPlayers: nb_players,
-    guest: [player],
+    guest: [], // ne plus ajouter l'hôte dans guest
     isTournament,
   };
 
@@ -37,13 +37,16 @@ export async function create_private_game(player: Player, data: any) {
   try {
     // Envoi de la réponse à l'utilisateur avec le nom et la photo de profil
     if (player.ws.readyState === WebSocket.OPEN) {
+
       player.ws.send(JSON.stringify({
         event: isTournament ? 'tournament_created' : 'private_game_created',
-        gameCode,
-        player: {
-          isHost: true,
-          username: player.name,
-          avatar: player.avatar
+        data: {
+          gameCode,
+          player: {
+            isHost: true,
+            username: player.name,
+            avatar: player.avatar
+          }
         },
       }));
 

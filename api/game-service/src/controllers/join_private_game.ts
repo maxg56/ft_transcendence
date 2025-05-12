@@ -37,16 +37,15 @@ async function joinPrivateGame(player: Player, data: any) {
     game.guest.push(player);
 
     // Nouveau joueur : reçoit la liste des joueurs déjà présents
-    const existingPlayersInfo = [host, ...game.guest.filter(p => p.id !== player.id)].map(p => ({
-      id: p.id,
-      username: p.name,
-      avatar: p.avatar,
-      isHost: p.id === game.host.id,
-    }));
+    const rawPlayers = [host, ...game.guest];
+    // Mapper en objet joueur et dédupliquer par id
+    const existingPlayersInfo = rawPlayers
+      .map(p => ({ id: p.id, username: p.name, avatar: p.avatar, isHost: p.id === game.host.id }))
+      .filter((p, idx, arr) => arr.findIndex(x => x.id === p.id) === idx);
 
     sendJSON(player, "joined_game", {
       gameCode: data.gameCode,
-      existingPlayers: existingPlayersInfo
+      players: existingPlayersInfo
     });
 
     // Tous les autres joueurs reçoivent les infos du nouveau joueur
@@ -69,16 +68,18 @@ async function joinPrivateGame(player: Player, data: any) {
   }
 }
 
-async function statePrivateGameHandler(player: Player, data: any) {
-  if (!data?.gameCode) {
-    logError("Missing gameCode in joinPrivateGame", data);
+async function statePrivateGameHandler(player: Player, msg: any) {
+  // extraire le payload
+  const payload = msg.data;
+  const gameCode = payload?.gameCode;
+  if (!gameCode) {
+    logError("Missing gameCode in statePrivateGame", payload);
     sendJSON(player, "error", { message: "Missing game code" });
     return;
   }
-  const game = privateGames.get(data.gameCode);
+  const game = privateGames.get(gameCode);
   if (!game) {
-    logError("Game not found", data.gameCode);
-    sendJSON(player, "error", { message: "Game not found" });
+    // partie déjà supprimée ou code invalide: ignorer
     return;
   }
   if ( player.id !== game.host.id) {
@@ -88,14 +89,14 @@ async function statePrivateGameHandler(player: Player, data: any) {
   if (game.nb === game.maxPlayers) {
     const gameId = uuidv4();
     logformat("Game is full, starting game", gameId);
-    privateGames.delete(data.gameCode);
+    privateGames.delete(gameCode);
 
-    const players = game.guest;
+    const players = [game.host, ...game.guest];
     const teams = new Map<number, Player[]>();
     players.forEach((p, idx) => {
       teams.set(idx + 1, [p]); // one player per team
     });
-
+    console.log("teams", teams);
     const room: Room = {
       players,
       engine: GameEngineFactory.createEngine("1v1"),

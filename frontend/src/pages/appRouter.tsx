@@ -13,6 +13,7 @@ import Results from '@/pages/Tournament/Results';
 import NotFound from '@/pages/NotFound';
 import WSGame4Players from '@/pages/game/Player4WSGame';
 import Duel3 from '@/pages/game/DuelWS';
+import Private_game from "./WRF";
 
 const AppRouter = () => {
     return (
@@ -26,6 +27,7 @@ const AppRouter = () => {
             <Route path="/wsGame" element={<WSGame4Players />} />
             <Route path="/multiplayerselect" element={<MultiplayerSelection />} />
             <Route path="/waitingroomtournament" element={<WRTournament />} />
+            <Route path="/waitingroomPrivategame" element={<Private_game />} />
             <Route path="/tournamentStage2" element={<TournamentT2 />} />
             <Route path="/modeduel" element={<Modeduel />} />
             <Route path="/results" element={<Results />} />

@@ -34,10 +34,10 @@ const Accueil: React.FC = () => {
                 <StarsBackground />
 
                 <div className="flex flex-col items-center justify-center gap-11 min-h-screen relative z-10">
-                    <button className="title neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50" onClick={() => setIsSignInOpen(true)}>
+                    <button className="title neon-button w-80 px-6 py-10 bg-blue-300 text-black rounded text-center hover:bg-gray-50" onClick={() => setIsSignInOpen(true)}>
                         {t("Se connecter")}
                     </button>
-                    <button className="title neon-button px-20 py-10 bg-blue-300 text-black rounded hover:bg-gray-50" onClick={() => setIsSignUpOpen(true)}>
+                    <button className="title neon-button w-80 px-6 py-10 bg-blue-300 text-black rounded text-center hover:bg-gray-50" onClick={() => setIsSignUpOpen(true)}>
                         {t("Inscription")}
                     </button>
                 </div>

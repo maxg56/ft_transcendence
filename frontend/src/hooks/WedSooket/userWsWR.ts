@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from '@/context/WebSocketContext';
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+import { useTranslation } from "@/context/TranslationContext";
 
 type Players = {
   name: string;
@@ -21,6 +22,7 @@ export type Player = {
 };
 
 export const useWaitroomListener = () => {
+  const { t } = useTranslation();
   const { addMessageListener } = useWebSocket();
   const navigate = useNavigate();
   const [code, setCode] = useState<string>("");
@@ -103,10 +105,10 @@ export const useWaitroomListener = () => {
           if (myName) Cookies.set("myName", myName || "Unknown");
 
           if (format.playersPerTeam === 1) {
-            toast.success("Match trouvé ! Préparation au duel...");
+            toast.success(t("Match trouvé ! Préparation au duel..."));
             navigate("/duel3");
           } else if (format.playersPerTeam === 2) {
-            toast.success("Match trouvé ! Préparation au match par équipe...");
+            toast.success(t("Match trouvé ! Préparation au match par équipe..."));
             navigate("/wsGame");
           }
           break;

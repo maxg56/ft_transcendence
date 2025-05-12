@@ -56,7 +56,7 @@ const isMessageType = (type: string): boolean =>
 
 export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [channels, setChannels] = useState<Channel[]>([{ id: 'general', name: 'Général', type: 'general' }]);
+  const [channels, setChannels] = useState<Channel[]>([{ id: 'general', name: 'General', type: 'general' }]);
   const [messages, setMessages] = useState<Record<string, Message[]>>({ general: [] });
   const [unread, setUnread] = useState<Record<string, number>>({});
   const [selectedChannel, setSelectedChannel] = useState<string>('general');
@@ -94,7 +94,7 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
       if (data.type === 'channels') {
         const serverChannels: string[] = data.channels;
         const mappedChannels: Channel[] = serverChannels.map(key => {
-          if (key === 'general') return { id: 'general', name: 'Général', type: 'general' };
+          if (key === 'general') return { id: 'general', name: 'General', type: 'general' };
           if (key.startsWith('group:')) {
             const id = key.split(':')[1];
             return { id: key, name: `Groupe ${id}`, type: 'group' };
@@ -130,7 +130,7 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
               ? `Privé avec ${data.receiverUsername}`
               : channelTypeKey === 'group'
               ? `Groupe ${data.channelId}`
-              : 'Général';
+              : 'General';
           setChannels(prev => [...prev, { id: channelKey, name: channelName, type: channelTypeKey }]);
           setMessages(prev => ({ ...prev, [channelKey]: [] }));
           ws.send(JSON.stringify({ type: 'get_history', channel: channelKey }));

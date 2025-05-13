@@ -3,6 +3,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { useApi } from "@/hooks/api/useApi"
 import { DoubleAuthentificationModal } from "@/components/profil/DoubleAuthenModal"
+import { useTranslation } from "@/context/TranslationContext"
 
 interface TwoFactorResponse {
   qrCode: string;
@@ -14,7 +15,8 @@ export function DoubleAuthentification() {
   const [isEnabled, setIsEnabled] = useState(false)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
   const [secretKey, setSecretKey] = useState<string | undefined>(undefined)
-
+  const {t} = useTranslation();
+  
   const { refetch: enable2FA } = useApi<TwoFactorResponse>(
     "/auth/enable-2fa",
     {
@@ -130,7 +132,7 @@ export function DoubleAuthentification() {
             }
           }}
         />
-        <Label className="text-2xl" htmlFor="authentification">Activer Authentification</Label>
+        <Label className="text-xl" htmlFor="authentification">{t("Activer Authentification")}</Label>
       </div>
 
       <DoubleAuthentificationModal

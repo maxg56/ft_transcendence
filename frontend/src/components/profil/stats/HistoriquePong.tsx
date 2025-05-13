@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import {Card,}from "@/components/ui/card"
 import { HistoryGame, HistoryGame2v2 } from "../type/statsInterface"
 import { useApi } from "@/hooks/api/useApi"
+import { useTranslation } from "@/context/TranslationContext"
 
 const ITEMS_PER_PAGE = 5
 
@@ -22,7 +23,7 @@ export function HistoriquePong() {
 	const end = start + ITEMS_PER_PAGE
 	const start2v2 = page2v2 * ITEMS_PER_PAGE
 	const end2v2 = start2v2 + ITEMS_PER_PAGE
-
+	const {t} = useTranslation();
 	const [matchHistory2v2, setmatchHistory2v2] = useState<HistoryGame2v2[]>([])
 
 	const {refetch: fetchHistory2v2} = useApi<HistoryGame2v2[]>(
@@ -121,11 +122,11 @@ export function HistoriquePong() {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="font-medium text-center">Adversaire</TableHead>
-								<TableHead className="font-medium text-center">Résultat</TableHead>
-								<TableHead className="font-medium text-center">Score</TableHead>
-								<TableHead className="font-medium text-center">Temps</TableHead>
-								<TableHead className="font-medium text-center">Elo</TableHead>
+								<TableHead className="font-medium text-center">{t("Adversaire")}</TableHead>
+								<TableHead className="font-medium text-center">{t("Résultat")}</TableHead>
+								<TableHead className="font-medium text-center">{t("Score")}</TableHead>
+								<TableHead className="font-medium text-center">{t("Temps")}</TableHead>
+								<TableHead className="font-medium text-center">{t("Elo")}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -146,13 +147,14 @@ export function HistoriquePong() {
 							onClick={handlePrev}
 							disabled={page === 0}
 						>
-							Précédent
+							{t("Précédent")}
+
 						</Button>
 						<Button
 							onClick={handleNext}
 							disabled={end >= matchHistory.length}
 						>
-							Suivant
+							{t("Suivant")}
 						</Button>
 					</div>
 				</div>
@@ -163,12 +165,12 @@ export function HistoriquePong() {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="text-center font-medium">Adversaires</TableHead>
-								<TableHead className="text-center font-medium">Coéquipier</TableHead>
-								<TableHead className="text-center font-medium">Résultat</TableHead>
-								<TableHead className="text-center font-medium">Score</TableHead>
-								<TableHead className="text-center font-medium">Temps</TableHead>
-								<TableHead className="text-center font-medium">Elo</TableHead>
+								<TableHead className="text-center font-medium">{t("Adversaires")}</TableHead>
+								<TableHead className="text-center font-medium">{t("Coéquipier")}</TableHead>
+								<TableHead className="text-center font-medium">{t("Résultat")}</TableHead>
+								<TableHead className="text-center font-medium">{t("Score")}</TableHead>
+								<TableHead className="text-center font-medium">{t("Temps")}</TableHead>
+								<TableHead className="text-center font-medium">{t("Elo")}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -190,13 +192,13 @@ export function HistoriquePong() {
 							onClick={handlePrev2v2}
 							disabled={page2v2 === 0}
 						>
-							Précédent
+							{t("Précédent")}
 						</Button>
 						<Button
 							onClick={handleNext2v2}
 							disabled={end2v2 >= matchHistory2v2.length}
 						>
-							Suivant
+							{t("Suivant")}
 						</Button>
 					</div>
 				</div>

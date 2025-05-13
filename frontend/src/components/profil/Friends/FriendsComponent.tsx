@@ -5,6 +5,7 @@ import { useApi } from "@/hooks/api/useApi";
 import { Invitation, APIFriendListProps } from "../type/friendsInterface";
 import { Username } from "../type/profilInterface";
 import { useFriendApi } from "@/hooks/api/profile/useApiFriends";
+import { useTranslation } from "@/context/TranslationContext";
 
 const FriendsPanel: React.FC = () => {
 	const [research, setResearch] = useState<string[]>([]);
@@ -13,7 +14,7 @@ const FriendsPanel: React.FC = () => {
 	const [sentInvitations, setSentInvitations] = useState<Invitation[]>([])
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
-
+	const {t} = useTranslation();
 	const {
 		acceptFriend,
 		refuseFriend,
@@ -124,12 +125,12 @@ const FriendsPanel: React.FC = () => {
 		<div className="space-y-6 text-white">
   			{/* Search Friend */}
   			<div className="p-6 rounded-2xl border border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_15px_rgba(0,255,255,0.1)] transition duration-300">
-    			<h3 className="font-bold mb-4 text-2xl text-cyan-200">Rechercher un ami</h3>
+    			<h3 className="font-bold mb-4 text-2xl text-cyan-200">{t("Rechercher un ami")}</h3>
     				<input
       					type="text"
       					value={searchTerm}
       					onChange={(e) => handleResearch(e.target.value)}
-      					placeholder="Nom d'utilisateur..."
+      					placeholder={t("Nom d'utilisateur...")}
       					className="w-full px-4 py-2 rounded-md bg-white/10 border border-cyan-300/20 text-white placeholder-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400"
     					/>
     				<ul className="mt-4 space-y-2">
@@ -140,7 +141,7 @@ const FriendsPanel: React.FC = () => {
             						className="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white px-3 py-1 rounded text-xs transition"
             							onClick={() => handleAddFriends(username)}
           								>
-            						Inviter
+            						{t("Inviter")}
           						</button>
         					</li>
       					))}
@@ -152,7 +153,7 @@ const FriendsPanel: React.FC = () => {
 
   			{/* Invitations Received */}
   			<div className="p-6 rounded-2xl border border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_15px_rgba(0,255,255,0.1)] transition duration-300">
-    			<h3 className="font-bold mb-4 text-2xl text-cyan-200">Invitations reçues</h3>
+    			<h3 className="font-bold mb-4 text-2xl text-cyan-200">{t("Invitations reçues")}</h3>
     			<div className="max-h-48 overflow-y-auto pr-2 custom-scrollbar">
       				<ul className="space-y-2 text-base">
         			{pendingG.map((user, index) => (

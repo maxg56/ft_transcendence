@@ -181,7 +181,7 @@ const Profile: React.FC = () => {
 					  className="mt-2 text-sm text-red-400 hover:underline"
 					  onClick={handleRemoveImage}
 					>
-					  Supprimer la photo
+					  {t("Supprimer la photo")}
 					</button>
 				  )}
 				</div>
@@ -216,7 +216,7 @@ const Profile: React.FC = () => {
 							 border border-cyan-300/30 
 							 transition duration-300"
 				>
-				  Elo: <span className="text-green-300">{elo}</span>
+				  {t("Elo")}: <span className="text-green-300">{elo}</span>
 				</div>
 			  </div>
 	  
@@ -230,7 +230,7 @@ const Profile: React.FC = () => {
 			</div>
 	  
 			{/* Main Content */}
-			<div className="relative z-10 flex h-[70%] gap-4 px-8">
+			<div className="flex h-[70%] gap-4 px-8">
 			  {/* Sidebar */}
 			  <nav
 				className="w-72 p-6 rounded-2xl text-white bg-gradient-to-br from-cyan-400/20 via-blue-500/20 to-purple-600/10 
@@ -261,10 +261,10 @@ const Profile: React.FC = () => {
 							   hover:from-blue-600 hover:to-purple-700 
 							   transition shadow-md border border-blue-300/30"
 				  >
-					Return Hub
+					{t("Return Hub")}
 				  </button>
 				  <LogoutButton />
-				  <DeleteAccountModal />
+				  <DeleteAccountModal />	
 				</div>
 			  </nav>
 	  
@@ -277,13 +277,12 @@ const Profile: React.FC = () => {
                         transition duration-300"
 >
 
-  {/* Panel content */}
-  <div className="relative z-10">
-    {selectOptions === "friends" && <FriendsPanel />}
-    {selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
-    {selectOptions === "pong" && <StatsPong />}
-  </div>
-</div>
+			<div className="relative z-10">
+				{selectOptions === "friends" && <FriendsPanel />}
+				{selectOptions === "settings" && <SettingsPage onUsernameChange={setUser} />}
+				{selectOptions === "pong" && <StatsPong />}
+			</div>
+			</div>
 
 			</div>
 		  </div>

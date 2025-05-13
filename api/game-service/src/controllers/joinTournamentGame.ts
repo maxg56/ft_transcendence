@@ -1,10 +1,65 @@
-import { Player } from "../models/Player";
 import { v4 as uuidv4 } from "uuid";
 import { logformat, logError } from "../utils/log";
-import { waitingTournaments, activeGames } from "../config/data";
-import { GameEngineFactory } from "./GameEngine/GameEngineFactory";
-import { startAutoMatchGameTimer } from "./startAutoMatchGameTimer";
-import { Room } from "../type";
+import { Player } from '../models/Player';
+import { waitingTournaments, tournaments } from "../config/data";
+import { Tournament } from './Tournament';
+
+// Removed unused imports
+async function sendJSON(player: Player, event: string, data: any) {
+  if (!player || !player.ws) {
+    logError("Player or WebSocket not defined", player);
+    return;
+  }
+  if (player.ws.readyState === 1) {
+    player.ws.send(JSON.stringify({ event, data }));
+  } else {
+    logError("WebSocket not open. Cannot send message.", {
+      event,
+      data,
+      readyState: player.ws.readyState,
+    });
+  }
+}
+
+
+// Handler to start a tournament game when all players are present
+async function stateTournamentGameHandler(player: Player, msg: any) {
+  const payload = msg.data;
+  const gameCode = payload?.gameCode;
+  if (!gameCode) {
+    logError("Missing gameCode in stateTournamentGame", payload);
+    sendJSON(player, "error", { message: "Missing game code" });
+    return;
+  }
+  const game = waitingTournaments.get(gameCode);
+  if (!game || !game.isTournament) {
+    // tournament already deleted or invalid code
+    sendJSON(player, "error", { message: "Tournament not found" });
+    return;
+  }
+  if (player.id !== game.host.id) {
+    sendJSON(player, "error", { message: "You are not the host" });
+    return;
+  }
+  if (game.nb === game.maxPlayers) {
+    const gameId = uuidv4();
+    logformat("Tournament is full, starting tournament", gameId);
+    waitingTournaments.delete(gameCode);
+
+    const players = [game.host, ...game.guest];
+    // Create the Tournament instance and store it
+    const tourney = new Tournament(players);
+    
+    tournaments.set(gameId, tourney);
+
+    // Notify all players
+    players.forEach((p) => {
+      sendJSON(p, "tournament_start", { gameId });
+    });
+  }
+}
+
+
 
 async function joinTournamentGame(player: Player, data: any) {
     if (!data?.gameCode) {
@@ -23,63 +78,38 @@ async function joinTournamentGame(player: Player, data: any) {
     const host = game.host;
 
     if (game.nb < game.maxPlayers) {
-        game.nb++;
-        game.guest.push(player);
-
-        const payload = {
-          event: "join_tournament_game",
-          data: {
-            gameId: data.gameId,
-            host: host.id,
-            hostName: host.name,
-            guest: player.id,
-          }
-        };
-
-        player.ws.send(JSON.stringify(payload));
-        host.ws.send(JSON.stringify(payload));
-        logformat("Player joined tournament", player.id, data.gameId);
-      }
-
-    if (game.nb === game.maxPlayers) {
-        const gameId = uuidv4();
-        logformat("Tournament full, starting", gameId);
-        waitingTournaments.delete(data.gameCode);
-
-        const players = game.guest;
-        const teams = new Map<number, Player[]>();
-        players.forEach((p, idx) => {
-            teams.set(idx + 1, [p]);
-        });
-
-        // const room: Room = {
-        //   players,
-        //   engine: GameEngineFactory.createEngine("tournament"),
-        //   teams,
-        //   autoStartTimer: null,
-        //   mode: "tournament",
-        //   isPrivateGame: true,
-        //   isPongGame: true,
-        //   startTime: new Date(),
-        // };
-
-        // activeGames.set(gameId, room);
-        // startAutoMatchGameTimer(gameId);
-
-        // players.forEach((p, idx) => {
-        //   p.ws.send(JSON.stringify({
-        //     event: "tournament_start",
-        //     gameId,
-        //     format: { teams: players.length, playersPerTeam: 1 },
-        //     teamId: idx + 1,
-        //     positionInTeam: 0,
-        //     teams: players.map((pl, i) => ({
-        //       id: i + 1,
-        //       players: [{ id: pl.id, name: pl.name }]
-        //     }))
-        //   }));
-        // });
-      }
+      game.nb++;
+      game.guest.push(player);
+  
+      // Nouveau joueur : reçoit la liste des joueurs déjà présents
+      const rawPlayers = [host, ...game.guest];
+      // Mapper en objet joueur et dédupliquer par id
+      const existingPlayersInfo = rawPlayers
+        .map(p => ({ id: p.id, username: p.name, avatar: p.avatar, isHost: p.id === game.host.id }))
+        .filter((p, idx, arr) => arr.findIndex(x => x.id === p.id) === idx);
+      sendJSON(player, "joined_game", {
+        gameCode: data.gameCode,
+        players: existingPlayersInfo
+      });
+  
+      // Tous les autres joueurs reçoivent les infos du nouveau joueur
+      const newPlayerInfo = {
+        id: player.id,
+        username: player.name,
+        avatar: player.avatar,
+        isHost: false
+      };
+  
+      [host, ...game.guest.filter(p => p.id !== player.id)].forEach(p => {
+        sendJSON(p, "new_player_joined", { player: newPlayerInfo });
+      });
+  
+      logformat("Player joined private game", player.id, data.gameCode);
+    }
+    else {
+      sendJSON(player, "error", { message: "Game is full" });
+      logError("Game is full", data.gameCode);
+    }
 }
 
-export default joinTournamentGame;
+export {joinTournamentGame, stateTournamentGameHandler};

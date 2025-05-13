@@ -1,4 +1,3 @@
-
 import { PlayerSide, Position, Vector, GameMode,GameScore,GameScore1v1,GameScore2v2,PlayerSide1v1,PlayerSide2v2,TeamScore } from '../../type';
 import { TABLE_WIDTH, TABLE_HEIGHT, BALL_RADIUS, PADDLE_HEIGHT, WINNING_SCORE, MAX_SPEED, ACCELERATION, MOVE_SPEED} from './constants';
 
@@ -16,7 +15,11 @@ abstract class BaseGameEngine<
 	abstract score: TScore;
 	abstract paddles: Record<TSide, { z: number }>;
   
-	constructor(protected mode: GameMode) {
+	// Callback on game end, providing winner side and score
+	protected onGameEnd?: (winnerSide: TSide, score: TScore) => void;
+  
+	constructor(protected mode: GameMode, onGameEnd?: (winnerSide: TSide, score: TScore) => void) {
+	  this.onGameEnd = onGameEnd;
 	  this.resetBall(-1);
 	}
   
@@ -25,6 +28,7 @@ abstract class BaseGameEngine<
 	  this.moveBall();
 	  this.checkCollisions();
 	  this.checkScore();
+	  if (this.isGameOver() && this.onGameEnd) this.onGameEnd(this.winner as TSide, this.score);
 	}
   
 	protected moveBall(): void {
@@ -93,45 +97,4 @@ abstract class BaseGameEngine<
   }
   
 
-
-
-
-
-class GameEngineFFA4 extends BaseGameEngine<PlayerSide2v2, GameScore> {
-  score = { left: 0, right: 0, left2: 0, right2: 0 };
-  paddles = {
-    left: { z: -60 },
-    left2: { z: 60 },
-    right: { z: -60 },
-    right2: { z: 60 },
-  };
-
-  checkCollisions(): void {
-    for (const side of Object.keys(this.paddles) as PlayerSide[]) {
-      const isLeft = side === 'left' || side === 'left2';
-      const borderX = isLeft ? -TABLE_WIDTH / 2 + BALL_RADIUS : TABLE_WIDTH / 2 - BALL_RADIUS;
-      const conditionX = isLeft ? this.ball.x <= borderX : this.ball.x >= borderX;
-
-      if (conditionX && Math.abs(this.ball.z - this.paddles[side].z) < PADDLE_HEIGHT / 2) {
-        this.direction = this.calculateRebound(side);
-        break;
-      }
-    }
-  }
-
-  checkScore(): void {
-    if (this.ball.x < -TABLE_WIDTH / 2) {
-		const missedSide = Math.abs(this.ball.z - this.paddles.left.z) < Math.abs(this.ball.z - this.paddles.left2.z) ? 'left' : 'left2';
-		this.score[missedSide]++;
-		this.resetBall(1);
-	  }
-	  
-	  if (this.ball.x > TABLE_WIDTH / 2) {
-		const missedSide = Math.abs(this.ball.z - this.paddles.right.z) < Math.abs(this.ball.z - this.paddles.right2.z) ? 'right' : 'right2';
-		this.score[missedSide]++;
-		this.resetBall(-1);
-	  }
-  }
-}
-
-export { BaseGameEngine, GameEngineFFA4 };
+export { BaseGameEngine};

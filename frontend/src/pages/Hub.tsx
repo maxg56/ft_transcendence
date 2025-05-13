@@ -6,7 +6,11 @@ import { useJoinQueue} from "@/hooks/WedSooket/useJoinQueue";
 import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
 import FriendListHub from "@/components/ListFriends";
 import Chat from "@/components/chat/Chat";
+import { useTranslation } from "@/context/TranslationContext";
+import Cookies from "js-cookie"
+
 const Hub: React.FC = () => {
+  const { t } = useTranslation();
   const { mode } = useMode();
   const { navigate } = useNavigation();
   const { joinQueue } = useJoinQueue();
@@ -14,7 +18,7 @@ const Hub: React.FC = () => {
     if (mode) {
       return (
         <>
-          Start !<br />{mode} mode
+          Start !<br />{t(mode)} mode
         </>
       );
     }
@@ -31,6 +35,13 @@ const Hub: React.FC = () => {
   };
 
   const handleStart = () => {
+    ['allyName',
+      'gameid',
+      'myName',
+      'opponentName',
+      'opponentAlly',
+      'positionInTeam',
+      'teamId'].forEach(n => Cookies.remove(n));
     if (mode === "ia") {
       navigate("/solo");
     } else if (mode === "humain") {

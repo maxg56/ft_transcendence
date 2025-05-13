@@ -25,6 +25,7 @@ const Game4PlayersWS: React.FC = () => {
           'gameid',
           'myName',
           'opponentName',
+          'opponentAlly',
           'positionInTeam',
           'teamId'].forEach(n => Cookies.remove(n));
           navigate("/hub");
@@ -39,7 +40,6 @@ const Game4PlayersWS: React.FC = () => {
         )}
         <KeyboardProvider>
 			<GameCanvas4PlayersWS
-                // gameStarted={gameStarted}
                 setScore={setScore}
                 setWinner={setWinner}
                 setGameStarted={setGameStarted}

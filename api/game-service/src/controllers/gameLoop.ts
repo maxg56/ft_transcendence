@@ -29,4 +29,3 @@ export async function startGameLoop(gameId: string) {
       }
     }, 1000 / 60); // 60 FPS
   }
-

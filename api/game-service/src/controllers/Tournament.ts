@@ -21,6 +21,9 @@ interface WsTournament {
 
 
 class Tournament {
+  private ackWaiters: Record<string, { resolve: () => void, timeout: NodeJS.Timeout }> = {};
+  private lastStep: string | null = null;
+  public hostId: string | null = null;
   private players: Player[] = [];
   private TournGames = new Map<string, Room>();
   private completedMatches: Match[] = [];
@@ -28,18 +31,20 @@ class Tournament {
 
   constructor(players: Player[]) {
     this.players = players;
+    if (players.length > 0) this.hostId = players[0].id; // convention : host = premier joueur
     this.stateMachine.transition('START');
   }
 
-  setupSemis() {
+  async setupSemis() {
     const [p1, p2, p3, p4] = this.players;
     this.createMatch('Game1', [p1, p4]);
     this.createMatch('Game2', [p2, p3]);
     this.broadcast('🏁 Tournament started! Semi-finals created.');
+    await this.waitForAck('tournament_update');
     this.broadcastWsTournament();
   }
 
-  setupFinals() {
+  async setupFinals() {
     const s1 = this.TournGames.get('Game1')!;
     const s2 = this.TournGames.get('Game2')!;
     const winner1 = this.getWinner(s1);
@@ -50,10 +55,11 @@ class Tournament {
     this.createMatch('final', [winner1, winner2]);
     this.createMatch('third', [loser1, loser2]);
     this.broadcast('🔥 Finals and third-place match created!');
+    await this.waitForAck('tournament_update');
     this.broadcastWsTournament();
   }
 
-  finishTournament() {
+  async finishTournament() {
     const final = this.TournGames.get('final')!;
     const third = this.TournGames.get('third')!;
     const winner = this.getWinner(final);
@@ -69,6 +75,7 @@ class Tournament {
     ];
 
     this.broadcast({ event: 'tournament_end', data: standings });
+    await this.waitForAck('tournament_end');
   }
 
   areMatchesFinished(ids: string[]): boolean {
@@ -123,7 +130,7 @@ class Tournament {
     }, 5000)
   }
 
-  private recordResult(roomId: string, winnerSide: PlayerSide1v1, score: GameScore1v1) {
+  private async recordResult(roomId: string, winnerSide: PlayerSide1v1, score: GameScore1v1) {
     const match = this.TournGames.get(roomId);
     if (!match) return;
 
@@ -131,6 +138,7 @@ class Tournament {
     const winners = match.teams.get(teamIndex)!;
 
     this.broadcast({ event: 'tournament_match_result', data: { roomId, winners: winners.map(p => p.name), score } });
+    await this.waitForAck('tournament_match_result');
 
     const finished: Match = {
       match: roomId,
@@ -168,12 +176,48 @@ class Tournament {
     for (const player of this.players) {
       player.ws.send(JSON.stringify({ event: 'tournament_update', data: wsData }));
     }
+    // On attend ack après le broadcast
+    this.waitForAck('tournament_update');
   }
 
   getTournamentState() {
     return {
       matches: Array.from(this.TournGames.entries())
     };
+  }
+
+  // Nouvelle logique d'attente d'ack
+  async waitForAck(step: string) {
+    if (this.ackWaiters[step]) return; // déjà en attente
+    this.lastStep = step;
+    return new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        delete this.ackWaiters[step];
+        // Optionnel : relancer ou annuler
+        // reject(new Error('Timeout ack'));
+      }, 8000);
+      this.ackWaiters[step] = { resolve: () => {
+        clearTimeout(timeout);
+        delete this.ackWaiters[step];
+        resolve();
+      }, timeout };
+    });
+  }
+
+  receiveAck(step: string, player: Player) {
+    if (player.id !== this.hostId) return;
+    if (this.ackWaiters[step]) {
+      this.ackWaiters[step].resolve();
+      // Envoie ack_ok à l'host
+      const host = this.players.find(p => p.id === this.hostId);
+      if (host && host.ws && host.ws.readyState === 1) {
+        host.ws.send(JSON.stringify({ event: 'ack_ok', step }));
+      }
+    }
+  }
+
+  getHostId() {
+    return this.hostId;
   }
 }
 

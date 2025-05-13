@@ -58,3 +58,20 @@ export const join_private_game = () => {
   }, [navigate, send]);
   return { joinPrivateGame };
 }
+
+export const join_tournament_game = () => {
+  const navigate = useNavigate();
+  const send = useSendWSMessage();
+
+  const joinTournament = useCallback((code: string, redirectTo?: string) => {
+    send({
+      event: "join_tournament_game",
+      gameCode: code,
+    });
+
+    if (redirectTo) {
+      navigate(redirectTo);
+    }
+  }, [navigate, send]);
+  return { joinTournament };
+}

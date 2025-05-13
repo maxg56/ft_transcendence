@@ -12,9 +12,9 @@ import { Player } from './models/Player';
 
 import { joinPrivateGame, statePrivateGameHandler } from './controllers/join_private_game';
 import {create_private_game} from './controllers/create_private_game';
-import joinTournamentGame from './controllers/joinTournamentGame';
+import { joinTournamentGame, stateTournamentGameHandler } from './controllers/joinTournamentGame';
 import { logformat, logError } from "./utils/log";
-import {activeGames, privateGames , matchmakingQueue } from './config/data';
+import {activeGames, privateGames , matchmakingQueue, tournaments } from './config/data';
 import { MatchFormat,tryMatchmaking , enqueuePlayer, cleanMatchmakingQueues } from './controllers/matchmaking';
 
 dotenv.config();
@@ -110,6 +110,10 @@ function handleMessage(data: any, player: Player) {
         break;
       case 'join_tournament_game': {
         joinTournamentGame(player, data);
+        break;
+      }
+      case 'tournament_state': {
+        stateTournamentGameHandler(player, data);
         break;
       }
       case 'move_paddle': {

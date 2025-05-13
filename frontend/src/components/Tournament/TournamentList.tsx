@@ -1,16 +1,22 @@
-import { Player } from '@/hooks/WedSooket/userWsWR';
+import { Player } from '@/types/WF';
 import PlayerCircle from './PlayerCircle';
 import { useWebSocket } from '@/context/WebSocketContext';
 
 type ParticipantsListProps = {
   players: Player[];
   code: string;
+  isTournament: boolean;
 };
 
-const ParticipantsList = ({ players, code }: ParticipantsListProps) => {
+const ParticipantsList = ({ players, code ,isTournament}: ParticipantsListProps) => {
   const { sendMessage } = useWebSocket();
   const handleStart = () => {
-    sendMessage(JSON.stringify({ event: 'state_private_game', data: { gameCode: code } }));
+    if (!isTournament) {
+      sendMessage(JSON.stringify({ event: 'state_private_game', data: { gameCode: code } }));
+    }
+    else {
+      sendMessage(JSON.stringify({ event: 'tournament_state', data: { gameCode: code } }));
+    }
   };
 
   return (

@@ -1,94 +1,114 @@
-import { useState, useEffect } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
-import { useWebSocket } from '@/context/WebSocketContext';
+import { useEffect } from "react";
+import { unstable_batchedUpdates } from "react-dom";
+import { useNavigate } from "react-router-dom";
+import { useWebSocket } from "@/context/WebSocketContext";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+import { useWaitroomStore } from "@/store/useWaitroomStore";
+import { Player, Players, Team } from "@/types/WF"; // si tu les as
 import { useTranslation } from "@/context/TranslationContext";
-
-type Players = {
-  name: string;
-  id: string;
-};
-
-type Team = {
-  id: string;
-  players: Players[];
-};
-export type Player = {
-  isHost: boolean;
-  username: string;
-  avatar: string | null;
-};
-
-export const useWaitroomListener = () => {
+export const useWaitroomListener = (myId?: string, player?: Player) => {
   const { t } = useTranslation();
   const { addMessageListener } = useWebSocket();
   const navigate = useNavigate();
-  const [code, setCode] = useState<string>("");
-  const [players, setPlayers] = useState<Player[]>([]);
+
+  const {
+    code,
+    players,
+    isTournament,
+    setCode,
+    setPlayers,
+    setIsTournament,
+    setTournamentStatus,
+    setMatches,
+    setLastResults,
+    setRanking,
+    matches,
+    lastResults,
+  } = useWaitroomStore();
 
   useEffect(() => {
-    const unsubscribe = addMessageListener((message: any) => {
-      const { event, data} = message;
-      const { player } = data;
-      console.log(message) // log global supprimé pour éviter les doublons
+    const unsubscribe = addMessageListener(({ event, data }) => {
+      if (event !== "game_state")
+        console.log("📶 WS event:", event, data);
+      if (!event) return;
+
+      const playerData = data?.player;
+
       switch (event) {
-        case 'tournament_created':
-        case 'private_game_created':
+        case "tournament_created":
           unstable_batchedUpdates(() => {
-            setCode(data.gameCode || "");
-            setPlayers([{
-              isHost: true,
-              username: player.username || '',
-              avatar: player.avatar || `https://robohash.org/${player.username || 'host'}`,
-            }]);
+            setIsTournament(true);
+            setCode(data.gameCode || data.gameId || "");
+            setPlayers([
+              {
+                isHost: true,
+                username: playerData?.username || "",
+                avatar: playerData?.avatar || `https://robohash.org/${playerData?.username || "host"}`,
+              },
+            ]);
           });
           break;
-        case 'new_player_joined':
 
+        case "private_game_created":
           unstable_batchedUpdates(() => {
-            setPlayers(prev => {
-              // ne pas ajouter en double
-              const name = player.username || '';
-              if (prev.some(p => p.username === name)) {
-                return prev;
-              }
-              return [
-                ...prev,
+            setIsTournament(false);
+            setCode(data.gameId || data.gameCode || "");
+            setPlayers([
+              {
+                isHost: true,
+                username: playerData?.username || "",
+                avatar: playerData?.avatar || `https://robohash.org/${playerData?.username || "host"}`,
+              },
+            ]);
+          });
+          break;
+
+        case "new_player_joined":
+          unstable_batchedUpdates(() => {
+            const name = playerData?.username || "";
+            const currentPlayers = useWaitroomStore.getState().players;
+            if (!currentPlayers.some((p) => p.username === name)) {
+              setPlayers([
+                ...currentPlayers,
                 {
                   isHost: false,
                   username: name,
-                  avatar: player.avatar || `https://robohash.org/${name || 'guest'}`,
-                }
-              ];
-            });
+                  avatar: playerData?.avatar || `https://robohash.org/${name || "guest"}`,
+                },
+              ]);
+            }
           });
           break;
-        case 'joined_game':
+
+        case "joined_game":
           unstable_batchedUpdates(() => {
             setCode(data.gameCode || "");
-            const list: any[] = data.players || data.existingPlayers || [];
-            setPlayers(
-              list.map(p => ({
-                isHost: p.isHost,
-                username: p.username,
-                avatar: p.avatar || `https://robohash.org/${p.username}`,
-              }))
-            );
+
+            // normalize players payload to array (convert object to array if needed)
+            let rawPlayers = data.players ?? data.existingPlayers ?? [];
+            if (!Array.isArray(rawPlayers)) {
+              rawPlayers = Object.values(rawPlayers);
+            }
+
+            const formattedPlayers = rawPlayers.map((p: any) => ({
+              isHost: p?.isHost || false,
+              username: p?.username || "unknown",
+              avatar: p?.avatar || `https://robohash.org/${p?.username || "guest"}`,
+            }));
+
+            setPlayers(formattedPlayers);
           });
           break;
-        case 'match_found':
-          const { gameId, format, teamId, teams, positionInTeam } = data;
 
-          if (!format || typeof format.playersPerTeam !== "number") {
-            return;
-          }
-          
+        case "match_found": {
+          const { gameId, format, teamId, teams, positionInTeam } = data;
+          if (!format || typeof format.playersPerTeam !== "number") return;
+
           Cookies.remove("opponentName");
           Cookies.remove("allyName");
           Cookies.remove("myName");
-          // Stockage des infos essentielles
+
           Cookies.set("gameid", gameId);
           Cookies.set("teamId", String(teamId));
           Cookies.set("positionInTeam", String(positionInTeam));
@@ -114,13 +134,48 @@ export const useWaitroomListener = () => {
             navigate("/wsGame");
           }
           break;
+        }
+        case "tournament_update":
+          unstable_batchedUpdates(() => {
+            setMatches(data.matches || []);
+            setLastResults(data.matchResults || []);
+          });
+          navigate("/tournamentStage2");
+          break;
+
+        case "tournament_notification":
+          if (typeof data === "string") toast.info(data);
+          else toast.info(JSON.stringify(data));
+          break;
+
+        case "tournament_end":
+          unstable_batchedUpdates(() => {
+            setRanking(data.standings || []);
+            setPlayers([]);
+            setCode("");
+            setIsTournament(false);
+            setTournamentStatus("finished");
+
+          });
+          navigate("/results");
+          break;
+
         default:
+          console.log("🔔 Unknown event:", event, data);
           break;
       }
     });
 
     return () => unsubscribe();
-  }, [addMessageListener]);
+  }, [addMessageListener, myId, navigate, player]);
 
-  return { code, players };
+  return {
+    code,
+    players,
+    isTournament,
+    tournamentStatus: useWaitroomStore.getState().tournamentStatus,
+    matches,
+    lastResults,
+    ranking: useWaitroomStore.getState().ranking,
+  };
 };

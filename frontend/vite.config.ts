@@ -6,6 +6,9 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    sourcemap: false,
+  },
   resolve: {
     alias: [
       {

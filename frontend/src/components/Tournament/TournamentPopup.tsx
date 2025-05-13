@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import useNavigation from '@/hooks/useNavigation';
-import {create_private_game ,join_private_game} from "@/hooks/WedSooket/useJoinQueue";
-import {  } from '@/hooks/WedSooket/useJoinQueue';
+import {create_private_game ,join_private_game ,join_tournament_game} from "@/hooks/WedSooket/useJoinQueue";
 import { toast } from "sonner";
 import { useTranslation } from "@/context/TranslationContext";
 
@@ -14,9 +12,9 @@ type Props = {
 export default function TournamentPopup({ onClose, onSelect }: Props) {
   const [code, setCode] = useState('');
   const [mode, setMode] = useState<'friends' | 'tournois'>('friends');
-  const { navigate } = useNavigation();
   const { createPrivateGame} = create_private_game();
   const { joinPrivateGame } = join_private_game();
+  const { joinTournament } = join_tournament_game();
   const { t } = useTranslation();
 
   const handleJoin = () => {
@@ -27,7 +25,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
     onSelect(`${mode}-join:${code}`);
     onClose();
     if (mode === 'tournois') {
-      navigate("/waitingroomtournament");
+      joinTournament(code, "/waitingroomPrivategame");
     }
     else {
       joinPrivateGame(code, "/waitingroomPrivategame");
@@ -38,7 +36,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
     onSelect(`${mode}-create`);
     onClose();
     if (mode === 'tournois') {
-      createPrivateGame("/waitingroomtournament", 4, true);
+      createPrivateGame("/waitingroomPrivategame", 4, true);
     } else {
       createPrivateGame("/waitingroomPrivategame", 2, false);
     }

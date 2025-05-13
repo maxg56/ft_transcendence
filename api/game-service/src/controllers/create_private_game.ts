@@ -41,7 +41,7 @@ export async function create_private_game(player: Player, data: any) {
       player.ws.send(JSON.stringify({
         event: isTournament ? 'tournament_created' : 'private_game_created',
         data: {
-          gameCode,
+          gameId: gameCode,
           player: {
             isHost: true,
             username: player.name,

@@ -1,4 +1,4 @@
-import { Player } from '@/hooks/WedSooket/userWsWR';
+import { Player } from '@/types/WF';
 
 
 const PlayerCircle = ({ player, index, total }: { player: Player; index: number; total: number }) => {

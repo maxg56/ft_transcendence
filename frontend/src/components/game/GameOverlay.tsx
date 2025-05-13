@@ -1,6 +1,7 @@
 // components/GameOverlay.tsx
 import React from 'react';
 import { useTranslation } from '@/context/TranslationContext';
+import Cookies from 'js-cookie'
 
 type Props = {
   score: [number, number];
@@ -9,6 +10,10 @@ type Props = {
 
 const GameOverlay: React.FC<Props> = ({ score, winner }) => {
   const { t } = useTranslation();
+  const myName = Cookies.get('myName') || '';
+  const opponent = Cookies.get('opponentName') || '';
+  const myAlly = Cookies.get('allyName') || '';
+  const opponentAlly = Cookies.get('opponentAlly') || '';
 
   const getWinner = () => {
     if (!winner) return null;
@@ -19,7 +24,11 @@ const GameOverlay: React.FC<Props> = ({ score, winner }) => {
   return (
     <div className="title flex flex-col items-center text-center">
       {/* Score affiché tout le temps */}
-      <p className="text-white text-7xl">{score[0]} - {score[1]}</p>
+      <div className="flex flex-row items-center w-[90vw] max-w-5xl mb-2">
+        <span className="flex-1 text-white text-5xl texte-left">{myName} {myAlly && ` - ${myAlly}`}</span>
+        <span className="text-white text-7xl px-4 flex-shrink-0">{score[0]} - {score[1]}</span>
+        <span className="flex-1 text-white text-5xl text-right">{opponent} {opponentAlly && ` - ${opponentAlly}`}</span>
+      </div>
 
       {/* Gagnant affiché seulement si défini */}
       {winner && (

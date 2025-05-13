@@ -131,7 +131,6 @@ services:
       - backend
     restart: always
   
-
 # ************* ----- frontend ----- ***********************
   frontend:
     container_name: ft_t_frontend
@@ -146,7 +145,6 @@ services:
     networks:
       - frontend
     restart: always
-
 
 #************* ----- ELK ----- ***********************
 
@@ -294,8 +292,7 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/volumes/caddylog/
-  
-  
+
 networks:
   frontend:
     driver: bridge

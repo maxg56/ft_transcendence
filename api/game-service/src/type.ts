@@ -25,6 +25,7 @@ export type Room = {
     isPrivateGame: boolean,
     isPongGame: boolean,
     startTime: Date 
+    isTournament?: boolean,
 };
 export interface PrivateGame {
     host: Player;
@@ -34,4 +35,4 @@ export interface PrivateGame {
     isTournament: boolean;
 }
 
-export type GameMode = '1v1' | '2v2';
+export type GameMode = '1v1' | '2v2' ;

@@ -1,69 +1,53 @@
 import React, { useEffect, useRef } from "react";
-import {
-    Engine,
-    Scene,
-    FreeCamera,
-    Color3,
-    Mesh,
-    Color4,
-    Vector3,
-    MeshBuilder,
-    StandardMaterial,
-  } from '@babylonjs/core';
 
-const StarsBackground: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+export const StarsBackground: React.FC = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
 
-        const engine = new Engine(canvas, true);
-        const scene = new Scene(engine);
-        scene.clearColor = new Color4(0, 0, 0, 1); // Opaque black background
-        // Camera & Light
-        const camera = new FreeCamera("camera", new Vector3(0, 0, -100), scene);
-        camera.setTarget(Vector3.Zero());
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
 
-        // Star material
-        const starMaterial = new StandardMaterial("starMat", scene);
-        starMaterial.emissiveColor = new Color3(1, 1, 1);
-
-        // Create stars (small spheres)
-        const starCount = 600;
-        const stars: Mesh[] = [];
-
-        for (let i = 0; i < starCount; i++) {
-            const star = MeshBuilder.CreateSphere(`star${i}`, { diameter: 0.5 }, scene);
-            star.material = starMaterial;
-            star.position.x = Math.random() * 200 - 100;
-            star.position.y = Math.random() * 100 - 50;
-            star.position.z = Math.random() * 200 - 100;
-            (star as any).speed = Math.random() * 0.5 + 0.2;
-            stars.push(star);
-        }
-
-        // Animation
-        engine.runRenderLoop(() => {
+        const stars = Array.from({ length: 600 }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 1.5,
+            speed: Math.random() * 0.5 + 0.2,
+        }));
+        
+        const animate = () => {
+            ctx.clearRect(0, 0, width, height);
             stars.forEach((star) => {
-                star.position.x += (star as any).speed;
-                if (star.position.x > 100) {
-                    star.position.x = -100;
-                    star.position.y = Math.random() * 100 - 50;
-                    star.position.z = Math.random() * 200 - 100;
+                star.x += star.speed;
+                if (star.x > width) {
+                    star.x = 0;
+                    star.y = Math.random() * height;
                 }
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "white";
+                ctx.fill();
             });
-            scene.render();
-        });
-
-        // Resize
-        window.addEventListener("resize", () => {
-            engine.resize();
-        });
-
-        return () => {
-            engine.dispose();
+            requestAnimationFrame(animate);
         };
+
+        animate();
+
+        const handleResize = () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     return (

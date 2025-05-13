@@ -60,7 +60,6 @@
 	"Tous les champs doivent être remplis": "Tous les champs doivent être remplis",
 	"Vérifier le code": "Vérifier le code",
 	"Vous avez été retiré de la file d'attente.": "Vous avez été retiré de la file d'attente.",
-	"winnerMessage": "{{side}} a gagné !",
 	"Conditions d'utilisation": "Conditions d'utilisation",
 	"conditions d'utilisation": "conditions d'utilisation",
 	"Politique de Confidentialité": "Politique de confidentialité",
@@ -132,5 +131,6 @@
 	"Score": "Score",
 	"Temps": "Temps",
 	"Elo": "Elo"
+	"winnerMessage": "Victoire pour {{side}} !"
 }
 

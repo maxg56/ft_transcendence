@@ -33,12 +33,14 @@ export const useGameScene4Players = () => {
   };
 
   const initializeScene = () => {
-    rendererRef.current = new THREE.WebGLRenderer({ antialias: true });
+    rendererRef.current = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     rendererRef.current.shadowMap.enabled = true;
     rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-
+      
     sceneRef.current = new THREE.Scene();
-    sceneRef.current.background = new THREE.Color("#141929");
+    // sceneRef.current.background = new THREE.Color("#141929");
+    sceneRef.current.background = null;
+
 
     cameraRef.current = new THREE.PerspectiveCamera(
       50,
@@ -56,8 +58,14 @@ export const useGameScene4Players = () => {
     sceneRef.current.add(directionalLight);
 
     const tableGeometry = new THREE.BoxGeometry(tableWidth, 10, tableHeight);
-    const tableMaterial = new THREE.MeshStandardMaterial({ color: "#385796" });
+    const tableMaterial = new THREE.MeshStandardMaterial({
+      color: "#385796",
+      transparent: true, // Enable transparency
+      opacity: 0.5       // Set desired opacity (0 = fully transparent, 1 = fully opaque)
+    });
+    // const tableMaterial = new THREE.MeshStandardMaterial({ color: "#385796" });
     const table = new THREE.Mesh(tableGeometry, tableMaterial);
+    
     table.receiveShadow = true;
     table.position.y = -5;
     sceneRef.current.add(table);

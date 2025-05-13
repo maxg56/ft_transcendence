@@ -99,10 +99,12 @@ export const useWaitroomListener = () => {
           const myName = myTeam?.players[Number(positionInTeam)]?.name;
           const myAlly = myTeam?.players.find((p: Players) => p.name !== myName);
           const opponent = opponentTeam?.players[0];
+          const opponentAlly = opponentTeam?.players[1];
 
           if (opponent) Cookies.set("opponentName", opponent.name || "Unknown");
           if (myAlly) Cookies.set("allyName", myAlly.name || "Unknown");
           if (myName) Cookies.set("myName", myName || "Unknown");
+          if (opponentAlly) Cookies.set("opponentAlly", opponentAlly.name || "Unknown");
 
           if (format.playersPerTeam === 1) {
             toast.success(t("Match trouvé ! Préparation au duel..."));

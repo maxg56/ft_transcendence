@@ -26,11 +26,11 @@ const DuelComponent: React.FC = () => {
       'gameid',
       'myName',
       'opponentName',
+      'opponentAlly',
       'positionInTeam',
       'teamId'].forEach(n => Cookies.remove(n));
       navigate("/hub");
   }
-
 
   return (
     <>
@@ -41,7 +41,6 @@ const DuelComponent: React.FC = () => {
       )}
       <KeyboardProvider>
 			  <GameCanvasWs
-          // gameStarted={gameStarted}
           setScore={setScore}
           setWinner={setWinner}
           setGameStarted={setGameStarted}

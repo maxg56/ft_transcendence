@@ -44,10 +44,12 @@ export const useWaitroomListener = () => {
       const myName = myTeam?.players[positionInTeam]?.name;
       const myAlly = myTeam?.players.find((p: Player) => p.name !== myName);
       const opponent = oppTeam?.players[0];
+      const opponentAlly = oppTeam?.players[1];
 
       if (opponent) Cookies.set("opponentName", opponent.name || "Unknown");
-      if (myAlly)   Cookies.set("allyName",    myAlly.name || "Unknown");
-      if (myName)   Cookies.set("myName",     myName    || "Unknown");
+      if (myAlly) Cookies.set("allyName", myAlly.name || "Unknown");
+      if (myName) Cookies.set("myName", myName || "Unknown");
+      if (opponentAlly) Cookies.set("opponentAlly", opponentAlly.name || "Unknown");
 
       // navigate based on team size
       if (format.playersPerTeam === 1) {

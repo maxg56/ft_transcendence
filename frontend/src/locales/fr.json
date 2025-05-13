@@ -60,5 +60,5 @@
 	"Tous les champs doivent être remplis": "Tous les champs doivent être remplis",
 	"Vérifier le code": "Vérifier le code",
 	"Vous avez été retiré de la file d'attente.": "Vous avez été retiré de la file d'attente.",
-	"winnerMessage": "{{side}} a(ont) gagné !"
+	"winnerMessage": "Victoire pour {{side}} !"
 }

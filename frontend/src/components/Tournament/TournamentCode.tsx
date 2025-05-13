@@ -21,7 +21,7 @@ const TournamentCode = ({ code }: TournamentCodeProps) => {
 	};
 
 	return (
-		<div className="flex justify-center items-center space-x-4 mt-8">
+		<div className="flex justify-center items-center space-x-4 mt-8 text-black">
 			{/* Code affiché */}
 			<div className="flex space-x-2">
 				{code.split("").map((char, index) => (

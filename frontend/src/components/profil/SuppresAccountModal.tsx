@@ -4,12 +4,12 @@ import { useState } from "react"
 import { Modal } from "../ModalCompo"
 import { useApi } from "@/hooks/api/useApi"
 import { useLogout } from "@/hooks/useLogOut"
-
+import { useTranslation } from "@/context/TranslationContext"
 
 const DeleteAccountModal = () => {
 	const [open, setOpen] = useState(false)
 	const { logout } = useLogout();
-
+	const {t} = useTranslation();
 
 	const deleteAccount = useApi<void>(
 		"/user/delete",
@@ -32,23 +32,23 @@ const DeleteAccountModal = () => {
 				onClick={() => setOpen(true)}
 				className="px-3 py-1 bg-red-500 text-white text-sm rounded-2xl hover:bg-red-600 w-full"
 			>
-				Supprimer mon compte
+				{t("Supprimer mon compte")}
 			</button>
 
 			{open && (
 				<Modal onClose={() => setOpen(false)}>
 					<div className="flex flex-col gap-4 w-[600px]">
-						<h2 className="text-xl font-bold text-red-600 text-center">Confirmation</h2>
+						<h2 className="text-xl-black font-bold text-red-600 text-center">{t("Confirmation")}</h2>
 						<div className="flex flex-col gap-4 ">
-							<p className="text-center text-xl">Es-tu sûr de vouloir supprimer ton compte ?</p>
-							<p className="text-center text-sm">Cette action est definitive</p>
+							<p className="text-center text-xl">{t("Es-tu sûr de vouloir supprimer ton compte ?")}</p>
+							<p className="text-center text-sm">{t("Cette action est definitive")}</p>
 						</div>
 						<div className="flex justify-between">
 							<button
 								onClick={() => setOpen(false)}
 								className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
 							>
-								Annuler
+								{t("Annuler")}
 							</button>
 							<button
 								onClick={async () => {
@@ -58,7 +58,7 @@ const DeleteAccountModal = () => {
 								}}
 								className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
 							>
-								Supprimer
+								{t("Supprimer")}
 							</button>
 						</div>
 					</div>

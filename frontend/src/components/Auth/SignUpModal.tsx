@@ -88,7 +88,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
       handleSignUp();
     }
   };
-
+  
   return (
     <>
       <AuthModal isOpen={isOpen} onClose={handleClose}>
@@ -130,13 +130,13 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             <Checkbox id="terms" checked={acceptedPolicy} onCheckedChange={(checked) =>setPolicy(!!checked)}/>
 
             <label htmlFor="terms" className="text-sm font-medium">
-              J'ai lu et accepte les{" "}
+              {t("J'ai lu et accepte les")}{" "}
               <button
                 type="button"
                 className="underline text-blue-500 hover:text-blue-700"
                 onClick={handleOpenTermsModal}
               >
-                conditions d'utilisation
+                {t("conditions d'utilisation")}
               </button>.
             </label>
           </div>
@@ -154,7 +154,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
       </AuthModal>
-
+      
       {isTermsModalOpen && (
         <Modal onClose={handleCloseTermsModal}>
           <div className="p-4">
@@ -163,75 +163,74 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             </h2>
             <div className="max-h-[600px] overflow-y-auto">
               <div className="space-y-4 p-2 text-justify">
-                <p className="text-xl font-bold">🔒 Politique de Confidentialité – ft_transcendence</p>
+                <p className="text-xl font-bold">🔒{t("Politique de Confidentialité")} – ft_transcendence</p>
 
-                <p className="font-semibold text-xl">1. Qui sommes-nous ?</p>
+                <p className="font-semibold text-xl">1. {t("Qui sommes nous ?")}</p>
                 <p className="text-sm">
-                  Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.
-                  Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.
+                  {t("Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.")}
+                  {t("Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.")}
                 </p>
 
-                <p className="font-semibold text-xl">2. Données collectées</p>
-                <p className="text-sm">Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :</p>
+                <p className="font-semibold text-xl">2.{t("Données collectées")}</p>
+                <p className="text-sm">{t("Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :")}</p>
                 <ul className="list-disc list-inside text-sm">
-                  <li>Identifiants : pseudonyme, mot de passe (hashé)</li>
-                  <li>Profil : avatar, statut en ligne</li>
-                  <li>Activité : historique des parties, scores, statistiques</li>
-                  <li>Ame : pour alimenter le server</li>
-                  <li>Données techniques : date de dernière connexion</li>
+                  <li>{t("Identifiants : pseudonyme, mot de passe (hashé)")}</li>
+                  <li>{t("Profil : avatar, statut en ligne")}</li>
+                  <li>{t("Activité : historique des parties, scores, statistiques")}</li>
+                  <li>{t("Ame : pour alimenter le server")}</li>
+                  <li>{t("Données techniques : date de dernière connexion")}</li>
                 </ul>
 
-                <p className="font-semibold text-xl">3. Finalité de la collecte</p>
-                <p className="text-sm">Les données sont utilisées pour :</p>
+                <p className="font-semibold text-xl">3. {t("Finalité de la collecte")}</p>
+                <p className="text-sm">{t("Les données sont utilisées pour :")}</p>
                 <ul className="list-disc list-inside text-sm">
-                  <li>Créer et gérer les comptes utilisateurs</li>
-                  <li>Permettre le matchmaking et les interactions en jeu</li>
-                  <li>Afficher les classements et statistiques</li>
-                  <li>Garantir la sécurité de l’application</li>
+                  <li>{t("Créer et gérer les comptes utilisateurs")}</li>
+                  <li>{t("Permettre le matchmaking et les interactions en jeu")}</li>
+                  <li>{t("Afficher les classements et statistiques")}</li>
+                  <li>{t("Garantir la sécurité de l’application")}</li>
                 </ul>
 
-                <p className="font-semibold text-xl">4. Sécurité des données</p>
-                <p className="text-sm">Vos données sont stockées de manière sécurisée :</p>
+                <p className="font-semibold text-xl">4.{t("Sécurité des données")}</p>
+                <p className="text-sm">{t("Vos données sont stockées de manière sécurisée :")}</p>
                 <ul className="list-disc list-inside text-sm">
-                  <li>Les mots de passe sont hashés</li>
-                  <li>L’application fonctionne en HTTPS</li>
-                  <li>L’accès aux données est limité aux développeurs du projet</li>
+                  <li>{t("Les mots de passe sont hashés")}</li>
+                  <li>{t("L’application fonctionne en HTTPS")}</li>
+                  <li>{t("L’accès aux données est limité aux développeurs du projet")}</li>
                 </ul>
 
-                <p className="font-semibold text-xl">5. Durée de conservation</p>
+                <p className="font-semibold text-xl">5. {t("Durée de conservation")}</p>
                 <p className="text-sm">
-                  Les données sont conservées tant que le compte est actif. En cas d’inactivité prolongée
-                  (plus de 6 mois), le compte et ses données peuvent être supprimés automatiquement.
+                  {t("Les données sont conservées tant que le compte est actif. En cas d’inactivité prolongée (plus de 6 mois), le compte et ses données peuvent être supprimés automatiquement.")}
                 </p>
 
-                <p className="font-semibold text-xl">6. Vos droits</p>
-                <p className="text-sm">Conformément au RGPD, vous avez le droit de :</p>
+                <p className="font-semibold text-xl">6. {t("Vos droits")}</p>
+                <p className="text-sm">{t("Conformément au RGPD, vous avez le droit de :")}</p>
                 <ul className="list-disc list-inside text-sm">
-                  <li>Consulter les données que nous avons sur vous</li>
-                  <li>Modifier vos informations personnelles</li>
-                  <li>Supprimer votre compte à tout moment</li>
+                  <li>{t("Consulter les données que nous avons sur vous")}</li>
+                  <li>{t("Modifier vos informations personnelles")}</li>
+                  <li>{t("Supprimer votre compte à tout moment")}</li>
                 </ul>
 
-                <p className="font-semibold text-xl">7. Cookies</p>
+                <p className="font-semibold text-xl">7. {t("Cookies")}</p>
                 <p className="text-sm">
-                  L’application n’utilise que des cookies techniques nécessaires à son bon fonctionnement.
-                  Aucun cookie de tracking ou publicitaire n’est utilisé.
+                  {t("L’application n’utilise que des cookies techniques nécessaires à son bon fonctionnement.")}
+                  {t("Aucun cookie de tracking ou publicitaire n’est utilisé.")}
                 </p>
 
-                <p className="font-semibold text-xl">8. Modifications</p>
+                <p className="font-semibold text-xl">8. {t("Modifications")}</p>
                 <p className="text-sm">
-                  Cette politique peut être mise à jour à tout moment. Les utilisateurs seront informés en cas de changements significatifs.
+                  {t("Cette politique peut être mise à jour à tout moment. Les utilisateurs seront informés en cas de changements significatifs.")}
                 </p>
 
-                <p className="font-semibold text-xl">9. Contact</p>
+                <p className="font-semibold text-xl">9.{t("Contact")}</p>
                 <p className="text-sm">
-                  Pour toute question sur cette politique ou l’usage de vos données :<br />
+                  {t("Pour toute question sur cette politique ou l’usage de vos données :")}<br />
                   📧 [mpelluet@student.42lehavre.fr]
                 </p>
 
-                <p className="font-semibold text-xl">10. Démenti ésotérique officiel</p>
+                <p className="font-semibold text-xl">10. {t("Démenti ésotérique officiel")}</p>
                 <p className="text-sm">
-                  Aucune entité occulte, démoniaque ou juridiquement ambiguë n’est impliquée dans le traitement de vos données personnelles.
+                  {t("Aucune entité occulte, démoniaque ou juridiquement ambiguë n’est impliquée dans le traitement de vos données personnelles.")}
                 </p>
               </div>
 

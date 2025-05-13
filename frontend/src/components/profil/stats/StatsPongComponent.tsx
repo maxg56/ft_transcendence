@@ -8,7 +8,7 @@ const StatsPong: React.FC = () => {
     <div className="flex flex-row gap-10">
       <div className="flex flex-row gap-10 w-full">
         <div className="flex flex-col gap-4">
-          <div className="w-[490px]">
+          <div className="w-[430px]">
             <GraphEloPong />
           </div>
           <div className="w-[490px]">

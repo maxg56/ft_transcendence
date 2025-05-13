@@ -72,28 +72,28 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 						<p className="text-center font-semibold">{t("Commandes")}</p>
 						<div className="flex flex-row items-center justify-center gap-[250px] ">
 							<div className="flex flex-col items-center gap-4 ">
-								<p className="text-lg font-bold text-gray-700">P1</p>
+								<p className="text-lg font-bold  text-white">P1</p>
 								<div className="flex gap-10 ">
 									<div className="flex flex-col items-center gap-1">
 										<KeyInput value={confKey.p1_up} onChange={(key) => handleKeyChange("p1_up", key)} />
-										<p className="text-lg font-bold text-gray-700 ">Up</p>
+										<p className="text-lg font-bold text-white ">{t("Up")}</p>
 									</div>
 									<div className="flex flex-col items-center gap-1">
 										<KeyInput  value={confKey.p1_down} onChange={(key) => handleKeyChange("p1_down", key)} />
-										<p className="text-lg font-bold text-gray-700">Down</p>
+										<p className="text-lg font-bold text-white">{t("Down")}</p>
 									</div>
 								</div>
 							</div>
 							<div className="flex flex-col items-center gap-4 ">
-								<p className="text-lg font-bold text-gray-700">P2</p>
+								<p className="text-lg font-bold  text-white">P2</p>
 								<div className="flex gap-10 ">
 									<div className="flex flex-col items-center gap-1 ">
 										<KeyInput  value={confKey.p2_up} onChange={(key) => handleKeyChange("p2_up", key)} />
-										<p className="text-lg font-bold text-gray-700 ">Up</p>
+										<p className="text-lg font-bold text-white ">{t("Up")}</p>
 									</div>
 									<div className="flex flex-col items-center gap-1">
 										<KeyInput value={confKey.p2_down} onChange={(key) => handleKeyChange("p2_down", key)} />
-										<p className="text-lg font-bold text-gray-700">Down</p>
+										<p className="text-lg font-bold text-white">{t("Down")}</p>
 									</div>
 								</div>
 							</div>
@@ -102,10 +102,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 				</Card>
 
 
-				<Card className="w-3/4 mx-auto my-auto w-[70%] h-[70%] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
+				<Card className="w-3/4 mx-auto my-auto w-[70%] h-[10%] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
 								bg-gradient-to-br from-cyan-400/10 via-purple-500/10 backdrop-blur-md 
   								shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
-  								transition duration-300 text-cyan-200 ">
+  								transition duration-300 text-cyan-200 gap-[10px]">
 					<div className="flex flex-col items-center justify-center gap-3 m-2">
 						<h2 >{t("Modifier")}</h2>
 
@@ -144,13 +144,13 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 					</div>
 				</Card>
 
-				<Card className="w-[70%] h-[100px] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
+				<Card className="w-[70%] h-[90px] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
 								bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent backdrop-blur-md 
   								shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
   								transition duration-300 text-cyan-200 ">
 					<div className="flex flex-col gap-6 m-3 items-center justify-center h-[70px] m-1">
 						<div className="flex flex-col gap-4 items-center justify-center">
-							Double Authentification
+							{t("Double Authentification")}
 							<DoubleAuthentification />
 						</div>
 					</div>

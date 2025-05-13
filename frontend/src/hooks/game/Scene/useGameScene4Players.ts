@@ -33,12 +33,14 @@ export const useGameScene4Players = () => {
   };
 
   const initializeScene = () => {
-    rendererRef.current = new THREE.WebGLRenderer({ antialias: true });
+    rendererRef.current = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     rendererRef.current.shadowMap.enabled = true;
     rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-
+      
     sceneRef.current = new THREE.Scene();
-    sceneRef.current.background = new THREE.Color("#141929");
+    // sceneRef.current.background = new THREE.Color("#141929");
+    sceneRef.current.background = null;
+
 
     cameraRef.current = new THREE.PerspectiveCamera(
       50,

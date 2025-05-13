@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "@/context/WebSocketContext";
@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useWaitroomStore } from "@/store/useWaitroomStore";
 import { Players, Team } from "@/types/WF"; 
 import { useTranslation } from "@/context/TranslationContext";
+import { useSendWSMessage } from "./useSendWSMessage";
 
 export const useWaitroomListener = () => {
   const { t } = useTranslation();
@@ -31,6 +32,31 @@ export const useWaitroomListener = () => {
   // utility to guard cookie writes
   const safeSetCookie = (key: string, value?: string) => {
     if (typeof value === 'string' && value) Cookies.set(key, value);
+  };
+
+  // Détection de l'utilisateur courant et de l'host
+  const sendWSMessage = useSendWSMessage();
+  const myName = Cookies.get('myName');
+  const hostPlayer = players.find((p: any) => p.isHost);
+  const isHost = hostPlayer && myName && hostPlayer.username === myName;
+
+  // Système d'attente d'ack_ok (par étape)
+  const ackWaiters = useRef<Record<string, { resolve: () => void; reject: () => void }>>({});
+
+  // Utilitaire pour envoyer un ack et attendre ack_ok
+  const sendAckAndWait = async (step: string, matchId?: string) => {
+    return new Promise<void>((resolve, reject) => {
+      ackWaiters.current[step] = { resolve, reject };
+      sendWSMessage({ event: 'ack', step, matchId });
+      // Timeout de sécurité (ex: 8s)
+      setTimeout(() => {
+        if (ackWaiters.current[step]) {
+          ackWaiters.current[step].reject();
+          delete ackWaiters.current[step];
+          toast.error('Aucune confirmation du serveur, veuillez réessayer.');
+        }
+      }, 8000);
+    });
   };
 
   // handler map for ws events
@@ -79,17 +105,66 @@ export const useWaitroomListener = () => {
       if (d.format?.playersPerTeam === 1) { toast.success(t('Match trouvé ! Préparation au duel...')); navigate('/duel3'); }
       else if (d.format?.playersPerTeam === 2) { toast.success(t('Match trouvé ! Préparation au match par équipe...')); navigate('/wsGame'); }
     },
-    tournament_update: (d) => {
-      setMatches(d.matches||[]); setLastResults(d.matchResults||[]);
-      navigate('/tournamentStage2');
+    tournament_update: async (d) => {
+      setMatches(Array.isArray(d.matches) ? d.matches : []);
+      setLastResults(Array.isArray(d.matchResults) ? d.matchResults : []);
+      // Nouvelle logique : host attend ack_ok avant de continuer
+      if (isHost) {
+        try {
+          await sendAckAndWait('tournament_update', d.matchId || d.tournamentId || code);
+        } catch {
+          return; // Stop si pas de confirmation backend
+        }
+      }
+      // Ne redirige pas si déjà sur la page
+      if (window.location.pathname !== '/tournamentStage2') {
+        navigate('/tournamentStage2');
+      }
     },
     tournament_notification: (d) => {
       toast.info(typeof d==='string'? d : JSON.stringify(d));
     },
-    tournament_end: (d) => {
-      setRanking(d.standings||[]); setPlayers([]); setCode(''); setIsTournament(false); setTournamentStatus('finished');
-      navigate('/results');
-    }
+    tournament_end: async (d) => {
+      if (isHost) {
+        try {
+          await sendAckAndWait('tournament_end', d.matchId || d.tournamentId || code);
+        } catch {
+          return;
+        }
+      }
+      setRanking(Array.isArray(d.standings) ? d.standings : []);
+      setPlayers([]);
+      setCode('');
+      setIsTournament(false);
+      setTournamentStatus('finished');
+      if (window.location.pathname !== '/results') {
+        navigate('/results');
+      }
+    },
+    // on tournament match finish, redirect to matches overview
+    tournament_match_result: async (d) => {
+      if (isHost) {
+        try {
+          await sendAckAndWait('tournament_match_result', d?.matchId || code);
+        } catch {
+          return;
+        }
+      }
+      toast.success(t("Tournoi: match terminé"));
+      setTimeout(() => {
+        if (window.location.pathname !== '/tournamentStage2') {
+          navigate('/tournamentStage2');
+        }
+      }, 1200);
+    },
+    // Handler pour ack_ok (débloque la promesse)
+    ack_ok: (d) => {
+      const step = d?.step;
+      if (step && ackWaiters.current[step]) {
+        ackWaiters.current[step].resolve();
+        delete ackWaiters.current[step];
+      }
+    },
   };
 
   useEffect(() => {
@@ -97,10 +172,13 @@ export const useWaitroomListener = () => {
       let msg;
       while ((msg = dequeueMessage())) {
         const { event, data } = msg || {};
-        if (!event || data == null) continue;
-        const fn = handlers[event];
+        console.debug("📩 WebSocket received:", msg);
+        // Protection : certains messages peuvent être legacy (type au lieu de event)
+        const evt = event || msg.type;
+        if (!evt || data == null) continue;
+        const fn = handlers[evt];
         if (fn) unstable_batchedUpdates(() => fn(data));
-        else console.debug(`WS unhandled event: ${event}`, data);
+        else console.debug(`WS unhandled event: ${evt}`, data);
       }
     }, 100);
     return () => clearInterval(interval);

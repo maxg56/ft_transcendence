@@ -79,12 +79,15 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
       }
     };
 
+    
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.debug("📩 WebSocket received:", data);
-        // enqueue message
-        messageQueue.current.push(data);
+        if (data.event !== 'game_state') {
+          // console.debug("📩 WebSocket received:", data);
+          // enqueue message
+          messageQueue.current.push(data);
+        }
       } catch (err) {
         console.error("❗ WebSocket message parse error:", err);
       }

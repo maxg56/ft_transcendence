@@ -20,7 +20,7 @@ const StarsBackground: React.FC = () => {
 
         const engine = new Engine(canvas, true);
         const scene = new Scene(engine);
-        scene.clearColor = new Color4(0, 0, 0, 1); // Opaque black background
+        scene.clearColor = new Color4(0, 0, 0, 0); // Transparent
         // Camera & Light
         const camera = new FreeCamera("camera", new Vector3(0, 0, -100), scene);
         camera.setTarget(Vector3.Zero());
@@ -69,7 +69,7 @@ const StarsBackground: React.FC = () => {
     return (
         <canvas
             ref={canvasRef}
-            className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
+            className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
         />
     );
 };

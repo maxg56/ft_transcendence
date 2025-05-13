@@ -21,6 +21,10 @@ export const Chat: React.FC = () => {
 
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
+    if (newMessage.trim().length > 500) {
+      // envoyer une notif pour dire pas plus de 500 caract
+      return;
+    }
     sendMessage(newMessage.trim());
     setNewMessage("");
   };

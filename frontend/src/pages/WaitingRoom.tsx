@@ -38,4 +38,3 @@ const Waitroom: React.FC = () => {
 };
 
 export default Waitroom;
-

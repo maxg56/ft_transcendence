@@ -1,4 +1,4 @@
-import { Player } from '@/hooks/WedSooket/userWsWR';
+import { Player } from '@/types/WF';
 import PlayerCircle from './PlayerCircle';
 import { useWebSocket } from '@/context/WebSocketContext';
 

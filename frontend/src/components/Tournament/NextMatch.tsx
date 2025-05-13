@@ -13,11 +13,12 @@ interface Match {
 interface NextMatchProps {
   matchData: Match;
   currentUser: string;
+  showResult: boolean;
 }
 
-const NextMatch: React.FC<NextMatchProps> = ({ matchData, currentUser }) => {
+const NextMatch: React.FC<NextMatchProps> = ({ matchData, currentUser, showResult }) => {
   const { match, player1, player2, score } = matchData;
-  const hasScore = score.player1 !== 0 || score.player2 !== 0;
+  const hasScore = showResult && (score.player1 !== 0 || score.player2 !== 0);
 
   let winner: string | null = null;
   if (hasScore) {

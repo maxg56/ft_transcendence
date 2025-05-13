@@ -19,7 +19,7 @@ const TournamentT2: React.FC = () => {
 
   // Affichage d'un match (résultat ou à venir)
   const renderMatch = (m: any, showResult = false) => (
-    <NextMatch matchData={m} currentUser={""} />
+    <NextMatch matchData={m} currentUser={""} showResult={showResult} />
   );
 
   return (

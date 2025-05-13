@@ -193,8 +193,8 @@ export function cleanMatchmakingQueues(timeoutSeconds = 120, now = Date.now()) {
         // Envoie un message au client s’il est encore connecté
         if (player.ws && player.ws.readyState === WebSocket.OPEN) {
           player.ws.send(JSON.stringify({
-            type: 'matchmaking:removed',
-            reason: !isActive ? 'disconnected' : 'timeout',
+            event: 'matchmaking_removed',
+            data: {},
           }));
         }
       }

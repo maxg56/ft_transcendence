@@ -24,10 +24,10 @@ const GameOverlay: React.FC<Props> = ({ score, winner }) => {
   return (
     <div className="title flex flex-col items-center text-center">
       {/* Score affiché tout le temps */}
-      <div className="flex flex-row justify-between items-center w-[90vw] max-w-5xl mb-2">
-        <span className="text-white text-5xl">{myName} {myAlly && ` - ${myAlly}`}</span>
-        <span className="text-white text-7xl">{score[0]} - {score[1]}</span>
-        <span className="text-white text-5xl">{opponent} {opponentAlly && ` - ${opponentAlly}`}</span>
+      <div className="flex flex-row items-center w-[90vw] max-w-5xl mb-2">
+        <span className="flex-1 text-white text-5xl texte-left">{myName} {myAlly && ` - ${myAlly}`}</span>
+        <span className="text-white text-7xl px-4 flex-shrink-0">{score[0]} - {score[1]}</span>
+        <span className="flex-1 text-white text-5xl text-right">{opponent} {opponentAlly && ` - ${opponentAlly}`}</span>
       </div>
 
       {/* Gagnant affiché seulement si défini */}

@@ -130,7 +130,7 @@
 	"Résultat": "Résultat",
 	"Score": "Score",
 	"Temps": "Temps",
-	"Elo": "Elo"
+	"Elo": "Elo",
 	"winnerMessage": "Victoire pour {{side}} !"
 }
 

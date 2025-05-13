@@ -1,5 +1,6 @@
 import React from "react";
 import { useChatWebSocket } from "@/context/ChatWebSocketContext";
+import { useTranslation } from "@/context/TranslationContext";
 
 interface ConversationListProps {
   allChannelUsers: string[];
@@ -7,6 +8,7 @@ interface ConversationListProps {
 }
 
 const ConversationList: React.FC<ConversationListProps> = ({ allChannelUsers, setOpen }) => {
+  const { t } = useTranslation();
   const { channels, selectedChannel, selectChannel, unread } = useChatWebSocket();
 
   const handleClose = (channelKey: string) => {
@@ -17,7 +19,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ allChannelUsers, se
   return (
     <div className="w-full border-r overflow-y-auto flex flex-col p-2 gap-2">
       {allChannelUsers.length === 0 ? (
-        <div className="text-center text-sm text-gray-500 mt-4">Aucun résultat</div>
+        <div className="text-center text-sm text-gray-500 mt-4">{t("Aucun résultat")}</div>
       ) : (
         allChannelUsers.map((name) => {
           const channelKey = channels.find((c) => c.id === (c.type === "private" ? `private:${name}` : name))?.id;

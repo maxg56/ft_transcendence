@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {create_private_game ,join_private_game ,join_tournament_game} from "@/hooks/WedSooket/useJoinQueue";
 import { toast } from "sonner";
+import { useTranslation } from "@/context/TranslationContext";
+
 type Mode = "1 vs 1" | "2 vs 2" | `${'friends' | 'tournois'}-join:${string}` | `${'friends' | 'tournois'}-create`;
 
 type Props = {
@@ -13,10 +15,11 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
   const { createPrivateGame} = create_private_game();
   const { joinPrivateGame } = join_private_game();
   const { joinTournament } = join_tournament_game();
+  const { t } = useTranslation();
 
   const handleJoin = () => {
     if (!code.trim()) {
-      toast.error("Please enter a code");
+      toast.error(t("Please enter a code"));
       return;
     }
     onSelect(`${mode}-join:${code}`);
@@ -41,7 +44,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
 
   return (
     <div
-  className="absolute top-[350%] right-[33.5%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
+  className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
   onClick={onClose}
 >
   <div
@@ -59,7 +62,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
         }`}
         onClick={() => setMode('friends')}
       >
-        Friends
+        {t("Friends")}
       </button>
       <button
         className={`px-2 py-2 rounded-md font-semibold text-sm sm:text-base transition shadow-md ${
@@ -67,7 +70,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
         }`}
         onClick={() => setMode('tournois')}
       >
-        Tournois
+        {t("Tournois")}
       </button>
     </div>
 
@@ -77,7 +80,7 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
         type="text"
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        placeholder="Enter Code"
+        placeholder={t("Enter Code")}
         className="w-[20%] sm:w-[180px] max-w-full border border-cyan-500/40 
                    rounded-md p-2 text-sm text-white bg-transparent 
                    placeholder:text-cyan-200 focus:outline-none 
@@ -92,13 +95,13 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
         className="px-3 py-2 rounded-md font-semibold bg-purple-500/70 hover:bg-purple-600/80 text-sm sm:text-base transition shadow-md"
         onClick={handleJoin}
       >
-        Join
+        {t("Join")}
       </button>
       <button
         className="px-3 py-2 rounded-md font-semibold bg-yellow-500/70 hover:bg-yellow-600/80 text-sm sm:text-base transition shadow-md"
         onClick={handleCreate}
       >
-        Create
+        {t("Create")}
       </button>
     </div>
   </div>

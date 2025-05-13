@@ -47,7 +47,7 @@ const FriendsPanel: React.FC = () => {
 				console.error("Erreur pending list", data)
 				return
 			}
-			const usernames = data.map(pending => pending.username);
+			const usernames = Array.isArray(data) ? data.map(pending => pending.username) : []
 			setPending(usernames)
 			},
 			onError: (errMsg) => {

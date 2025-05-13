@@ -6,8 +6,9 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useWaitroomStore } from "@/store/useWaitroomStore";
 import { Player, Players, Team } from "@/types/WF"; // si tu les as
-
+import { useTranslation } from "@/context/TranslationContext";
 export const useWaitroomListener = (myId?: string, player?: Player) => {
+  const { t } = useTranslation();
   const { addMessageListener } = useWebSocket();
   const navigate = useNavigate();
 
@@ -118,16 +119,18 @@ export const useWaitroomListener = (myId?: string, player?: Player) => {
           const myName = myTeam?.players[Number(positionInTeam)]?.name;
           const myAlly = myTeam?.players.find((p: Players) => p.name !== myName);
           const opponent = opponentTeam?.players[0];
+          const opponentAlly = opponentTeam?.players[1];
 
           if (opponent) Cookies.set("opponentName", opponent.name || "Unknown");
           if (myAlly) Cookies.set("allyName", myAlly.name || "Unknown");
           if (myName) Cookies.set("myName", myName || "Unknown");
+          if (opponentAlly) Cookies.set("opponentAlly", opponentAlly.name || "Unknown");
 
           if (format.playersPerTeam === 1) {
-            toast.success("Match trouvé ! Préparation au duel...");
+            toast.success(t("Match trouvé ! Préparation au duel..."));
             navigate("/duel3");
           } else if (format.playersPerTeam === 2) {
-            toast.success("Match trouvé ! Préparation au match par équipe...");
+            toast.success(t("Match trouvé ! Préparation au match par équipe..."));
             navigate("/wsGame");
           }
           break;

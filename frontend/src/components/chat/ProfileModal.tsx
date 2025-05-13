@@ -1,8 +1,10 @@
 import React from 'react';
 import { useChatWebSocket } from '@/context/ChatWebSocketContext';
 import { X } from 'lucide-react';
+import { useTranslation } from "@/context/TranslationContext";
 
 const ProfileModal: React.FC = () => {
+  const { t } = useTranslation();
   const { profile, clearProfile } = useChatWebSocket();
   if (!profile) return null;
   return (
@@ -10,7 +12,7 @@ const ProfileModal: React.FC = () => {
         <button onClick={clearProfile} className="absolute top-2 right-2 text-white hover:text-gray-800">
           <X size={20} />
         </button>
-        <h2 className="text-center text-lg text-white font-semibold p-2 border-b mb-4">Profil</h2>
+        <h2 className="text-center text-lg text-white font-semibold p-2 border-b mb-4">{t("Profil")}</h2>
         <div className="flex flex-col items-center space-y-4">
           {profile.avatar ?(
             <img

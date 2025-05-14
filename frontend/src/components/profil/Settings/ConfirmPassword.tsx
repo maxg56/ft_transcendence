@@ -12,6 +12,7 @@ interface ConfirmPasswordModalProps {
 export const ConfirmPasswordModal = ({
 	onClose,
 }: ConfirmPasswordModalProps) => {
+	const {t} = useTranslation();
 	const [password, setNewPassword] = useState("")
 	const [confirmation, setConfirmation] = useState("")
 	const [errorMessage, setErrorMessage] = useState("");
@@ -20,7 +21,7 @@ export const ConfirmPasswordModal = ({
 
 	const handleConfirm = async () => {
 		if (confirmation !== password) {
-			setErrorMessage("les mots de passe ne correspondentt pas")
+			setErrorMessage(t("Les mots de passe ne correspondent pas"))
 			return;
 		}
 		const updatedNewPassword: Password = { password }
@@ -30,7 +31,6 @@ export const ConfirmPasswordModal = ({
 		setErrorMessage("")
 		onClose()
 	}
-	const {t} = useTranslation();
 	return (
 		<Modal onClose={onClose}>
 			<div className="absolute w-[500px] bottom-[10%] left-1/2 -translate-x-1/2 

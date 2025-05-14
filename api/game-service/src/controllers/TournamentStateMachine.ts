@@ -17,19 +17,16 @@ class TournamentStateMachine {
       case 'WAITING':
         if (event === 'START') {
           this.phase = 'SEMIS';
-          this.tournament.setupSemis();
         }
         break;
       case 'SEMIS':
         if (event === 'MATCH_FINISHED' && this.tournament.areMatchesFinished(['Game1', 'Game2'])) {
           this.phase = 'FINALS';
-          this.tournament.setupFinals();
         }
         break;
       case 'FINALS':
         if (event === 'MATCH_FINISHED' && this.tournament.areMatchesFinished(['final', 'third'])) {
           this.phase = 'FINISHED';
-          this.tournament.finishTournament();
         }
         break;
     }

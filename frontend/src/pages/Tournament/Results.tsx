@@ -5,7 +5,7 @@ import { useTranslation } from '@/context/TranslationContext';
 import CountdownTimer from '@/components/CountdownTimer';
 
 const Results: React.FC = () => {
-  const { ranking, matches, isHost, code, sendAckAndWait } = useWaitroomListener();
+  const { ranking, matches, isHost, code} = useWaitroomListener();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [waiting, setWaiting] = useState(true);
@@ -14,14 +14,10 @@ const Results: React.FC = () => {
     const timer = setTimeout(async () => {
       setWaiting(false);
       // Envoi l'ack APRÈS le timer si host
-      if (isHost) {
-        // On prend le code tournoi ou le matchId du premier du ranking si dispo
-        const tournamentId = code || (Array.isArray(ranking) && ranking.length > 0 ? ranking[0].tournamentId : undefined);
-        await sendAckAndWait('tournament_end', tournamentId);
-      }
+      
     }, 8000);
     return () => clearTimeout(timer);
-  }, [isHost, code, ranking, sendAckAndWait]);
+  }, [isHost, code, ranking]);
 
   // Redirection automatique vers la page principale après 10 secondes
   useEffect(() => {

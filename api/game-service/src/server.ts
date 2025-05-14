@@ -128,9 +128,15 @@ function handleMessage(data: any, player: Player) {
         } else if (tournament.hostId && player.id !== tournament.hostId) {
           break;
         }
-        if (typeof tournament.receiveAck === 'function') {
-          tournament.receiveAck(step, player);
+        break;
+      }
+      case 'tournament_next_step': {
+        const { tournamentId, hostId } = data;
+        const tournament = tournaments.get(tournamentId);
+        if (tournament && tournament.hostId === hostId) {
+          tournament.startNextStep(hostId);
         }
+        console.log("Tournament next step", tournamentId, hostId);
         break;
       }
       case 'move_paddle': {

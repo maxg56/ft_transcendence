@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect} from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "@/context/WebSocketContext";
@@ -29,7 +29,6 @@ export const useWaitroomListener = () => {
     lastResults,
   } = useWaitroomStore();
 
-  // utility to guard cookie writes
   const safeSetCookie = (key: string, value?: string) => {
     if (typeof value === 'string' && value) Cookies.set(key, value);
   };
@@ -40,23 +39,10 @@ export const useWaitroomListener = () => {
   const hostPlayer = players.find((p: any) => p.isHost);
   const isHost = hostPlayer && myName && hostPlayer.username === myName;
 
-  // Système d'attente d'ack_ok (par étape)
-  const ackWaiters = useRef<Record<string, { resolve: () => void; reject: () => void }>>({});
-
-  // Utilitaire pour envoyer un ack et attendre ack_ok
-  const sendAckAndWait = async (step: string, matchId?: string) => {
-    return new Promise<void>((resolve, reject) => {
-      ackWaiters.current[step] = { resolve, reject };
-      sendWSMessage({ event: 'ack', step, matchId });
-      // Timeout de sécurité (ex: 8s)
-      setTimeout(() => {
-        if (ackWaiters.current[step]) {
-          ackWaiters.current[step].reject();
-          delete ackWaiters.current[step];
-          toast.error('Aucune confirmation du serveur, veuillez réessayer.');
-        }
-      }, 8000);
-    });
+  // Envoi explicite de la commande "étape suivante" du tournoi
+  const sendTournamentNextStep = async (tournamentId: string, hostId: string) => {
+    sendWSMessage({ event: 'tournament_next_step', data: { tournamentId, hostId } });
+    return Promise.resolve();
   };
 
   // handler map for ws events
@@ -105,6 +91,11 @@ export const useWaitroomListener = () => {
       if (d.format?.playersPerTeam === 1) { toast.success(t('Match trouvé ! Préparation au duel...')); navigate('/duel3'); }
       else if (d.format?.playersPerTeam === 2) { toast.success(t('Match trouvé ! Préparation au match par équipe...')); navigate('/wsGame'); }
     },
+    tournament_start : () => {
+      if (window.location.pathname !== '/tournamentStage2') {
+        navigate('/tournamentStage2');
+      }
+    },
     tournament_update: async (d) => {
       setMatches(Array.isArray(d.matches) ? d.matches : []);
       setLastResults(Array.isArray(d.matchResults) ? d.matchResults : []);
@@ -138,13 +129,6 @@ export const useWaitroomListener = () => {
         }
       }, 1200);
     },
-    ack_ok: (d) => {
-      const step = d?.step;
-      if (step && ackWaiters.current[step]) {
-        ackWaiters.current[step].resolve();
-        delete ackWaiters.current[step];
-      }
-    },
   };
 
   useEffect(() => {
@@ -173,6 +157,6 @@ export const useWaitroomListener = () => {
     lastResults, 
     ranking: useWaitroomStore.getState().ranking ,
     isHost,
-    sendAckAndWait
+    sendTournamentNextStep,
   };
 };

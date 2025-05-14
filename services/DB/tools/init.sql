@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS messages (
 	sender_id INT NOT NULL,
 	channel_type ENUM('public', 'private', 'group') NOT NULL,
 	channel_id INT NOT NULL,
-	content TEXT NOT NULL,
+	content VARCHAR(500) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (sender_id) REFERENCES `user`(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

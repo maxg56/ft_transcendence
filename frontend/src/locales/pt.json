@@ -59,6 +59,7 @@
 	"Token non reçu": "Token não recebido",
 	"Tournois": "Torneios",
 	"Tous les champs doivent être remplis": "Todos os campos devem ser preenchidos",
+	"Trop de caracteres (500 autorises)": "Caracteres demais (500 permitidos)",
 	"Vérifier le code": "Verificar código",
 	"Vous avez été retiré de la file d'attente.": "Você foi removido da fila.",
 	"winnerMessage": "{{side}} venceu!",

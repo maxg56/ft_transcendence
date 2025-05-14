@@ -4,8 +4,11 @@ import { useChatWebSocket } from '@/context/ChatWebSocketContext';
 import ChatInput from "./ChatInput";
 import ConversationList from "./ConversationLists";
 import ProfileModal from './ProfileModal';
+import { toast } from "sonner";
+import { useTranslation } from '@/context/TranslationContext';
 
 export const Chat: React.FC = () => {
+  const { t } = useTranslation();
   const { messages, sendMessage, channels, selectedChannel, profile } = useChatWebSocket();
   const [newMessage, setNewMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -21,6 +24,10 @@ export const Chat: React.FC = () => {
 
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
+    if (newMessage.trim().length > 500) {
+      toast.error(t("Trop de caracteres (500 autorises)"));
+      return;
+    }
     sendMessage(newMessage.trim());
     setNewMessage("");
   };

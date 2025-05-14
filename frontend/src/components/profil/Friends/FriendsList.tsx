@@ -29,7 +29,7 @@ const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations }) => 
 						</li>
 					))}
 					{sentInvitations.map((inv, index) => (
-						<li key={`inv-${index}`} className="flex items-center gap-2 bg-gray-200 p-2 border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-lg rounded-lgitalic">
+						<li key={`inv-${index}`} className="flex items-center gap-2 bg-gray-200 p-2 border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/60 via-purple-500/40 to-transparent shadow-lg rounded-lgitalic">
 							<img
 								src={`https://robohash.org/${inv.username}`}
 								alt={inv.username}

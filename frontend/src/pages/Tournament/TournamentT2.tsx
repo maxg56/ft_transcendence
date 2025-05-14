@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NextMatch from '@/components/Tournament/NextMatch';
 import {StarsBackground} from '@/animation/StarsBackground'
 import { useTranslation } from '@/context/TranslationContext';
+import Chat from "@/components/chat/Chat";
 
 const TournamentT2: React.FC = () => {
   const { lastResults, matches } = useWaitroomListener();
@@ -54,6 +55,9 @@ const TournamentT2: React.FC = () => {
             )}
           </div>
         </section>
+      </div>
+      <div className=" absolute bottom-[28%] left-[75%]">
+        <Chat/>
       </div>
     </div>
     </div>

@@ -25,7 +25,7 @@ const TwoFAModal: React.FC<TwoFAModalProps> = ({ isOpen, onClose }) => {
         onClose();
     },
     onError: (err) => {
-      setError(err);
+      setError(t("Code 2FA invalide"));
     },
   });
   const handleVerify2FA = () => {

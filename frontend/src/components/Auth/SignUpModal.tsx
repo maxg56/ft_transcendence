@@ -37,7 +37,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
   });
 
   const handleSignUp = () => {
-    if (!username || !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword || !acceptedPolicy) {
       setError(t("Tous les champs sont requis."));
       setShake(true);
       setTimeout(() => setShake(false), 500);

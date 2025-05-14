@@ -24,7 +24,7 @@ const Results: React.FC = () => {
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
       </div>
       <StarsBackground/>
-      <h1 className="text-6xl font-bold mb-6 text-center text-glow title">🏆 Classement Final</h1>
+      <h1 className="text-6xl font-bold mb-6 text-center text-glow title">{t("🏆 Classement Final")}</h1>
       <ol className="max-w-md mx-auto space-y-4">
         {Array.isArray(ranking) && ranking.length > 0 ? (
           ranking.map((entry: any, idx: number) => (
@@ -36,17 +36,17 @@ const Results: React.FC = () => {
                 {idx + 1}. {entry.name || entry.player}
               </span>
               <span className="text-lg text-green-300">
-                {entry.wins} victoire{entry.wins > 1 ? 's' : ''}
+                {entry.wins} t{("victoire")}{entry.wins > 1 ? 's' : ''}
               </span>
             </li>
           ))
         ) : (
-          <li key="no-ranking" className="text-center text-gray-400">Aucun classement disponible</li>
+          <li key="no-ranking" className="text-center text-gray-400">{t("Aucun classement disponible")}</li>
         )}
       </ol>
       <div>
         <h2 className="text-xl font-semibold text-white mb-4 absolute left-10">
-          📋 Résultats des matchs
+          {t("📋 Résultats des matchs")}
         </h2>
         <ul className="space-y-2">
           {Array.isArray(matches) && matches.length > 0 ? (
@@ -60,7 +60,7 @@ const Results: React.FC = () => {
               </li>
             ))
           ) : (
-            <li key="no-matches" className="text-center text-gray-400">Aucun résultat</li>
+            <li key="no-matches" className="text-center text-gray-400">{t("Aucun résultat")}</li>
           )}
         </ul>
       </div>
@@ -78,7 +78,7 @@ const Results: React.FC = () => {
         </button>
       </div>
       <div className="flex justify-center mt-4">
-        <span className="text-gray-400 text-sm">Redirection automatique dans 10 secondes...</span>
+        <span className="text-gray-400 text-sm">{t("Redirection automatique dans 10 secondes...")}</span>
       </div>
     </div>
     </div>

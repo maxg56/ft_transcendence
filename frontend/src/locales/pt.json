@@ -138,6 +138,19 @@
 	"Temps": "Tempo",
 	"Elo": "Elo",
 	"Double Authentification":"Autenticação dupla",
-	"Le nom d'utilisateur ne peut pas être vide":"O nome de usuário não pode estar vazio"
+	"Le nom d'utilisateur ne peut pas être vide":"O nome de usuário não pode estar vazio",
+	"Salle d'attente Tournoi": "Sala de espera do torneio",
+	"Joueurs connectés :":"Jogadores conectados :",
+	"Code du tournoi :":"Código do torneio :",
+	"🏆 Classement Final": "🏆 Classificação Final",
+	"victoire": "vitória",
+	"Aucun classement disponible":"Nenhuma classificação disponível",
+	"📋 Résultats des matchs":"📋 Resultados da partida",
+	"Redirection automatique dans 10 secondes...":"Redirecionamento automático em 10 segundos...",
+	"Derniers matchs joués":"Últimas partidas disputadas",
+	"Aucun match terminé":"Nenhuma partida finalizada",
+	"Prochains matchs à venir":"Próximas partidas",
+	"Aucun match à venir":"Não há partidas futuras",
+	"Participants :":"Participantes :"
 }
   

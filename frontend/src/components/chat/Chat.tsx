@@ -26,7 +26,6 @@ export const Chat: React.FC = () => {
     if (newMessage.trim() === "") return;
     if (newMessage.trim().length > 500) {
       toast.error(t("Trop de caracteres (500 autorises)"));
-      // envoyer une notif pour dire pas plus de 500 caract
       return;
     }
     sendMessage(newMessage.trim());

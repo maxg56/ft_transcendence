@@ -8,13 +8,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
   return (
     <Sonner
-      // theme={theme as ToasterProps["theme"]}
+      theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
         classNames: {
           toast:
-            "group toast border border-cyan-500/40 rounded-md p-2 text-sm text-white bg-transparent",
-          description: "text-3xl text-white",
+            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
+          description: "group-[.toast]:text-muted-foreground",
           actionButton:
             "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton:

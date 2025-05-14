@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/context/TranslationContext';
+import {StarsBackground} from '@/animation/StarsBackground'
 
 const Results: React.FC = () => {
   const { ranking, matches } = useWaitroomListener();
@@ -17,8 +18,13 @@ const Results: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-800 p-8 text-white">
-      <h1 className="text-3xl font-bold mb-6 text-center">🏆 Classement Final</h1>
+    <div className="scale-95">
+      <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 text-white ">
+      <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+            <div className="w-full h-full absolute top-[-100%] scanline-glow" />
+      </div>
+      <StarsBackground/>
+      <h1 className="text-6xl font-bold mb-6 text-center text-glow title">🏆 Classement Final</h1>
       <ol className="max-w-md mx-auto space-y-4">
         {Array.isArray(ranking) && ranking.length > 0 ? (
           ranking.map((entry: any, idx: number) => (
@@ -39,7 +45,7 @@ const Results: React.FC = () => {
         )}
       </ol>
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">
+        <h2 className="text-xl font-semibold text-white mb-4 absolute left-10">
           📋 Résultats des matchs
         </h2>
         <ul className="space-y-2">
@@ -61,7 +67,12 @@ const Results: React.FC = () => {
       <div className="flex justify-center mt-12">
         <button
           onClick={() => navigate("/hub")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+          className="bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/60 
+             backdrop-blur-md 
+             shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+             hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+             border border-cyan-300/30 
+             transition duration-300 z-10 text-white font-bold py-2 px-6 rounded"
         >
           {t("Return Hub")}
         </button>
@@ -69,6 +80,7 @@ const Results: React.FC = () => {
       <div className="flex justify-center mt-4">
         <span className="text-gray-400 text-sm">Redirection automatique dans 10 secondes...</span>
       </div>
+    </div>
     </div>
   );
 };

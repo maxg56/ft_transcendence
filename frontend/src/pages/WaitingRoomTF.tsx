@@ -22,7 +22,7 @@ const WaitingRoomTF = () => {
         />
       </div>
       <div className="title text-center text-white z-20 absolute bottom-[28%] left-1/2 -translate-x-1/2 
-                px-20 py-50 flex flex-col justify-center items-center
+                px-20 py-70 flex flex-col justify-center items-center
                rounded-[2vw]
                 bg-gradient-to-r from-cyan-400/20 via-blue-500/20 
                 backdrop-blur-md

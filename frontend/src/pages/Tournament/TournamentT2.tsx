@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
 import { useNavigate } from 'react-router-dom';
 import NextMatch from '@/components/Tournament/NextMatch';
+import {StarsBackground} from '@/animation/StarsBackground'
 
 const TournamentT2: React.FC = () => {
   const { lastResults, matches } = useWaitroomListener();
@@ -23,10 +24,15 @@ const TournamentT2: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="scale-95">
+    <div className="crt w-screen h-screen rounded-[150px] padding-[10px] overflow-hidden bg-gray-900 text-white ">
+    <StarsBackground/>
+    <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+            <div className="w-full h-full absolute top-[-100%] scanline-glow" />
+    </div>
       <div className="space-y-16">
         <section>
-          <h2 className="text-center font-semibold mb-4">Derniers matchs joués</h2>
+          <h2 className="text-center font-semibold mb-4 title text-glow">Derniers matchs joués</h2>
           <div className="flex justify-center gap-8 flex-wrap">
             {Array.isArray(lastResults) && lastResults.length > 0 ? (
               lastResults.map((m: any) => renderMatch(m, true))
@@ -37,7 +43,7 @@ const TournamentT2: React.FC = () => {
         </section>
 
         <section>
-          <h2 className="text-center font-semibold mb-4">Prochains matchs à venir</h2>
+          <h2 className="text-center font-semibold mb-4 title text-glow">Prochains matchs à venir</h2>
           <div className="flex justify-center gap-8 flex-wrap">
             {Array.isArray(matches) && matches.length > 0 ? (
               matches.map((m: any) => renderMatch(m, false))
@@ -47,6 +53,7 @@ const TournamentT2: React.FC = () => {
           </div>
         </section>
       </div>
+    </div>
     </div>
   );
 };

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/chart"
 import { RatioGame } from "../type/statsInterface"
 import { useApi } from "@/hooks/api/useApi"
+import { useTranslation } from "@/context/TranslationContext"
 	
 type RatioGameAPI = {
 	winNumber: number
@@ -24,10 +25,11 @@ type RatioGameAPI = {
 
 export function RatioPong() {
 	const [chartData, setChartData] = useState<RatioGame[]>([])
+	const {t} = useTranslation();
 
 	const chartConfig = {
 		count: {
-			label: "Matches",
+			label: "Matchs",
 		},
 		victory: {
 			label: "Victoires",
@@ -49,8 +51,8 @@ export function RatioPong() {
 					return
 				}
 				const ratioGameFormatted: RatioGame[] = [
-					{ category: "Victories", count: data.winNumber, fill: "#04e0c7"},
-					{ category: "Defeats", count: data.loseNumber, fill: "#d11111"},
+					{ category: t("Victoires"), count: data.winNumber, fill: "#04e0c7" },
+					{ category: t("Défaites"), count: data.loseNumber, fill: "#d11111" },
 				]
 				setChartData(ratioGameFormatted);
     		},
@@ -73,14 +75,14 @@ export function RatioPong() {
 	}, [chartData])
 
 	return (
-		<Card className="flex flex-col h-[250px]">
+		<Card className="flex flex-col  h-[250px]">
 			<CardHeader className="items-center pb-0 text-xl">
-				<CardTitle>Ratio</CardTitle>
+				<CardTitle>{t("Ratio")}</CardTitle>
 			</CardHeader>
 			<CardContent className="flex-1 pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="mx-auto aspect-square max-h-[250px]"
+					className="mx-auto aspect-square max-h-[230px]"
 				>
 					<PieChart>
 						<ChartTooltip
@@ -116,7 +118,7 @@ export function RatioPong() {
 													y={(viewBox.cy || 0) + 24}
 													className="fill-muted-foreground"
 												>
-													Matches
+													{t("Matchs")}
 												</tspan>
 											</text>
 										)

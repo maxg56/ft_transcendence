@@ -40,7 +40,6 @@ const WaitingRoomTF = () => {
         <span className="font-semibold">{t("Joueurs connectés :")}</span>
       </div>
       <ParticipantsList players={players} code={code} isTournament={isTournament} />
-      {/* <Chat/> */}
       </div>
       <div className="title text-glow px-40 py-2 px-40 py-2 rounded-md text-white font-semibold 
              bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-yellow-600/60 

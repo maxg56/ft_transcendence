@@ -136,6 +136,7 @@
 	"Résultat":"Result",
 	"Score":"Score",
 	"Temps":"Time",
-	"Elo":"Elo"
+	"Elo":"Elo",
+	"Le nom d'utilisateur ne peut pas être vide":"Username cannot be empty"
 }	
   

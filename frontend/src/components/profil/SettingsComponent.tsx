@@ -8,6 +8,7 @@ import { Username } from "./type/profilInterface";
 import { SettingsPageProps } from "./type/profilInterface";
 import { ConfirmPasswordModal } from "./Settings/ConfirmPassword";
 import { Card } from "../ui/card";
+import { toast } from "sonner";
 
 const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { t, changeLanguage } = useTranslation();
@@ -18,6 +19,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { modifProfil } = useModifProfilApi();
 
 	const handleUserUpdate = async () => {
+		if (username.trim() === "") {
+			toast.error(t("Le nom d'utilisateur ne peut pas être vide"));
+			return;
+		}
 		const updatedUser: Username = { username };
 		await modifProfil.refetch(updatedUser);
 		onUsernameChange?.(username);
@@ -115,7 +120,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 									type="text"
 									placeholder={t("Nom d'utilisateur")}
 									value={username}
-									onChange={(e) => setUsername(e.target.value)}
+									onChange={(e) =>setUsername(e.target.value)}
 									className="w-[250px] px-2 py-2 rounded-md bg-white/10 border border-cyan-300/20 text-white text-xl placeholder-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400"
 								/>
 								<button

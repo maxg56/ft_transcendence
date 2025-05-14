@@ -137,6 +137,7 @@
 	"Score": "Pontuação",
 	"Temps": "Tempo",
 	"Elo": "Elo",
-	"Double Authentification":"Autenticação dupla"
+	"Double Authentification":"Autenticação dupla",
+	"Le nom d'utilisateur ne peut pas être vide":"O nome de usuário não pode estar vazio"
 }
   

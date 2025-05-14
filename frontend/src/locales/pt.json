@@ -1,11 +1,15 @@
 {
 	"3 Joueurs": "3 Jogadores",
 	"4 Joueurs": "4 Jogadores",
+	"Activer": "Ativar",
 	"Amis": "Amigos",
 	"Aucun résultat": "Nenhum resultado",
+	"Authentification à deux facteurs": "Autenticação de Dois Fatores",
 	"Champs manquants": "Campos ausentes",
 	"Choisir langue": "Escolher idioma",
+	"Clé secrète": "Chave Secreta",
 	"Code 2FA invalide": "Código 2FA inválido",
+	"Code d'authentification": "Código de Autenticação",
 	"Commandes": "Controles",
 	"Confirmer le mot de passe": "Confirmar senha",
 	"Connexion": "Conectar",
@@ -59,6 +63,7 @@
 	"Token non reçu": "Token não recebido",
 	"Tournois": "Torneios",
 	"Tous les champs doivent être remplis": "Todos os campos devem ser preenchidos",
+	"Trop de caracteres (500 autorises)": "Caracteres demais (500 permitidos)",
 	"Vérifier le code": "Verificar código",
 	"Vous avez été retiré de la file d'attente.": "Você foi removido da fila.",
 	"winnerMessage": "{{side}} venceu!",
@@ -66,7 +71,7 @@
 	"conditions d'utilisation": "termos de uso",
 	"Politique de Confidentialité": "Política de privacidade",
 	"Qui sommes nous ?": "quem somos nós",
-	"Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.":"Este projeto é realizado no âmbito da escola 42. É uma aplicação web multijogador.",
+	"Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur. ":"Este projeto é realizado no âmbito da escola 42. É uma aplicação web multijogador. ",
 	"Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.": "O tratamento dos dados é feito pelo grupo composto por Emma, Manon, Maxence e Thomas.",
 	"Données collectées": "Dados coletados",
 	"Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :": "Recolhemos apenas os dados necessários para o bom funcionamento da aplicação:",
@@ -132,6 +137,7 @@
 	"Score": "Pontuação",
 	"Temps": "Tempo",
 	"Elo": "Elo",
-	"Double Authentification":"Autenticação dupla"
+	"Double Authentification":"Autenticação dupla",
+	"Le nom d'utilisateur ne peut pas être vide":"O nome de usuário não pode estar vazio"
 }
   

@@ -1,11 +1,15 @@
 {
 	"3 Joueurs": "wej chu'wI'",
 	"4 Joueurs": "loS chu'wI'",
+	"Activer": "Qochbe'",
 	"Amis": "jupmey",
 	"Aucun résultat": "tu'be'",
+	"Authentification à deux facteurs": "cha' mIw pat ngoQ",
 	"Champs manquants": "patmey tu'lu'be'",
 	"Choisir langue": "Hol wIv",
+	"Clé secrète": "peghwI' ngaQ",
 	"Code 2FA invalide": "2FA nab qaqbe'",
+	"Code d'authentification": "lutmey ngoQ",
 	"Commandes": "ra'ghom",
 	"Confirmer le mot de passe": "jeylaw' yI'ol",
 	"Connexion": "rar",
@@ -56,8 +60,9 @@
 	"Token final non reçu": "QIH nab Hevlu'be'",
 	"Token manquant. Veuillez vous reconnecter.": "nab tu'lu'be'. reH yIrarqa'.",
 	"Token non reçu": "nab Hevlu'be'",
-	"Tournois": "veS Qav",
+	"Tournois": "veSQav",
 	"Tous les champs doivent être remplis": "patmey Hoch yIchel",
+	"Trop de caracteres (500 autorises)": "pIghqu’ mu’tlheghmey (500 chaw’nIS)",
 	"Vérifier le code": "nab yI'ol",
 	"Vous avez été retiré de la file d'attente.": "loSmeH patvo' bIQotHa'.",
 	"winnerMessage": "{{side}} Qapchu'!",
@@ -65,7 +70,7 @@
 	"conditions d'utilisation":"naDons jotHa'",
 	"Politique de Confidentialité": "noy'Ha' De' chutmey",
 	"Qui sommes nous ?": "nuqneH? maH 'Iv?",
-	"Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.": "projetvam Qav 'oH DuSaQ 42 lo' 'e' Qav. QujmeH web app Hoch lo'wI'.",
+	"Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur. ": "projetvam Qav 'oH DuSaQ 42 lo' 'e' Qav. QujmeH web app Hoch lo'wI'. ",
 	"Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.": "Emma, Manon, Maxence je Thomas mungbogh ghom De' rInmoH.",
 	"Données collectées": "De' ghomHa'",
 	"Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :": "Qu' QapmeH De' neH wIghom:",
@@ -135,6 +140,7 @@
 	"Temps": "poH",
 	"Elo": "Elo",
 	"Stats Pong":"Dotlh Pong",
-	"Double Authentification": "tera'ngan Qoy"
+	"Double Authentification": "tera'ngan Qoy",
+	"Le nom d'utilisateur ne peut pas être vide":"jIHvaD mojpu' tu'lu'"
   }
   

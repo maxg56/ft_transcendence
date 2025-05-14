@@ -8,6 +8,7 @@ import { Username } from "./type/profilInterface";
 import { SettingsPageProps } from "./type/profilInterface";
 import { ConfirmPasswordModal } from "./Settings/ConfirmPassword";
 import { Card } from "../ui/card";
+import { toast } from "sonner";
 
 const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { t, changeLanguage } = useTranslation();
@@ -18,6 +19,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { modifProfil } = useModifProfilApi();
 
 	const handleUserUpdate = async () => {
+		if (username.trim() === "") {
+			toast.error(t("Le nom d'utilisateur ne peut pas être vide"));
+			return;
+		}
 		const updatedUser: Username = { username };
 		await modifProfil.refetch(updatedUser);
 		onUsernameChange?.(username);
@@ -45,9 +50,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
   							backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
   							transition duration-300 text-black"
 							>
-  				<div className="flex flex-col items-center justify-center gap-3">
+  				<div className="flex flex-col items-center justify-center gap-1">
     				<h2 className=" text-xxl font-semibold text-cyan-200 tracking-wide">{t("Langue")}</h2>
-    					<div className="flex flex-row gap-[150px] mt-4">
+    					<div className="flex flex-row gap-[120px] mt-2">
       						{["en", "fr", "pt", "kgt"].map((lang) => (
         					<button
           						key={lang}
@@ -64,11 +69,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
   				</div>
 			</Card>
 
-				<Card className="w-[70%] h-[70%] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
+				<Card className="w-[70%] h-[40%] mx-auto my-auto p-0 rounded-2xl border border-cyan-300/30 
 								bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent backdrop-blur-md 
   								shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
   								transition duration-300 text-cyan-200 ">
-					<div className="m-2">
+					<div className="m-1">
 						<p className="text-center font-semibold">{t("Commandes")}</p>
 						<div className="flex flex-row items-center justify-center gap-[250px] ">
 							<div className="flex flex-col items-center gap-4 ">
@@ -109,14 +114,14 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 					<div className="flex flex-col items-center justify-center gap-3 m-2">
 						<h2 >{t("Modifier")}</h2>
 
-						<div className="flex flex-row items-center justify-center gap-24">
-							<div className="flex items-center gap-4">
+						<div className="flex flex-row items-center justify-center gap-[20px]">
+							<div className="flex items-center gap-4 ">
 								<input
 									type="text"
 									placeholder={t("Nom d'utilisateur")}
 									value={username}
-									onChange={(e) => setUsername(e.target.value)}
-									className="w-[250px] px-2 py-2 border border-gray-300 rounded-md text-xl"
+									onChange={(e) =>setUsername(e.target.value)}
+									className="w-[250px] px-2 py-2 rounded-md bg-white/10 border border-cyan-300/20 text-white text-xl placeholder-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400"
 								/>
 								<button
 									onClick={handleUserUpdate}
@@ -148,7 +153,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 								bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent backdrop-blur-md 
   								shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_20px_rgba(0,255,255,0.15)] 
   								transition duration-300 text-cyan-200 ">
-					<div className="flex flex-col gap-6 m-3 items-center justify-center h-[70px] m-1">
+					<div className="flex flex-col gap-6 m-3 items-center justify-center h-[50px] m-1">
 						<div className="flex flex-col gap-4 items-center justify-center">
 							{t("Double Authentification")}
 							<DoubleAuthentification />

@@ -43,7 +43,7 @@ const FriendListHub: React.FC = () => {
         shadow-[0_0_15px_rgba(0,255,255,0.2)] 
         text-white w-[350px] h-[400px] overflow-hidden">
 
-        <div className="max-h-[400px] overflow-y-auto pr-1 text-xs space-y-4">
+        <div className="max-h-[500px] overflow-y-auto pr-1 text-xs space-y-4">
 
           <div>
             <h4 className="font-semibold text-green-400 mb-1">{t("En ligne")}</h4>

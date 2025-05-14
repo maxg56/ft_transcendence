@@ -11,6 +11,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { useTranslation } from "@/context/TranslationContext";
 
 export function DoubleAuthentificationModal({
   open,
@@ -27,7 +28,7 @@ export function DoubleAuthentificationModal({
   onActivate: () => void
   onCancel: () => void
 }) {
-  
+  const { t } = useTranslation();
   const [twoFACode, setTwoFACode] = useState("");
   
   const { verify2FA } = useAuth({
@@ -55,14 +56,14 @@ export function DoubleAuthentificationModal({
       <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50">
         <div className="flex min-h-screen items-center justify-center p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-            <h2 className="text-xl font-bold mb-4">Authentification à deux facteurs</h2>
+            <h2 className="text-xl font-bold mb-4">{t("Authentification à deux facteurs")}</h2>
             <div className="mb-4">
               {qrCode ? (
                 <img src={qrCode} alt="QR Code pour l'authentification" className="w-40 h-40 mx-auto" />
               ) : null}
             </div>
             <div className="mb-4">
-              <Label htmlFor="secretKey">Clé secrète</Label>
+              <Label htmlFor="secretKey">{t("Clé secrète")}</Label>
               <Input
                 id="secretKey"
                 value={secretKey}
@@ -71,7 +72,7 @@ export function DoubleAuthentificationModal({
                 />
             </div>
             <div className="mb-4">
-              <Label htmlFor="authCode">Code d'authentification</Label>
+              <Label htmlFor="authCode">{t("Code d'authentification")}</Label>
               <InputOTP 
               maxLength={6} 
               value={twoFACode} 
@@ -95,9 +96,9 @@ export function DoubleAuthentificationModal({
               <Button 
               onClick={handleVerify2FA}
               disabled={twoFACode.length !== 6}
-              className="flex-1">Activer
+              className="flex-1">{t("Activer")}
               </Button>
-              <Button variant="secondary" onClick={onCancel} className="flex-1">Annuler</Button>
+            <Button variant="secondary" onClick={onCancel} className="flex-1">{t("Annuler")}</Button>
             </div>
           </div>
         </div>

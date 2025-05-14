@@ -116,17 +116,23 @@ export function HistoriquePong() {
 	}
 
 	return (
-		<div className="flex flex-col gap-6 w-full">
-			<Card>
-				<div className="flex flex-col gap-4 w-full">
+		<div className="flex flex-col gap-3 w-full">
+			<Card className="rounded-2xl rounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-200/20 
+                        backdrop-blur-md
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300">
+				<div className="flex flex-col w-full">
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="font-medium text-center">{t("Adversaire")}</TableHead>
-								<TableHead className="font-medium text-center">{t("Résultat")}</TableHead>
-								<TableHead className="font-medium text-center">{t("Score")}</TableHead>
-								<TableHead className="font-medium text-center">{t("Temps")}</TableHead>
-								<TableHead className="font-medium text-center">{t("Elo")}</TableHead>
+								<TableHead className="font-medium text-white text-center">{t("Adversaire")}</TableHead>
+								<TableHead className="font-medium text-white text-center">{t("Résultat")}</TableHead>
+								<TableHead className="font-medium text-white text-center">{t("Score")}</TableHead>
+								<TableHead className="font-medium text-white text-center">{t("Temps")}</TableHead>
+								<TableHead className="font-medium text-white text-center">{t("Elo")}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -160,17 +166,23 @@ export function HistoriquePong() {
 				</div>
 			</Card>
 	
-			<Card>
-				<div className="flex flex-col gap-4 w-full">
+			<Card className=" rounded-2xl rounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-200/20 
+                        backdrop-blur-md
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300">
+				<div className="flex flex-col  w-full">
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="text-center font-medium">{t("Adversaires")}</TableHead>
-								<TableHead className="text-center font-medium">{t("Coéquipier")}</TableHead>
-								<TableHead className="text-center font-medium">{t("Résultat")}</TableHead>
-								<TableHead className="text-center font-medium">{t("Score")}</TableHead>
-								<TableHead className="text-center font-medium">{t("Temps")}</TableHead>
-								<TableHead className="text-center font-medium">{t("Elo")}</TableHead>
+								<TableHead className="text-center text-white font-medium">{t("Adversaires")}</TableHead>
+								<TableHead className="text-center text-white font-medium">{t("Coéquipier")}</TableHead>
+								<TableHead className="text-center text-white font-medium">{t("Résultat")}</TableHead>
+								<TableHead className="text-center text-white font-medium">{t("Score")}</TableHead>
+								<TableHead className="text-center text-white font-medium">{t("Temps")}</TableHead>
+								<TableHead className="text-center text-white font-medium">{t("Elo")}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>

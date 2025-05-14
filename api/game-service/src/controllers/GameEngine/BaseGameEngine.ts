@@ -62,7 +62,7 @@ abstract class BaseGameEngine<
 	protected calculateRebound(side: TSide): Vector {
 		const paddle = this.paddles[side];
 		const impactOffset = this.ball.z - paddle.z;
-		const spin = impactOffset * 0.05;
+		const spin = impactOffset * 0.03;
 		
 		let newX = ACCELERATION * Math.abs(this.direction.x);
 		newX = Math.min(newX, MAX_SPEED);

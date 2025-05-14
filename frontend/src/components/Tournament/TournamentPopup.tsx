@@ -54,6 +54,14 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
                    rounded-2xl p-8 flex flex-col gap-4 min-w-[300px] text-white text-center"
                onClick={(e) => e.stopPropagation()}
   >
+    {/* Close Button */}
+    <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-white text-xl hover:text-red-400 transition"
+          aria-label="Close popup"
+        >
+          ✕
+    </button>
     {/* Toggle Buttons */}
     <div className="flex justify-center gap-2 sm:gap-4 mb-4 flex-wrap">
       <button

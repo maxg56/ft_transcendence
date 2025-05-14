@@ -141,6 +141,19 @@
 	"Elo": "Elo",
 	"Stats Pong":"Dotlh Pong",
 	"Double Authentification": "tera'ngan Qoy",
-	"Le nom d'utilisateur ne peut pas être vide":"jIHvaD mojpu' tu'lu'"
+	"Le nom d'utilisateur ne peut pas être vide":"jIHvaD mojpu' tu'lu'",
+	"Salle d'attente Tournoi": "cha' romuluSngan",
+	"Joueurs connectés :": "yuQjIjQa'",
+	"Code du tournoi :":"chech yIrID",
+	"🏆 Classement Final": "🏆 qaStaHvIS ram",
+	"victoire": "yay",
+	"Aucun classement disponible":"tlhIngan",
+	"📋 Résultats des matchs":"📋 reH",
+	"Redirection automatique dans 10 secondes...":"'ang'eghmoHta'DI' qech ratlh puqloDwI'.",
+	"Derniers matchs joués":"qeylIS belmoH",
+	"Aucun match terminé":"DaH 'e' vIqelbe'nISmoH",
+	"Prochains matchs à venir":"ghoSmoHtaHvIS jatlh",
+	"Aucun match à venir":"DaH leghlaH pagh",
+	"Participants :":"parmaq :",
+	"waiting room" : "wa'leS"
   }
-  

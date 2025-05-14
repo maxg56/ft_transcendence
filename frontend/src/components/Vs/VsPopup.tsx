@@ -21,6 +21,14 @@ export default function VsPopup({ onSelect, onClose } : Props) {
                    rounded-2xl p-8 flex flex-col gap-4 min-w-[300px] text-white text-center"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-white text-xl hover:text-red-400 transition"
+          aria-label="Close popup"
+        >
+          ✕
+        </button>
         <h2 className="text-lg font-semibold mb-2">{t("Select Mode")}</h2>
         <button
           className="px-4 py-2 rounded-md font-semibold 

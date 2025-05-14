@@ -24,7 +24,15 @@ const Results: React.FC = () => {
             <div className="w-full h-full absolute top-[-100%] scanline-glow" />
       </div>
       <StarsBackground/>
+      <div className='title text-glow py-3 rounded-md text-white font-semibold 
+             bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/60 
+             backdrop-blur-md 
+             shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+             hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+             border border-cyan-300/30 
+             transition duration-300 z-10'>
       <h1 className="text-6xl font-bold mb-6 text-center text-glow title">{t("🏆 Classement Final")}</h1>
+      </div>
       <ol className="max-w-md mx-auto space-y-4">
         {Array.isArray(ranking) && ranking.length > 0 ? (
           ranking.map((entry: any, idx: number) => (

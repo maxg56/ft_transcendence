@@ -75,20 +75,20 @@ export function RatioPong() {
 	}, [chartData])
 
 	return (
-		<Card className="flex flex-col  h-[250px] rounded-2xl rounded-md text-white font-semibold 
+		<Card className="flex flex-col gap-[2%] h-[250px] rounded-2xl rounded-md text-white font-semibold 
                         bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-200/20 
                         backdrop-blur-md
                         shadow-[0_0_20px_rgba(0,255,255,0.4)] 
                         hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
                         border border-cyan-300/30 
                         transition duration-300">
-			<CardHeader className="items-center pb-0 text-xl">
+			<CardHeader className="items-left pb-0 text-xl">
 				<CardTitle>{t("Ratio")}</CardTitle>
 			</CardHeader>
 			<CardContent className="flex-1 pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="mx-auto aspect-square max-h-[230px] "
+					className="mx-auto  aspect-square h-[230px] -mt-8"
 				>
 					<PieChart >
 						<ChartTooltip

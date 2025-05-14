@@ -2,6 +2,20 @@ import { useEffect } from 'react';
 import * as THREE from 'three';
 import { useWebSocket } from '@/context/WebSocketContext';
 import Cookies from "js-cookie";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
+
+async function tournament_match_result(navigate: ReturnType<typeof useNavigate>) {
+  toast.success('Tournoi: match terminé');
+  setTimeout(() => {
+    if (window.location.pathname !== '/tournamentStage2') {
+      navigate('/tournamentStage2');
+    }
+  }, 1200);
+}
+
+
 
 export const useBallFromServer = (
   ballRef: React.MutableRefObject<THREE.Mesh | null>,
@@ -11,6 +25,7 @@ export const useBallFromServer = (
   onGameEnd: (winner: string) => void,
   setGameStarted: (started: boolean) => void
 ) => {
+  const navigate = useNavigate();
 	const { socket } = useWebSocket();  
 
   // Fonction pour gérer les mises à jour de l'état du jeu
@@ -54,6 +69,9 @@ export const useBallFromServer = (
           break;
         case 'game_result':
           handleGameResult(message);
+          break;
+        case "tournament_match_result" :
+          tournament_match_result(navigate);
           break;
         default:
           console.warn('Message WebSocket inattendu:', message);

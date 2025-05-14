@@ -108,15 +108,8 @@ export const useWaitroomListener = () => {
     tournament_update: async (d) => {
       setMatches(Array.isArray(d.matches) ? d.matches : []);
       setLastResults(Array.isArray(d.matchResults) ? d.matchResults : []);
-      // Nouvelle logique : host attend ack_ok avant de continuer
-      if (isHost) {
-        try {
-          await sendAckAndWait('tournament_update', d.matchId || d.tournamentId || code);
-        } catch {
-          return; // Stop si pas de confirmation backend
-        }
-      }
-      // Ne redirige pas si déjà sur la page
+      // On ne fait plus d'ack ici, il sera déclenché dans la page après le timer
+      // On peut stocker d'autres infos si besoin
       if (window.location.pathname !== '/tournamentStage2') {
         navigate('/tournamentStage2');
       }
@@ -125,13 +118,7 @@ export const useWaitroomListener = () => {
       toast.info(typeof d==='string'? d : JSON.stringify(d));
     },
     tournament_end: async (d) => {
-      if (isHost) {
-        try {
-          await sendAckAndWait('tournament_end', d.matchId || d.tournamentId || code);
-        } catch {
-          return;
-        }
-      }
+      // On ne fait plus d'ack ici, il sera déclenché dans la page après le timer
       setRanking(Array.isArray(d.standings) ? d.standings : []);
       setPlayers([]);
       setCode('');
@@ -142,14 +129,8 @@ export const useWaitroomListener = () => {
       }
     },
     // on tournament match finish, redirect to matches overview
-    tournament_match_result: async (d) => {
-      if (isHost) {
-        try {
-          await sendAckAndWait('tournament_match_result', d?.matchId || code);
-        } catch {
-          return;
-        }
-      }
+    tournament_match_result: async () => {
+      // On ne fait plus d'ack ici, il sera déclenché dans la page après le timer
       toast.success(t("Tournoi: match terminé"));
       setTimeout(() => {
         if (window.location.pathname !== '/tournamentStage2') {
@@ -157,7 +138,6 @@ export const useWaitroomListener = () => {
         }
       }, 1200);
     },
-    // Handler pour ack_ok (débloque la promesse)
     ack_ok: (d) => {
       const step = d?.step;
       if (step && ackWaiters.current[step]) {
@@ -191,6 +171,8 @@ export const useWaitroomListener = () => {
     tournamentStatus: useWaitroomStore.getState().tournamentStatus, 
     matches, 
     lastResults, 
-    ranking: useWaitroomStore.getState().ranking 
+    ranking: useWaitroomStore.getState().ranking ,
+    isHost,
+    sendAckAndWait
   };
 };

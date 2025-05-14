@@ -113,6 +113,8 @@ class Tournament {
     console.log("Match created", id);
     // notify clients of match found
     const teamsResponse = players.map((p, i) => ({ id: i + 1, players: [{ id: p.id, name: p.name }] }));
+    
+    this.startGame(id, 10000);
     players.forEach((p, idx) => {
       p.ws.send(JSON.stringify({
         event: 'match_found',
@@ -125,10 +127,22 @@ class Tournament {
         }
       }));
     });
-    setTimeout(() => {
-      startGameLoop(id);
-    }, 5000)
   }
+
+  /**
+   * Starts a tournament game after an optional delay (default 0ms)
+   */
+  private startGame(id: string, delay: number = 0) {
+    if (delay > 0) {
+      setTimeout(() => {
+        startGameLoop(id);
+      }, delay);
+    } else {
+      startGameLoop(id);
+    }
+  }
+
+  
 
   private async recordResult(roomId: string, winnerSide: PlayerSide1v1, score: GameScore1v1) {
     const match = this.TournGames.get(roomId);

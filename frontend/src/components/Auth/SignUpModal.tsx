@@ -167,11 +167,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
 
                 <p className="font-semibold text-xl">1. {t("Qui sommes nous ?")}</p>
                 <p className="text-sm">
-                  {t("Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.")}
+                  {t("Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur. " )}
                   {t("Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.")}
                 </p>
 
-                <p className="font-semibold text-xl">2.{t("Données collectées")}</p>
+                <p className="font-semibold text-xl">2. {t("Données collectées")}</p>
                 <p className="text-sm">{t("Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :")}</p>
                 <ul className="list-disc list-inside text-sm">
                   <li>{t("Identifiants : pseudonyme, mot de passe (hashé)")}</li>
@@ -190,7 +190,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                   <li>{t("Garantir la sécurité de l’application")}</li>
                 </ul>
 
-                <p className="font-semibold text-xl">4.{t("Sécurité des données")}</p>
+                <p className="font-semibold text-xl">4. {t("Sécurité des données")}</p>
                 <p className="text-sm">{t("Vos données sont stockées de manière sécurisée :")}</p>
                 <ul className="list-disc list-inside text-sm">
                   <li>{t("Les mots de passe sont hashés")}</li>
@@ -222,7 +222,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                   {t("Cette politique peut être mise à jour à tout moment. Les utilisateurs seront informés en cas de changements significatifs.")}
                 </p>
 
-                <p className="font-semibold text-xl">9.{t("Contact")}</p>
+                <p className="font-semibold text-xl">9. {t("Contact")}</p>
                 <p className="text-sm">
                   {t("Pour toute question sur cette politique ou l’usage de vos données :")}<br />
                   📧 [mpelluet@student.42lehavre.fr]

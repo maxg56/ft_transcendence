@@ -29,9 +29,13 @@ const ParticipantsList = ({ players, code ,isTournament}: ParticipantsListProps)
         <button
           onClick={handleStart}
           disabled={players.every((player) => player.isHost === false)}
-          className="absolute p-3 bg-blue-500 text-white rounded-full z-10"
-        >
-          Start
+          className="text-glow absolute p-3 text-white rounded-md z-10 font-semibold 
+                     bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/60 
+                    backdrop-blur-md 
+                    shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                    border border-cyan-300/30 "
+          >
+            Start
         </button>
 
         {/* Liste des joueurs en cercle */}

@@ -30,7 +30,7 @@ Message.init({
         allowNull: false 
     },
     content: { 
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(500),
         allowNull: false 
     },
     created_at: {

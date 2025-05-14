@@ -1,11 +1,15 @@
 {
 	"3 Joueurs": "3 Joueurs",
 	"4 Joueurs": "4 Joueurs",
+	"Activer": "Activer",
 	"Amis": "Amis",
 	"Aucun résultat": "Aucun résultat",
+	"Authentification à deux facteurs": "Authentification à deux facteurs",
 	"Champs manquants": "Champs manquants",
 	"Choisir langue": "Choisir la langue",
+	"Clé secrète": "Clé secrète",
 	"Code 2FA invalide": "Code 2FA invalide",
+	"Code d'authentification": "Code d'authentification",
 	"Commandes": "Commandes",
 	"Confirmer le mot de passe": "Confirmer le mot de passe",
 	"Connexion": "Connexion",
@@ -58,13 +62,14 @@
 	"Token non reçu": "Token non reçu",
 	"Tournois": "Tournois",
 	"Tous les champs doivent être remplis": "Tous les champs doivent être remplis",
+	"Trop de caracteres (500 autorises)": "Trop de caractères (500 autorisés)",
 	"Vérifier le code": "Vérifier le code",
 	"Vous avez été retiré de la file d'attente.": "Vous avez été retiré de la file d'attente.",
 	"Conditions d'utilisation": "Conditions d'utilisation",
 	"conditions d'utilisation": "conditions d'utilisation",
 	"Politique de Confidentialité": "Politique de confidentialité",
 	"Qui sommes nous ?": "Qui sommes-nous ?",
-	"Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.": "Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur.",
+	"Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur. ": "Ce projet est réalisé dans le cadre de l’école 42. Il s'agit d'une application web multijoueur. ",
 	"Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.": "Le traitement des données est fait par le groupe composé d'Emma, Manon, Maxence et Thomas.",
 	"Données collectées": "Données collectées",
 	"Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :": "Nous collectons uniquement les données nécessaires au bon fonctionnement de l'application :",
@@ -131,6 +136,7 @@
 	"Score": "Score",
 	"Temps": "Temps",
 	"Elo": "Elo",
-	"winnerMessage": "Victoire pour {{side}} !"
+	"winnerMessage": "Victoire pour {{side}} !",
+	"Le nom d'utilisateur ne peut pas être vide":"Le nom d'utilisateur ne peut pas être vide"
 }
 

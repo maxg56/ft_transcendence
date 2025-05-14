@@ -44,20 +44,20 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
 
   return (
     <div
-  className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
-  onClick={onClose}
->
+      className="absolute top-[350%] left-[43%] -translate-x-1/2 fixed  z-50 flex items-center bg-black/40 backdrop-blur-sm"
+      onClick={onClose}
+    >
   <div
     className="bg-gradient-to-br from-cyan-400/40 via-blue-500/40 to-purple-600/40 
-               backdrop-blur-md border border-cyan-300/30 
-               shadow-[0_0_30px_rgba(0,255,255,0.3)] 
-               rounded-2xl p-4 sm:p-6 w-[90%] max-w-md text-white text-center"
-    onClick={(e) => e.stopPropagation()}
+                   backdrop-blur-md border border-cyan-300/30 
+                   shadow-[0_0_30px_rgba(0,255,255,0.3)] 
+                   rounded-2xl p-8 flex flex-col gap-4 min-w-[300px] text-white text-center"
+               onClick={(e) => e.stopPropagation()}
   >
     {/* Toggle Buttons */}
     <div className="flex justify-center gap-2 sm:gap-4 mb-4 flex-wrap">
       <button
-        className={`px-2 py-2 rounded-md font-semibold text-sm sm:text-base transition shadow-md ${
+        className={`px-10 py-2 rounded-md font-semibold text-sm sm:text-base transition shadow-md ${
           mode === 'friends' ? 'bg-blue-600' : 'bg-blue-300 hover:bg-blue-400'
         }`}
         onClick={() => setMode('friends')}
@@ -81,8 +81,8 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
         value={code}
         onChange={(e) => setCode(e.target.value)}
         placeholder={t("Enter Code")}
-        className="w-[20%] sm:w-[180px] max-w-full border border-cyan-500/40 
-                   rounded-md p-2 text-sm text-white bg-transparent 
+        className="w-[40%] sm:w-[295px] max-w-full border border-cyan-500/40 
+                   rounded-md p-2 text-xl text-center text-white bg-transparent 
                    placeholder:text-cyan-200 focus:outline-none 
                    transition duration-300 ease-in-out"
       />
@@ -92,13 +92,13 @@ export default function TournamentPopup({ onClose, onSelect }: Props) {
     {/* Join / Create */}
     <div className="flex justify-center gap-2 sm:gap-4 mt-4 flex-wrap">
       <button
-        className="px-3 py-2 rounded-md font-semibold bg-purple-500/70 hover:bg-purple-600/80 text-sm sm:text-base transition shadow-md"
+        className="px-8 py-2 rounded-md font-semibold bg-purple-500/70 hover:bg-purple-600/80 text-sm sm:text-base transition shadow-md"
         onClick={handleJoin}
       >
         {t("Join")}
       </button>
       <button
-        className="px-3 py-2 rounded-md font-semibold bg-yellow-500/70 hover:bg-yellow-600/80 text-sm sm:text-base transition shadow-md"
+        className="px-6 py-2 rounded-md font-semibold bg-yellow-500/70 hover:bg-yellow-600/80 text-sm sm:text-base transition shadow-md"
         onClick={handleCreate}
       >
         {t("Create")}

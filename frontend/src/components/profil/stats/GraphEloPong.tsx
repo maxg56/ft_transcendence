@@ -83,9 +83,8 @@ export function GraphEloPong() {
             <Line
               dataKey="points"
               type="natural"
-              fill="var(--color-points)"
-              fillOpacity={0.4}
-              stroke="var(--color-points)"
+              stroke="#ff6f00" 
+              strokeWidth={3}  
               dot={false}
             />
           </LineChart>

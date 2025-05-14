@@ -59,7 +59,13 @@ export function GraphEloPong() {
 	);
 
   return (
-    <Card>
+    <Card className="p-6 rounded-2xl rounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-200/20 
+                        backdrop-blur-md
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300">
       <CardHeader>
         <CardTitle className="items-center pb-0 text-xl">Elo</CardTitle>
       </CardHeader>

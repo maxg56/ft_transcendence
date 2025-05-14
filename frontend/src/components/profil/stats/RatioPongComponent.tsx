@@ -75,19 +75,26 @@ export function RatioPong() {
 	}, [chartData])
 
 	return (
-		<Card className="flex flex-col  h-[250px]">
+		<Card className="flex flex-col  h-[250px] rounded-2xl rounded-md text-white font-semibold 
+                        bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-200/20 
+                        backdrop-blur-md
+                        shadow-[0_0_20px_rgba(0,255,255,0.4)] 
+                        hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
+                        border border-cyan-300/30 
+                        transition duration-300">
 			<CardHeader className="items-center pb-0 text-xl">
 				<CardTitle>{t("Ratio")}</CardTitle>
 			</CardHeader>
 			<CardContent className="flex-1 pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="mx-auto aspect-square max-h-[230px]"
+					className="mx-auto aspect-square max-h-[230px] "
 				>
-					<PieChart>
+					<PieChart >
 						<ChartTooltip
 							cursor={false}
 							content={<ChartTooltipContent hideLabel />}
+							
 							/>
 						<Pie
 							data={chartData}
@@ -96,7 +103,7 @@ export function RatioPong() {
 							innerRadius={60}
 							strokeWidth={2}
 							>
-							<Label
+							<Label 
 								content={({ viewBox }) => {
 									if (viewBox && "cx" in viewBox && "cy" in viewBox) {
 										return (
@@ -109,14 +116,14 @@ export function RatioPong() {
 												<tspan
 													x={viewBox.cx}
 													y={viewBox.cy}
-													className="fill-foreground text-3xl font-bold"
+													className="fill-white text-3xl font-bold"
 												>
 													{totalMatches.toLocaleString()}
 												</tspan>
 												<tspan
 													x={viewBox.cx}
 													y={(viewBox.cy || 0) + 24}
-													className="fill-muted-foreground"
+													className="fill-white "
 												>
 													{t("Matchs")}
 												</tspan>

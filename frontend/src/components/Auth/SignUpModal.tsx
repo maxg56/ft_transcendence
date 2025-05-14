@@ -43,6 +43,10 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
       setTimeout(() => setShake(false), 500);
       return;
     }
+    if (confirmPassword !== password) {
+      setError(t("Les mots de passe ne correspondent pas"));
+      return;
+    }
 
     setError(null);
     signUp(username, password, confirmPassword);

@@ -44,7 +44,7 @@ export const Chat: React.FC = () => {
     })
     .filter((name, index, self) => self.indexOf(name) === index) // éviter les doublons
     // .filter((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
-
+    console.log('PROFILE:', profile);
   return (
     <>
         <div className="w-[440px] h-[500px] rounded-lg shadow-lg

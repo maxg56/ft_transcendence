@@ -20,6 +20,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const { blockUser, invitePong, fetchProfile } = useChatWebSocket();
   return (
     <div className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>  
+    {/* si on arrive pas a mettre a gauche et a droite, mettre tous les messages a droite en commentant au dessus et decommenter en dessous*/}
+    {/* <div className="flex justify-end"> */}
       <div className="flex flex-col max-w-[70%] relative">
         {/* action icons */}
         {!isOwnMessage && (

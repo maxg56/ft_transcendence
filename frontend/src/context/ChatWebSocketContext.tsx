@@ -24,6 +24,7 @@ interface Channel {
 
 interface ChatContextType {
   ws: WebSocket | null;
+  userId: number | null;
   channels: Channel[];
   messages: Record<string, Message[]>;
   unread: Record<string, number>;
@@ -62,6 +63,7 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [selectedChannel, setSelectedChannel] = useState<string>('general');
   const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<number | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
   const retryCountRef = useRef(0);
@@ -74,6 +76,21 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
       console.warn("No token found, Chat WebSocket connection aborted.");
       return;
     }
+
+    const decodeJwt = (token: string) => {
+      try {
+        const base64Payload = token.split('.')[1];
+        const jsonPayload = atob(base64Payload); // Decode base64
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        console.error("Erreur de décodage du JWT :", e);
+        return null;
+      }
+    };
+
+    const decoded = token ? decodeJwt(token) : null;
+    console.log('token decoded:', token)
+    setUserId(decoded.sub);
 
     const { protocol, host, port, path } = WS_CONFIG;
     const ws = new WebSocket(`${protocol}://${host}:${port}${path}?token=${token}`);
@@ -90,6 +107,8 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log('DATAAA:', data);
+      console.log('EVENT:', event);
 
       if (data.type === 'channels') {
         const serverChannels: string[] = data.channels;
@@ -340,6 +359,7 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
         profile,
         clearProfile,
         loading,
+        userId,
       }}
     >
       {children}

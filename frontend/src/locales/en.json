@@ -58,6 +58,7 @@
 	"Token non reçu": "Token not received",
 	"Tournois": "Tournaments",
 	"Tous les champs doivent être remplis": "All fields must be filled",
+	"Trop de caracteres (500 autorises)": "Too many characters (500 allowed)",
 	"Vérifier le code": "Verify code",
 	"Vous avez été retiré de la file d'attente.": "You have been removed from the queue.",
 	"winnerMessage": "{{side}} won!",

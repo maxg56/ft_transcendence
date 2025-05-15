@@ -21,7 +21,7 @@ const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations }) => 
 					{friends.map((friend, index) => (
 						<li key={`friend-${index}`} className="flex items-center gap-2 p-2 border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-lg rounded-lg">
 							<img
-								src={`https://robohash.org/${friend.username}`}
+								src={friend.avatar || `https://robohash.org/${friend.username}`}
 								alt={friend.username}
 								className="w-8 h-8 rounded-full"
 							/>

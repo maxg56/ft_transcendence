@@ -16,7 +16,7 @@ import { joinTournamentGame, stateTournamentGameHandler } from './controllers/jo
 import { logformat, logError } from "./utils/log";
 import {activeGames, privateGames , matchmakingQueue, tournaments } from './config/data';
 import { MatchFormat,tryMatchmaking , enqueuePlayer, cleanMatchmakingQueues } from './controllers/matchmaking';
-import { setUserOffline, setUserOnline } from "./controllers/onlinePresence"
+import { setUserOffline, setUserOnline } from "./controllers/online";
 
 dotenv.config();
 

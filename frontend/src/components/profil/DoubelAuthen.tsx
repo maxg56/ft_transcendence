@@ -82,7 +82,6 @@ export function DoubleAuthentification() {
     try {
       await disable2FA()
       setIsEnabled(false)
-      console.log("2FA désactivée")
     } catch (error) {
       console.error("Erreur lors de la désactivation du 2FA", error)
       setIsEnabled(true)
@@ -97,7 +96,6 @@ export function DoubleAuthentification() {
     if (qrCode && secretKey) {
       setIsEnabled(true)
       handleModalClose()
-      console.log("2FA activée")
     } else {
       console.error("Impossible d'activer la 2FA sans données valides")
     }

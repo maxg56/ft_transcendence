@@ -29,16 +29,16 @@ class Tournament {
   private TournGames = new Map<string, Room>();
   private completedMatches: Match[] = [];
   private stateMachine = new TournamentStateMachine(this);
-  private id: string;
+  id: string;
 
   constructor(players: Player[] , id: string) {
     this.id = id;
     this.players = players;
     if (players.length > 0) this.hostId = players[0].id;
-    this.stateMachine.transition('WAITING');
+    this.stateMachine.transition('START');
     const [p1, p2, p3, p4] = this.players;
-    this.createMatch('Game1'+ this.id, [p1, p4]);
-    this.createMatch('Game2'+ this.id, [p2, p3]);
+    this.createMatch('Game1', [p1, p4]);
+    this.createMatch('Game2', [p2, p3]);
     this.broadcastWsTournament();
   }
 
@@ -47,25 +47,25 @@ class Tournament {
    */
   async setupSemis() {
     this.broadcast('🏁 Tournament started! Semi-finals créées.');
-    this.startGame('Game1'+this.id, 10000);
-    this.startGame('Game2'+this.id, 10000);
+    this.startGame('Game1', 7000);
+    this.startGame('Game2', 7000);
   }
 
   /**
    * Starts the tournament and creates the finals and third place match
    */
-  async startTournament() {
+  async startFinales() {
     this.broadcast('🔥 Finales et match pour la 3e place créés !');;
-    this.startGame('final'+this.id, 10000);
-    this.startGame('third'+this.id, 10000);
+    this.startGame('final', 7000);
+    this.startGame('third', 7000);
   }
 
   /**
    * Sets up the finals and starts the games
    */
   async setupFinals() {
-    const s1 = this.TournGames.get('Game1' + this.id);
-    const s2 = this.TournGames.get('Game2' + this.id);
+    const s1 = this.TournGames.get('Game1');
+    const s2 = this.TournGames.get('Game2');
     if (!s1 || !s2) {
       console.error('[Tournament] setupFinals: missing semi-final rooms');
       return;
@@ -78,9 +78,10 @@ class Tournament {
     }
     const loser1 = s1.players.find(p => p.id !== winner1.id)!;
     const loser2 = s2.players.find(p => p.id !== winner2.id)!;
-
-    this.createMatch('final'+this.id, [winner1, winner2]);
-    this.createMatch('third'+this.id, [loser1, loser2]);
+    this.TournGames.delete('Game1');
+    this.TournGames.delete('Game2');
+    this.createMatch('final', [winner1, winner2]);
+    this.createMatch('third', [loser1, loser2]);
     this.broadcastWsTournament();
   }
 
@@ -92,8 +93,8 @@ class Tournament {
     // Log les clés de TournGames pour debug
     console.log('[Tournament] finishTournament - TournGames keys:', Array.from(this.TournGames.keys()));
 
-    const final = this.TournGames.get('final'+this.id);
-    const third = this.TournGames.get('third'+this.id);
+    const final = this.TournGames.get('final');
+    const third = this.TournGames.get('third');
     if (!final || !third) {
       console.error('[Tournament] finishTournament: final or third room not found', { final, third });
       return;
@@ -231,7 +232,7 @@ class Tournament {
     // Vérifie si les deux demi-finales ou finales sont terminées
     const phase = this.stateMachine.getPhase();
     if (phase === 'SEMIS') {
-      const semisIds = ['Game1' + this.id, 'Game2' + this.id];
+      const semisIds = ['Game1', 'Game2'];
       if (this.areMatchesFinished(semisIds)) {
         await this.setupFinals();
         this.stateMachine.transition('MATCH_FINISHED');
@@ -239,7 +240,7 @@ class Tournament {
         return;
       }
     } else if (phase === 'FINALS') {
-      const finalsIds = ['final' + this.id, 'third' + this.id];
+      const finalsIds = ['final', 'third'];
       if (this.areMatchesFinished(finalsIds)) {
         await this.finishTournament();
         this.stateMachine.transition('MATCH_FINISHED');
@@ -278,13 +279,12 @@ class Tournament {
       player.ws.send(JSON.stringify({ event: 'tournament_update', data: wsData }));
     }
   }
+
   getTournamentState() {
     return {
       matches: Array.from(this.TournGames.entries())
     };
   }
-
-
 
   getHostId() {
     return this.hostId;
@@ -299,13 +299,18 @@ class Tournament {
     switch (phase) {
       case 'WAITING':
         console.log('[Tournament] Setting up semis...');
-        await this.setupSemis();
+        
         this.stateMachine.transition('START');
         break;
       case 'SEMIS':
-        console.log('[Tournament] Setting up finals...');
-        await this.startTournament();
-        this.stateMachine.transition('MATCH_FINISHED');
+        await this.setupSemis();
+        break;
+      case 'FINALS':
+        await this.startFinales();
+        console.log('[Tournament] Finishing tournament...');
+        break;
+      case 'FINISHED':
+        console.log('[Tournament] Tournament already finished.');
         break;
       default:
         console.error('[Tournament] No next step available for phase:', phase);

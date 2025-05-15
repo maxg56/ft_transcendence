@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "@/context/WebSocketContext";
@@ -124,13 +124,6 @@ export const useWaitroomListener = () => {
     },
     // on tournament match finish, redirect to matches overview
     tournament_match_result: async () => {
-      // On ne fait plus d'ack ici, il sera déclenché dans la page après le timer
-      toast.success(t("Tournoi: match terminé"));
-      setTimeout(() => {
-        if (window.location.pathname !== '/tournamentStage2') {
-          navigate('/tournamentStage2');
-        }
-      }, 1200);
     },
   };
 

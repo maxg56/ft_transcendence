@@ -123,7 +123,7 @@ export default async function handleGameResult(data: GameResultData) {
     let eloBefore: Map<string, number> | undefined = undefined;
     let eloAfter: Map<string, number> | undefined = undefined;
 
-    if (!data.isPrivateGame) {
+    if (!data.isPrivateGame ) {
       const result = await updateElo(game.players, winnerIds);
       updatedPlayers = result.updatedPlayers;
       eloBefore = result.eloBefore;

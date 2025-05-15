@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
-import { useApi } from '@/hooks/api/useApi';
-import { UserInfos } from '@/components/profil/type/profilInterface';
 
 interface Message {
   id: string;
@@ -26,7 +24,6 @@ interface Channel {
 
 interface ChatContextType {
   ws: WebSocket | null;
-  IdUser: number | null;
   channels: Channel[];
   messages: Record<string, Message[]>;
   unread: Record<string, number>;
@@ -65,7 +62,6 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [selectedChannel, setSelectedChannel] = useState<string>('general');
   const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const [IdUser, setIdUser] = useState<number | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
   const retryCountRef = useRef(0);
@@ -94,8 +90,6 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      // console.log('DATAAA:', data);
-      // console.log('EVENT:', event);
 
       if (data.type === 'channels') {
         const serverChannels: string[] = data.channels;
@@ -258,23 +252,6 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   };
 
-  const { refetch: fetchUserInfos } = useApi<UserInfos>(
-		"/user/info",
-		{
-			immediate: false,
-			onSuccess: (data) => {
-				if (!data ) {
-					console.error("Erreur User: réponse invalide", data)
-					return
-				}
-				setIdUser(data.id);
-			},
-			onError: (errMsg) => {
-				console.error('Erreur User :', errMsg)
-			},
-		}
-	)
-
   useEffect(() => {
     manuallyClosed.current = false;
     connect();
@@ -282,7 +259,6 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
       manuallyClosed.current = true;
       if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
       wsRef.current?.close();
-      fetchUserInfos();
     };
   }, [token]);
 
@@ -364,7 +340,6 @@ export const ChatWebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
         profile,
         clearProfile,
         loading,
-        IdUser,
       }}
     >
       {children}

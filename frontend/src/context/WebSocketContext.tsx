@@ -5,8 +5,8 @@ type WebSocketContextType = {
   socket: WebSocket | null;
   isConnected: boolean;
   sendMessage: (msg: string) => void;
-  addMessageListener: (cb: (msg: any) => void) => () => void;
-  addEventListener: (event: string, cb: (msg: any) => void) => () => void;
+  dequeueMessage: () => any | undefined;
+  queueLength: number;
 };
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
@@ -34,9 +34,8 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
   const manuallyClosed = useRef(false);
 
   const socketRef = useRef<WebSocket | null>(null);
-  const listeners = useRef<((msg: any) => void)[]>([]);
-  const typedListeners = useRef<Map<string, ((msg: any) => void)[]>>(new Map());
-
+  const messageQueue = useRef<any[]>([]);
+  const sendQueue = useRef<string[]>([]);
   const tokenRef = useRef(Cookies.get("token") || "");
 
   useEffect(() => {
@@ -58,6 +57,11 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
       setSocket(ws);
       socketRef.current = ws;
       setIsConnected(true);
+      // flush queued sends
+      while (sendQueue.current.length > 0 && ws.readyState === WebSocket.OPEN) {
+        const msg = sendQueue.current.shift()!;
+        ws.send(msg);
+      }
     };
 
     ws.onclose = () => {
@@ -75,38 +79,19 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
       }
     };
 
+    
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        if (data.event !== "game_state"){
-          console.log("📩 WebSocket received:", data);
-        }
-
-        // Generic listeners
-        listeners.current.forEach((listener) => {
-          try {
-            listener(data);
-          } catch (e) {
-            console.error("Generic listener error:", e);
-          }
-        });
-
-        // Typed listeners
-        const eventName = data?.event;
-        if (eventName && typedListeners.current.has(eventName)) {
-          typedListeners.current.get(eventName)?.forEach((cb) => {
-            try {
-              cb(data);
-            } catch (e) {
-              console.error(`Listener for ${eventName} error:`, e);
-            }
-          });
+        if (data.event !== 'game_state') {
+          // console.debug("📩 WebSocket received:", data);
+          // enqueue message
+          messageQueue.current.push(data);
         }
       } catch (err) {
         console.error("❗ WebSocket message parse error:", err);
       }
     };
-
     ws.onerror = (event) => {
       console.error("⚠️ WebSocket error", {
         readyState: ws.readyState,
@@ -116,36 +101,17 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
   };
 
   const sendMessage = (msg: string) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(msg);
+    const ws = socketRef.current;
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(msg);
     } else {
-      console.warn("⚠️ Cannot send message: WebSocket not connected.");
+      console.warn("⚠️ WebSocket not open, queueing message.");
+      sendQueue.current.push(msg);
     }
   };
 
-  const addMessageListener = (listener: (msg: any) => void) => {
-    listeners.current.push(listener);
-    return () => {
-      listeners.current = listeners.current.filter((l) => l !== listener);
-    };
-  };
-
-  const addEventListener = (event: string, cb: (data: any) => void) => {
-    if (!typedListeners.current.has(event)) {
-      typedListeners.current.set(event, []);
-    }
-    typedListeners.current.get(event)!.push(cb);
-
-    return () => {
-      const arr = typedListeners.current.get(event);
-      if (arr) {
-        typedListeners.current.set(
-          event,
-          arr.filter((fn) => fn !== cb)
-        );
-      }
-    };
-  };
+  const dequeueMessage = () => messageQueue.current.shift();
+  const queueLength = messageQueue.current.length;
 
   useEffect(() => {
     manuallyClosed.current = false;
@@ -164,8 +130,8 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
         socket,
         isConnected,
         sendMessage,
-        addMessageListener,
-        addEventListener,
+        dequeueMessage,
+        queueLength,
       }}
     >
       {children}

@@ -12,12 +12,11 @@ interface Message {
 
 interface MessageListProps {
   messages: Message[];
-  IdUser: number | null;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, IdUser }) => {
+const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -30,7 +29,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, IdUser }) => {
           senderId={msg.senderId}
           content={msg.content}
           senderUsername={msg.senderUsername}
-          isOwnMessage={msg.senderId === IdUser}
+          isOwnMessage={msg.isOwnMessage}
           formattedTimestamp={msg.formattedTimestamp}
         />
       ))}

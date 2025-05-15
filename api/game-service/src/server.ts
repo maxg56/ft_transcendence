@@ -116,6 +116,30 @@ function handleMessage(data: any, player: Player) {
         stateTournamentGameHandler(player, data);
         break;
       }
+      case 'ack': {
+        // Gestion ack tournoi :
+        const { step, matchId } = data;
+        if (!step || !matchId) break;
+        const tournament = tournaments.get(matchId);
+        if (!tournament) break;
+        // Vérifie que player est l'host du tournoi
+        if (tournament.getHostId && typeof tournament.getHostId === 'function') {
+          if (player.id !== tournament.getHostId()) break;
+        } else if (tournament.hostId && player.id !== tournament.hostId) {
+          break;
+        }
+        break;
+      }
+      case 'tournament_next_step': {
+        console.log("Tournament next step", data);
+        const { tournamentId} = data.data;
+        const tournament = tournaments.get(tournamentId);
+        if (tournament && tournament.getHostId() === player.id) {
+          tournament.startNextStep();
+        }
+        console.log("Tournament next step", tournamentId, player.id);
+        break;
+      }
       case 'move_paddle': {
         const game = activeGames.get(data.gameId);
         if (game) {

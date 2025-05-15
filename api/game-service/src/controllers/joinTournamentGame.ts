@@ -48,7 +48,7 @@ async function stateTournamentGameHandler(player: Player, msg: any) {
 
     const players = [game.host, ...game.guest];
     // Create the Tournament instance and store it
-    const tourney = new Tournament(players);
+    const tourney = new Tournament(players , gameId);
     
     tournaments.set(gameId, tourney);
 

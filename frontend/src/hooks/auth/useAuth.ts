@@ -111,9 +111,9 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
   const signUp = useCallback(async (username: string, password: string, confirmPassword: string) => {
     const validationError = validateSignUp(t, username, password, confirmPassword);
     if (validationError) {
-      setError(validationError);
-      onError?.(validationError); 
-      return;
+    //   setError(validationError);
+    //   onError?.(validationError); 
+    //   return;
     }
     try {
       const res = await fetch(`${API_URL}/auth/register`, {

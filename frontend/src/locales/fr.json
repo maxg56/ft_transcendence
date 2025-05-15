@@ -137,7 +137,6 @@
 	"Temps": "Temps",
 	"Elo": "Elo",
 	"winnerMessage": "Victoire pour {{side}} !",
-	"Le nom d'utilisateur ne peut pas être vide":"Le nom d'utilisateur ne peut pas être vide",
-	"waiting room" : "salle d'attente"
+	"Le nom d'utilisateur ne peut pas être vide":"Le nom d'utilisateur ne peut pas être vide"
 }
 

@@ -137,19 +137,6 @@
 	"Score":"Score",
 	"Temps":"Time",
 	"Elo":"Elo",
-	"Le nom d'utilisateur ne peut pas être vide":"Username cannot be empty",
-	"Salle d'attente Tournoi":"Tournament Waiting Room",
-	"Joueurs connectés :":"Connected players :",
-	"Code du tournoi :":"Tournament code :",
-	"🏆 Classement Final": "🏆 Final Ranking",
-	"victoire": "victory",
-	"Aucun classement disponible":"No ranking available",
-	"📋 Résultats des matchs":"📋 Match results",
-	"Redirection automatique dans 10 secondes...":"Automatic redirection in 10 seconds...",
-	"Derniers matchs joués":"Last matches played",
-	"Aucun match terminé":"No match finished",
-	"Prochains matchs à venir":"Upcoming Matches",
-	"Aucun match à venir":"No upcoming matches",
-	"Participants :":"Participants :"
+	"Le nom d'utilisateur ne peut pas être vide":"Username cannot be empty"
 }	
   

@@ -1,7 +1,6 @@
 import TournamentCode from '@/components/Tournament/TournamentCode';
 import ParticipantsList from '@/components/Tournament/TournamentList';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
-import { useTranslation } from "@/context/TranslationContext";
 
 const WaitingRoomTF = () => {
   const { code, players, isTournament,isHost } = useWaitroomListener();

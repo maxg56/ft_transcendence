@@ -5,7 +5,6 @@ import useNavigation from "@/hooks/useNavigation";
 import { useJoinQueue} from "@/hooks/WedSooket/useJoinQueue";
 import {SpaceShipInterior} from "@/animation/SpaceShipInterior";
 import FriendListHub from "@/components/ListFriends";
-import Chat from "@/components/chat/Chat";
 import { useTranslation } from "@/context/TranslationContext";
 import Cookies from "js-cookie"
 
@@ -68,9 +67,6 @@ const Hub: React.FC = () => {
           <div className="absolute top-[28%] left-[2%] justify-center z-100">
                 <FriendListHub />
               </div>
-              <div className="absolute top-[30%] left-[75%] justify-center z-100  ">
-                <Chat />
-                </div>
                 <div className="w-[22%] place-content-evenly overflow-y-auto">
               <button
                 className="title absolute bottom-[10%] left-1/2 -translate-x-1/2 

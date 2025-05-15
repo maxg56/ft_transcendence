@@ -1,6 +1,7 @@
 import TournamentCode from '@/components/Tournament/TournamentCode';
 import ParticipantsList from '@/components/Tournament/TournamentList';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
+import { useTranslation } from "@/context/TranslationContext";
 
 const WaitingRoomTF = () => {
   const { code, players, isTournament,isHost } = useWaitroomListener();
@@ -21,8 +22,8 @@ const WaitingRoomTF = () => {
             playsInline
         />
       </div>
-      <div className="title text-center text-white z-20 absolute bottom-[28%] left-1/2 -translate-x-1/2 
-                px-20 py-50 flex flex-col justify-center items-center
+      <div className="title text-center text-white z-20 absolute bottom-[18%] left-1/2 -translate-x-1/2 
+                px-20 py-10 flex flex-col justify-center items-center
                rounded-[2vw]
                 bg-gradient-to-r from-cyan-400/20 via-blue-500/20 
                 backdrop-blur-md

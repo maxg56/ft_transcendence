@@ -76,6 +76,10 @@ const TournamentT2: React.FC = () => {
           </div>
         </section>
       </div>
+      <div className=" absolute bottom-[28%] left-[75%]">
+        <Chat/>
+      </div>
+    </div>
     </div>
   );
 };

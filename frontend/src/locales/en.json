@@ -137,6 +137,12 @@
 	"Score":"Score",
 	"Temps":"Time",
 	"Elo":"Elo",
-	"Le nom d'utilisateur ne peut pas être vide":"Username cannot be empty"
+	"Le nom d'utilisateur ne peut pas être vide":"Username cannot be empty",
+	"Envoi..." : "Send...",
+	"Lancer la prochaine étape": "Launch the next step",
+	"Derniers matchs joués" : "Last matches played",
+	"Aucun match à venir" : "No upcoming matches",
+	"Prochains matchs à venir" : "Upcoming matches to come",
+	"Aucun match terminé" : "No matches completed"
 }	
   

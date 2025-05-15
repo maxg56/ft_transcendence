@@ -137,6 +137,8 @@
 	"Temps": "Temps",
 	"Elo": "Elo",
 	"winnerMessage": "Victoire pour {{side}} !",
-	"Le nom d'utilisateur ne peut pas être vide":"Le nom d'utilisateur ne peut pas être vide"
+	"Le nom d'utilisateur ne peut pas être vide":"Le nom d'utilisateur ne peut pas être vide",
+	"Winner" : "Gagnant",
+	"Next Match" : "Prochain match"
 }
 

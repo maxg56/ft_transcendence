@@ -22,7 +22,6 @@ interface WsTournament {
 
 
 class Tournament {
-  private ackWaiters: Record<string, { resolve: () => void, timeout: NodeJS.Timeout }> = {};
   private lastStep: string | null = null;
   public hostId: string | null = null;
   private players: Player[] = [];
@@ -173,38 +172,42 @@ class Tournament {
    * Starts a tournament game after an optional delay (default 0ms)
    */
   private startGame(id: string, delay: number = 0) {
-  if (!this.players || this.players.length === 0) {
-    console.error('No players available to start the game.');
-    return;
-  }
-  const teamsResponse = this.players.map((p, i) => ({
-    id: i + 1,
-    players: [{ id: p.id, name: p.name }]
-  }));
-  console.log('Teams response:', teamsResponse);
-  this.players.forEach((p, idx) => {
-    if (p.ws && typeof p.ws.send === 'function') {
-      p.ws.send(JSON.stringify({
-        event: 'match_found',
-        data: {
-          gameId: id,
-          format: { teams: 2, playersPerTeam: 1 },
-          teamId: idx + 1,
-          positionInTeam: 0,
-          teams: teamsResponse
-        }
-      }));
+    if (!this.players || this.players.length === 0) {
+      console.error('No players available to start the game.');
+      return;
     }
-  });
+    const match = this.TournGames.get(id);
+    const teamsResponse = match
+      ? Array.from(match.teams.entries()).map(([teamId, players]) => ({
+          id: teamId + 1,
+          players: players.map(pl => ({ id: pl.id, name: pl.name }))
+        }))
+      : [];
 
-  if (delay > 0) {
-    setTimeout(() => {
+    console.log('Teams response:', teamsResponse);
+    this.players.forEach((p, idx) => {
+      if (p.ws && typeof p.ws.send === 'function') {
+        p.ws.send(JSON.stringify({
+          event: 'match_found',
+          data: {
+            gameId: id,
+            format: { teams: 2, playersPerTeam: 1 },
+            teamId: idx + 1,
+            positionInTeam: 0,
+            teams: teamsResponse
+          }
+        }));
+      }
+    });
+
+    if (delay > 0) {
+      setTimeout(() => {
+        startGameLoop(id);
+      }, delay);
+    } else {
       startGameLoop(id);
-    }, delay);
-  } else {
-    startGameLoop(id);
+    }
   }
-}
 
   private async recordResult(roomId: string, winnerSide: PlayerSide1v1, score: GameScore1v1) {
     const match = this.TournGames.get(roomId);
@@ -299,7 +302,6 @@ class Tournament {
     switch (phase) {
       case 'WAITING':
         console.log('[Tournament] Setting up semis...');
-        
         this.stateMachine.transition('START');
         break;
       case 'SEMIS':

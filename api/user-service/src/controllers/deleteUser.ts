@@ -62,8 +62,9 @@ async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
 		if (!user)
 			return sendError(reply, "user not find", 404)
 		const newName = await usernameAnonymise()
-		await User.update(
-			{username: newName},
+		await User.update({
+			username: newName,
+			avatar: null},
 			{ where: {
 				id: id
 			}},

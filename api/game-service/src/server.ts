@@ -16,6 +16,7 @@ import { joinTournamentGame, stateTournamentGameHandler } from './controllers/jo
 import { logformat, logError } from "./utils/log";
 import {activeGames, privateGames , matchmakingQueue, tournaments } from './config/data';
 import { MatchFormat,tryMatchmaking , enqueuePlayer, cleanMatchmakingQueues } from './controllers/matchmaking';
+import { setUserOffline, setUserOnline } from "./controllers/onlinePresence"
 
 dotenv.config();
 
@@ -56,7 +57,7 @@ async function handleNewConnection(ws: WebSocket, token: string) {
   }
 
   const player: Player = { id: playerId, name: user.username, ws, elo: user.elo, joinedAt: Date.now() , avatar: user.avatar};
-
+  await setUserOnline(playerId);
   ws.on('message', (message: string) => {
     try {
       const data = JSON.parse(message);
@@ -68,6 +69,7 @@ async function handleNewConnection(ws: WebSocket, token: string) {
   });
 
   ws.on('close', () => {
+    setUserOffline(player.id);
     for (const [key, queue] of matchmakingQueue.entries()) {
       const index = queue.findIndex((p) => p.id === player.id);
       if (index !== -1) 

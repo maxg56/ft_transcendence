@@ -114,23 +114,7 @@ services:
       - backend
     restart: always
 
-  chat-service:
-    container_name: ft_t_chat
-    build: 
-      context: ./api/
-      dockerfile: Dockerfile.dev
-      args: 
-        - APP_DIR=chat-service
-    env_file: .env
-    volumes:
-      - ./api/chat-service:/app
-      - /app/node_modules
-    depends_on:
-      - db
-    networks:
-      - backend
-    restart: always
-  
+
 # ************* ----- frontend ----- ***********************
   frontend:
     container_name: ft_t_frontend

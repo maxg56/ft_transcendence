@@ -138,6 +138,14 @@
 	"Temps": "Tempo",
 	"Elo": "Elo",
 	"Double Authentification":"Autenticação dupla",
-	"Le nom d'utilisateur ne peut pas être vide":"O nome de usuário não pode estar vazio"
+	"Le nom d'utilisateur ne peut pas être vide":"O nome de usuário não pode estar vazio",
+	"Winner" : "Ganhador",
+	"Next Match" : "Próxima Partida",
+	"Derniers matchs joués" :"Últimos jogos disputados",
+	"Aucun match à venir" :"Não há partidas futuras",
+	"Prochains matchs à venir" : "Próximas partidas em breve",
+	"Aucun match terminé" : "Nenhuma partida concluída",
+	"Envoi..." : "Enviado...",
+	"Lancer la prochaine étape" : "Inicie a próxima etapa"
 }
   

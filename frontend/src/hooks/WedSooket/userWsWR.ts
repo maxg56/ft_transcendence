@@ -1,4 +1,4 @@
-import { useEffect} from "react";
+import { useEffect, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "@/context/WebSocketContext";
@@ -27,21 +27,20 @@ export const useWaitroomListener = () => {
     setRanking,
     matches,
     lastResults,
+    isHost,
+    setIsHost,
+    setTournamentId,
+    tournamentId,
   } = useWaitroomStore();
-
   const safeSetCookie = (key: string, value?: string) => {
     if (typeof value === 'string' && value) Cookies.set(key, value);
   };
 
   // Détection de l'utilisateur courant et de l'host
   const sendWSMessage = useSendWSMessage();
-  const myName = Cookies.get('myName');
-  const hostPlayer = players.find((p: any) => p.isHost);
-  const isHost = hostPlayer && myName && hostPlayer.username === myName;
-
   // Envoi explicite de la commande "étape suivante" du tournoi
-  const sendTournamentNextStep = async (tournamentId: string, hostId: string) => {
-    sendWSMessage({ event: 'tournament_next_step', data: { tournamentId, hostId } });
+  const sendTournamentNextStep = async () => {
+    sendWSMessage({ event: 'tournament_next_step', data: { tournamentId : tournamentId} });
     return Promise.resolve();
   };
 
@@ -49,6 +48,7 @@ export const useWaitroomListener = () => {
   const handlers: Record<string, (data: any) => void> = {
     tournament_created: (d) => {
       setIsTournament(true);
+      setIsHost(true);
       setCode(d.gameCode || d.gameId || '');
       setPlayers([{ isHost: true, username: d.player?.username || '', avatar: d.player?.avatar || `https://robohash.org/${d.player?.username||'host'}` }]);
     },
@@ -58,6 +58,7 @@ export const useWaitroomListener = () => {
     },
     private_game_created: (d) => {
       setIsTournament(false);
+      setIsHost(true);
       setCode(d.gameId || d.gameCode || '');
       setPlayers([{ isHost: true, username: d.player?.username || '', avatar: d.player?.avatar || `https://robohash.org/${d.player?.username||'host'}` }]);
     },
@@ -69,6 +70,7 @@ export const useWaitroomListener = () => {
       }
     },
     joined_game: (d) => {
+      setIsHost(false);
       setCode(d.gameCode || '');
       let raw = d.players ?? d.existingPlayers ?? [];
       if (!Array.isArray(raw)) raw = Object.values(raw);
@@ -91,7 +93,8 @@ export const useWaitroomListener = () => {
       if (d.format?.playersPerTeam === 1) { toast.success(t('Match trouvé ! Préparation au duel...')); navigate('/duel3'); }
       else if (d.format?.playersPerTeam === 2) { toast.success(t('Match trouvé ! Préparation au match par équipe...')); navigate('/wsGame'); }
     },
-    tournament_start : () => {
+    tournament_start : (data) => {
+      setTournamentId(data.gameId);
       if (window.location.pathname !== '/tournamentStage2') {
         navigate('/tournamentStage2');
       }

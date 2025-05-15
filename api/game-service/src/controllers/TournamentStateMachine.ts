@@ -1,7 +1,7 @@
 import { Tournament } from "./Tournament"; 
 
 type Phase = 'WAITING' | 'SEMIS' | 'FINALS' | 'FINISHED';
-type Event = 'START' | 'MATCH_FINISHED';
+type Event = 'WAITING' | 'START' | 'MATCH_FINISHED';
 
 class TournamentStateMachine {
   private phase: Phase = 'WAITING';
@@ -15,6 +15,9 @@ class TournamentStateMachine {
   transition(event: Event) {
     switch (this.phase) {
       case 'WAITING':
+        if (event === 'WAITING') {
+          this.phase = 'WAITING';
+        }
         if (event === 'START') {
           this.phase = 'SEMIS';
         }

@@ -131,12 +131,13 @@ function handleMessage(data: any, player: Player) {
         break;
       }
       case 'tournament_next_step': {
-        const { tournamentId, hostId } = data;
+        console.log("Tournament next step", data);
+        const { tournamentId} = data.data;
         const tournament = tournaments.get(tournamentId);
-        if (tournament && tournament.hostId === hostId) {
-          tournament.startNextStep(hostId);
+        if (tournament && tournament.getHostId() === player.id) {
+          tournament.startNextStep();
         }
-        console.log("Tournament next step", tournamentId, hostId);
+        console.log("Tournament next step", tournamentId, player.id);
         break;
       }
       case 'move_paddle': {

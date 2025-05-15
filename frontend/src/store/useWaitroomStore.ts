@@ -12,14 +12,18 @@ type Ranking = any;
 
 type WaitroomState = {
   code: string;
+  tournamentId: string;
   players: Player[];
   isTournament: boolean;
   tournamentStatus: string;
   matches: Match[];
   lastResults: Result[];
   ranking: Ranking[];
+  isHost: boolean;
 
   setCode: (code: string) => void;
+  setTournamentId: (id: string) => void;
+  setIsHost: (is: boolean) => void;
   setPlayers: (players: Player[]) => void;
   setIsTournament: (is: boolean) => void;
   setTournamentStatus: (status: string) => void;
@@ -30,6 +34,8 @@ type WaitroomState = {
 
 export const useWaitroomStore = create<WaitroomState>((set) => ({
   code: "",
+  tournamentId: "",
+  isHost: false,
   players: [],
   isTournament: false,
   tournamentStatus: "",
@@ -38,6 +44,8 @@ export const useWaitroomStore = create<WaitroomState>((set) => ({
   ranking: [],
 
   setCode: (code) => set({ code }),
+  setTournamentId: (id) => set({ tournamentId: id }),
+  setIsHost: (is) => set({ isHost: is }),
   setPlayers: (players) => set({ players }),
   setIsTournament: (is) => set({ isTournament: is }),
   setTournamentStatus: (status) => set({ tournamentStatus: status }),

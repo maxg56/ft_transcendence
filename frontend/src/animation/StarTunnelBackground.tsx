@@ -28,7 +28,7 @@ export const StarTunnelBackground = () => {
 
     const stars: Mesh[] = [];
 
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 80; i++) {
       const star: Mesh = MeshBuilder.CreateSphere(`star${i}`, { diameter: 0.05 }, scene);
       star.material = starMaterial;
       star.position = new Vector3(

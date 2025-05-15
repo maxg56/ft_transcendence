@@ -19,8 +19,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 	const { modifProfil } = useModifProfilApi();
 
 	const handleUserUpdate = async () => {
-		if (username.trim() === "") {
-			toast.error(t("Le nom d'utilisateur ne peut pas être vide"));
+		const nameLength = username.trim().length;
+		if (nameLength < 3 || nameLength > 20) {
+			toast.error(t("Le nom d'utilisateur doit contenir entre 3 et 20 caractères"));
 			return;
 		}
 		const updatedUser: Username = { username };

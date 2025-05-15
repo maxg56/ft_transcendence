@@ -12,6 +12,7 @@
     "dotenv": "^16.0.0",
     "fastify": "^4.0.0",
     "fastify-plugin": "^5.0.1",
+    "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.0",
     "sequelize": "^6.37.7",

@@ -8,7 +8,7 @@ export type Player = {
 
 type Match = any; // tu peux le typer mieux si tu veux
 type Result = any;
-type Ranking = any;
+type Ranking = {id : string; name: string}[]; // ou un autre type selon tes besoins
 
 type WaitroomState = {
   code: string;

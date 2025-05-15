@@ -181,7 +181,7 @@ class Tournament {
     id: i + 1,
     players: [{ id: p.id, name: p.name }]
   }));
-
+  console.log('Teams response:', teamsResponse);
   this.players.forEach((p, idx) => {
     if (p.ws && typeof p.ws.send === 'function') {
       p.ws.send(JSON.stringify({

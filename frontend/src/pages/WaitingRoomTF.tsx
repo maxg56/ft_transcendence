@@ -3,7 +3,7 @@ import ParticipantsList from '@/components/Tournament/TournamentList';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
 
 const WaitingRoomTF = () => {
-  const { code, players, isTournament } = useWaitroomListener();
+  const { code, players, isTournament,isHost } = useWaitroomListener();
 
   return (
     <div className="scale-95">
@@ -34,7 +34,7 @@ const WaitingRoomTF = () => {
       <div className="text-sm ">
         <span className="font-semibold">Joueurs connectés :</span>
       </div>
-      <ParticipantsList players={players} code={code} isTournament={isTournament} />
+      <ParticipantsList players={players} code={code} isTournament={isTournament} isHost={isHost} />
       </div>
       <div className="title text-glow px-40 py-2 px-40 py-2 rounded-md text-white font-semibold 
              bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-yellow-600/60 

@@ -5,7 +5,7 @@ import React, { useState} from 'react';
 import { toast } from 'sonner';
 
 const TournamentT2: React.FC = () => {
-  const { lastResults, matches, isHost, code, sendTournamentNextStep } = useWaitroomListener();
+  const { lastResults, matches, isHost, sendTournamentNextStep } = useWaitroomListener();
   const [loadingNextStep, setLoadingNextStep] = useState(false);
 
   // Handler pour le bouton host

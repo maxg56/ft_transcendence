@@ -113,7 +113,7 @@ export const useWaitroomListener = () => {
     },
     tournament_end: async (d) => {
       // On ne fait plus d'ack ici, il sera déclenché dans la page après le timer
-      setRanking(Array.isArray(d.standings) ? d.standings : []);
+      setRanking(Array.isArray(d) ? d : []);
       setPlayers([]);
       setCode('');
       setIsTournament(false);
@@ -125,6 +125,9 @@ export const useWaitroomListener = () => {
     // on tournament match finish, redirect to matches overview
     tournament_match_result: async () => {
     },
+    error: () => {
+      navigate('/hub');
+    }
   };
 
   useEffect(() => {

@@ -2,7 +2,6 @@ import TournamentCode from '@/components/Tournament/TournamentCode';
 import ParticipantsList from '@/components/Tournament/TournamentList';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
 import { useTranslation } from "@/context/TranslationContext";
-import Chat from "@/components/chat/Chat";
 
 const WaitingRoomTF = () => {
   const { code, players, isTournament } = useWaitroomListener();
@@ -22,9 +21,6 @@ const WaitingRoomTF = () => {
             muted
             playsInline
         />
-      </div>
-      <div className=" absolute bottom-[28%] left-[75%]">
-        <Chat/>
       </div>
       <div className="title text-center text-white z-20 absolute bottom-[18%] left-1/2 -translate-x-1/2 
                 px-20 py-10 flex flex-col justify-center items-center

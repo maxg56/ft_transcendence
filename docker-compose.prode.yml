@@ -21,6 +21,7 @@ services:
     networks:
       - frontend
       - backend
+      - elk
     restart: always
 
   #************* ----- db ----- ***********************
@@ -100,22 +101,6 @@ services:
     networks:
       - backend
     restart: always
-
-  chat-service:
-    container_name: ft_t_chat
-    build: 
-      context: ./api/
-      dockerfile: Dockerfile.prode
-      args: 
-        - APP_DIR=chat-service
-    env_file: .env
-    depends_on:
-      - db
-    networks:
-      - backend
-    restart: always
-  
-  
 
   # ************* ----- frontend ----- ***********************
   frontend:

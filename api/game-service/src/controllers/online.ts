@@ -7,7 +7,7 @@ const ONLINE_SET = 'online';
 export async function setUserOnline(userId: string) {
   try {
     await redis.sadd(ONLINE_SET, userId);
-    await  redis.smismember(ONLINE_SET, userId).then((result) => {
+    await  redis.smismember(ONLINE_SET, userId).then((result: number[]) => {
       if (result[0]) {
         logformat(`User ${userId} is already online`);
       } else {

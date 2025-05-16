@@ -114,4 +114,39 @@ async function refuseFriend (request: FastifyRequest<{ Body: {username: string}}
 	}
 };
 
-export {acceptFriend, refuseFriend, addFriend}
+
+async function removeFriend (request: FastifyRequest<{ Body: {username: string}}>, reply: FastifyReply)  {
+	try {
+		const value: string | object | Buffer = request.user;
+		let id: number | null = null;
+		if (hasId(value)) {
+		  const rawId = value.id;
+		  id = typeof rawId === 'string' ? parseInt(rawId, 10) : rawId;
+		}
+		if (typeof id !== 'number' || isNaN(id)) {
+		  return sendError(reply, 'Invalid user ID', 400);
+		}
+		// console.log("user id", id)
+		const { username } = request.body
+		// console.log("sender request:", username)
+		const userId = await User.findOne({ where: { username: username}, attributes: ["id"]})
+		if (!userId)
+			return sendError(reply, 'user not find', 404)
+		const friendship = await Friendship.findOne({
+			where: {
+				user1: userId.id,
+				user2: id,
+				status: 'accepted'
+			}
+		})
+
+		if (!friendship)
+			return sendError(reply, 'Friend request not find', 404)
+		await friendship.destroy();
+		return sendSuccess(reply, 'Friend remove', 200)
+	} catch (error) {
+		request.log.error(error);
+		return sendError(reply, 'servor error', 500)
+	}
+};
+export {acceptFriend, refuseFriend, addFriend, removeFriend}

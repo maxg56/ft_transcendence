@@ -18,7 +18,8 @@ const FriendsPanel: React.FC = () => {
 	const {
 		acceptFriend,
 		refuseFriend,
-		addFriend
+		addFriend,
+		removeFriend
 	} = useFriendApi();
 
 	const {refetch: fetchResearch} = useApi<Username[]>(
@@ -100,6 +101,11 @@ const FriendsPanel: React.FC = () => {
 		setPending(prev => prev.filter((u) => u !== username));
 	};
 
+	const handleRemove = async (username: string): Promise<void> => {
+		await removeFriend.refetch({ username });
+		setFriends(prev => prev.filter(friend => friend.username !== username));
+	};
+
 	const handleAddFriends = async (username: string) => {
 		await addFriend.refetch({ username });
 		
@@ -149,7 +155,7 @@ const FriendsPanel: React.FC = () => {
   			</div>
 
   			{/* Friend List Component */}
-  			<FriendList friends={friends} sentInvitations={sentInvitations} />
+  			<FriendList friends={friends} sentInvitations={sentInvitations} handleRemove={handleRemove} />
 
   			{/* Invitations Received */}
   			<div className="p-2 rounded-2xl border border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_15px_rgba(0,255,255,0.1)] transition duration-300">

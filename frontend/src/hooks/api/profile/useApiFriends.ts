@@ -54,9 +54,27 @@ const addFriend = useApi<Invitation>(
 	}
 );
 
+const removeFriend = useApi<Invitation>(
+	"/user/friend/remove",
+	{
+		method: 'PUT',
+		immediate: false,
+		onSuccess: (res) => {
+		if (!res ) {
+			console.error("Erreur removing friend : réponse invalide", res)
+			return
+		}
+		},
+		onError: (errMsg) => {
+			console.error('Erreur removing friends :', errMsg)
+		},
+	}
+);
+
 return {
 	refuseFriend,
 	acceptFriend,
-	addFriend
+	addFriend,
+	removeFriend
 };
 }

@@ -1,5 +1,6 @@
 import { useTranslation } from "@/context/TranslationContext";
 import React from "react";
+import { X } from "lucide-react";
 
 interface Invitation {
 	username: string;
@@ -9,9 +10,10 @@ interface Invitation {
 interface FriendListProps {
 	friends: Invitation[];
 	sentInvitations: Invitation[];
+	handleRemove: (username: string) => void;
 }
 
-const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations }) => {
+const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations, handleRemove }) => {
 	const {t} = useTranslation();
 	return (
 		<div className="w-full p-4 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 shadow-lg rounded-lg">
@@ -26,6 +28,14 @@ const FriendList: React.FC<FriendListProps> = ({ friends, sentInvitations }) => 
 								className="w-8 h-8 rounded-full"
 							/>
 							<span className="truncate max-w-[200px]">{friend.username}</span>
+							<div className="ml-auto">
+								<button
+									onClick={() => handleRemove(friend.username)}
+									className="text-red-400 hover:text-red-300"
+									>
+									<X />
+	              				</button>
+							</div>
 						</li>
 					))}
 					{sentInvitations.map((inv, index) => (

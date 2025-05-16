@@ -139,7 +139,7 @@ const FriendsPanel: React.FC = () => {
       					placeholder={t("Nom d'utilisateur...")}
       					className="w-full px-2 py-2 rounded-md bg-white/10 border border-cyan-300/20 text-white placeholder-cyan-100  focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm"
     					/>
-    				<ul className="mt-4 space-y-2 max-h-[90px] overflow-y-auto pr-2 custom-scrollbar">
+    				<ul className="mt-4 space-y-2 max-h-[80px] overflow-y-auto pr-2 custom-scrollbar">
       					{filteredUsers.map((username) => (
         					<li key={username} className="flex justify-between items-center text-sm px-4 py-2 rounded-md bg-white/5 border border-cyan-200/10 shadow-sm">
           						<span>{username}</span>
@@ -160,7 +160,7 @@ const FriendsPanel: React.FC = () => {
   			{/* Invitations Received */}
   			<div className="p-2 rounded-2xl border border-cyan-300/30 backdrop-blur-md bg-gradient-to-br from-cyan-400/10 via-purple-500/10 to-transparent shadow-[inset_0_0_20px_rgba(0,255,255,0.1),0_0_15px_rgba(0,255,255,0.1)] transition duration-300">
     			<h3 className="font-bold mb-4 text-2xl text-cyan-200">{t("Invitations reçues")}</h3>
-    			<div className="max-h-[120px] overflow-y-auto pr-2 custom-scrollbar">
+    			<div className="max-h-[80px] overflow-y-auto pr-2 custom-scrollbar">
       				<ul className="space-y-2 text-base">
         			{pendingG.map((user, index) => (
           			<li key={index} className="bg-white/5 border border-cyan-200/10 p-2 rounded-md flex justify-between items-center">

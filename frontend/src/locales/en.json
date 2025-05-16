@@ -143,6 +143,13 @@
 	"Derniers matchs joués" : "Last matches played",
 	"Aucun match à venir" : "No upcoming matches",
 	"Prochains matchs à venir" : "Upcoming matches to come",
-	"Aucun match terminé" : "No matches completed"
+	"Aucun match terminé" : "No matches completed",
+	"Code du tournoi" : "Tournament code",
+	"Joueurs connectés" : "Joueurs connectés",
+	"Salle d'attente Tournoi" : "Tournament Waiting Room",
+	"🏆 Classement Final" : "🏆 Final Ranking",
+	"victoire" : "victory",
+	"📋 Résultats des matchs" : "📋 Match results",
+	"Aucun classement disponible" : "No ranking available"
 }	
   

@@ -139,7 +139,7 @@ const FriendsPanel: React.FC = () => {
       					placeholder={t("Nom d'utilisateur...")}
       					className="w-full px-2 py-2 rounded-md bg-white/10 border border-cyan-300/20 text-white placeholder-cyan-100  focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm"
     					/>
-    				<ul className="mt-4 space-y-2">
+    				<ul className="mt-4 space-y-2 max-h-[90px] overflow-y-auto pr-2 custom-scrollbar">
       					{filteredUsers.map((username) => (
         					<li key={username} className="flex justify-between items-center text-sm px-4 py-2 rounded-md bg-white/5 border border-cyan-200/10 shadow-sm">
           						<span>{username}</span>

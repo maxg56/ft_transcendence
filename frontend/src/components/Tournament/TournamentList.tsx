@@ -1,6 +1,7 @@
 import { Player } from '@/types/WF';
 import PlayerCircle from './PlayerCircle';
 import { useWebSocket } from '@/context/WebSocketContext';
+import { useTranslation } from '@/context/TranslationContext';
 
 type ParticipantsListProps = {
   players: Player[];
@@ -11,6 +12,7 @@ type ParticipantsListProps = {
 
 const ParticipantsList = ({ players, code ,isTournament ,isHost}: ParticipantsListProps) => {
   const { sendMessage } = useWebSocket();
+  const { t } = useTranslation();
   const handleStart = () => {
     if (!isTournament) {
       sendMessage(JSON.stringify({ event: 'state_private_game', data: { gameCode: code } }));
@@ -22,7 +24,7 @@ const ParticipantsList = ({ players, code ,isTournament ,isHost}: ParticipantsLi
 
   return (
     <div className="mt-6 text-center relative">
-      <h3 className="text-md font-semibold mb-2">Participants :</h3>
+      <h3 className="text-md font-semibold mb-2">{t("Participants")} :</h3>
       
       {/* Conteneur des joueurs */}
       <div className="relative w-64 h-64 mx-auto flex items-center justify-center">

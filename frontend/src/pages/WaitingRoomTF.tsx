@@ -1,9 +1,11 @@
 import TournamentCode from '@/components/Tournament/TournamentCode';
 import ParticipantsList from '@/components/Tournament/TournamentList';
 import { useWaitroomListener } from '@/hooks/WedSooket/userWsWR';
+import { useTranslation } from '@/context/TranslationContext';
 
 const WaitingRoomTF = () => {
   const { code, players, isTournament,isHost } = useWaitroomListener();
+  const { t } = useTranslation();
 
   return (
     <div className="scale-95">
@@ -28,11 +30,11 @@ const WaitingRoomTF = () => {
                 backdrop-blur-md
                 shadow-[0_0_20px_rgba(0,255,255,0.4)] ">
       <div className="mb-2 text-sm py-5">
-        <span className="font-semibold text-xl">Code du tournoi :</span>
+        <span className="font-semibold text-xl">{t("Code du tournoi")} :</span>
           <TournamentCode code={code} />
       </div>
       <div className="text-sm ">
-        <span className="font-semibold">Joueurs connectés :</span>
+        <span className="font-semibold">{t("Joueurs connectés")} :</span>
       </div>
       <ParticipantsList players={players} code={code} isTournament={isTournament} isHost={isHost} />
       </div>
@@ -43,7 +45,7 @@ const WaitingRoomTF = () => {
              hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
              border border-cyan-300/30 
              transition duration-300 z-10">
-          <h1>Salle d'attente Tournoi</h1>
+          <h1>{t("Salle d'attente Tournoi")}</h1>
       </div>
       </div>
     </div>

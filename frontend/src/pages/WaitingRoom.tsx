@@ -1,8 +1,10 @@
 import React from "react";
 import { useWaitroomListener } from "@/hooks/WedSooket/useWaitroomListener";
+import { useTranslation } from '@/context/TranslationContext';
 
 const Waitroom: React.FC = () => {
   useWaitroomListener();
+  const { t } = useTranslation();
 
   return (
     <div className="scale-95 relative">
@@ -29,7 +31,7 @@ const Waitroom: React.FC = () => {
              hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] 
              border border-cyan-300/30 
              transition duration-300 z-10">
-          <h1>waiting room</h1>
+          <h1>{t("waiting room")}</h1>
           </div>
         </div>
       </div>

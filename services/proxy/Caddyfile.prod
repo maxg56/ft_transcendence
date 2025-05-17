@@ -18,10 +18,6 @@
     reverse_proxy auth-service:3001
   }
 
-  handle /chat/* {
-    reverse_proxy chat-service:3005
-  }
-
   handle /stats/* {
     reverse_proxy stats-service:3002
   }
@@ -33,10 +29,9 @@
   handle_path /ws/game {
     reverse_proxy game-service:3003
   }
-  handle_path /ws/chat {
-    reverse_proxy chat-service:3005
+  Handle elk/* {
+    reverse_proxy kibana:5601
   }
-
   handle /* {
     reverse_proxy frontend:5173
   }

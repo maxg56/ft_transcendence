@@ -55,7 +55,6 @@ async function joinPrivateGame(player: Player, data: any) {
       avatar: player.avatar,
       isHost: false
     };
-
     [host, ...game.guest.filter(p => p.id !== player.id)].forEach(p => {
       sendJSON(p, "new_player_joined", { player: newPlayerInfo });
     });
@@ -96,7 +95,6 @@ async function statePrivateGameHandler(player: Player, msg: any) {
     players.forEach((p, idx) => {
       teams.set(idx + 1, [p]); // one player per team
     });
-    console.log("teams", teams);
     const room: Room = {
       players,
       engine: GameEngineFactory.createEngine("1v1"),

@@ -81,9 +81,7 @@ async function joinTournamentGame(player: Player, data: any) {
       game.nb++;
       game.guest.push(player);
   
-      // Nouveau joueur : reçoit la liste des joueurs déjà présents
       const rawPlayers = [host, ...game.guest];
-      // Mapper en objet joueur et dédupliquer par id
       const existingPlayersInfo = rawPlayers
         .map(p => ({ id: p.id, username: p.name, avatar: p.avatar, isHost: p.id === game.host.id }))
         .filter((p, idx, arr) => arr.findIndex(x => x.id === p.id) === idx);
@@ -92,7 +90,6 @@ async function joinTournamentGame(player: Player, data: any) {
         players: existingPlayersInfo
       });
   
-      // Tous les autres joueurs reçoivent les infos du nouveau joueur
       const newPlayerInfo = {
         id: player.id,
         username: player.name,

@@ -1,5 +1,6 @@
 // redis.ts
 import Redis from 'ioredis';
+import { logError, logformat } from '../utils/log';
 
 const redis = new Redis({
   host: 'redis', 
@@ -7,11 +8,11 @@ const redis = new Redis({
 });
 
 redis.on('connect', () => {
-  console.log('✅ Connected to Redis');
+  logformat('✅ Connected to Redis');
 });
 
 redis.on('error', (err) => {
-  console.error('❌ Redis error:', err);
+  logError('❌ Redis error:', err);
 });
 
 export default redis;

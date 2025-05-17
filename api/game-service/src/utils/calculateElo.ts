@@ -23,6 +23,7 @@ function calculateElo(players: Player[], winnerIds: string[], baseK = 32): Playe
     const actualScore = winnerIds.includes(player.id) ? 1 : 0;
     const expectedScore = probabilities.get(player.id) ?? 0;
     player.elo = Math.round(player.elo + K * (actualScore - expectedScore));
+    if (player.elo < 0) player.elo = 0;
   }
 
   return updatedPlayers;

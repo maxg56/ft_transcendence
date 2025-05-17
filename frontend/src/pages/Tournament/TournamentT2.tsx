@@ -23,8 +23,6 @@ const TournamentT2: React.FC = () => {
     }
   };
 
-  console.log("lastResults" , isHost);
-  
   const finishedMatches = lastResults
   const upcomingMatches = matches
   const { t } = useTranslation();

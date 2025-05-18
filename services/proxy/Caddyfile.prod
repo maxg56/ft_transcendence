@@ -1,10 +1,5 @@
 {
-  email mgendrot29@game.com
-
-  log foo {
-    output file /var/log/access-foo.json
-    format json
-  }
+  admin off
 }
 
 :80 {
@@ -12,27 +7,34 @@
 }
 
 {$VITE_HOSTNAME} {
-  log foo
-
-  handle /auth/* {
-    reverse_proxy auth-service:3001
+  log {
+    output file /var/log/access-foo.json
+    format json
   }
 
-  handle /stats/* {
-    reverse_proxy stats-service:3002
-  }
+  route {
+    handle /auth/* {
+      reverse_proxy auth-service:3001
+    }
 
-  handle /user/* {
-    reverse_proxy user-service:3004
-  }
+    handle /stats/* {
+      reverse_proxy stats-service:3002
+    }
 
-  handle_path /ws/game {
-    reverse_proxy game-service:3003
-  }
-  Handle elk/* {
-    reverse_proxy kibana:5601
-  }
-  handle /* {
-    reverse_proxy frontend:5173
+    handle /user/* {
+      reverse_proxy user-service:3004
+    }
+
+    handle_path /ws/game {
+      reverse_proxy game-service:3003
+    }
+
+    handle /elk/* {
+      reverse_proxy kibana:5601
+    }
+
+    handle /* {
+      reverse_proxy frontend:5173
+    }
   }
 }

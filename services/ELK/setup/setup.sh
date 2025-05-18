@@ -1,141 +1,158 @@
 #!/bin/bash
 
-# Fonction de vérification des variables d'environnement
+set -euo pipefail
+
+# --- Fonctions utilitaires ---
+error_exit() {
+    echo "[ERROR] $1" >&2
+    exit 1
+}
+
+log_info() {
+    echo "[INFO] $1"
+}
+
+# --- Vérification des variables d'environnement ---
 check_environment_variables() {
-    if [ -z "${ELASTIC_PASSWORD}" ] || [ -z "${KIBANA_PASSWORD}" ] || [ -z "${ELASTIC_USERNAME}" ]; then
-        echo "Set the ELASTIC_PASSWORD KIBANA_PASSWORD, and ELASTIC_USERNAME environment variables in the .env file"
-        exit 1
+    if [[ -z "${ELASTIC_PASSWORD:-}" || -z "${KIBANA_PASSWORD:-}" || -z "${ELASTIC_USERNAME:-}" ]]; then
+        error_exit "Set the ELASTIC_PASSWORD, KIBANA_PASSWORD, and ELASTIC_USERNAME environment variables in the .env file"
     fi
 }
 
-# Fonction de création des certificats
+# --- Création des certificats ---
 setup_certificates() {
-    # Création du certificat d'autorité (CA)
-    if [ ! -f config/certs/ca.zip ]; then
-        echo "Creating CA"
+    mkdir -p config/certs
+
+    if [[ ! -f config/certs/ca.zip ]]; then
+        log_info "Creating CA"
         bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip
-        unzip config/certs/ca.zip -d config/certs
+        unzip -o config/certs/ca.zip -d config/certs
     fi
 
-    # Création des certificats pour chaque service
-    if [ ! -f config/certs/certs.zip ]; then
-        echo "Creating certs"
+    if [[ ! -f config/certs/certs.zip ]]; then
+        log_info "Creating certs"
         cat > config/certs/instances.yml <<EOL
 instances:
   - name: elasticsearch
-    dns:
-      - elasticsearch
-      - localhost
-    ip:
-      - 127.0.0.1
+    dns: [elasticsearch, localhost]
+    ip: [127.0.0.1]
   - name: kibana
-    dns:
-      - kibana
-      - localhost
-    ip:
-      - 127.0.0.1
+    dns: [kibana, localhost]
+    ip: [127.0.0.1]
   - name: logstash
-    dns:
-      - logstash
-      - localhost
-    ip:
-      - 127.0.0.1
+    dns: [logstash, localhost]
+    ip: [127.0.0.1]
 EOL
-        echo "Creating certs for elasticsearch, kibana, and logstash"
-        bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in \
-          config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key
-        unzip config/certs/certs.zip -d config/certs
+        bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml \
+          --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key
+        unzip -o config/certs/certs.zip -d config/certs
     fi
 
-    # Configuration des permissions
-    echo "Setting file permissions"
+    log_info "Setting file permissions"
     chown -R root:root config/certs
     find config/certs -type d -exec chmod 750 {} \;
     find config/certs -type f -exec chmod 640 {} \;
 }
 
-# Fonction d'attente de disponibilité d'Elasticsearch
+# --- Attente de disponibilité d'Elasticsearch ---
 wait_for_elasticsearch() {
-    echo "Waiting for Elasticsearch availability..."
-    until curl -s -k https://elasticsearch:9200 | grep -q "missing authentication credentials"; do 
-        sleep 5
+    log_info "Waiting for Elasticsearch availability..."
+    timeout=60
+    until curl --fail -s -k https://elasticsearch:9200 | grep -q "missing authentication credentials"; do
+        ((timeout--))
+        if ((timeout <= 0)); then
+            error_exit "Elasticsearch not available after timeout"
+        fi
+        sleep 2
     done
 }
 
-# Fonction de configuration des politiques ILM
+# --- Configuration des politiques ILM ---
 setup_ilm_policy() {
-    echo "Setting up ILM policy"
-    curl -s -X PUT "https://elasticsearch:9200/_ilm/policy/cadd-logs-policy" \
+    log_info "Setting up ILM policy"
+    curl --fail -s -X PUT "https://elasticsearch:9200/_ilm/policy/cadd-logs-policy" \
       --cacert config/certs/ca/ca.crt \
       -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
       -H "Content-Type: application/json" \
-      -d '{
-            "policy": {
-              "phases": {
-                "hot": {"min_age": "0ms","actions": {}},
-                "warm": {"min_age": "2d","actions": {"allocate": {"number_of_replicas": 0}}},
-                "cold": {"min_age": "7d","actions": {"readonly": {}}},
-                "delete": {"min_age": "30d","actions": {"delete": {}}}
-              },
-              "_meta": {"description": "ILM policy using the hot, warm(2 days) and cold(7 days) phases with a retention of 30 days"}
-            }
-          }' | grep -q '"acknowledged":true' || exit 1
+      -d @- <<EOF | grep -q '"acknowledged":true' || error_exit "Failed to set ILM policy"
+{
+  "policy": {
+    "phases": {
+      "hot": {"min_age": "0ms","actions": {}},
+      "warm": {"min_age": "2d","actions": {"allocate": {"number_of_replicas": 0}}},
+      "cold": {"min_age": "7d","actions": {"readonly": {}}},
+      "delete": {"min_age": "30d","actions": {"delete": {}}}
+    },
+    "_meta": {
+      "description": "ILM policy using the hot, warm(2 days) and cold(7 days) phases with a retention of 30 days"
+    }
+  }
+}
+EOF
 }
 
-# Fonction de configuration du template d'index
+# --- Configuration du template d'index ---
 setup_index_template() {
-    echo "Setting up index template"
-    curl -s -X PUT "https://elasticsearch:9200/_index_template/caddy-logs-template" \
+    log_info "Setting up index template"
+    curl --fail -s -X PUT "https://elasticsearch:9200/_index_template/caddy-logs-template" \
       --cacert config/certs/ca/ca.crt \
       -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
       -H "Content-Type: application/json" \
-      -d '{
-            "index_patterns": ["caddy-logs-*"],
-            "template": {
-              "settings": {
-                "index.lifecycle.name": "caddy-logs-policy",
-                "number_of_shards": 1,
-                "number_of_replicas": 1
-              }
-            }
-          }' | grep -q '"acknowledged":true' || exit 1
+      -d @- <<EOF | grep -q '"acknowledged":true' || error_exit "Failed to set index template"
+{
+  "index_patterns": ["caddy-logs-*"],
+  "template": {
+    "settings": {
+      "index.lifecycle.name": "caddy-logs-policy",
+      "number_of_shards": 1,
+      "number_of_replicas": 1
+    }
+  }
+}
+EOF
 }
 
-# Fonction de configuration de Kibana
+# --- Configuration de Kibana ---
 setup_kibana() {
-    echo "Setting up Kibana password"
-    curl -s \
-      -X POST https://elasticsearch:9200/_security/user/kibana_system/_password \
+    log_info "Setting up Kibana password"
+    curl --fail -s -X POST "https://elasticsearch:9200/_security/user/kibana_system/_password" \
       --cacert config/certs/ca/ca.crt \
       -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
       -H "Content-Type: application/json" \
-      -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}" || exit 1
+      -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}" || error_exit "Failed to set Kibana password"
 
-    echo "Waiting for Kibana availability..."
-    until curl -s -k https://kibana:5601/api/status | grep -q '"level":"available"'; do 
-        sleep 5
+    log_info "Waiting for Kibana availability..."
+    timeout=60
+    until curl -s -k https://kibana:5601/api/status | grep -q '"level":"available"'; do
+        ((timeout--))
+        if ((timeout <= 0)); then
+            error_exit "Kibana not available after timeout"
+        fi
+        sleep 2
     done
 
-    echo "Importing Kibana Dashboard"
-    curl -s -k \
-        -X POST "https://kibana:5601/api/saved_objects/_import" \
+    log_info "Importing Kibana dashboard"
+    curl --fail -s -k -X POST "https://kibana:5601/api/saved_objects/_import" \
         -u "${ELASTIC_USERNAME}:${KIBANA_PASSWORD}" \
         -H "kbn-xsrf: true" \
         -H "Content-Type: multipart/form-data" \
         --form file=@/usr/share/elasticsearch/config/dashboard.ndjson \
-        | grep -q '"success":true' || exit 1
+        | grep -q '"success":true' || error_exit "Failed to import Kibana dashboard"
 }
 
-# Fonction de nettoyage
+# --- Nettoyage du conteneur ---
 cleanup() {
-    echo "All done!, removing the setup container"
-    CONTAINER_ID=$(hostname)
-    curl -s \
-      -X DELETE "http://localhost/containers/${CONTAINER_ID}?force=true" \
-      --unix-socket /var/run/docker.sock
+    log_info "Cleaning up setup container"
+    if [ -S /var/run/docker.sock ]; then
+        CONTAINER_ID=$(hostname)
+        curl --fail -s -X DELETE "http://localhost/containers/${CONTAINER_ID}?force=true" \
+          --unix-socket /var/run/docker.sock || error_exit "Failed to remove container"
+    else
+        log_info "Docker socket not found, skipping container removal"
+    fi
 }
 
-# Exécution principale
+# --- Exécution principale ---
 main() {
     check_environment_variables
     setup_certificates
@@ -145,5 +162,5 @@ main() {
     setup_kibana
     cleanup
 }
-# Lancement du script
+
 main

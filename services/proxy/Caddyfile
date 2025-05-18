@@ -35,8 +35,7 @@ localhost:443, {$VITE_HOSTNAME}:443 {
   handle_path /ws/game {
     reverse_proxy game-service:3003
   }
-  Handle elk/* {
-    reverse_proxy kibana:5601
+  handle /elk/* {
+  reverse_proxy kibana:5601
   }
-
 }

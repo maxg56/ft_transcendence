@@ -29,7 +29,7 @@
       reverse_proxy game-service:3003
     }
 
-    handle /elk/* {
+    handle /elk {
       reverse_proxy kibana:5601
     }
 

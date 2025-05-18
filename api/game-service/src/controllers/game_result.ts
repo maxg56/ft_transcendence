@@ -76,7 +76,7 @@ async function saveMatchInDatabase(
       const side = sides[i] ?? 'left';
       score = data.score[side];
     }
-    console.log("score", score , "isWinner", isWinner, "elo_change", elo_change);
+    logformat("score", score , "isWinner", isWinner, "elo_change", elo_change);
     await MatchPlayer.create({
       match_id: match.id,
       player_id: player.id,
@@ -122,17 +122,15 @@ export default async function handleGameResult(data: GameResultData) {
     let updatedPlayers = game.players;
     let eloBefore: Map<string, number> | undefined = undefined;
     let eloAfter: Map<string, number> | undefined = undefined;
-
     if (!data.isPrivateGame ) {
       const result = await updateElo(game.players, winnerIds);
       updatedPlayers = result.updatedPlayers;
       eloBefore = result.eloBefore;
       eloAfter = result.eloAfter;
+      await saveMatchInDatabase(data, updatedPlayers, winnerIds, eloBefore, eloAfter);
+      logformat("Match saved in database", data.gameId);
     }
-
-    await saveMatchInDatabase(data, updatedPlayers, winnerIds, eloBefore, eloAfter);
     notifyPlayers(game.players, winnerName, data);
-
     activeGames.delete(data.gameId);
   } catch (err) {
     logError("handleGameResult failed", err);

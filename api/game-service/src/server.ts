@@ -133,13 +133,11 @@ function handleMessage(data: any, player: Player) {
         break;
       }
       case 'tournament_next_step': {
-        console.log("Tournament next step", data);
         const { tournamentId} = data.data;
         const tournament = tournaments.get(tournamentId);
         if (tournament && tournament.getHostId() === player.id) {
           tournament.startNextStep();
         }
-        console.log("Tournament next step", tournamentId, player.id);
         break;
       }
       case 'move_paddle': {
@@ -177,5 +175,4 @@ setInterval(() => {
 
 
 server.listen(Number(PORT), () => {
-  console.log(`WebSocket Server running on port ${PORT}`);
 });

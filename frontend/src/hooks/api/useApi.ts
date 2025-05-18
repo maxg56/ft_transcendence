@@ -64,7 +64,6 @@ export function useApi<T>(
 		if (response.status === 401 && istoken) {
 		  Cookies.remove('token');
 		  const refreshToken = Cookies.get('refreshtoken');
-		  console.log("Refresh token", refreshToken);
 		  if (refreshToken) {
 			const refreshResponse = await fetch(`${BASE_URL}/auth/refresh`, {
 			  method: 'POST',

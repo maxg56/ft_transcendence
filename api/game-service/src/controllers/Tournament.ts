@@ -8,6 +8,7 @@ import { startGameLoop } from './gameLoop';
 import { PlayerSide1v1, GameScore1v1 } from '../type';
 import { TournamentStateMachine } from './TournamentStateMachine';
 import { v4 as uuidv4 } from 'uuid';
+import { logformat } from '../utils/log';
 
 interface Match {
   match: string;
@@ -77,7 +78,7 @@ class Tournament {
   }
 
   public async finishTournament() {
-    console.log('[Tournament] finishTournament - TournGames keys:', Array.from(this.TournGames.keys()));
+    logformat('[Tournament] finishTournament - TournGames keys:', Array.from(this.TournGames.keys()));
 
     const final = this.TournGames.get('final');
     const third = this.TournGames.get('third');
@@ -127,7 +128,7 @@ class Tournament {
       engine,
       autoStartTimer: null,
       mode: '1v1' as GameMode,
-      isPrivateGame: false,
+      isPrivateGame: true,
       isPongGame: true,
       startTime: new Date(),
       isTournament: true
@@ -135,7 +136,6 @@ class Tournament {
 
     this.TournGames.set(id, match);
     activeGames.set(id, match);
-    console.log("Match created", id);
   }
 
   private startGame(id: string, delay: number = 0) {
@@ -246,10 +246,8 @@ class Tournament {
    */
   public async startNextStep() {
     const phase = this.stateMachine.getPhase();
-    console.log(`[Tournament] startNextStep called, current phase: ${phase}`);
     switch (phase) {
       case 'WAITING':
-        console.log('[Tournament] Setting up semis...');
         this.stateMachine.transition('START');
         break;
       case 'SEMIS':
@@ -257,13 +255,11 @@ class Tournament {
         break;
       case 'FINALS':
         await this.startFinales();
-        console.log('[Tournament] Finishing tournament...');
         break;
       case 'FINISHED':
-        console.log('[Tournament] Tournament already finished.');
         break;
       default:
-        console.error('[Tournament] No next step available for phase:', phase);
+        logformat('[Tournament] No next step available for phase:', phase);
         throw new Error('No next step available');
     }
   }

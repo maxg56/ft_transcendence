@@ -52,12 +52,10 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
     const ws = new WebSocket(buildWsUrl(token));
 
     ws.onopen = () => {
-      console.log("✅ WebSocket connected");
       retryCount.current = 0;
       setSocket(ws);
       socketRef.current = ws;
       setIsConnected(true);
-      // flush queued sends
       while (sendQueue.current.length > 0 && ws.readyState === WebSocket.OPEN) {
         const msg = sendQueue.current.shift()!;
         ws.send(msg);
@@ -65,7 +63,6 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
     };
 
     ws.onclose = () => {
-      console.log("❌ WebSocket disconnected");
       setIsConnected(false);
 
       if (!manuallyClosed.current && retryCount.current < WS_CONFIG.maxRetries) {
@@ -84,8 +81,6 @@ export const WebSocketProvider: FC<{ children: React.ReactNode }> = ({
       try {
         const data = JSON.parse(event.data);
         if (data.event !== 'game_state') {
-          // console.debug("📩 WebSocket received:", data);
-          // enqueue message
           messageQueue.current.push(data);
         }
       } catch (err) {

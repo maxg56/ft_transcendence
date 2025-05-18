@@ -31,7 +31,6 @@ const useSceneCleanup = (
       }
 
       renderer.dispose();
-      console.log('Scene and renderer cleaned up');
     };
   }, [scene, renderer]);
 };

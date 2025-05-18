@@ -49,7 +49,7 @@ export function enqueuePlayer(player: Player, format: MatchFormat) {
         safeSend(player, { event: 'already_in_queue', format });
         return;
     }
-    console.log(`[match] Player ${player.id} joined queue for ${key}`);
+    logformat(`[match] Player ${player.id} joined queue for ${key}`);
     queue.push(player);
     matchmakingQueue.set(key, queue);
     safeSend(player, { event: 'join_queue', format });
@@ -81,7 +81,7 @@ export function tryMatchmaking(format: MatchFormat ,isPongGame: boolean = true) 
   const totalPlayers = format.playersPerTeam * format.teams;
 
   if (queue.length < totalPlayers) return;
-  console.log(`[match] Trying to match ${totalPlayers} players in queue for ${key}`);
+  logformat(`[match] Trying to match ${totalPlayers} players in queue for ${key}`);
   const now = Date.now();
 
   for (let indices of generateCombinations(queue.length, totalPlayers)) {
@@ -188,7 +188,7 @@ export function cleanMatchmakingQueues(timeoutSeconds = 120, now = Date.now()) {
       const isRecent = (now - player.joinedAt) < timeoutSeconds * 1000;
 
       if (!isActive || !isRecent) {
-        console.log(`[match] Removing inactive/expired player ${player.id} from ${key}`);
+        logformat(`[match] Removing inactive/expired player ${player.id} from ${key}`);
 
         // Envoie un message au client s’il est encore connecté
         if (player.ws && player.ws.readyState === WebSocket.OPEN) {
@@ -206,7 +206,7 @@ export function cleanMatchmakingQueues(timeoutSeconds = 120, now = Date.now()) {
       matchmakingQueue.set(key, filteredQueue);
     } else {
       matchmakingQueue.delete(key);
-      console.log(`[match] Removed empty queue for ${key}`);
+      logformat(`[match] Removed empty queue for ${key}`);
     }
   }
 }

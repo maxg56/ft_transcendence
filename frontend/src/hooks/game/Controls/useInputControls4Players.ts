@@ -66,7 +66,6 @@ export const usePlayerControls = (gameId: string) => {
   if (positionInTeam == '1') {
     side= side+'2';
   }
-  console.log("side", side);
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (socket?.readyState !== WebSocket.OPEN) return;

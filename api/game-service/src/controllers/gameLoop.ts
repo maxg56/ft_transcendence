@@ -19,7 +19,7 @@ export async function startGameLoop(gameId: string) {
           gameId,
           winner: state.winner,
           isPongGame: true,
-          isPrivateGame: false,
+          isPrivateGame: game.isPrivateGame,
           durationSeconds: Number(Math.floor((Date.now() - game.engine.time.getTime()) / 1000)),
           score: state.score,
         };

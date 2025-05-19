@@ -5,7 +5,7 @@ import { useTranslation } from '@/context/TranslationContext';
 import {StarsBackground} from '@/animation/StarsBackground'
 
 const Results: React.FC = () => {
-  const { ranking, matches } = useWaitroomListener();
+  const { ranking } = useWaitroomListener();
   const navigate = useNavigate();
   const { t } = useTranslation();
 

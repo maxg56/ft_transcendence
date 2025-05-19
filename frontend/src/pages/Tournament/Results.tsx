@@ -33,46 +33,23 @@ const Results: React.FC = () => {
              transition duration-300 z-10'>
       <h1 className="text-6xl font-bold mb-6 text-center text-glow title">{t("🏆 Classement Final")}</h1>
       </div>
-      <ol className="max-w-md mx-auto space-y-4">
+      <ol className="absolute top-[20%] left-[44%] text-5xl text-center text-glow">
         {Array.isArray(ranking) && ranking.length > 0 ? (
           ranking.map((entry: any, idx: number) => (
             <li
               key={entry.name || entry.player || idx}
-              className="flex justify-between items-center bg-gray-700 p-4 rounded-lg shadow"
+              className="items-center bg-gray-700 text-xl p-5 h-20 w-60 rounded-lg shadow "
             >
               <span className="text-xl font-semibold">
                 {idx + 1}. {entry.name || entry.player}
               </span>
-              <span className="text-lg text-green-300">
-                {entry.wins} t{("victoire")}{entry.wins > 1 ? 's' : ''}
-              </span>
             </li>
           ))
         ) : (
-          <li key="no-ranking" className="text-center text-gray-400">{t("Aucun classement disponible")}</li>
+          <li key="no-ranking" className="text-gray-400 absolute left-[30%]">{t("Aucun classement disponible")}</li>
         )}
       </ol>
-      <div>
-        <h2 className="text-xl font-semibold text-white mb-4 absolute left-10">
-          {t("📋 Résultats des matchs")}
-        </h2>
-        <ul className="space-y-2">
-          {Array.isArray(matches) && matches.length > 0 ? (
-            matches.map((m: any) => (
-              <li
-                key={m.id}
-                className="p-4 bg-gray-700 rounded shadow text-white"
-              >
-                {m.player1?.name || m.player1} ({m.score1}) vs {m.player2?.name || m.player2} ({m.score2}) →{' '}
-                <strong className="text-green-300">{m.winner?.name || m.winner}</strong>
-              </li>
-            ))
-          ) : (
-            <li key="no-matches" className="text-center text-gray-400">{t("Aucun résultat")}</li>
-          )}
-          </ul>
-      </div>
-      <div className="flex justify-center mt-12">
+      <div className="flex justify-center mt-12 absolute top-[60%] left-[44%]">
         <button
           onClick={() => navigate("/hub")}
           className="bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/60 
@@ -85,7 +62,7 @@ const Results: React.FC = () => {
           {t("Return Hub")}
         </button>
       </div>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-4 absolute top-[72%] left-[44%]">
         <span className="text-gray-400 text-sm">{t("Redirection automatique dans 10 secondes...")}</span>
       </div>
     </div>

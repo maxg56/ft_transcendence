@@ -35,7 +35,7 @@
 	"Inscription": "Sign Up",
 	"Join": "Join",
 	"Langue": "Language",
-	"Le mot de passe doit contenir entre 8 et 20 caractères": "Password must be between 8 and 20 characters",
+	"Le mot de passe doit contenir entre 8 et 10 caractères": "Password must be between 8 and 10 characters",
 	"Le nom d'utilisateur doit contenir entre 3 et 20 caractères": "Username must be between 3 and 20 characters",
 	"Les mots de passe ne correspondent pas": "Passwords do not match",
 	"Match trouvé ! Préparation au duel...": "Match found! Preparing for duel...",

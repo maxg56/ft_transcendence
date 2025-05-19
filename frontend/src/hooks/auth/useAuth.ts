@@ -8,8 +8,8 @@ const API_URL = import.meta.env.VITE_URL_PRODE || "https://localhost:8443";
 
 function validateSignUp(t: (key: string) => string, username: string, password: string, confirmPassword: string): string | null {
   if (!username || !password || !confirmPassword) return t("Tous les champs doivent être remplis");
-  if (username.length < 3 || username.length > 20) return t("Le nom d'utilisateur doit contenir entre 3 et 20 caractères");
-  if (password.length < 8 || password.length > 20) return t("Le mot de passe doit contenir entre 8 et 20 caractères");
+  if (username.trim().length < 3 || username.trim().length > 10) return t("Le nom d'utilisateur doit contenir entre 3 et 10 caractères");
+  if (password.trim().length < 8 || password.trim().length > 20) return t("Le mot de passe doit contenir entre 8 et 20 caractères");
   if (password !== confirmPassword) return t("Les mots de passe ne correspondent pas");
   return null;
 }
@@ -109,9 +109,9 @@ export function useAuth({ onSuccess, onError }: { onSuccess?: () => void, onErro
   const signUp = useCallback(async (username: string, password: string, confirmPassword: string) => {
     const validationError = validateSignUp(t, username, password, confirmPassword);
     if (validationError) {
-    //   setError(validationError);
-    //   onError?.(validationError); 
-    //   return;
+      setError(validationError);
+      onError?.(validationError); 
+      return;
     }
     try {
       const res = await fetch(`${API_URL}/auth/register`, {

@@ -20,8 +20,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onUsernameChange }) => {
 
 	const handleUserUpdate = async () => {
 		const nameLength = username.trim().length;
-		if (nameLength < 3 || nameLength > 20) {
-			toast.error(t("Le nom d'utilisateur doit contenir entre 3 et 20 caractères"));
+		if (nameLength < 3 || nameLength > 10) {
+			toast.error(t("Le nom d'utilisateur doit contenir entre 3 et 10 caractères"));
 			return;
 		}
 		const updatedUser: Username = { username };

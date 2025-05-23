@@ -47,7 +47,7 @@ cd ft_transcendence
 ### 2. Start the Project
 
 ```bash
-make dev      # Development mode
+make       # Development mode
 make prod     # Production mode
 ```
 
@@ -70,7 +70,6 @@ make prod     # Production mode
 ├── services/
 │   ├── DB/
 │   ├── ELK/
-│   ├── monitoring/
 │   └── proxy/
 └── .github/
     └── workflows/

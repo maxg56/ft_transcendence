@@ -16,7 +16,7 @@
     "ioredis": "^5.6.1",
     "mysql2": "^3.14.0",
     "node-cron": "^3.0.3",
-    "sequelize": "^6.37.6"
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "@types/node-cron": "^3.0.11",

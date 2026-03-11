@@ -21,7 +21,7 @@
     "mysql2": "^3.14.0",
     "qrcode": "^1.5.4",
     "rimraf": "^4.4.1",
-    "sequelize": "^6.37.6",
+    "sequelize": "^6.37.8",
     "speakeasy": "^2.0.0"
   },
   "devDependencies": {

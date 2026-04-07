@@ -14,7 +14,7 @@
     "fastify": "^5.3.0",
     "fastify-plugin": "^5.0.1",
     "mysql2": "^3.14.0",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "ts-node-dev": "^2.0.0"

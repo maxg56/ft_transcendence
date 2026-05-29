@@ -17,7 +17,7 @@
     "mysql2": "^3.14.0",
     "sequelize": "^6.37.7",
     "uuid": "^11.1.0",
-    "ws": "^8.18.1"
+    "ws": "^8.20.1"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
